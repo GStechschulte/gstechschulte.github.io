@@ -1,0 +1,16 @@
+---
+title: "About"
+image: profile.jpg
+about:
+  template: jolla
+  links:
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/__gsteck__
+    - icon: github
+      text: Github
+      href: https://github.com/GStechschulte
+
+---
+
+A home for recent thoughts and projects regarding probabilistic programming, microeconomics, and technology.

@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.306">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2022-07-23">
+
+<title>cached-blog - Bayesian Modeling and Computation in Pyro - Chapter 5</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">cached-blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com" rel="" target=""><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Bayesian Modeling and Computation in Pyro - Chapter 5</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">bayesian-statistics</div>
+                <div class="quarto-category">python</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">July 23, 2022</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#fitting-splines-in-pyro" id="toc-fitting-splines-in-pyro" class="nav-link active" data-scroll-target="#fitting-splines-in-pyro">5.5 - Fitting splines in Pyro</a>
+  <ul class="collapse">
+  <li><a href="#splines-model---mcmc" id="toc-splines-model---mcmc" class="nav-link" data-scroll-target="#splines-model---mcmc">Splines Model - MCMC</a></li>
+  <li><a href="#figure-5.9" id="toc-figure-5.9" class="nav-link" data-scroll-target="#figure-5.9">Figure 5.9</a></li>
+  </ul></li>
+  <li><a href="#choosing-knots-and-priors-for-splines" id="toc-choosing-knots-and-priors-for-splines" class="nav-link" data-scroll-target="#choosing-knots-and-priors-for-splines">5.6 - Choosing knots and priors for splines</a>
+  <ul class="collapse">
+  <li><a href="#regularizing-priors-for-splines" id="toc-regularizing-priors-for-splines" class="nav-link" data-scroll-target="#regularizing-priors-for-splines">5.6.1 Regularizing priors for splines</a></li>
+  </ul></li>
+  <li><a href="#modeling-textco_2-uptake-with-splines" id="toc-modeling-textco_2-uptake-with-splines" class="nav-link" data-scroll-target="#modeling-textco_2-uptake-with-splines">Modeling <span class="math inline">\(\text{CO}_2\)</span> Uptake with Splines</a>
+  <ul class="collapse">
+  <li><a href="#pooled-model---mcmc" id="toc-pooled-model---mcmc" class="nav-link" data-scroll-target="#pooled-model---mcmc">Pooled Model - MCMC</a></li>
+  <li><a href="#mixed-effects-model---mcmc" id="toc-mixed-effects-model---mcmc" class="nav-link" data-scroll-target="#mixed-effects-model---mcmc">Mixed Effects Model - MCMC</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<div class="cell" data-execution_count="1">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> arviz <span class="im">as</span> az</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyro</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyro.distributions <span class="im">as</span> dist</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyro.distributions <span class="im">import</span> constraints, transforms</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyro.infer <span class="im">import</span> Predictive, TracePredictive, NUTS, MCMC</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyro.infer.autoguide <span class="im">import</span> AutoLaplaceApproximation</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyro.infer <span class="im">import</span> SVI, Trace_ELBO</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyro.optim <span class="im">import</span> Adam</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> patsy <span class="im">import</span> dmatrix</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>plt.style.use(<span class="st">'ggplot'</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"figure.figsize"</span>] <span class="op">=</span> (<span class="dv">9</span>, <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="fitting-splines-in-pyro" class="level2">
+<h2 class="anchored" data-anchor-id="fitting-splines-in-pyro">5.5 - Fitting splines in Pyro</h2>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>day <span class="op">=</span> pd.read_csv(<span class="st">'./data/Bike-Sharing-Dataset/day.csv'</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>hour <span class="op">=</span> pd.read_csv(<span class="st">'./data/Bike-Sharing-Dataset/hour.csv'</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>hour[<span class="st">'cnt_std'</span>] <span class="op">=</span> hour[<span class="st">'cnt'</span>] <span class="op">/</span> hour[<span class="st">'cnt'</span>].<span class="bu">max</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(x<span class="op">=</span>hour[<span class="st">'hr'</span>], y<span class="op">=</span>hour[<span class="st">'cnt_std'</span>], alpha<span class="op">=</span><span class="fl">0.1</span>, color<span class="op">=</span><span class="st">'grey'</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Count'</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Hour of Day (0-23)'</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Actual Bike Demand'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2022-07-23-bmcp-ch-5_files/figure-html/cell-4-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>num_knots <span class="op">=</span> <span class="dv">6</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>knot_list <span class="op">=</span> torch.linspace(<span class="dv">0</span>, <span class="dv">23</span>, num_knots <span class="op">+</span> <span class="dv">2</span>)[<span class="dv">1</span>:<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> dmatrix(</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bs(cnt_std, knots=knots, degree=3, include_intercept=True) - 1"</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    {<span class="st">'cnt_std'</span>: hour.hr.values, <span class="st">'knots'</span>: knot_list[<span class="dv">1</span>:<span class="op">-</span><span class="dv">1</span>]}</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> torch.tensor(np.asarray(B)).<span class="bu">float</span>()</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>cnt_bikes <span class="op">=</span> torch.tensor(hour[<span class="st">'cnt_std'</span>].values).<span class="bu">float</span>()</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>hour_bikes <span class="op">=</span> torch.tensor(hour[<span class="st">'hr'</span>].values).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>).<span class="bu">float</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="splines-model---mcmc" class="level3">
+<h3 class="anchored" data-anchor-id="splines-model---mcmc">Splines Model - MCMC</h3>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> splines(design_matrix, count_bikes<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    N, P <span class="op">=</span> design_matrix.shape</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    tau <span class="op">=</span> pyro.sample(<span class="st">'tau'</span>, dist.HalfCauchy(<span class="fl">1.</span>))</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    sigma <span class="op">=</span> pyro.sample(<span class="st">'sigma'</span>, dist.HalfNormal(<span class="fl">1.</span>))</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> pyro.plate(<span class="st">'knot_list'</span>, P):</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        beta <span class="op">=</span> pyro.sample(<span class="st">'beta'</span>, dist.Normal(<span class="fl">0.</span>, tau))</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    mu <span class="op">=</span> pyro.deterministic(<span class="st">'mu'</span>, torch.matmul(beta, design_matrix.T))</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> pyro.plate(<span class="st">'output'</span>, N):</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        output <span class="op">=</span> pyro.sample(<span class="st">'y'</span>, dist.Normal(mu, sigma), obs<span class="op">=</span>count_bikes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>pyro.render_model(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    splines, (B, cnt_bikes), render_distributions<span class="op">=</span><span class="va">True</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<p><img src="2022-07-23-bmcp-ch-5_files/figure-html/cell-7-output-1.svg" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>kernel <span class="op">=</span> NUTS(splines)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>mcmc_splines <span class="op">=</span> MCMC(kernel, <span class="dv">500</span>, <span class="dv">300</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>mcmc_splines.run(B, cnt_bikes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Sample: 100%|██████████| 800/800 [00:12, 62.91it/s, step size=2.93e-01, acc. prob=0.887]</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>prior_predictive <span class="op">=</span> Predictive(splines, num_samples<span class="op">=</span><span class="dv">500</span>)(B, <span class="va">None</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>spline_samples <span class="op">=</span> mcmc_splines.get_samples(<span class="dv">500</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>splines_predictive <span class="op">=</span> Predictive(splines, spline_samples)(B, <span class="va">None</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>az_splines_pred <span class="op">=</span> az.from_pyro(</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    prior<span class="op">=</span>prior_predictive,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    posterior<span class="op">=</span>mcmc_splines, </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    posterior_predictive<span class="op">=</span>splines_predictive</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sns.lineplot(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>hour_bikes.flatten(), y<span class="op">=</span>splines_predictive[<span class="st">'mu'</span>].mean(axis<span class="op">=</span><span class="dv">0</span>).T.flatten(),</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'black'</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>sns.lineplot(</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>hour_bikes.flatten(), y<span class="op">=</span>(B <span class="op">*</span> spline_samples[<span class="st">'beta'</span>].mean(axis<span class="op">=</span><span class="dv">0</span>))[:, <span class="dv">5</span>],</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">'--'</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    )<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2022-07-23-bmcp-ch-5_files/figure-html/cell-10-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>cnt_mu <span class="op">=</span> splines_predictive[<span class="st">'y'</span>].mean(axis<span class="op">=</span><span class="dv">0</span>).T.flatten()</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>cnt_std <span class="op">=</span> splines_predictive[<span class="st">'y'</span>].std(axis<span class="op">=</span><span class="dv">0</span>).T.flatten()</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'hr'</span>: hour[<span class="st">'hr'</span>].values,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'cnt_scaled'</span>: hour[<span class="st">'cnt_std'</span>].values,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'cnt_mu'</span>: cnt_mu,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'cnt_std'</span>: cnt_std,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'cnt_high'</span>: cnt_mu <span class="op">+</span> cnt_std,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'cnt_low'</span>: cnt_mu <span class="op">-</span> cnt_std</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.sort_values(by<span class="op">=</span>[<span class="st">'hr'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="figure-5.9" class="level3">
+<h3 class="anchored" data-anchor-id="figure-5.9">Figure 5.9</h3>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>sns.lineplot(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>df[<span class="st">'hr'</span>], y<span class="op">=</span>df[<span class="st">'cnt_mu'</span>], color<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>hour[<span class="st">'hr'</span>], y<span class="op">=</span>hour[<span class="st">'cnt_std'</span>], color<span class="op">=</span><span class="st">'grey'</span>, alpha<span class="op">=</span><span class="fl">0.3</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>plt.fill_between(</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>df[<span class="st">'hr'</span>], y1<span class="op">=</span>df[<span class="st">'cnt_high'</span>], y2<span class="op">=</span>df[<span class="st">'cnt_low'</span>], color<span class="op">=</span><span class="st">'grey'</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.3</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>plt.scatter(knot_list, np.zeros_like(knot_list), color<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Cubic Splines using 6 Knots'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2022-07-23-bmcp-ch-5_files/figure-html/cell-12-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="choosing-knots-and-priors-for-splines" class="level2">
+<h2 class="anchored" data-anchor-id="choosing-knots-and-priors-for-splines">5.6 - Choosing knots and priors for splines</h2>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>Bs <span class="op">=</span> []</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>num_knots <span class="op">=</span> [<span class="dv">3</span>, <span class="dv">6</span>, <span class="dv">9</span>, <span class="dv">12</span>, <span class="dv">18</span>]</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nk <span class="kw">in</span> num_knots:</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    knot_list <span class="op">=</span> torch.linspace(<span class="dv">0</span>, <span class="dv">24</span>, nk<span class="op">+</span><span class="dv">2</span>)[<span class="dv">1</span>:<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    B <span class="op">=</span> dmatrix(</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">'bs(cnt, knots=knots, degree=3, include_intercept=True) - 1'</span>,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        {<span class="st">'cnt'</span>: hour.hr.values, <span class="st">'knots'</span>: knot_list[<span class="dv">1</span>:<span class="op">-</span><span class="dv">1</span>]}</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    B <span class="op">=</span> torch.tensor(np.asarray(B)).<span class="bu">float</span>()</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    Bs.append(B)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="69">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>inf_data <span class="op">=</span> []</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> B <span class="kw">in</span> Bs:</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    mcmc_obj <span class="op">=</span> MCMC(NUTS(splines), <span class="dv">500</span>, <span class="dv">300</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    mcmc_obj.run(B, cnt_bikes)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    post_samples <span class="op">=</span> mcmc_obj.get_samples(<span class="dv">500</span>)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    post_pred <span class="op">=</span> Predictive(</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        splines, post_samples</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    )(B, <span class="va">None</span>)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    az_obj <span class="op">=</span> az.from_pyro(</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>        posterior<span class="op">=</span>mcmc_obj,</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>        posterior_predictive<span class="op">=</span>post_pred</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    inf_data.append(az_obj)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Sample: 100%|██████████| 800/800 [00:16, 48.58it/s, step size=2.62e-01, acc. prob=0.924]
+Sample: 100%|██████████| 800/800 [00:13, 58.92it/s, step size=2.90e-01, acc. prob=0.888]
+Sample: 100%|██████████| 800/800 [00:14, 55.82it/s, step size=2.67e-01, acc. prob=0.910]
+Sample: 100%|██████████| 800/800 [00:13, 58.91it/s, step size=3.04e-01, acc. prob=0.886]
+Sample: 100%|██████████| 800/800 [00:17, 45.97it/s, step size=2.59e-01, acc. prob=0.890]</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="70">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># something is not right here</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>dict_cmp <span class="op">=</span> {<span class="ss">f"m_</span><span class="sc">{</span>k<span class="sc">}</span><span class="ss">k"</span>: v <span class="cf">for</span> k, v <span class="kw">in</span> <span class="bu">zip</span>(num_knots, inf_data)}</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cmp</span> <span class="op">=</span> az.compare(dict_cmp, ic<span class="op">=</span><span class="st">'loo'</span>, var_name<span class="op">=</span><span class="st">'y'</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cmp</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['m_18k', 'm_12k', 'm_9k', 'm_6k', 'm_3k']</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="70">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">rank</th>
+<th data-quarto-table-cell-role="th">elpd_loo</th>
+<th data-quarto-table-cell-role="th">p_loo</th>
+<th data-quarto-table-cell-role="th">elpd_diff</th>
+<th data-quarto-table-cell-role="th">weight</th>
+<th data-quarto-table-cell-role="th">se</th>
+<th data-quarto-table-cell-role="th">dse</th>
+<th data-quarto-table-cell-role="th">warning</th>
+<th data-quarto-table-cell-role="th">scale</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">m_3k</td>
+<td>0</td>
+<td>10575.715589</td>
+<td>20.874493</td>
+<td>0.000000</td>
+<td>0.850828</td>
+<td>129.781140</td>
+<td>0.000000</td>
+<td>False</td>
+<td>log</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">m_6k</td>
+<td>1</td>
+<td>10423.693963</td>
+<td>14.518533</td>
+<td>152.021626</td>
+<td>0.000000</td>
+<td>131.808422</td>
+<td>19.387344</td>
+<td>False</td>
+<td>log</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">m_9k</td>
+<td>2</td>
+<td>10094.535427</td>
+<td>12.458113</td>
+<td>481.180162</td>
+<td>0.000000</td>
+<td>133.635244</td>
+<td>36.071652</td>
+<td>False</td>
+<td>log</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">m_12k</td>
+<td>3</td>
+<td>9580.695289</td>
+<td>8.562018</td>
+<td>995.020300</td>
+<td>0.000000</td>
+<td>136.447458</td>
+<td>53.955052</td>
+<td>False</td>
+<td>log</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">m_18k</td>
+<td>4</td>
+<td>8600.222467</td>
+<td>6.347949</td>
+<td>1975.493122</td>
+<td>0.149172</td>
+<td>142.746908</td>
+<td>81.838699</td>
+<td>False</td>
+<td>log</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="68">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">'black'</span>, <span class="st">'blue'</span>, <span class="st">'grey'</span>, <span class="st">'grey'</span>, <span class="st">'black'</span>]</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>linestyle <span class="op">=</span> [<span class="st">"-"</span>,<span class="st">"-"</span>,<span class="st">"--"</span>,<span class="st">"--"</span>,<span class="st">"-"</span>]</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>linewidth <span class="op">=</span> [<span class="fl">1.5</span>, <span class="dv">3</span>, <span class="fl">1.5</span>, <span class="fl">1.5</span>, <span class="dv">3</span>]</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ob, col, knots, ls, lw <span class="kw">in</span> <span class="bu">zip</span>(</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    inf_data, colors, <span class="bu">sorted</span>(num_knots, reverse<span class="op">=</span><span class="va">True</span>), linestyle, linewidth</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    ):</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    sns.lineplot(</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>hour[<span class="st">'hr'</span>], y<span class="op">=</span>ob[<span class="st">'posterior_predictive'</span>][<span class="st">'y'</span>][<span class="dv">0</span>].mean(axis<span class="op">=</span><span class="dv">0</span>), color<span class="op">=</span>col,</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="ss">f'knots=</span><span class="sc">{</span>knots<span class="sc">}</span><span class="ss">'</span>, linestyle<span class="op">=</span>ls, linewidth<span class="op">=</span>lw</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    sns.scatterplot(</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>hour[<span class="st">'hr'</span>], y<span class="op">=</span>hour[<span class="st">'cnt_std'</span>].values, color<span class="op">=</span><span class="st">'lightgrey'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, edgecolor<span class="op">=</span><span class="st">'grey'</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">'Model fit with different number of knots'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2022-07-23-bmcp-ch-5_files/figure-html/cell-16-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<section id="regularizing-priors-for-splines" class="level3">
+<h3 class="anchored" data-anchor-id="regularizing-priors-for-splines">5.6.1 Regularizing priors for splines</h3>
+<div class="cell" data-execution_count="71">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> GaussianRandomWalk(dist.TorchDistribution):</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    has_rsample <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    arg_constraints <span class="op">=</span> {<span class="st">'scale'</span>: constraints.positive}</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    support <span class="op">=</span> constraints.real</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, scale, num_steps<span class="op">=</span><span class="dv">1</span>):</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.scale <span class="op">=</span> scale</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>        batch_shape, event_shape <span class="op">=</span> scale.shape, torch.Size([num_steps])</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(GaussianRandomWalk, <span class="va">self</span>).<span class="fu">__init__</span>(batch_shape, event_shape)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> rsample(<span class="va">self</span>, sample_shape<span class="op">=</span>torch.Size()):</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>        shape <span class="op">=</span> sample_shape <span class="op">+</span> <span class="va">self</span>.batch_shape <span class="op">+</span> <span class="va">self</span>.event_shape</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>        walks <span class="op">=</span> <span class="va">self</span>.scale.new_empty(shape).normal_()</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> walks.cumsum(<span class="op">-</span><span class="dv">1</span>) <span class="op">*</span> <span class="va">self</span>.scale.unsqueeze(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> log_prob(<span class="va">self</span>, x):</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>        init_prob <span class="op">=</span> dist.Normal(<span class="va">self</span>.scale.new_tensor(<span class="fl">0.</span>), <span class="va">self</span>.scale).log_prob(x[..., <span class="dv">0</span>])</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>        step_probs <span class="op">=</span> dist.Normal(x[..., :<span class="op">-</span><span class="dv">1</span>], <span class="va">self</span>.scale).log_prob(x[..., <span class="dv">1</span>:])</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> init_prob <span class="op">+</span> step_probs.<span class="bu">sum</span>(<span class="op">-</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="77">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> splines_grw(design_matrix, count_bikes<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    N, P <span class="op">=</span> design_matrix.shape</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    tau <span class="op">=</span> pyro.sample(<span class="st">'tau'</span>, dist.HalfCauchy(<span class="fl">1.</span>))</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    sigma <span class="op">=</span> pyro.sample(<span class="st">'sigma'</span>, dist.HalfNormal(<span class="fl">1.</span>))</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> pyro.plate(<span class="st">'knot_list'</span>, P):</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>        beta <span class="op">=</span> pyro.sample(<span class="st">'beta'</span>, GaussianRandomWalk(scale<span class="op">=</span>tau, num_steps<span class="op">=</span><span class="dv">14</span>))</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    mu <span class="op">=</span> pyro.deterministic(<span class="st">'mu'</span>, torch.matmul(beta, design_matrix.T))</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> pyro.plate(<span class="st">'output'</span>, N):</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>        output <span class="op">=</span> pyro.sample(<span class="st">'y'</span>, dist.Normal(mu, sigma), obs<span class="op">=</span>count_bikes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="73">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>num_knots <span class="op">=</span> <span class="dv">12</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>knot_list <span class="op">=</span> torch.linspace(<span class="dv">0</span>, <span class="dv">23</span>, num_knots <span class="op">+</span> <span class="dv">2</span>)[<span class="dv">1</span>:<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> dmatrix(</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bs(cnt_std, knots=knots, degree=3, include_intercept=True) - 1"</span>,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    {<span class="st">'cnt_std'</span>: hour.hr.values, <span class="st">'knots'</span>: knot_list[<span class="dv">1</span>:<span class="op">-</span><span class="dv">1</span>]}</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> torch.tensor(np.asarray(B)).<span class="bu">float</span>()</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>cnt_bikes <span class="op">=</span> torch.tensor(hour[<span class="st">'cnt_std'</span>].values).<span class="bu">float</span>()</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>hour_bikes <span class="op">=</span> torch.tensor(hour[<span class="st">'hr'</span>].values).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>).<span class="bu">float</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="78">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>splines_grw_mcmc <span class="op">=</span> MCMC(NUTS(splines_grw), <span class="dv">500</span>, <span class="dv">300</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>splines_grw_mcmc.run(B, cnt_bikes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Sample: 100%|██████████| 800/800 [01:48,  7.40it/s, step size=1.51e-01, acc. prob=0.878]</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="79">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>splines_grw_mcmc.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+                 mean       std    median      5.0%     95.0%     n_eff     r_hat
+  beta[0,0]      0.06      0.00      0.06      0.05      0.06    793.18      1.00
+  beta[0,1]     -0.00      0.01     -0.00     -0.02      0.02    543.60      1.00
+  beta[0,2]      0.07      0.01      0.07      0.05      0.08    539.25      1.00
+  beta[0,3]     -0.07      0.01     -0.07     -0.08     -0.05    593.26      1.00
+  beta[0,4]      0.32      0.01      0.32      0.31      0.34    598.96      1.00
+  beta[0,5]      0.30      0.01      0.30      0.29      0.32    647.04      1.00
+  beta[0,6]      0.10      0.01      0.10      0.09      0.12    580.51      1.00
+  beta[0,7]      0.34      0.01      0.34      0.33      0.36    588.65      1.00
+  beta[0,8]      0.19      0.01      0.19      0.18      0.20    556.40      1.00
+  beta[0,9]      0.31      0.01      0.31      0.30      0.32    542.28      1.00
+ beta[0,10]      0.56      0.01      0.56      0.55      0.58    614.87      1.00
+ beta[0,11]      0.11      0.01      0.11      0.09      0.13    651.78      1.00
+ beta[0,12]      0.19      0.01      0.19      0.17      0.20    619.13      1.00
+ beta[0,13]      0.09      0.01      0.09      0.08      0.10    684.85      1.00
+  beta[1,0]      0.06      0.01      0.06      0.05      0.07    684.00      1.00
+  beta[1,1]     -0.00      0.01     -0.00     -0.02      0.01    546.69      1.00
+  beta[1,2]      0.07      0.01      0.07      0.05      0.09    424.07      1.01
+  beta[1,3]     -0.07      0.01     -0.07     -0.08     -0.05    269.08      1.02
+  beta[1,4]      0.32      0.01      0.32      0.31      0.33    414.38      1.02
+  beta[1,5]      0.30      0.01      0.30      0.29      0.32    618.06      1.01
+  beta[1,6]      0.10      0.01      0.10      0.09      0.12    563.03      1.00
+  beta[1,7]      0.34      0.01      0.34      0.33      0.36    422.95      1.00
+  beta[1,8]      0.19      0.01      0.19      0.18      0.20    553.61      1.00
+  beta[1,9]      0.31      0.01      0.31      0.29      0.32    468.49      1.00
+ beta[1,10]      0.56      0.01      0.56      0.55      0.58    446.50      1.00
+ beta[1,11]      0.11      0.01      0.11      0.10      0.13    373.58      1.00
+ beta[1,12]      0.19      0.01      0.19      0.17      0.20    500.06      1.00
+ beta[1,13]      0.09      0.01      0.09      0.08      0.10    610.37      1.00
+  beta[2,0]      0.06      0.01      0.06      0.05      0.07    564.38      1.00
+  beta[2,1]     -0.00      0.01     -0.00     -0.02      0.01    599.84      1.00
+  beta[2,2]      0.07      0.01      0.07      0.05      0.09    452.10      1.00
+  beta[2,3]     -0.07      0.01     -0.07     -0.08     -0.05    550.86      1.00
+  beta[2,4]      0.32      0.01      0.32      0.31      0.34    599.10      1.00
+  beta[2,5]      0.30      0.01      0.30      0.29      0.32    688.41      1.00
+  beta[2,6]      0.10      0.01      0.10      0.09      0.11    497.99      1.00
+  beta[2,7]      0.34      0.01      0.34      0.33      0.36    439.54      1.00
+  beta[2,8]      0.19      0.01      0.19      0.17      0.20    695.93      1.00
+  beta[2,9]      0.31      0.01      0.31      0.29      0.32    728.54      1.00
+ beta[2,10]      0.56      0.01      0.56      0.55      0.58    574.70      1.00
+ beta[2,11]      0.11      0.01      0.11      0.09      0.13    543.40      1.00
+ beta[2,12]      0.19      0.01      0.19      0.17      0.20    512.70      1.00
+ beta[2,13]      0.09      0.01      0.09      0.08      0.10    635.21      1.00
+  beta[3,0]      0.06      0.01      0.06      0.05      0.07    598.90      1.00
+  beta[3,1]     -0.00      0.01     -0.00     -0.02      0.01    480.85      1.00
+  beta[3,2]      0.07      0.01      0.07      0.05      0.08    540.00      1.00
+  beta[3,3]     -0.07      0.01     -0.07     -0.08     -0.05    461.03      1.00
+  beta[3,4]      0.32      0.01      0.32      0.31      0.33    489.37      1.00
+  beta[3,5]      0.30      0.01      0.30      0.29      0.32    484.36      1.00
+  beta[3,6]      0.10      0.01      0.10      0.09      0.12    591.71      1.00
+  beta[3,7]      0.34      0.01      0.34      0.33      0.36    468.37      1.00
+  beta[3,8]      0.19      0.01      0.19      0.18      0.20    325.26      1.00
+  beta[3,9]      0.31      0.01      0.31      0.30      0.32    618.83      1.00
+ beta[3,10]      0.56      0.01      0.56      0.55      0.58    502.47      1.00
+ beta[3,11]      0.11      0.01      0.11      0.09      0.12    542.12      1.00
+ beta[3,12]      0.19      0.01      0.19      0.17      0.20    576.58      1.00
+ beta[3,13]      0.09      0.01      0.09      0.08      0.09    709.30      1.00
+  beta[4,0]      0.06      0.00      0.06      0.05      0.07    785.06      1.00
+  beta[4,1]     -0.00      0.01     -0.00     -0.02      0.01    604.06      1.00
+  beta[4,2]      0.07      0.01      0.07      0.05      0.09    493.62      1.00
+  beta[4,3]     -0.07      0.01     -0.07     -0.08     -0.05    511.71      1.00
+  beta[4,4]      0.32      0.01      0.32      0.31      0.34    497.03      1.00
+  beta[4,5]      0.30      0.01      0.30      0.29      0.31    657.27      1.00
+  beta[4,6]      0.10      0.01      0.10      0.09      0.12    577.98      1.00
+  beta[4,7]      0.34      0.01      0.34      0.33      0.36    514.37      1.00
+  beta[4,8]      0.19      0.01      0.19      0.18      0.20    470.99      1.00
+  beta[4,9]      0.31      0.01      0.31      0.29      0.32    669.33      1.00
+ beta[4,10]      0.56      0.01      0.56      0.55      0.58    540.58      1.00
+ beta[4,11]      0.11      0.01      0.11      0.09      0.12    502.99      1.00
+ beta[4,12]      0.19      0.01      0.19      0.17      0.20    417.16      1.00
+ beta[4,13]      0.09      0.00      0.09      0.08      0.09    592.79      1.00
+  beta[5,0]      0.06      0.01      0.06      0.05      0.06    841.34      1.00
+  beta[5,1]     -0.00      0.01     -0.00     -0.02      0.01    598.37      1.00
+  beta[5,2]      0.07      0.01      0.07      0.05      0.08    393.97      1.00
+  beta[5,3]     -0.07      0.01     -0.07     -0.08     -0.05    470.53      1.00
+  beta[5,4]      0.32      0.01      0.32      0.31      0.33    519.00      1.00
+  beta[5,5]      0.30      0.01      0.30      0.29      0.32    454.97      1.00
+  beta[5,6]      0.10      0.01      0.10      0.09      0.11    467.47      1.00
+  beta[5,7]      0.34      0.01      0.34      0.33      0.36    453.50      1.00
+  beta[5,8]      0.19      0.01      0.19      0.17      0.20    476.61      1.00
+  beta[5,9]      0.31      0.01      0.31      0.29      0.32    468.98      1.00
+ beta[5,10]      0.56      0.01      0.56      0.55      0.58    412.85      1.00
+ beta[5,11]      0.11      0.01      0.11      0.09      0.13    417.32      1.00
+ beta[5,12]      0.19      0.01      0.19      0.17      0.20    487.35      1.01
+ beta[5,13]      0.09      0.00      0.09      0.08      0.10    855.13      1.00
+  beta[6,0]      0.06      0.00      0.06      0.05      0.06    469.53      1.00
+  beta[6,1]     -0.00      0.01     -0.00     -0.02      0.01    490.03      1.00
+  beta[6,2]      0.07      0.01      0.07      0.05      0.08    412.12      1.00
+  beta[6,3]     -0.07      0.01     -0.07     -0.08     -0.05    547.10      1.00
+  beta[6,4]      0.32      0.01      0.32      0.31      0.34    513.47      1.00
+  beta[6,5]      0.30      0.01      0.30      0.29      0.32    527.11      1.00
+  beta[6,6]      0.10      0.01      0.10      0.09      0.11    568.13      1.00
+  beta[6,7]      0.34      0.01      0.34      0.33      0.36    621.95      1.00
+  beta[6,8]      0.19      0.01      0.19      0.18      0.20    611.84      1.00
+  beta[6,9]      0.31      0.01      0.31      0.30      0.32    591.34      1.00
+ beta[6,10]      0.56      0.01      0.56      0.55      0.58    485.72      1.00
+ beta[6,11]      0.11      0.01      0.11      0.10      0.13    454.76      1.00
+ beta[6,12]      0.19      0.01      0.19      0.17      0.20    418.77      1.00
+ beta[6,13]      0.09      0.00      0.09      0.08      0.10    635.51      1.00
+  beta[7,0]      0.06      0.00      0.06      0.05      0.07    633.33      1.00
+  beta[7,1]     -0.00      0.01     -0.00     -0.02      0.01    574.07      1.00
+  beta[7,2]      0.07      0.01      0.07      0.05      0.08    519.25      1.00
+  beta[7,3]     -0.07      0.01     -0.07     -0.08     -0.05    619.73      1.00
+  beta[7,4]      0.32      0.01      0.32      0.31      0.34    623.32      1.00
+  beta[7,5]      0.30      0.01      0.30      0.29      0.32    487.51      1.00
+  beta[7,6]      0.10      0.01      0.10      0.09      0.12    521.75      1.00
+  beta[7,7]      0.34      0.01      0.34      0.33      0.36    528.14      1.00
+  beta[7,8]      0.19      0.01      0.19      0.18      0.20    536.29      1.00
+  beta[7,9]      0.31      0.01      0.31      0.30      0.32    474.66      1.01
+ beta[7,10]      0.56      0.01      0.56      0.55      0.58    444.83      1.01
+ beta[7,11]      0.11      0.01      0.11      0.10      0.13    578.87      1.00
+ beta[7,12]      0.18      0.01      0.19      0.17      0.20    636.52      1.00
+ beta[7,13]      0.09      0.00      0.09      0.08      0.09    726.01      1.00
+  beta[8,0]      0.06      0.00      0.06      0.05      0.06    759.45      1.00
+  beta[8,1]     -0.00      0.01     -0.00     -0.02      0.02    451.96      1.00
+  beta[8,2]      0.07      0.01      0.07      0.05      0.09    556.69      1.00
+  beta[8,3]     -0.07      0.01     -0.07     -0.08     -0.05    587.00      1.00
+  beta[8,4]      0.32      0.01      0.32      0.31      0.34    432.25      1.01
+  beta[8,5]      0.30      0.01      0.30      0.29      0.32    497.88      1.00
+  beta[8,6]      0.10      0.01      0.10      0.09      0.12    493.79      1.00
+  beta[8,7]      0.34      0.01      0.34      0.33      0.36    473.27      1.00
+  beta[8,8]      0.19      0.01      0.19      0.18      0.20    511.87      1.00
+  beta[8,9]      0.31      0.01      0.31      0.30      0.32    560.39      1.00
+ beta[8,10]      0.56      0.01      0.56      0.55      0.57    643.56      1.00
+ beta[8,11]      0.11      0.01      0.11      0.09      0.13    615.96      1.00
+ beta[8,12]      0.19      0.01      0.19      0.17      0.20    789.36      1.00
+ beta[8,13]      0.09      0.00      0.09      0.08      0.10    722.99      1.00
+  beta[9,0]      0.06      0.01      0.06      0.05      0.07    705.95      1.00
+  beta[9,1]     -0.00      0.01     -0.00     -0.02      0.02    539.48      1.01
+  beta[9,2]      0.07      0.01      0.07      0.05      0.09    729.97      1.01
+  beta[9,3]     -0.07      0.01     -0.07     -0.08     -0.05    606.84      1.01
+  beta[9,4]      0.32      0.01      0.32      0.31      0.33    533.78      1.00
+  beta[9,5]      0.30      0.01      0.30      0.29      0.32    770.46      1.00
+  beta[9,6]      0.10      0.01      0.10      0.09      0.11    672.34      1.00
+  beta[9,7]      0.34      0.01      0.34      0.33      0.36    590.69      1.00
+  beta[9,8]      0.19      0.01      0.19      0.17      0.20    701.83      1.00
+  beta[9,9]      0.31      0.01      0.31      0.30      0.32    491.28      1.00
+ beta[9,10]      0.56      0.01      0.56      0.55      0.58    501.94      1.00
+ beta[9,11]      0.11      0.01      0.11      0.10      0.13    458.62      1.00
+ beta[9,12]      0.19      0.01      0.19      0.17      0.20    491.62      1.01
+ beta[9,13]      0.09      0.00      0.09      0.08      0.09    694.76      1.00
+ beta[10,0]      0.06      0.01      0.06      0.05      0.07    661.86      1.00
+ beta[10,1]     -0.00      0.01     -0.00     -0.02      0.01    560.89      1.00
+ beta[10,2]      0.07      0.01      0.07      0.05      0.09    487.57      1.00
+ beta[10,3]     -0.07      0.01     -0.07     -0.08     -0.05    538.75      1.00
+ beta[10,4]      0.32      0.01      0.32      0.31      0.34    582.82      1.00
+ beta[10,5]      0.30      0.01      0.30      0.29      0.32    441.16      1.00
+ beta[10,6]      0.10      0.01      0.10      0.09      0.12    413.37      1.01
+ beta[10,7]      0.34      0.01      0.34      0.33      0.36    529.81      1.02
+ beta[10,8]      0.19      0.01      0.19      0.18      0.20    615.98      1.01
+ beta[10,9]      0.31      0.01      0.31      0.29      0.32    518.03      1.02
+beta[10,10]      0.56      0.01      0.56      0.55      0.57    549.82      1.00
+beta[10,11]      0.11      0.01      0.11      0.10      0.13    526.15      1.00
+beta[10,12]      0.19      0.01      0.19      0.17      0.20    506.01      1.00
+beta[10,13]      0.09      0.00      0.09      0.08      0.09    626.06      1.00
+ beta[11,0]      0.06      0.01      0.06      0.05      0.07    656.89      1.00
+ beta[11,1]     -0.00      0.01     -0.00     -0.02      0.01    501.48      1.01
+ beta[11,2]      0.07      0.01      0.07      0.05      0.08    434.22      1.01
+ beta[11,3]     -0.07      0.01     -0.07     -0.08     -0.06    455.18      1.01
+ beta[11,4]      0.32      0.01      0.32      0.31      0.34    609.90      1.00
+ beta[11,5]      0.30      0.01      0.30      0.29      0.31    742.15      1.00
+ beta[11,6]      0.10      0.01      0.10      0.09      0.12    811.31      1.00
+ beta[11,7]      0.34      0.01      0.34      0.33      0.36    572.83      1.00
+ beta[11,8]      0.19      0.01      0.19      0.17      0.20    642.85      1.00
+ beta[11,9]      0.31      0.01      0.31      0.30      0.32    541.95      1.00
+beta[11,10]      0.56      0.01      0.56      0.55      0.58    488.09      1.00
+beta[11,11]      0.11      0.01      0.11      0.10      0.13    400.39      1.00
+beta[11,12]      0.19      0.01      0.19      0.17      0.20    502.89      1.00
+beta[11,13]      0.09      0.00      0.09      0.08      0.09    770.16      1.00
+ beta[12,0]      0.06      0.00      0.06      0.05      0.06    835.10      1.00
+ beta[12,1]     -0.00      0.01     -0.00     -0.02      0.01    525.41      1.00
+ beta[12,2]      0.07      0.01      0.07      0.05      0.09    461.99      1.00
+ beta[12,3]     -0.07      0.01     -0.07     -0.08     -0.05    402.14      1.00
+ beta[12,4]      0.32      0.01      0.32      0.31      0.33    536.10      1.00
+ beta[12,5]      0.30      0.01      0.30      0.29      0.32    508.00      1.00
+ beta[12,6]      0.10      0.01      0.10      0.09      0.12    432.68      1.00
+ beta[12,7]      0.34      0.01      0.34      0.33      0.36    456.73      1.00
+ beta[12,8]      0.19      0.01      0.19      0.18      0.20    454.93      1.00
+ beta[12,9]      0.31      0.01      0.31      0.29      0.32    429.57      1.00
+beta[12,10]      0.56      0.01      0.56      0.55      0.58    428.65      1.00
+beta[12,11]      0.11      0.01      0.11      0.09      0.13    467.15      1.00
+beta[12,12]      0.19      0.01      0.19      0.17      0.20    514.43      1.00
+beta[12,13]      0.09      0.01      0.09      0.08      0.09    648.53      1.00
+ beta[13,0]      0.06      0.00      0.06      0.05      0.06    693.73      1.00
+ beta[13,1]     -0.00      0.01     -0.00     -0.02      0.01    571.39      1.00
+ beta[13,2]      0.07      0.01      0.07      0.05      0.08    705.45      1.00
+ beta[13,3]     -0.07      0.01     -0.07     -0.08     -0.05    672.76      1.00
+ beta[13,4]      0.32      0.01      0.32      0.31      0.34    675.63      1.00
+ beta[13,5]      0.30      0.01      0.30      0.29      0.32    508.98      1.00
+ beta[13,6]      0.10      0.01      0.10      0.09      0.12    562.72      1.00
+ beta[13,7]      0.34      0.01      0.34      0.33      0.36    554.37      1.00
+ beta[13,8]      0.19      0.01      0.19      0.18      0.20    516.77      1.00
+ beta[13,9]      0.31      0.01      0.31      0.29      0.32    493.20      1.00
+beta[13,10]      0.56      0.01      0.56      0.55      0.58    494.85      1.00
+beta[13,11]      0.11      0.01      0.11      0.09      0.13    510.48      1.00
+beta[13,12]      0.19      0.01      0.19      0.17      0.20    676.12      1.00
+beta[13,13]      0.09      0.00      0.09      0.08      0.10    843.17      1.00
+      sigma      0.13      0.00      0.13      0.13      0.13    562.53      1.00
+        tau      0.21      0.01      0.21      0.19      0.23    968.57      1.00
+
+Number of divergences: 0</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="82">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>splines_grw_samples <span class="op">=</span> splines_grw_mcmc.get_samples(<span class="dv">1000</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>splines_grw_post_pred <span class="op">=</span> Predictive(</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    splines_grw,</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    splines_grw_samples</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>)(B, <span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="100">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mean -&gt; mean b/c I take mean of GRW first, then mean of</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 1000 posterior samples</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>sns.lineplot(</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>hour[<span class="st">'hr'</span>], y<span class="op">=</span>splines_grw_post_pred[<span class="st">'y'</span>].mean(axis<span class="op">=</span><span class="dv">1</span>).mean(axis<span class="op">=</span><span class="dv">0</span>), </span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'blue'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'splines_grw mean function'</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>hour[<span class="st">'hr'</span>], y<span class="op">=</span>hour[<span class="st">'cnt_std'</span>].values, </span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'lightgrey'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, edgecolor<span class="op">=</span><span class="st">'grey'</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Gaussian Random Walk Prior'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2022-07-23-bmcp-ch-5_files/figure-html/cell-23-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="modeling-textco_2-uptake-with-splines" class="level2">
+<h2 class="anchored" data-anchor-id="modeling-textco_2-uptake-with-splines">Modeling <span class="math inline">\(\text{CO}_2\)</span> Uptake with Splines</h2>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>plants_CO2 <span class="op">=</span> pd.read_csv(<span class="st">"./data/CO2_uptake.csv"</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>plant_names <span class="op">=</span> plants_CO2.Plant.unique()</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>CO2_conc <span class="op">=</span> plants_CO2.conc.values[:<span class="dv">7</span>]</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>CO2_concs <span class="op">=</span> plants_CO2.conc.values</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>uptake <span class="op">=</span> plants_CO2.uptake.values</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>index <span class="op">=</span> <span class="bu">range</span>(<span class="dv">12</span>)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>groups <span class="op">=</span> <span class="bu">len</span>(index)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>num_knots <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>knot_list <span class="op">=</span> np.linspace(CO2_conc[<span class="dv">0</span>], CO2_conc[<span class="op">-</span><span class="dv">1</span>], num_knots<span class="op">+</span><span class="dv">2</span>)[<span class="dv">1</span>:<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>Bg <span class="op">=</span> dmatrix(</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bs(conc, knots=knots, degree=3, include_intercept=True) - 1"</span>,</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"conc"</span>: CO2_concs, <span class="st">"knots"</span>: knot_list},</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>Bg <span class="op">=</span> torch.tensor(np.asarray(Bg)).<span class="bu">float</span>()</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>uptake <span class="op">=</span> torch.tensor(uptake).<span class="bu">float</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="pooled-model---mcmc" class="level3">
+<h3 class="anchored" data-anchor-id="pooled-model---mcmc">Pooled Model - MCMC</h3>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> single_response(design_matrix, obs<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    N, P <span class="op">=</span> design_matrix.shape</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    tau <span class="op">=</span> pyro.sample(<span class="st">'tau'</span>, dist.HalfCauchy(<span class="fl">1.</span>))</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    sigma <span class="op">=</span> pyro.sample(<span class="st">'sigma'</span>, dist.HalfNormal(<span class="fl">1.</span>))</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> pyro.plate(<span class="st">'coef'</span>, P):</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>        beta <span class="op">=</span> pyro.sample(<span class="st">'beta'</span>, dist.Normal(<span class="fl">0.</span>, tau))</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    ug <span class="op">=</span> pyro.deterministic(<span class="st">'ug'</span>, torch.matmul(beta, design_matrix.T))</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> pyro.plate(<span class="st">'obs'</span>, N):</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>        up <span class="op">=</span> pyro.sample(<span class="st">'uptake'</span>, dist.Normal(ug, sigma), obs<span class="op">=</span>obs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>pyro.render_model(</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    single_response,</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    (Bg, uptake), </span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    render_distributions<span class="op">=</span><span class="va">True</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<p><img src="2022-07-23-bmcp-ch-5_files/figure-html/cell-27-output-1.svg" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>sr_mcmc <span class="op">=</span> MCMC(NUTS(single_response), <span class="dv">500</span>, <span class="dv">300</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>sr_mcmc.run(Bg, uptake)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Sample: 100%|██████████| 800/800 [00:38, 20.99it/s, step size=1.98e-01, acc. prob=0.934]</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>sr_mcmc.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+                mean       std    median      5.0%     95.0%     n_eff     r_hat
+   beta[0]     12.21      1.82     12.27      9.20     15.06    261.26      1.00
+   beta[1]     30.06      3.52     30.11     24.50     35.95    251.13      1.00
+   beta[2]     30.06      6.05     29.81     20.25     39.69    193.86      1.00
+   beta[3]     33.86      9.16     33.72     20.00     49.44    171.13      1.00
+   beta[4]     25.27     22.92     24.96    -14.30     60.07    186.48      1.01
+   beta[5]     33.41      2.03     33.29     30.06     36.65    395.37      1.00
+     sigma      6.77      0.38      6.75      6.24      7.48    596.67      1.00
+       tau     31.24     10.56     28.94     17.24     47.38    226.15      1.00
+
+Number of divergences: 0</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>sr_samples <span class="op">=</span> sr_mcmc.get_samples(<span class="dv">1000</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>sr_post_pred <span class="op">=</span> Predictive(</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    single_response, </span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    sr_samples</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>)(Bg, <span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">4</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>), sharey<span class="op">=</span><span class="va">True</span>, sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> count, (idx, ax) <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">zip</span>(<span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">84</span>, <span class="dv">7</span>), axes.ravel())):</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    ax.plot(CO2_conc, uptake[idx:idx<span class="op">+</span><span class="dv">7</span>], <span class="st">'.'</span>, lw<span class="op">=</span><span class="dv">1</span>, color<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    ax.plot(CO2_conc, sr_post_pred[<span class="st">'uptake'</span>].mean(axis<span class="op">=</span><span class="dv">0</span>)[idx:idx<span class="op">+</span><span class="dv">7</span>], <span class="st">"k"</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)<span class="op">;</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    az.plot_hdi(CO2_conc, sr_post_pred[<span class="st">'uptake'</span>][:,idx:idx<span class="op">+</span><span class="dv">7</span>], color<span class="op">=</span><span class="st">"C2"</span>, smooth<span class="op">=</span><span class="va">False</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>    ax.set_title(plant_names[count])</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>fig.text(<span class="fl">0.4</span>, <span class="op">-</span><span class="fl">0.05</span>, <span class="st">"CO2 concentration"</span>, size<span class="op">=</span><span class="dv">18</span>)</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>fig.text(<span class="op">-</span><span class="fl">0.03</span>, <span class="fl">0.4</span>, <span class="st">"CO2 uptake"</span>, size<span class="op">=</span><span class="dv">18</span>, rotation<span class="op">=</span><span class="dv">90</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/Users/gabestechschulte/miniforge3/envs/probs/lib/python3.10/site-packages/arviz/plots/hdiplot.py:156: FutureWarning: hdi currently interprets 2d data as (draw, shape) but this will change in a future release to (chain, draw) for coherence with other functions
+  hdi_data = hdi(y, hdi_prob=hdi_prob, circular=circular, multimodal=False, **hdi_kwargs)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2022-07-23-bmcp-ch-5_files/figure-html/cell-31-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>num_knots <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>knot_list <span class="op">=</span> np.linspace(CO2_conc[<span class="dv">0</span>], CO2_conc[<span class="op">-</span><span class="dv">1</span>], num_knots<span class="op">+</span><span class="dv">2</span>)[<span class="dv">1</span>:<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>Bi <span class="op">=</span> dmatrix(</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bs(conc, knots=knots, degree=3, include_intercept=True) - 1"</span>,</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"conc"</span>: CO2_conc, <span class="st">"knots"</span>: knot_list},</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>Bi <span class="op">=</span> torch.tensor(np.asarray(Bi)).<span class="bu">float</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="mixed-effects-model---mcmc" class="level3">
+<h3 class="anchored" data-anchor-id="mixed-effects-model---mcmc">Mixed Effects Model - MCMC</h3>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> individual_response(design_matrix, groups, obs<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    N, P <span class="op">=</span> design_matrix.size()</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    tau <span class="op">=</span> pyro.sample(<span class="st">'tau'</span>, dist.HalfCauchy(<span class="fl">1.</span>))</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>    sigma <span class="op">=</span> pyro.sample(<span class="st">'sigma'</span>, dist.HalfNormal(<span class="fl">1.</span>))</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>    beta <span class="op">=</span> pyro.sample(<span class="st">'beta'</span>, dist.Normal(<span class="fl">0.</span>, tau).expand([P, groups]))</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>    ug <span class="op">=</span> pyro.deterministic(<span class="st">'ug'</span>, torch.matmul(design_matrix, beta))</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>    ug <span class="op">=</span> ug[:, index].T.ravel()</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> pyro.plate(<span class="st">'obs'</span>, ug.size(<span class="dv">0</span>)):</span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>        up <span class="op">=</span> pyro.sample(<span class="st">'uptake'</span>, dist.Normal(ug, sigma), obs<span class="op">=</span>obs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>ir_mcmc <span class="op">=</span> MCMC(NUTS(individual_response), <span class="dv">500</span>, <span class="dv">300</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>ir_mcmc.run(Bi, groups, uptake)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Sample: 100%|██████████| 800/800 [01:03, 12.67it/s, step size=1.36e-01, acc. prob=0.895]</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>ir_mcmc.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+                mean       std    median      5.0%     95.0%     n_eff     r_hat
+ beta[0,0]     15.89      2.02     15.80     12.85     19.17    749.09      1.00
+ beta[0,1]     13.24      1.97     13.24     10.27     16.83    818.95      1.00
+ beta[0,2]     16.11      2.09     16.17     13.20     20.12    861.96      1.00
+ beta[0,3]     14.01      2.04     13.96     10.65     17.05   1070.16      1.00
+ beta[0,4]      9.39      2.04      9.29      6.12     12.53    646.55      1.00
+ beta[0,5]     13.72      2.06     13.76     10.31     17.12    797.97      1.00
+ beta[0,6]     10.36      1.84     10.24      7.20     13.16    733.61      1.00
+ beta[0,7]     11.61      1.96     11.58      8.36     14.59    499.54      1.00
+ beta[0,8]     11.02      1.85     10.98      7.65     13.60    414.56      1.00
+ beta[0,9]     10.31      1.97     10.33      6.76     13.22    907.83      1.01
+beta[0,10]      7.64      2.00      7.59      4.22     10.82    602.67      1.00
+beta[0,11]     10.94      2.01     11.01      7.74     14.01    803.46      1.00
+ beta[1,0]     41.13      3.72     40.87     35.36     47.45    294.46      1.00
+ beta[1,1]     37.47      4.01     37.73     30.86     43.60    274.05      1.00
+ beta[1,2]     44.81      3.81     44.62     39.36     51.19    373.35      1.00
+ beta[1,3]     31.45      3.68     31.47     26.03     38.26    499.04      1.00
+ beta[1,4]     39.25      3.74     39.25     33.99     45.84    327.53      1.00
+ beta[1,5]     33.63      3.66     33.62     27.48     39.48    535.10      1.00
+ beta[1,6]     25.75      3.68     25.54     20.20     31.82    485.46      1.00
+ beta[1,7]     30.41      3.55     30.30     25.06     36.66    319.34      1.00
+ beta[1,8]     25.89      3.73     25.82     19.97     31.73    307.24      1.00
+ beta[1,9]     19.24      3.86     19.20     12.78     24.82    514.52      1.01
+beta[1,10]     14.15      3.80     14.05      8.83     20.76    286.51      1.00
+beta[1,11]     22.33      3.90     22.39     16.56     28.69    250.93      1.00
+ beta[2,0]     30.70      5.89     30.87     21.00     39.83    218.51      1.00
+ beta[2,1]     43.32      6.25     43.17     31.48     52.51    365.20      1.00
+ beta[2,2]     38.19      6.03     38.38     28.38     47.50    315.04      1.00
+ beta[2,3]     34.33      6.01     33.96     25.13     44.26    376.64      1.00
+ beta[2,4]     36.97      5.78     36.70     27.90     46.70    287.45      1.00
+ beta[2,5]     36.23      5.68     36.39     26.48     45.10    335.15      1.00
+ beta[2,6]     31.01      5.85     31.13     20.69     39.98    387.93      1.00
+ beta[2,7]     33.15      5.64     33.24     24.02     41.86    238.67      1.00
+ beta[2,8]     28.14      5.80     28.03     18.82     37.71    262.62      1.01
+ beta[2,9]     16.99      6.29     16.97      5.62     26.27    375.90      1.00
+beta[2,10]     10.97      6.47     10.75      0.52     20.80    246.43      1.00
+beta[2,11]     13.48      6.39     13.07      3.82     23.94    166.02      1.00
+ beta[3,0]     43.46      9.05     43.38     30.07     58.98    160.78      1.01
+ beta[3,1]     40.72      9.80     40.54     23.31     55.08    375.00      1.00
+ beta[3,2]     51.19      9.04     51.03     36.54     65.81    279.54      1.00
+ beta[3,3]     33.55      9.70     33.58     16.81     48.18    380.20      1.00
+ beta[3,4]     42.53      8.86     42.41     29.50     57.63    276.04      1.00
+ beta[3,5]     44.49      8.99     44.56     29.90     59.10    320.28      1.00
+ beta[3,6]     34.04      9.10     33.86     18.79     48.64    388.05      1.00
+ beta[3,7]     32.81      9.16     32.71     18.91     47.81    245.83      1.00
+ beta[3,8]     31.09      9.19     31.39     13.62     43.80    248.20      1.00
+ beta[3,9]     24.42      9.38     24.31     10.53     40.01    389.07      1.00
+beta[3,10]     15.10      9.82     15.47     -1.38     30.21    228.23      1.00
+beta[3,11]     23.38      9.72     23.52      8.32     39.32    160.46      1.00
+ beta[4,0]     32.31     22.64     31.24     -3.10     70.85    241.13      1.00
+ beta[4,1]     37.32     24.16     38.20      3.44     80.53    407.01      1.00
+ beta[4,2]     24.10     22.41     23.79    -11.63     62.44    347.81      1.00
+ beta[4,3]     37.11     24.25     38.23     -3.03     70.66    349.09      1.00
+ beta[4,4]     20.83     22.29     21.67    -13.15     58.67    329.19      1.00
+ beta[4,5]     25.82     23.11     26.21     -9.84     68.61    371.96      1.00
+ beta[4,6]     26.63     23.04     25.68    -16.67     60.41    422.46      1.00
+ beta[4,7]     21.17     23.67     22.25    -16.18     60.12    273.25      1.00
+ beta[4,8]     17.28     23.27     17.68    -21.30     52.39    324.63      1.00
+ beta[4,9]     18.38     23.02     18.19    -13.46     55.14    419.31      1.00
+beta[4,10]     11.79     23.83     11.44    -25.03     48.55    253.85      1.00
+beta[4,11]      9.50     23.80      9.69    -26.23     49.25    195.24      1.00
+ beta[5,0]     39.49      1.95     39.52     36.04     42.50   1449.89      1.00
+ beta[5,1]     44.12      1.93     44.08     40.64     46.90   1125.14      1.00
+ beta[5,2]     45.41      2.21     45.38     41.92     48.87    468.95      1.00
+ beta[5,3]     38.56      2.18     38.59     34.91     42.08    661.23      1.00
+ beta[5,4]     42.21      2.11     42.32     38.65     45.23    615.67      1.00
+ beta[5,5]     41.19      1.98     41.11     38.21     44.66    756.89      1.00
+ beta[5,6]     35.32      2.11     35.43     31.69     38.64   1030.06      1.00
+ beta[5,7]     31.34      2.05     31.39     27.53     34.23    928.45      1.00
+ beta[5,8]     27.55      1.94     27.57     24.71     31.08   1275.81      1.00
+ beta[5,9]     21.57      1.89     21.64     18.33     24.45    982.11      1.00
+beta[5,10]     14.30      2.08     14.28     10.81     17.45    958.17      1.00
+beta[5,11]     19.76      1.96     19.83     16.75     23.04    805.23      1.00
+     sigma      2.04      0.29      2.02      1.56      2.48     86.44      1.00
+       tau     31.47      2.90     31.15     26.90     36.18    586.94      1.00
+
+Number of divergences: 0</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>ir_samples <span class="op">=</span> ir_mcmc.get_samples(<span class="dv">1000</span>)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>ir_post_pred <span class="op">=</span> Predictive(</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>    individual_response, </span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>    ir_samples</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>)(Bi, groups, <span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">4</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>), sharey<span class="op">=</span><span class="va">True</span>, sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> count, (idx, ax) <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">zip</span>(<span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">84</span>, <span class="dv">7</span>), axes.ravel())):</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>    ax.plot(CO2_conc, uptake[idx:idx<span class="op">+</span><span class="dv">7</span>], <span class="st">'.'</span>, lw<span class="op">=</span><span class="dv">1</span>, color<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>    ax.plot(CO2_conc, ir_post_pred[<span class="st">'uptake'</span>].mean(axis<span class="op">=</span><span class="dv">0</span>)[idx:idx<span class="op">+</span><span class="dv">7</span>], <span class="st">"k"</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)<span class="op">;</span></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>    az.plot_hdi(CO2_conc, ir_post_pred[<span class="st">'uptake'</span>][:,idx:idx<span class="op">+</span><span class="dv">7</span>], color<span class="op">=</span><span class="st">"C2"</span>, smooth<span class="op">=</span><span class="va">False</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>    ax.set_title(plant_names[count])</span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>fig.text(<span class="fl">0.4</span>, <span class="op">-</span><span class="fl">0.05</span>, <span class="st">"CO2 concentration"</span>, size<span class="op">=</span><span class="dv">18</span>)</span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>fig.text(<span class="op">-</span><span class="fl">0.03</span>, <span class="fl">0.4</span>, <span class="st">"CO2 uptake"</span>, size<span class="op">=</span><span class="dv">18</span>, rotation<span class="op">=</span><span class="dv">90</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/Users/gabestechschulte/miniforge3/envs/probs/lib/python3.10/site-packages/arviz/plots/hdiplot.py:156: FutureWarning: hdi currently interprets 2d data as (draw, shape) but this will change in a future release to (chain, draw) for coherence with other functions
+  hdi_data = hdi(y, hdi_prob=hdi_prob, circular=circular, multimodal=False, **hdi_kwargs)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2022-07-23-bmcp-ch-5_files/figure-html/cell-37-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
