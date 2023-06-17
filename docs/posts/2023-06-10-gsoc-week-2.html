@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -143,11 +177,16 @@ ul.task-list li input[type="checkbox"] {
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>I have been selected as a contributor under the organization <a href="https://numfocus.org">NumFOCUS</a> for the Google Summer of Code 2023 program. I will be working on <em>developing better tools to interpret complex Bambi regression models</em>. More details about the project can be found <a href="https://summerofcode.withgoogle.com/projects/#6187085698856448">here</a>. This blog post will be a summary of the community bonding period and the first two weeks of the program.</p>
-<p>Timeline of events: - Community Bonding Period (May 4th - 28th) - Week 1 (May 29th - June 4th) - Week 2 (June 5th - June 11th)</p>
+<p>Timeline of events:</p>
+<ul>
+<li>Community Bonding Period (May 4th - 28th)</li>
+<li>Week 1 (May 29th - June 4th)</li>
+<li>Week 2 (June 5th - June 11th)</li>
+</ul>
 </section>
 <section id="community-bonding-period" class="level2">
 <h2 class="anchored" data-anchor-id="community-bonding-period">Community Bonding Period</h2>
-<p>The community bonding period is a time for students to get to know their mentors and organizations, and to change / finalize project details. I have been in contact with my mentors Tomás Capretto and Osvaldo Martin via Slack and GitHub. A goal of mine throughout the community bonding period was not only to get to know my mentors, but also to familiarize myself with the Bambi codebase before coding officially began. To achieve this, I read through the codebase attempting to understand how the different modules interact with one another. Additionally, I read through the Bambi documentation to understand how the different models are implemented, and additional functionality provided the library. After familarizing myself with the codebase at a high level, I decided to get a jumpstart on the project deliverables for week 1 through 4. Below is a table of the deliverables for the entire project timeline.</p>
+<p>The community bonding period is a time for students to get to know their mentors and organizations, and to change / finalize project details. I have been in contact with my mentors Tomás Capretto and Osvaldo Martin via Slack and GitHub. A goal of mine throughout the community bonding period was not only to get to know my mentors, but also to familiarize myself with the Bambi codebase before coding officially began. To achieve this, I read through the codebase attempting to understand how the different modules interact with one another. Additionally, I read through the Bambi documentation to understand how the different models are implemented, and any additional functionality provided the library. After familarizing myself with the codebase at a high level, I decided to get a jumpstart on the project deliverables for week 1 through 4. Below is a table of the deliverables for the entire project timeline.</p>
 <table class="table">
 <colgroup>
 <col style="width: 50%">
@@ -215,17 +254,37 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </section>
-<section id="week-1" class="level2">
-<h2 class="anchored" data-anchor-id="week-1">Week 1</h2>
-<p>I was on vacation.</p>
-</section>
-<section id="week-2" class="level2">
-<h2 class="anchored" data-anchor-id="week-2">Week 2</h2>
-<p>Continuing plot comparisons implementation.</p>
-</section>
-<section id="summary" class="level2">
-<h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<p>So far so good.</p>
+<section id="progress" class="level2">
+<h2 class="anchored" data-anchor-id="progress">Progress</h2>
+<p>Predictions at the observation level for <code>plot_cap</code> were implemented in <a href="https://github.com/bambinos/bambi/pull/668">PR 668</a>. By default, <code>plot_cap</code> uses the posterior distribution to visualize some mean outcome parameter of a a GLM. However, the posterior predictive distribution can also be plotted by specifying <code>pps=True</code> where <code>pps</code> stands for <em>posterior predictive samples</em> of the response variable. Upon completion of the PR above, an example showing the functionality of <code>plot_cap</code> was added to the Bambi documentation in <a href="https://github.com/bambinos/bambi/pull/670">PR 670</a>.</p>
+<p>Completing these two deliveribles early on in the program allowed me to spend more time on the design of the <code>plots</code> sub-package and implementation of <code>plot_comparisons</code> (which is ending up to be more complex than initially thought). For the design of the <code>plots</code> sub-package, I decided to create five different modules, each with a specific purpose. The modules are as follows:</p>
+<ul>
+<li><code>create_data.py</code> - creates the data called by the functions in the <code>effects.py</code> and <code>comparisons.py</code> modules.</li>
+<li><code>effects.py</code> - contains the functions (<code>predictions</code>, <code>comparisons</code>, <code>slopes</code>) that are used to create the dataframe that is passed to the plotting functions and or user when called standalone.</li>
+<li><code>utils.py</code> - contains commonly used functions that are called by multiple modules in the <code>plots</code> sub-package.</li>
+<li><code>plotting.py</code> - contains the plotting functions (<code>plot_predictions</code>, <code>plot_comparisons</code>, <code>plot_slopes</code>) that are used to generate the plots for the user.</li>
+<li><code>plot_types.py</code> - determines the plot types (numeric or categorical) for the the <code>plotting</code> module.</li>
+</ul>
+<p>The modularization of the <code>plots</code> sub-package will allow for easier maintenance and testing of the codebase and offers re-usability of code using OOP principles. The modularization of code happened during the initial development stages of the <code>plot_comparisons</code> function.</p>
+<p>Currently, <code>plot_comparisons</code> only works when a user defines the covariate and its contrast, and the covariates they would like to condition on. For example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># user provided contrast for `Age` and default grid </span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># calculated for the conditional variable `SexCode`</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plot_comparison(</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>titanic_model,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    idata<span class="op">=</span>titanic_idata,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    contrast_predictor<span class="op">=</span>{<span class="st">"Age"</span>: [<span class="dv">50</span>, <span class="dv">70</span>]},</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    conditional<span class="op">=</span><span class="st">"SexCode"</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># user can also pass a dict into conditional to define the </span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># values used for the conditional variables</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plot_comparison(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>titanic_model,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    idata<span class="op">=</span>titanic_idata,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    contrast_predictor<span class="op">=</span>{<span class="st">"PClass"</span>: [<span class="dv">1</span>, <span class="dv">3</span>]},</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    conditional<span class="op">=</span>{<span class="st">"Age"</span>: [<span class="dv">50</span>], <span class="st">"SexCode"</span>: [<span class="dv">0</span>, <span class="dv">1</span>]}</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Next week, default contrast values will be computed for numeric and categorical conrast predictors. Additionally, default values for both numeric and categorical conditinoal variables will be added. This will allow the user to call <code>plot_comparisons</code> without having to specify contrast and conditional variable values.</p>
 
 
 </section>
