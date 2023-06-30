@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "cached-blog"
+  title: "Cached"
   navbar:
     right:
       - about.qmd
@@ -13,5 +13,5 @@ website:
         href: https://twitter.com
 format:
   html:
-    theme: solar
+    theme: slate
     css: styles.css
