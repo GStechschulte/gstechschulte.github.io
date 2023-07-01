@@ -70,10 +70,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -203,10 +203,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><span class="math display">\[\underbrace{v_{t+1/2} = v_t - \frac{\eta}{2} \frac{\partial \mathcal{E}(q_t)}{\partial q}}_{\text{half update}}\]</span></p>
 <p><span class="math display">\[\underbrace{q_{t+1} = q_t + \eta \frac{\partial \mathcal{K}(p_{t+1/2})}{\partial p}}_{\text{full update}}\]</span></p>
 <p><span class="math display">\[\underbrace{v_{t+1} = v_{t+1/2} - \frac{\eta}{2} \frac{\partial \mathcal{E}(q_{t+1})}{\partial q}}_{\text{half update}}\]</span></p>
-<p>The leapfrog integrator has two important parameters: (1) path length, and (2) step size <span class="math inline">\(\eta\)</span>. In the simululation, the path length represents how “long” you travel before collecting another sample. The step size indicates the size each step is in the path length and determines how fine grained the simulation is. For example, in the drawing below, imagine path length<span class="math inline">\(=1\)</span> for both simulations. However, the left simulation has a step size <span class="math inline">\(=4\)</span> whereas the right simulation has a step size <span class="math inline">\(=2\)</span>. These parameters are important in determining how the simulator collects samples of the geometry of the posterior.</p>
+<p>The leapfrog integrator has two important parameters: (1) path length, and (2) step size <span class="math inline">\(\eta\)</span>. In the simululation, the path length represents how “long” you travel before collecting another sample. The step size indicates the size each step is in the path length and determines how fine grained the simulation is. For example, in the drawing below, imagine path length <span class="math inline">\(=1\)</span> for both simulations. However, the left simulation has a step size <span class="math inline">\(=4\)</span> whereas the right simulation has a step size <span class="math inline">\(=2\)</span>. These parameters are important in determining how the simulator collects samples of the geometry of the posterior.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="my_icons/leapfrog_params.png" class="img-fluid figure-img"></p>
+<p><img src="leapfrog_params.png" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption">leapfrog</figcaption><p></p>
 </figure>
 </div>
@@ -216,7 +216,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>HMC says the log posterior is like a “bowl” (the empty pool in the figure below), with the highest posterior probability at the center of the valley. If we give the skateboarder a flick, this momentum will simulate its path. It must obey physics, gliding along until we stop the clock and take a sample. If the log posterior is flat, then not much information is in the likelihood &amp; prior and the skateboarder will glide before the gradient makes it turn around. However, if the geometry of the log posterior is not flat, like the pool below, the gradient will make the skateboarder turn around and back into the valley. Since HMC runs a physics simulation, certain things must be conserved, i.e., the total energy of the system.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="my_icons/skateboarder.jpeg" class="img-fluid figure-img"></p>
+<p><img src="skateboarder.jpeg" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption">skateboarder</figcaption><p></p>
 </figure>
 </div>
@@ -225,7 +225,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="hamiltonian-monte-carlo---multivariate-normal" class="level3">
 <h3 class="anchored" data-anchor-id="hamiltonian-monte-carlo---multivariate-normal">Hamiltonian Monte Carlo - Multivariate Normal</h3>
-<p><em>Note</em>: The HMC implementation below is inspired by Colin Carroll’s <a href="https://colindcarroll.com/2019/04/11/hamiltonian-monte-carlo-from-scratch/">implementation</a>.</p>
+<p>The HMC implementation below is heavily inspired by Colin Carroll’s <a href="https://colindcarroll.com/2019/04/11/hamiltonian-monte-carlo-from-scratch/">implementation</a>. I recommend reading his blog plosts on HMC for an in-depth, but intuitive, explanation.</p>
 <div class="cell" data-execution_count="6">
 <details>
 <summary>Code</summary>
