@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Gabriel Stechschulte">
-<meta name="dcterms.date" content="2021-08-10">
+<meta name="dcterms.date" content="2023-08-18">
 
-<title>Cached - No Code, Dependency, and Building Technology</title>
+<title>Cached - Google Summer of Code - Final Report</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -107,8 +107,11 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">No Code, Dependency, and Building Technology</h1>
-                      </div>
+      <h1 class="title">Google Summer of Code - Final Report</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">open-source</div>
+              </div>
+                  </div>
   </div>
     
   
@@ -124,7 +127,7 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">August 10, 2021</p>
+        <p class="date">August 18, 2023</p>
       </div>
     </div>
     
@@ -142,22 +145,67 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="modernity-and-abstraction" class="level2">
-<h2 class="anchored" data-anchor-id="modernity-and-abstraction">Modernity and Abstraction</h2>
-<p>‘Programmers’, loosely speaking, in some form or another have always been developing software to automate tedious and repetitive tasks. Rightly so, as this is one of the tasks computers are designed to perform. As science and technology progresses, and gets more technological, there is a growing seperation between the maker and the user. This is one of the negative externalities of modernism - we enjoy the benefits of a more advanced and technologically adept society, but fewer and fewer people understand the inner workings. Andrej Karpathy has a jokingly short paragraph in his <a href="https://karpathy.github.io/2019/04/25/recipe/">blog</a> on the matter, “A courageous developer has taken the burden of understanding query strings, urls, GET/POST requests, HTTP connections, and so on from you and largely hidden the complexity behind a few lines of code. This is what we are now familiar with and expect”.</p>
-<p>Ever since the rise of machine learning and data science, the industry was bound to develop no and or low code products for everything between data cleaning, processing, and annotation, to the implementation of models. This is an example of one of the highest forms of abstraction - you don’t even need to be able to code. Knowledge of the problem at hand and some simple intuition into which model may provide a low validation error is almost all you need. A lower level form of abstraction is through the use of application programming interfaces (APIs) such as scikit-learn, PyTorch, etc. Using these APIs requires more technical skillsets, knowledge of first principles, and a deeper understanding of the problem than the no-code substitutes stated above. Lastly, we have the ‘bare bones’ implementation of algorithms - what most people usually call, “programming things from scratch”. But even then, good luck writing your favorite model without using numpy, scipy, or JAX.</p>
-<p>As teams of couragous developers and organizations seek to create products to help make everyday routines a commodity and more productive, it can be harder to learn technical methods from first principles as they have been abstracted away. There’s no need, nor the time, to start and go writing everything from scratch, but having a solid intuition into what is going on under the hood can allow you to uniquely solve complex problems, debug more efficiently, contribute to open source software, etc.</p>
+<div style="text-align:center">
+<p><img src="bambi-logo.png" alt="Bambi" width="350" height="200"></p>
+</div>
+<p>My project “Better tools to interpret complex Bambi regression models” was completed under the organization of NumFOCUS, and mentors Tomàs Capretto and Osvaldo Martin. Before I describe the project, objectives, and work completed, I would like to thank my mentors Tomàs and Osvaldo for their precious time and support throughout the summer. They were always available and timely in communicating over Slack and GitHub, and provided valuable feedback during code reviews. Additionally, I would like to thank NumFOCUS and the Google Summer of Code (GSoC) program for providing the opportunity to work on such an open source project over the summer. It has been an invaluable experience, and I look forward to contributing to open source projects in the future.</p>
+<section id="project-description" class="level1">
+<h1>Project Description</h1>
+<p>Bayesian modeling has increased significantly in academia and industry over the past years thanks to the development of high quality and user friendly open source probabilistic programming languages (PPL) in Python and R. Of these is Bambi, a Python library built on top of the PyMC PPL, that makes it easy to specify complex generalized linear multilevel models using a formula notation similar to those found in R. However, as the model building portion of the Bayesian workflow becomes easier, the interpretation of these models has not.</p>
+<p>To aid in model interpretability, Bambi (before this project) had a sub-package <code>plots</code> that supported <em>conditional adjusted predictions</em> plots. The original objective was to extend upon the existing plotting functionality of <em>conditional adjusted predictions</em> by supporting the plotting of posterior predictive samples, and to provide the additional plotting functions <em>predictive comparisons</em> and <em>predictive slopes</em>. However, after discussion with my mentors, and taking inspiration from <a href="https://marginaleffects.com">marginaleffects</a>, it was decided that in addition to the plotting functions, the <code>plots</code> sub-package should also have functions that allow the user to return the dataframe used for plotting. For example, calling <code>plot_slopes()</code> would plot the slopes, and calling <code>slopes()</code> would return the dataframe used to plot the slopes. To this extent, the <code>plots</code> sub-package was renamed to <code>interpret</code> to better reflect all of the supported functionality. These three features allow Bambi modelers to compute and interpret three different “quantities of interest” in a more automatic and effective manner.</p>
+<p>Thus, the three main deliverables of this project were to add (or enhance) the following functions in the <code>interpret</code> sub-package. Additionally, for each feature, tests and documentation need to be added:</p>
+<ul>
+<li>Support posterior predictive samples (pps) in <code>plot_predictions()</code>
+<ul>
+<li>Write tests</li>
+<li>Add documentation</li>
+</ul></li>
+<li>Add <code>comparisons()</code> and <code>plot_comparisons()</code>
+<ul>
+<li>Write tests</li>
+<li>Add documentation</li>
+</ul></li>
+<li>Add <code>slopes()</code> and <code>plot_slopes()</code>
+<ul>
+<li>Write tests</li>
+<li>Add documentation</li>
+</ul></li>
+</ul>
 </section>
-<section id="switching-costs-dependency-and-open-source-goods" class="level2">
-<h2 class="anchored" data-anchor-id="switching-costs-dependency-and-open-source-goods">Switching Costs, Dependency and Open Source Goods</h2>
-<p>At least the two lower levels of abstractions usually rely on open-source software, whereas the no-code alternative is typically (at the moment) proprietary technology in the form of machine learning as a service and or platform. <em>[Edit 14.09.2021: H20.ai, HuggingFace, MakeML, CreateML, Google Cloud AutoML are all open-source services or platforms in the low or no code ML space]</em> Open-source gives you the biggest flexibility that, if the space again changes, you can move things. Otherwise, you find yourself locked into a technology stack the way you were locked in to technologies from the ’80s and ’90s and 2000s.</p>
-<p>Being locked into IT components can have serious opportunity costs. For example, switching from Mac to a Windows based PC involves not only the hardware costs of the computer itself, but also involves purchasing of a whole new library of software, and even more importantly, <strong>learning</strong> how to use a brand new system. When you, or an organization, decides to go the propriety route, these switching costs can be very high, and users may find themselves experiencing <strong>lock-in</strong>; a situation where the cost of changing to a different system is so high that switching is virtually inconcievable.</p>
-<p>Of course, the producers of this hardware / sofware love the fact that you have an inelastic demand curve - a rise in prices won’t affect demand much as switching costs are high. In summary, as machine learning platforms didn’t really exist ~15 years ago, they will more than likely change quite a bit and you are dependent on the producer of continually adapting to industry trends and technological advancements while at the same time, staying flexible to cater to your edge cases when you need it.</p>
+<section id="work-completed" class="level1">
+<h1>Work Completed</h1>
+<p>All three main deliverables (and their associated sub-deliverables) were completed (merged into the main branch of the Bambi repository) on time. In the table below, the name of the deliverable, link to the feature’s pull request (PR), and link to the documentation are provided.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Deliverable</th>
+<th>Feature PR</th>
+<th>Documentation PR</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Allow <code>plot_predictions</code> to plot posterior predictive samples</td>
+<td>PR <a href="https://github.com/bambinos/bambi/pull/668">#668</a></td>
+<td>PR <a href="https://bambinos.github.io/bambi/notebooks/plot_comparisons.html">#670</a></td>
+</tr>
+<tr class="even">
+<td>Add <code>comparisons</code> and <code>plot_comparisons</code></td>
+<td>PR <a href="https://github.com/bambinos/bambi/pull/684">#684</a></td>
+<td>PR <a href="https://bambinos.github.io/bambi/notebooks/plot_comparisons.html">#695</a></td>
+</tr>
+<tr class="odd">
+<td>Add <code>slopes</code> and <code>plot_slopes</code></td>
+<td>PR <a href="https://github.com/bambinos/bambi/pull/699">#699</a></td>
+<td>PR <a href="https://bambinos.github.io/bambi/notebooks/plot_slopes.html">#701</a></td>
+</tr>
+</tbody>
+</table>
+<p>In order to quickly obtain a sense of the work completed over the GSoC program, it is probably best to view the documentation PRs. The documentation PRs consist of a Jupyter notebook that demonstrates: (1) why the new feature is useful in interpreting GLMs, (2) a brief overview of how the function computes the quantity of interest based on the user’s inputs, and (3) a demonstration of the function using different GLMs and datasets.</p>
 </section>
-<section id="leverage-and-building-technology" class="level2">
-<h2 class="anchored" data-anchor-id="leverage-and-building-technology">Leverage and Building Technology</h2>
-<p>It would be a full time job to stay present and up to date on everything being released in the space of “machine learning”, but also to be knowledgeable of first princples and have skillsets to use the technologies is in another class of its own. Before AWS, APIs, open source, etc., as an organization or startup, it was likely the question, “we need amazing technical people who can build it <em>all</em>”. Now, with the increase and rise of PaaS, SaaS, open source librarys and tooling, the question shifts from a question of “building”, to a question of “leveraging existing tools”. How long before no / low code gets good enough before we are asking, “why did we not build this with no-code tools?”.</p>
-<p>The highest form of leverage for a company is to develop and build out difficult and new technology. No-code, if developed right (and is ideally open-source), can still provide leverage and value-add, but any advantage just becomes table stakes. This is what will distinguish great teams vs.&nbsp;good teams; non-linear returns will continue to be through building out proprietery and difficult technology.</p>
+<section id="future-work" class="level1">
+<h1>Future Work</h1>
+<p>As the PRs have been merged upstream, some Bambi users have already been utilizing the new sub-package. The feedback has been positive, and a GitHub <a href="https://github.com/bambinos/bambi/issues/703">issue</a> has been opened to request additional functionality. Going forward, I will continue to contribute to Bambi, maintain the <code>interpret</code> sub-package, and interact with the Bambi community.</p>
 
 
 </section>
