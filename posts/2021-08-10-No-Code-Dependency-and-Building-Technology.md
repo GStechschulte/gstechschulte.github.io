@@ -2,6 +2,7 @@
 aliases:
 - /2021/08/10/No-Code-Dependency-and-Building-Technology
 date: '2021-08-10'
+author: Gabriel Stechschulte
 layout: post
 title: No Code, Dependency, and Building Technology
 
