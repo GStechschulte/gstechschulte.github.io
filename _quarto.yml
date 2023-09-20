@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "Cached"
+  title: "Trajectories"
   navbar:
     right:
       - about.qmd

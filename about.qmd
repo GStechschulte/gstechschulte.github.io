@@ -13,4 +13,4 @@ about:
 
 ---
 
-A home for recent thoughts and projects regarding probabilistic programming, microeconomics, and technology.
+A home for sampled thoughts and learnings.
