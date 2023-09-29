@@ -2,6 +2,8 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/2023-09-29-ordinal-models-bambi.html",
+      "/posts/2023-09-29-zip-models-bambi.html",
       "/posts/2023-08-18-gsoc-final-report.html",
       "/posts/2023-gsoc-update-slopes.html",
       "/posts/2023-06-30-gsoc-update-comparisons.html",
