@@ -1,0 +1,53 @@
+{
+  "posts/2022-10-14-inference-hmc.ipynb": {
+    "2022-10-14-inference-hmc.html": "3221a0db"
+  },
+  "posts/2022-07-12-bmcp-ch-3.ipynb": {
+    "2022-07-12-bmcp-ch-3.html": "d767b4cd"
+  },
+  "posts/2023-08-18-gsoc-final-report.md": {
+    "2023-08-18-gsoc-final-report.html": "9fc3386a"
+  },
+  "posts/2022-10-12-inference-gibbs.ipynb": {
+    "2022-10-12-inference-gibbs.html": "0023635a"
+  },
+  "posts/2023-03-26-numpyro-log-joint.ipynb": {
+    "2023-03-26-numpyro-log-joint.html": "d5f8dcfb"
+  },
+  "posts/2022-10-07-inference-mc-approximation.ipynb": {
+    "2022-10-07-inference-mc-approximation.html": "4ce6c8d6"
+  },
+  "posts/2022-10-08-inference-mh.ipynb": {
+    "2022-10-08-inference-mh.html": "e14da648"
+  },
+  "posts/2023-gsoc-update-slopes.ipynb": {
+    "2023-gsoc-update-slopes.html": "13c39323"
+  },
+  "posts/2022-06-23-ELBO.md": {
+    "2022-06-23-ELBO.html": "f53ae286"
+  },
+  "posts/2022-07-23-bmcp-ch-5.ipynb": {
+    "2022-07-23-bmcp-ch-5.html": "314d793b"
+  },
+  "posts/2023-06-30-gsoc-update-comparisons.ipynb": {
+    "2023-06-30-gsoc-update-comparisons.html": "a7dedea1"
+  },
+  "posts/2021-08-10-No-Code-Dependency-and-Building-Technology.md": {
+    "2021-08-10-No-Code-Dependency-and-Building-Technology.html": "f0f0c0cd"
+  },
+  "posts/2022-07-22-bmcp-ch-4.ipynb": {
+    "2022-07-22-bmcp-ch-4.html": "f7a70df1"
+  },
+  "posts/2023-06-10-gsoc-update-community-bonding.ipynb": {
+    "2023-06-10-gsoc-update-community-bonding.html": "2060adc4"
+  },
+  "posts/2022-07-25-mosquito-walk.ipynb": {
+    "2022-07-25-mosquito-walk.html": "cd5ad2e7"
+  },
+  "index.qmd": {
+    "index.html": "73ab1c86"
+  },
+  "about.qmd": {
+    "about.html": "5ddef2bd"
+  }
+}
