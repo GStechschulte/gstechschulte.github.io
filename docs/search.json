@@ -4,7 +4,7 @@
     "href": "posts/2023-09-29-ordinal-models-bambi.html",
     "title": "Ordinal Models in Bambi",
     "section": "",
-    "text": "# code-fold: true\nimport arviz as az\nimport matplotlib.pyplot as plt\nfrom matplotlib.lines import Line2D\nimport numpy as np\nimport pandas as pd\nimport warnings\n\nimport bambi as bmb\n\nwarnings.filterwarnings(\"ignore\", category=FutureWarning)\n\nWARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions."
+    "text": "Code\nimport arviz as az\nimport matplotlib.pyplot as plt\nfrom matplotlib.lines import Line2D\nimport numpy as np\nimport pandas as pd\nimport warnings\n\nimport bambi as bmb\n\nwarnings.filterwarnings(\"ignore\", category=FutureWarning)\n\n\nWARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions."
   },
   {
     "objectID": "posts/2023-09-29-ordinal-models-bambi.html#cumulative-model",
@@ -81,7 +81,7 @@
     "href": "posts/2023-09-29-zip-models-bambi.html",
     "title": "Zero Inflated Models in Bambi",
     "section": "",
-    "text": "# code-fold: true\nimport arviz as az\nimport matplotlib.pyplot as plt\nfrom matplotlib.lines import Line2D\nimport numpy as np\nimport pandas as pd\nimport scipy.stats as stats\nimport seaborn as sns\nimport warnings\n\nimport bambi as bmb\n\nwarnings.simplefilter(action='ignore', category=FutureWarning)\n\nWARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions."
+    "text": "Code\nimport arviz as az\nimport matplotlib.pyplot as plt\nfrom matplotlib.lines import Line2D\nimport numpy as np\nimport pandas as pd\nimport scipy.stats as stats\nimport seaborn as sns\nimport warnings\n\nimport bambi as bmb\n\nwarnings.simplefilter(action='ignore', category=FutureWarning)\n\n\nWARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions."
   },
   {
     "objectID": "posts/2023-09-29-zip-models-bambi.html#zero-inflated-outcomes",
