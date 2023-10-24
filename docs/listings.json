@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/2023-10-10-predict-groups-bambi.html",
       "/posts/2023-09-29-ordinal-models-bambi.html",
       "/posts/2023-09-29-zip-models-bambi.html",
       "/posts/2023-08-18-gsoc-final-report.html",
