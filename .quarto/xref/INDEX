@@ -1,0 +1,65 @@
+{
+  "posts/2023-09-29-ordinal-models-bambi.ipynb": {
+    "2023-09-29-ordinal-models-bambi.html": "69d55f2e"
+  },
+  "posts/2022-10-14-inference-hmc.ipynb": {
+    "2022-10-14-inference-hmc.html": "c17813d4"
+  },
+  "posts/2022-07-12-bmcp-ch-3.ipynb": {
+    "2022-07-12-bmcp-ch-3.html": "df45c48b"
+  },
+  "posts/2023-08-18-gsoc-final-report.md": {
+    "2023-08-18-gsoc-final-report.html": "6850a9aa"
+  },
+  "posts/2023-09-29-zip-models-bambi.ipynb": {
+    "2023-09-29-zip-models-bambi.html": "530bf80c"
+  },
+  "posts/2022-10-12-inference-gibbs.ipynb": {
+    "2022-10-12-inference-gibbs.html": "bc6c1983"
+  },
+  "posts/2023-03-26-numpyro-log-joint.ipynb": {
+    "2023-03-26-numpyro-log-joint.html": "3a8db9ee"
+  },
+  "posts/2022-10-07-inference-mc-approximation.ipynb": {
+    "2022-10-07-inference-mc-approximation.html": "696004f6"
+  },
+  "posts/2023-10-25-survival-models-bambi.ipynb": {
+    "2023-10-25-survival-models-bambi.html": "326c41bb"
+  },
+  "posts/2022-10-08-inference-mh.ipynb": {
+    "2022-10-08-inference-mh.html": "42458a8d"
+  },
+  "posts/2023-10-10-predict-groups-bambi.ipynb": {
+    "2023-10-10-predict-groups-bambi.html": "3c4490b2"
+  },
+  "posts/2023-gsoc-update-slopes.ipynb": {
+    "2023-gsoc-update-slopes.html": "7fe018f0"
+  },
+  "posts/2022-06-23-ELBO.md": {
+    "2022-06-23-ELBO.html": "da46620f"
+  },
+  "posts/2022-07-23-bmcp-ch-5.ipynb": {
+    "2022-07-23-bmcp-ch-5.html": "2cd20ff3"
+  },
+  "posts/2023-06-30-gsoc-update-comparisons.ipynb": {
+    "2023-06-30-gsoc-update-comparisons.html": "7297a437"
+  },
+  "posts/2021-08-10-No-Code-Dependency-and-Building-Technology.md": {
+    "2021-08-10-No-Code-Dependency-and-Building-Technology.html": "95f192b7"
+  },
+  "posts/2022-07-22-bmcp-ch-4.ipynb": {
+    "2022-07-22-bmcp-ch-4.html": "6f128597"
+  },
+  "posts/2023-06-10-gsoc-update-community-bonding.ipynb": {
+    "2023-06-10-gsoc-update-community-bonding.html": "35b896ff"
+  },
+  "posts/2022-07-25-mosquito-walk.ipynb": {
+    "2022-07-25-mosquito-walk.html": "acd9ecd7"
+  },
+  "index.qmd": {
+    "index.html": "3dec3d6c"
+  },
+  "about.qmd": {
+    "about.html": "8d16a5c2"
+  }
+}
