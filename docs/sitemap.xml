@@ -2,86 +2,86 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://GStechschulte.github.io/cached-blog/posts/2023-09-29-ordinal-models-bambi.html</loc>
-    <lastmod>2023-10-25T16:17:20.343Z</lastmod>
+    <lastmod>2023-10-25T16:22:40.230Z</lastmod>
   </url>
   <url>
     <loc>https://GStechschulte.github.io/cached-blog/posts/2022-10-14-inference-hmc.html</loc>
-    <lastmod>2023-10-25T16:17:20.808Z</lastmod>
+    <lastmod>2023-10-25T16:22:40.715Z</lastmod>
   </url>
   <url>
     <loc>https://GStechschulte.github.io/cached-blog/posts/2022-07-12-bmcp-ch-3.html</loc>
-    <lastmod>2023-10-25T16:17:21.509Z</lastmod>
+    <lastmod>2023-10-25T16:22:41.469Z</lastmod>
   </url>
   <url>
     <loc>https://GStechschulte.github.io/cached-blog/posts/2023-08-18-gsoc-final-report.html</loc>
-    <lastmod>2023-10-25T16:17:21.898Z</lastmod>
+    <lastmod>2023-10-25T16:22:41.889Z</lastmod>
   </url>
   <url>
     <loc>https://GStechschulte.github.io/cached-blog/posts/2023-09-29-zip-models-bambi.html</loc>
-    <lastmod>2023-10-25T16:17:22.799Z</lastmod>
+    <lastmod>2023-10-25T16:22:42.866Z</lastmod>
   </url>
   <url>
     <loc>https://GStechschulte.github.io/cached-blog/posts/2022-10-12-inference-gibbs.html</loc>
-    <lastmod>2023-10-25T16:17:23.210Z</lastmod>
+    <lastmod>2023-10-25T16:22:43.304Z</lastmod>
   </url>
   <url>
     <loc>https://GStechschulte.github.io/cached-blog/posts/2023-03-26-numpyro-log-joint.html</loc>
-    <lastmod>2023-10-25T16:17:23.751Z</lastmod>
+    <lastmod>2023-10-25T16:22:43.867Z</lastmod>
   </url>
   <url>
     <loc>https://GStechschulte.github.io/cached-blog/posts/2022-10-07-inference-mc-approximation.html</loc>
-    <lastmod>2023-10-25T16:17:24.141Z</lastmod>
+    <lastmod>2023-10-25T16:22:44.243Z</lastmod>
   </url>
   <url>
     <loc>https://GStechschulte.github.io/cached-blog/posts/2023-10-25-survival-models-bambi.html</loc>
-    <lastmod>2023-10-25T16:17:25.068Z</lastmod>
+    <lastmod>2023-10-25T16:22:45.238Z</lastmod>
   </url>
   <url>
     <loc>https://GStechschulte.github.io/cached-blog/posts/2022-10-08-inference-mh.html</loc>
-    <lastmod>2023-10-25T16:17:25.424Z</lastmod>
+    <lastmod>2023-10-25T16:22:45.626Z</lastmod>
   </url>
   <url>
     <loc>https://GStechschulte.github.io/cached-blog/posts/2023-10-10-predict-groups-bambi.html</loc>
-    <lastmod>2023-10-25T16:17:26.513Z</lastmod>
+    <lastmod>2023-10-25T16:22:46.837Z</lastmod>
   </url>
   <url>
     <loc>https://GStechschulte.github.io/cached-blog/posts/2023-gsoc-update-slopes.html</loc>
-    <lastmod>2023-10-25T16:17:28.481Z</lastmod>
+    <lastmod>2023-10-25T16:22:48.966Z</lastmod>
   </url>
   <url>
     <loc>https://GStechschulte.github.io/cached-blog/posts/2022-06-23-ELBO.html</loc>
-    <lastmod>2023-10-25T16:17:28.846Z</lastmod>
+    <lastmod>2023-10-25T16:22:49.343Z</lastmod>
   </url>
   <url>
     <loc>https://GStechschulte.github.io/cached-blog/posts/2022-07-23-bmcp-ch-5.html</loc>
-    <lastmod>2023-10-25T16:17:29.343Z</lastmod>
+    <lastmod>2023-10-25T16:22:49.891Z</lastmod>
   </url>
   <url>
     <loc>https://GStechschulte.github.io/cached-blog/posts/2023-06-30-gsoc-update-comparisons.html</loc>
-    <lastmod>2023-10-25T16:17:31.122Z</lastmod>
+    <lastmod>2023-10-25T16:22:51.658Z</lastmod>
   </url>
   <url>
     <loc>https://GStechschulte.github.io/cached-blog/posts/2021-08-10-No-Code-Dependency-and-Building-Technology.html</loc>
-    <lastmod>2023-10-25T16:17:31.499Z</lastmod>
+    <lastmod>2023-10-25T16:22:52.045Z</lastmod>
   </url>
   <url>
     <loc>https://GStechschulte.github.io/cached-blog/posts/2022-07-22-bmcp-ch-4.html</loc>
-    <lastmod>2023-10-25T16:17:32.431Z</lastmod>
+    <lastmod>2023-10-25T16:22:52.954Z</lastmod>
   </url>
   <url>
     <loc>https://GStechschulte.github.io/cached-blog/posts/2023-06-10-gsoc-update-community-bonding.html</loc>
-    <lastmod>2023-10-25T16:17:32.919Z</lastmod>
+    <lastmod>2023-10-25T16:22:53.418Z</lastmod>
   </url>
   <url>
     <loc>https://GStechschulte.github.io/cached-blog/posts/2022-07-25-mosquito-walk.html</loc>
-    <lastmod>2023-10-25T16:17:33.503Z</lastmod>
+    <lastmod>2023-10-25T16:22:53.976Z</lastmod>
   </url>
   <url>
     <loc>https://GStechschulte.github.io/cached-blog/index.html</loc>
-    <lastmod>2023-10-25T16:17:34.740Z</lastmod>
+    <lastmod>2023-10-25T16:22:55.185Z</lastmod>
   </url>
   <url>
     <loc>https://GStechschulte.github.io/cached-blog/about.html</loc>
-    <lastmod>2023-10-25T16:17:34.984Z</lastmod>
+    <lastmod>2023-10-25T16:22:55.431Z</lastmod>
   </url>
 </urlset>
