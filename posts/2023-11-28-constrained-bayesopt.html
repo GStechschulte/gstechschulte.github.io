@@ -183,7 +183,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<div class="cell" data-execution_count="3">
+<div class="cell" data-execution_count="1">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -209,10 +209,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="probability-of-feasibility" class="level2">
 <h2 class="anchored" data-anchor-id="probability-of-feasibility">Probability of feasibility</h2>
 <p>In BoTorch it is common to use a Gaussian Process (GP) to model the objective function. The output of the GP is a Gaussian distribution over the predicted values for a given set of input points. It provides not just a single point estimate but a probabilistic prediction that accounts for uncertainty in the predictions. Thus, for each point in the search space, we have a corresponding Gaussian distribution representing the belief of the objective value at that point.</p>
-<p>Intuitively, if we have defined an outcome constraint, we can compute the probability that <span class="math inline">\(f(x)\)</span> is feasible by taking the cumulative distribution function (CDF) of the predictive distribution and computing the area between the lower bound and the upper bound. For example, imagine a GP has made a prediction given an input <span class="math inline">\(x\)</span>. This predictive distribution is shown below. The prediction is normally distributed around <span class="math inline">\(0.0\)</span> with plausible predictions ranging from <span class="math inline">\(-3\)</span> to <span class="math inline">\(3\)</span>. Additionally, there is an outcome constraint of the form</p>
+<p>Intuitively, if we have defined an outcome constraint, we can compute the probability that <span class="math inline">\(f(x)\)</span> is feasible by taking the cumulative distribution function (CDF) of the predictive distribution and computing the area between the lower bound and the upper bound. For example, imagine a GP has made a prediction given an input <span class="math inline">\(x\)</span>. This predictive distribution of the outcome <span class="math inline">\(y\)</span> is shown below. The prediction is normally distributed around <span class="math inline">\(0.0\)</span> with plausible predictions ranging from <span class="math inline">\(-3\)</span> to <span class="math inline">\(3\)</span>. Additionally, there is an outcome constraint of the form</p>
 <p><span class="math display">\[0 &lt; f(x)\]</span></p>
 <p>The probability that the prediction is feasible (above <span class="math inline">\(0\)</span>) is computed using the CDF of the predictive distribution. In this example, the probability of feasibility is <span class="math inline">\(0.5\)</span>. As will be shown below, this probability can then multiplied by the policy score to get the <em>constrained policy score</em>.</p>
-<div class="cell" data-execution_count="32">
+<div class="cell" data-execution_count="3">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>xs <span class="op">=</span> torch.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">100</span>)</span>
@@ -227,9 +227,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">3</span>))</span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>plt.plot(xs, xs_eval, label<span class="op">=</span><span class="st">"Predictive distribution"</span>)</span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>plt.fill_between(xs, xs_eval, where<span class="op">=</span>xs <span class="op">&gt;</span> <span class="dv">0</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="st">"Feasible region"</span>)</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'x'</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Predicted outcome $y$'</span>)</span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Probability'</span>)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f"Probability of shaded area: </span><span class="sc">{</span>prob_feasibility<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f"Area under the shaded curve: </span><span class="sc">{</span>prob_feasibility<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -312,7 +312,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    train_x <span class="op">=</span> torch.cat([train_x, new_x])</span>
 <span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    train_y <span class="op">=</span> torch.cat([train_y, new_y])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We can then evaluate the policy on unseen data and plot the proposed points (queries).</p>
+<p>We can then evaluate the policy on unseen data and plot the proposed samples (queries).</p>
 <div class="cell" data-execution_count="45">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    acquisition_score <span class="op">=</span> logEI(xs.unsqueeze(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
