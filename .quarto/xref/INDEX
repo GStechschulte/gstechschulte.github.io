@@ -1,0 +1,71 @@
+{
+  "posts/2023-09-29-ordinal-models-bambi.ipynb": {
+    "2023-09-29-ordinal-models-bambi.html": "3ee9ae4e"
+  },
+  "posts/2022-10-14-inference-hmc.ipynb": {
+    "2022-10-14-inference-hmc.html": "c80e3467"
+  },
+  "posts/2023-12-09-interpret-advanced-usage.ipynb": {
+    "2023-12-09-interpret-advanced-usage.html": "0090f1c5"
+  },
+  "posts/2022-07-12-bmcp-ch-3.ipynb": {
+    "2022-07-12-bmcp-ch-3.html": "ccb18a32"
+  },
+  "posts/2023-08-18-gsoc-final-report.md": {
+    "2023-08-18-gsoc-final-report.html": "5ed7e151"
+  },
+  "posts/2023-09-29-zip-models-bambi.ipynb": {
+    "2023-09-29-zip-models-bambi.html": "634f24e7"
+  },
+  "posts/2022-10-12-inference-gibbs.ipynb": {
+    "2022-10-12-inference-gibbs.html": "7d91423d"
+  },
+  "posts/2023-03-26-numpyro-log-joint.ipynb": {
+    "2023-03-26-numpyro-log-joint.html": "fa25f233"
+  },
+  "posts/2022-10-07-inference-mc-approximation.ipynb": {
+    "2022-10-07-inference-mc-approximation.html": "8e9641ed"
+  },
+  "posts/2023-11-28-constrained-bayesopt.ipynb": {
+    "2023-11-28-constrained-bayesopt.html": "8d941e53"
+  },
+  "posts/2023-10-25-survival-models-bambi.ipynb": {
+    "2023-10-25-survival-models-bambi.html": "88de8d12"
+  },
+  "posts/2022-10-08-inference-mh.ipynb": {
+    "2022-10-08-inference-mh.html": "c1f79a0a"
+  },
+  "posts/2023-10-10-predict-groups-bambi.ipynb": {
+    "2023-10-10-predict-groups-bambi.html": "e4a46d0d"
+  },
+  "posts/2023-gsoc-update-slopes.ipynb": {
+    "2023-gsoc-update-slopes.html": "01ad9f6a"
+  },
+  "posts/2022-06-23-ELBO.md": {
+    "2022-06-23-ELBO.html": "b1b85dee"
+  },
+  "posts/2022-07-23-bmcp-ch-5.ipynb": {
+    "2022-07-23-bmcp-ch-5.html": "01a4e326"
+  },
+  "posts/2023-06-30-gsoc-update-comparisons.ipynb": {
+    "2023-06-30-gsoc-update-comparisons.html": "4e3582bb"
+  },
+  "posts/2021-08-10-No-Code-Dependency-and-Building-Technology.md": {
+    "2021-08-10-No-Code-Dependency-and-Building-Technology.html": "1957091c"
+  },
+  "posts/2022-07-22-bmcp-ch-4.ipynb": {
+    "2022-07-22-bmcp-ch-4.html": "13f25087"
+  },
+  "posts/2023-06-10-gsoc-update-community-bonding.ipynb": {
+    "2023-06-10-gsoc-update-community-bonding.html": "3e072c13"
+  },
+  "posts/2022-07-25-mosquito-walk.ipynb": {
+    "2022-07-25-mosquito-walk.html": "42982d1b"
+  },
+  "index.qmd": {
+    "index.html": "970ac153"
+  },
+  "about.qmd": {
+    "about.html": "1c52161d"
+  }
+}
