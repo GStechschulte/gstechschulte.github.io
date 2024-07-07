@@ -15,4 +15,5 @@ format:
   html:
     theme: cosmo
     fontsize: smaller
+    max-width: 800px
     css: styles.css

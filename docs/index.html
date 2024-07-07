@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.306">
+<meta name="generator" content="quarto-1.5.53">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Trajectories - Posts</title>
+<title>Posts – Trajectories</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -47,7 +47,13 @@ ul.task-list li input[type="checkbox"] {
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -56,8 +62,10 @@ ul.task-list li input[type="checkbox"] {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 <script>
@@ -90,8 +98,35 @@ ul.task-list li input[type="checkbox"] {
   })
   </script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -99,38 +134,38 @@ ul.task-list li input[type="checkbox"] {
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Trajectories</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html" rel="" target="">
- <span class="menu-text">About</span></a>
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/" rel="" target=""><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/"> <i class="bi bi-github" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com" rel="" target=""><i class="bi bi-twitter" role="img">
+    <a class="nav-link" href="https://twitter.com"> <i class="bi bi-twitter" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
+          </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
-          </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -143,7 +178,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
     
   
-  <div class="quarto-title-meta">
+  <div class="quarto-title-meta column-page-left">
 
       
     
@@ -167,21 +202,22 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="probabilistic-programming,bayesian-statistics" data-listing-date-sort="1711666800000" data-listing-file-modified-sort="1715628320106" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
+<div class="quarto-post image-right" data-index="0" data-categories="probabilistic-programming,bayesian-statistics" data-listing-date-sort="1711666800000" data-listing-file-modified-sort="1720275914517" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="454">
 <div class="thumbnail">
-<p><a href="./posts/2024-03-29-alternative_samplers.html"> <img src="./posts/Google_JAX_logo.svg.png" class="thumbnail-image"> </a></p>
+<p><a href="./posts/2024-03-29-alternative_samplers.html" class="no-external"></a></p><a href="./posts/2024-03-29-alternative_samplers.html" class="no-external">
+<p><img loading="lazy" src="./posts/Google_JAX_logo.svg.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2024-03-29-alternative_samplers.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2024-03-29-alternative_samplers.html">
 <h3 class="no-anchor listing-title">
-Using Alternative Samplers in Bambi
+<a href="./posts/2024-03-29-alternative_samplers.html" class="no-external">Using Alternative Samplers in Bambi</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2024-03-29-alternative_samplers.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('probabilistic-programming'); return false;">
 probabilistic-programming
@@ -190,14 +226,12 @@ probabilistic-programming
 bayesian-statistics
 </div>
 </div>
-<a href="./posts/2024-03-29-alternative_samplers.html">
 <div class="listing-description">
-This blog post is a copy of the alternative samplers documentation I wrote for Bambi. The original post can be found here.
+<a href="./posts/2024-03-29-alternative_samplers.html" class="no-external">This blog post is a copy of the alternative samplers documentation I wrote for Bambi. The original post can be found here.</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2024-03-29-alternative_samplers.html">
+<a href="./posts/2024-03-29-alternative_samplers.html" class="no-external">
 <div class="listing-date">
 Mar 29, 2024
 </div>
@@ -207,32 +241,30 @@ Gabriel Stechschulte
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="bayesian-statistics" data-listing-date-sort="1702076400000" data-listing-file-modified-sort="1715628320103" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7">
+<div class="quarto-post image-right" data-index="1" data-categories="bayesian-statistics" data-listing-date-sort="1702076400000" data-listing-file-modified-sort="1720275914513" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1289">
 <div class="thumbnail">
-<p><a href="./posts/2023-12-09-interpret-advanced-usage.html"> <img src="./posts/cross_comparison.png" class="thumbnail-image"> </a></p>
+<p><a href="./posts/2023-12-09-interpret-advanced-usage.html" class="no-external"></a></p><a href="./posts/2023-12-09-interpret-advanced-usage.html" class="no-external">
+<p><img loading="lazy" src="./posts/cross_comparison.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2023-12-09-interpret-advanced-usage.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2023-12-09-interpret-advanced-usage.html">
 <h3 class="no-anchor listing-title">
-Advanced Interpret Usage in Bambi
+<a href="./posts/2023-12-09-interpret-advanced-usage.html" class="no-external">Advanced Interpret Usage in Bambi</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2023-12-09-interpret-advanced-usage.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('bayesian-statistics'); return false;">
 bayesian-statistics
 </div>
 </div>
-<a href="./posts/2023-12-09-interpret-advanced-usage.html">
 <div class="listing-description">
-The <code>interpret</code> module is inspired by the R package marginaleffects and ports…<code></code><code></code><code></code><code></code>
+<a href="./posts/2023-12-09-interpret-advanced-usage.html" class="no-external">The <code>interpret</code> module is inspired by the R package marginaleffects and ports the core functionality of {marginaleffects} to Bambi. To close the gap of non-supported…<code></code><code></code><code></code><code></code></a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2023-12-09-interpret-advanced-usage.html">
+<a href="./posts/2023-12-09-interpret-advanced-usage.html" class="no-external">
 <div class="listing-date">
 Dec 9, 2023
 </div>
@@ -242,19 +274,19 @@ Gabriel Stechschulte
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="probabilistic-programming,bayesian-statistics,optimization" data-listing-date-sort="1701126000000" data-listing-file-modified-sort="1715628320102" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5">
+<div class="quarto-post image-right" data-index="2" data-categories="probabilistic-programming,bayesian-statistics,optimization" data-listing-date-sort="1701126000000" data-listing-file-modified-sort="1720275914513" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="940">
 <div class="thumbnail">
-<p><a href="./posts/2023-11-28-constrained-bayesopt.html"> <img src="./posts/bayesopt.png" class="thumbnail-image"> </a></p>
+<p><a href="./posts/2023-11-28-constrained-bayesopt.html" class="no-external"></a></p><a href="./posts/2023-11-28-constrained-bayesopt.html" class="no-external">
+<p><img loading="lazy" src="./posts/bayesopt.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2023-11-28-constrained-bayesopt.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2023-11-28-constrained-bayesopt.html">
 <h3 class="no-anchor listing-title">
-Outcome Constraints in Bayesian Optimization
+<a href="./posts/2023-11-28-constrained-bayesopt.html" class="no-external">Outcome Constraints in Bayesian Optimization</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2023-11-28-constrained-bayesopt.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('probabilistic-programming'); return false;">
 probabilistic-programming
@@ -266,14 +298,12 @@ bayesian-statistics
 optimization
 </div>
 </div>
-<a href="./posts/2023-11-28-constrained-bayesopt.html">
 <div class="listing-description">
-In optimization, it is often the goal that we need to optimize an objective function while satisfying some constraints. For example, we may want to minimize the scrap rate…<em></em>
+<a href="./posts/2023-11-28-constrained-bayesopt.html" class="no-external">In optimization, it is often the goal that we need to optimize an objective function while satisfying some constraints. For example, we may want to minimize the scrap rate…<em></em></a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2023-11-28-constrained-bayesopt.html">
+<a href="./posts/2023-11-28-constrained-bayesopt.html" class="no-external">
 <div class="listing-date">
 Nov 28, 2023
 </div>
@@ -283,19 +313,19 @@ Gabriel Stechschulte
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="probabilistic-programming,bayesian-statistics" data-listing-date-sort="1698184800000" data-listing-file-modified-sort="1715628320101" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17">
+<div class="quarto-post image-right" data-index="3" data-categories="probabilistic-programming,bayesian-statistics" data-listing-date-sort="1698184800000" data-listing-file-modified-sort="1720275914512" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17" data-listing-word-count-sort="3276">
 <div class="thumbnail">
-<p><a href="./posts/2023-10-25-survival-models-bambi.html"> <img src="./posts/adoption_rates.png" class="thumbnail-image"> </a></p>
+<p><a href="./posts/2023-10-25-survival-models-bambi.html" class="no-external"></a></p><a href="./posts/2023-10-25-survival-models-bambi.html" class="no-external">
+<p><img loading="lazy" src="./posts/adoption_rates.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2023-10-25-survival-models-bambi.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2023-10-25-survival-models-bambi.html">
 <h3 class="no-anchor listing-title">
-Survival Models in Bambi
+<a href="./posts/2023-10-25-survival-models-bambi.html" class="no-external">Survival Models in Bambi</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2023-10-25-survival-models-bambi.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('probabilistic-programming'); return false;">
 probabilistic-programming
@@ -304,14 +334,12 @@ probabilistic-programming
 bayesian-statistics
 </div>
 </div>
-<a href="./posts/2023-10-25-survival-models-bambi.html">
 <div class="listing-description">
-Survival models, also known as time-to-event models, are specialized statistical methods designed to analyze the time until the occurrence of an event of interest.…
+<a href="./posts/2023-10-25-survival-models-bambi.html" class="no-external">Survival models, also known as time-to-event models, are specialized statistical methods designed to analyze the time until the occurrence of an event of interest. In this…</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2023-10-25-survival-models-bambi.html">
+<a href="./posts/2023-10-25-survival-models-bambi.html" class="no-external">
 <div class="listing-date">
 Oct 25, 2023
 </div>
@@ -321,19 +349,19 @@ Gabriel Stechschulte
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-categories="probabilistic-programming,bayesian-statistics" data-listing-date-sort="1696888800000" data-listing-file-modified-sort="1715628320096" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9">
+<div class="quarto-post image-right" data-index="4" data-categories="probabilistic-programming,bayesian-statistics" data-listing-date-sort="1696888800000" data-listing-file-modified-sort="1720275914510" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1716">
 <div class="thumbnail">
-<p><a href="./posts/2023-10-10-predict-groups-bambi.html"> <img src="./posts/predict_new_patient.png" class="thumbnail-image"> </a></p>
+<p><a href="./posts/2023-10-10-predict-groups-bambi.html" class="no-external"></a></p><a href="./posts/2023-10-10-predict-groups-bambi.html" class="no-external">
+<p><img loading="lazy" src="./posts/predict_new_patient.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2023-10-10-predict-groups-bambi.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2023-10-10-predict-groups-bambi.html">
 <h3 class="no-anchor listing-title">
-Predict New Groups with Hierarchical Models in Bambi
+<a href="./posts/2023-10-10-predict-groups-bambi.html" class="no-external">Predict New Groups with Hierarchical Models in Bambi</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2023-10-10-predict-groups-bambi.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('probabilistic-programming'); return false;">
 probabilistic-programming
@@ -342,14 +370,12 @@ probabilistic-programming
 bayesian-statistics
 </div>
 </div>
-<a href="./posts/2023-10-10-predict-groups-bambi.html">
 <div class="listing-description">
-In Bambi, it is possible to perform predictions on new, unseen, groups of data that were not in the observed data used to fit the model with the argument <code>sample_new_groups</code> in…<code></code>
+<a href="./posts/2023-10-10-predict-groups-bambi.html" class="no-external">In Bambi, it is possible to perform predictions on new, unseen, groups of data that were not in the observed data used to fit the model with the argument <code>sample_new_groups</code> in…<code></code></a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2023-10-10-predict-groups-bambi.html">
+<a href="./posts/2023-10-10-predict-groups-bambi.html" class="no-external">
 <div class="listing-date">
 Oct 10, 2023
 </div>
@@ -359,19 +385,19 @@ Gabriel Stechschulte
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-categories="probabilistic-programming,bayesian-statistics" data-listing-date-sort="1695938400000" data-listing-file-modified-sort="1715628320090" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14">
+<div class="quarto-post image-right" data-index="5" data-categories="probabilistic-programming,bayesian-statistics" data-listing-date-sort="1695938400000" data-listing-file-modified-sort="1720275914501" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2692">
 <div class="thumbnail">
-<p><a href="./posts/2023-09-29-ordinal-models-bambi.html"> <p class="card-img-top"><img src="posts/2023-09-29-ordinal-models-bambi_files/figure-html/cell-6-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+<p><a href="./posts/2023-09-29-ordinal-models-bambi.html" class="no-external"></a></p><a href="./posts/2023-09-29-ordinal-models-bambi.html" class="no-external">
+<p class="card-img-top"><img src="posts/2023-09-29-ordinal-models-bambi_files/figure-html/cell-6-output-1.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/2023-09-29-ordinal-models-bambi.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2023-09-29-ordinal-models-bambi.html">
 <h3 class="no-anchor listing-title">
-Ordinal Models in Bambi
+<a href="./posts/2023-09-29-ordinal-models-bambi.html" class="no-external">Ordinal Models in Bambi</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2023-09-29-ordinal-models-bambi.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('probabilistic-programming'); return false;">
 probabilistic-programming
@@ -380,14 +406,12 @@ probabilistic-programming
 bayesian-statistics
 </div>
 </div>
-<a href="./posts/2023-09-29-ordinal-models-bambi.html">
 <div class="listing-description">
-This blog post is a copy of the ordinal models documentation I wrote for Bambi. The original post can be found here.
+<a href="./posts/2023-09-29-ordinal-models-bambi.html" class="no-external">This blog post is a copy of the ordinal models documentation I wrote for Bambi. The original post can be found here.</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2023-09-29-ordinal-models-bambi.html">
+<a href="./posts/2023-09-29-ordinal-models-bambi.html" class="no-external">
 <div class="listing-date">
 Sep 29, 2023
 </div>
@@ -397,19 +421,19 @@ Gabriel Stechschulte
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="6" data-categories="probabilistic-programming,bayesian-statistics" data-listing-date-sort="1695938400000" data-listing-file-modified-sort="1715628320091" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9">
+<div class="quarto-post image-right" data-index="6" data-categories="probabilistic-programming,bayesian-statistics" data-listing-date-sort="1695938400000" data-listing-file-modified-sort="1720275914502" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1759">
 <div class="thumbnail">
-<p><a href="./posts/2023-09-29-zip-models-bambi.html"> <p class="card-img-top"><img src="posts/2023-09-29-zip-models-bambi_files/figure-html/cell-3-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+<p><a href="./posts/2023-09-29-zip-models-bambi.html" class="no-external"></a></p><a href="./posts/2023-09-29-zip-models-bambi.html" class="no-external">
+<p class="card-img-top"><img src="posts/2023-09-29-zip-models-bambi_files/figure-html/cell-3-output-1.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/2023-09-29-zip-models-bambi.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2023-09-29-zip-models-bambi.html">
 <h3 class="no-anchor listing-title">
-Zero Inflated Models in Bambi
+<a href="./posts/2023-09-29-zip-models-bambi.html" class="no-external">Zero Inflated Models in Bambi</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2023-09-29-zip-models-bambi.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('probabilistic-programming'); return false;">
 probabilistic-programming
@@ -418,14 +442,12 @@ probabilistic-programming
 bayesian-statistics
 </div>
 </div>
-<a href="./posts/2023-09-29-zip-models-bambi.html">
 <div class="listing-description">
-This blog post is a copy of the zero inflated models documentation I wrote for Bambi. The original post can be found here.
+<a href="./posts/2023-09-29-zip-models-bambi.html" class="no-external">This blog post is a copy of the zero inflated models documentation I wrote for Bambi. The original post can be found here.</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2023-09-29-zip-models-bambi.html">
+<a href="./posts/2023-09-29-zip-models-bambi.html" class="no-external">
 <div class="listing-date">
 Sep 29, 2023
 </div>
@@ -435,32 +457,30 @@ Gabriel Stechschulte
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="7" data-categories="open-source" data-listing-date-sort="1692309600000" data-listing-file-modified-sort="1715628320088" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4">
+<div class="quarto-post image-right" data-index="7" data-categories="open-source" data-listing-date-sort="1692309600000" data-listing-file-modified-sort="1720275914499" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="660">
 <div class="thumbnail">
-<p><a href="./posts/2023-08-18-gsoc-final-report.html"> <img src="./posts/bambi-logo.png" class="thumbnail-image"> </a></p>
+<p><a href="./posts/2023-08-18-gsoc-final-report.html" class="no-external"></a></p><a href="./posts/2023-08-18-gsoc-final-report.html" class="no-external">
+<p><img loading="lazy" src="./posts/bambi-logo.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2023-08-18-gsoc-final-report.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2023-08-18-gsoc-final-report.html">
 <h3 class="no-anchor listing-title">
-Google Summer of Code - Final Report
+<a href="./posts/2023-08-18-gsoc-final-report.html" class="no-external">Google Summer of Code - Final Report</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2023-08-18-gsoc-final-report.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('open-source'); return false;">
 open-source
 </div>
 </div>
-<a href="./posts/2023-08-18-gsoc-final-report.html">
 <div class="listing-description">
-My project “Better tools to interpret complex Bambi regression models” was completed under the organization of NumFOCUS, and mentors Tomás Capretto and Osvaldo Martin.…
+<a href="./posts/2023-08-18-gsoc-final-report.html" class="no-external">My project “Better tools to interpret complex Bambi regression models” was completed under the organization of NumFOCUS, and mentors Tomás Capretto and Osvaldo Martin.…</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2023-08-18-gsoc-final-report.html">
+<a href="./posts/2023-08-18-gsoc-final-report.html" class="no-external">
 <div class="listing-date">
 Aug 18, 2023
 </div>
@@ -470,19 +490,19 @@ Gabriel Stechschulte
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="8" data-categories="open-source,python,bayesian-statistics" data-listing-date-sort="1690840800000" data-listing-file-modified-sort="1715628320105" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16">
+<div class="quarto-post image-right" data-index="8" data-categories="open-source,python,bayesian-statistics" data-listing-date-sort="1690840800000" data-listing-file-modified-sort="1720275914515" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3161">
 <div class="thumbnail">
-<p><a href="./posts/2023-gsoc-update-slopes.html"> <p class="card-img-top"><img src="posts/2023-gsoc-update-slopes_files/figure-html/cell-5-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+<p><a href="./posts/2023-gsoc-update-slopes.html" class="no-external"></a></p><a href="./posts/2023-gsoc-update-slopes.html" class="no-external">
+<p class="card-img-top"><img src="posts/2023-gsoc-update-slopes_files/figure-html/cell-5-output-1.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/2023-gsoc-update-slopes.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2023-gsoc-update-slopes.html">
 <h3 class="no-anchor listing-title">
-Google Summer of Code - Average Predictive Slopes
+<a href="./posts/2023-gsoc-update-slopes.html" class="no-external">Google Summer of Code - Average Predictive Slopes</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2023-gsoc-update-slopes.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('open-source'); return false;">
 open-source
@@ -494,14 +514,12 @@ python
 bayesian-statistics
 </div>
 </div>
-<a href="./posts/2023-gsoc-update-slopes.html">
 <div class="listing-description">
-It is currently the beginning of week…<code></code><code></code>
+<a href="./posts/2023-gsoc-update-slopes.html" class="no-external">It is currently the beginning of week ten of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a…<code></code><code></code></a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2023-gsoc-update-slopes.html">
+<a href="./posts/2023-gsoc-update-slopes.html" class="no-external">
 <div class="listing-date">
 Aug 1, 2023
 </div>
@@ -511,19 +529,19 @@ Gabriel Stechschulte
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="9" data-categories="open-source,python,bayesian-statistics" data-listing-date-sort="1688076000000" data-listing-file-modified-sort="1715628320087" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15">
+<div class="quarto-post image-right" data-index="9" data-categories="open-source,python,bayesian-statistics" data-listing-date-sort="1688076000000" data-listing-file-modified-sort="1720275914498" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2874">
 <div class="thumbnail">
-<p><a href="./posts/2023-06-30-gsoc-update-comparisons.html"> <p class="card-img-top"><img src="posts/2023-06-30-gsoc-update-comparisons_files/figure-html/cell-5-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+<p><a href="./posts/2023-06-30-gsoc-update-comparisons.html" class="no-external"></a></p><a href="./posts/2023-06-30-gsoc-update-comparisons.html" class="no-external">
+<p class="card-img-top"><img src="posts/2023-06-30-gsoc-update-comparisons_files/figure-html/cell-5-output-1.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/2023-06-30-gsoc-update-comparisons.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2023-06-30-gsoc-update-comparisons.html">
 <h3 class="no-anchor listing-title">
-Google Summer of Code - Average Predictive Comparisons
+<a href="./posts/2023-06-30-gsoc-update-comparisons.html" class="no-external">Google Summer of Code - Average Predictive Comparisons</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2023-06-30-gsoc-update-comparisons.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('open-source'); return false;">
 open-source
@@ -535,14 +553,12 @@ python
 bayesian-statistics
 </div>
 </div>
-<a href="./posts/2023-06-30-gsoc-update-comparisons.html">
 <div class="listing-description">
-It is currently the end of week…<code></code><code></code><code></code>
+<a href="./posts/2023-06-30-gsoc-update-comparisons.html" class="no-external">It is currently the end of week five of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft…<code></code><code></code><code></code></a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2023-06-30-gsoc-update-comparisons.html">
+<a href="./posts/2023-06-30-gsoc-update-comparisons.html" class="no-external">
 <div class="listing-date">
 Jun 30, 2023
 </div>
@@ -552,19 +568,19 @@ Gabriel Stechschulte
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="10" data-categories="open-source,python,bayesian-statistics" data-listing-date-sort="1686348000000" data-listing-file-modified-sort="1715628320087" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5">
+<div class="quarto-post image-right" data-index="10" data-categories="open-source,python,bayesian-statistics" data-listing-date-sort="1686348000000" data-listing-file-modified-sort="1720275914497" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="859">
 <div class="thumbnail">
-<p><a href="./posts/2023-06-10-gsoc-update-community-bonding.html"> <p class="card-img-top"><img src="posts/2023-06-10-gsoc-update-community-bonding_files/figure-html/cell-5-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+<p><a href="./posts/2023-06-10-gsoc-update-community-bonding.html" class="no-external"></a></p><a href="./posts/2023-06-10-gsoc-update-community-bonding.html" class="no-external">
+<p class="card-img-top"><img src="posts/2023-06-10-gsoc-update-community-bonding_files/figure-html/cell-5-output-1.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/2023-06-10-gsoc-update-community-bonding.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2023-06-10-gsoc-update-community-bonding.html">
 <h3 class="no-anchor listing-title">
-Google Summer of Code - Community Bonding and Modularization
+<a href="./posts/2023-06-10-gsoc-update-community-bonding.html" class="no-external">Google Summer of Code - Community Bonding and Modularization</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2023-06-10-gsoc-update-community-bonding.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('open-source'); return false;">
 open-source
@@ -576,14 +592,12 @@ python
 bayesian-statistics
 </div>
 </div>
-<a href="./posts/2023-06-10-gsoc-update-community-bonding.html">
 <div class="listing-description">
-I have been selected as a contributor under the organization NumFOCUS for the Google Summer of Code 2023 program. I will be working on <em>developing better tools to…</em>
+<a href="./posts/2023-06-10-gsoc-update-community-bonding.html" class="no-external">I have been selected as a contributor under the organization NumFOCUS for the Google Summer of Code 2023 program. I will be working on <em>developing better tools to interpret…</em></a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2023-06-10-gsoc-update-community-bonding.html">
+<a href="./posts/2023-06-10-gsoc-update-community-bonding.html" class="no-external">
 <div class="listing-date">
 Jun 10, 2023
 </div>
@@ -593,19 +607,19 @@ Gabriel Stechschulte
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="11" data-categories="probability,inference,jax" data-listing-date-sort="1679785200000" data-listing-file-modified-sort="1715628320086" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14">
+<div class="quarto-post image-right" data-index="11" data-categories="probability,inference,jax" data-listing-date-sort="1679785200000" data-listing-file-modified-sort="1720275914497" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2605">
 <div class="thumbnail">
-<p><a href="./posts/2023-03-26-numpyro-log-joint.html"> <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div> </a></p>
+<p><a href="./posts/2023-03-26-numpyro-log-joint.html" class="no-external"></a></p><a href="./posts/2023-03-26-numpyro-log-joint.html" class="no-external">
+<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+</a><p><a href="./posts/2023-03-26-numpyro-log-joint.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2023-03-26-numpyro-log-joint.html">
 <h3 class="no-anchor listing-title">
-Translating a Model into a Log Joint Probability
+<a href="./posts/2023-03-26-numpyro-log-joint.html" class="no-external">Translating a Model into a Log Joint Probability</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2023-03-26-numpyro-log-joint.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('probability'); return false;">
 probability
@@ -617,14 +631,12 @@ inference
 jax
 </div>
 </div>
-<a href="./posts/2023-03-26-numpyro-log-joint.html">
 <div class="listing-description">
-In probabilistic programming languages (PPLs), one needs to compute the joint probability (often unnormalized) of values and observed variables under a generative model to…
+<a href="./posts/2023-03-26-numpyro-log-joint.html" class="no-external">In probabilistic programming languages (PPLs), one needs to compute the joint probability (often unnormalized) of values and observed variables under a generative model to…</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2023-03-26-numpyro-log-joint.html">
+<a href="./posts/2023-03-26-numpyro-log-joint.html" class="no-external">
 <div class="listing-date">
 Mar 26, 2023
 </div>
@@ -634,19 +646,19 @@ Gabriel Stechschulte
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="12" data-categories="probability,sampling,inference,optimization,pytorch" data-listing-date-sort="1665698400000" data-listing-file-modified-sort="1715628320086" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5">
+<div class="quarto-post image-right" data-index="12" data-categories="probability,sampling,inference,optimization,pytorch" data-listing-date-sort="1665698400000" data-listing-file-modified-sort="1720275914496" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="949">
 <div class="thumbnail">
-<p><a href="./posts/2022-10-14-inference-hmc.html"> <img src="./posts/hmc_output.png" class="thumbnail-image"> </a></p>
+<p><a href="./posts/2022-10-14-inference-hmc.html" class="no-external"></a></p><a href="./posts/2022-10-14-inference-hmc.html" class="no-external">
+<p><img loading="lazy" src="./posts/hmc_output.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2022-10-14-inference-hmc.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2022-10-14-inference-hmc.html">
 <h3 class="no-anchor listing-title">
-Inference - Hamiltonian Monte Carlo from Scratch
+<a href="./posts/2022-10-14-inference-hmc.html" class="no-external">Inference - Hamiltonian Monte Carlo from Scratch</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2022-10-14-inference-hmc.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('probability'); return false;">
 probability
@@ -664,14 +676,12 @@ optimization
 pytorch
 </div>
 </div>
-<a href="./posts/2022-10-14-inference-hmc.html">
 <div class="listing-description">
-Many MCMC algorithms perform poorly in high dimensions as they rely on a form of random searches based on local perturbations. Hamiltonian Monte Carlo (HMC), however…
+<a href="./posts/2022-10-14-inference-hmc.html" class="no-external">Many MCMC algorithms perform poorly in high dimensions as they rely on a form of random searches based on local perturbations. Hamiltonian Monte Carlo (HMC), however…</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2022-10-14-inference-hmc.html">
+<a href="./posts/2022-10-14-inference-hmc.html" class="no-external">
 <div class="listing-date">
 Oct 14, 2022
 </div>
@@ -681,19 +691,19 @@ Gabriel Stechschulte
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="13" data-categories="probability,sampling,inference,pytorch" data-listing-date-sort="1665525600000" data-listing-file-modified-sort="1715628320084" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4">
+<div class="quarto-post image-right" data-index="13" data-categories="probability,sampling,inference,pytorch" data-listing-date-sort="1665525600000" data-listing-file-modified-sort="1720275914495" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="746">
 <div class="thumbnail">
-<p><a href="./posts/2022-10-12-inference-gibbs.html"> <p class="card-img-top"><img src="posts/2022-10-12-inference-gibbs_files/figure-html/cell-6-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+<p><a href="./posts/2022-10-12-inference-gibbs.html" class="no-external"></a></p><a href="./posts/2022-10-12-inference-gibbs.html" class="no-external">
+<p class="card-img-top"><img src="posts/2022-10-12-inference-gibbs_files/figure-html/cell-6-output-1.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/2022-10-12-inference-gibbs.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2022-10-12-inference-gibbs.html">
 <h3 class="no-anchor listing-title">
-Inference - Gibbs Sampling from Scratch
+<a href="./posts/2022-10-12-inference-gibbs.html" class="no-external">Inference - Gibbs Sampling from Scratch</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2022-10-12-inference-gibbs.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('probability'); return false;">
 probability
@@ -708,14 +718,12 @@ inference
 pytorch
 </div>
 </div>
-<a href="./posts/2022-10-12-inference-gibbs.html">
 <div class="listing-description">
-A variant of the Metropolis-Hastings (MH) algorithm that uses clever proposals and is therefore more efficient (you can get a good approximate…
+<a href="./posts/2022-10-12-inference-gibbs.html" class="no-external">A variant of the Metropolis-Hastings (MH) algorithm that uses clever proposals and is therefore more efficient (you can get a good approximate of the posterior with far…</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2022-10-12-inference-gibbs.html">
+<a href="./posts/2022-10-12-inference-gibbs.html" class="no-external">
 <div class="listing-date">
 Oct 12, 2022
 </div>
@@ -725,19 +733,19 @@ Gabriel Stechschulte
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="14" data-categories="probability,sampling,inference,pytorch" data-listing-date-sort="1665180000000" data-listing-file-modified-sort="1715628320083" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
+<div class="quarto-post image-right" data-index="14" data-categories="probability,sampling,inference,pytorch" data-listing-date-sort="1665180000000" data-listing-file-modified-sort="1720275914493" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="462">
 <div class="thumbnail">
-<p><a href="./posts/2022-10-08-inference-mh.html"> <p class="card-img-top"><img src="posts/2022-10-08-inference-mh_files/figure-html/cell-5-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+<p><a href="./posts/2022-10-08-inference-mh.html" class="no-external"></a></p><a href="./posts/2022-10-08-inference-mh.html" class="no-external">
+<p class="card-img-top"><img src="posts/2022-10-08-inference-mh_files/figure-html/cell-5-output-2.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/2022-10-08-inference-mh.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2022-10-08-inference-mh.html">
 <h3 class="no-anchor listing-title">
-Inference - Metropolis Hastings from Scratch
+<a href="./posts/2022-10-08-inference-mh.html" class="no-external">Inference - Metropolis Hastings from Scratch</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2022-10-08-inference-mh.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('probability'); return false;">
 probability
@@ -752,14 +760,12 @@ inference
 pytorch
 </div>
 </div>
-<a href="./posts/2022-10-08-inference-mh.html">
 <div class="listing-description">
-Metropolis-Hastings (MH) is one of the simplest kinds of MCMC algorithms. The idea with MH is that at each step, we propose to move from the current state <span class="math inline">\(x\)</span>…<span class="math inline"></span><span class="math inline"></span><span class="math inline"></span><strong></strong><span class="math inline"></span><strong></strong><strong></strong><span class="math inline"></span><span class="math inline"></span>
+<a href="./posts/2022-10-08-inference-mh.html" class="no-external">Metropolis-Hastings (MH) is one of the simplest kinds of MCMC algorithms. The idea with MH is that at each step, we propose to move from the current state <span class="math inline">\(x\)</span> to a new…<span class="math inline"></span><span class="math inline"></span><span class="math inline"></span><strong></strong><span class="math inline"></span><strong></strong><strong></strong><span class="math inline"></span><span class="math inline"></span></a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2022-10-08-inference-mh.html">
+<a href="./posts/2022-10-08-inference-mh.html" class="no-external">
 <div class="listing-date">
 Oct 8, 2022
 </div>
@@ -769,19 +775,19 @@ Gabriel Stechschulte
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="15" data-categories="probability,sampling,inference,pytorch" data-listing-date-sort="1665093600000" data-listing-file-modified-sort="1715628320082" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
+<div class="quarto-post image-right" data-index="15" data-categories="probability,sampling,inference,pytorch" data-listing-date-sort="1665093600000" data-listing-file-modified-sort="1720275914492" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="574">
 <div class="thumbnail">
-<p><a href="./posts/2022-10-07-inference-mc-approximation.html"> <p class="card-img-top"><img src="posts/2022-10-07-inference-mc-approximation_files/figure-html/cell-3-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+<p><a href="./posts/2022-10-07-inference-mc-approximation.html" class="no-external"></a></p><a href="./posts/2022-10-07-inference-mc-approximation.html" class="no-external">
+<p class="card-img-top"><img src="posts/2022-10-07-inference-mc-approximation_files/figure-html/cell-3-output-1.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/2022-10-07-inference-mc-approximation.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2022-10-07-inference-mc-approximation.html">
 <h3 class="no-anchor listing-title">
-Inference - Monte Carlo Approximation
+<a href="./posts/2022-10-07-inference-mc-approximation.html" class="no-external">Inference - Monte Carlo Approximation</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2022-10-07-inference-mc-approximation.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('probability'); return false;">
 probability
@@ -796,14 +802,12 @@ inference
 pytorch
 </div>
 </div>
-<a href="./posts/2022-10-07-inference-mc-approximation.html">
 <div class="listing-description">
-In the probabilistic approach to machine learning, all unknown quantities—predictions about the future, hidden states of a system, or parameters of a model—are treated as…<span class="math inline"></span><span class="math inline"></span><span class="math inline"></span><span class="math inline"></span><span class="math inline"></span>
+<a href="./posts/2022-10-07-inference-mc-approximation.html" class="no-external">In the probabilistic approach to machine learning, all unknown quantities—predictions about the future, hidden states of a system, or parameters of a model—are treated as…<span class="math inline"></span><span class="math inline"></span><span class="math inline"></span><span class="math inline"></span><span class="math inline"></span></a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2022-10-07-inference-mc-approximation.html">
+<a href="./posts/2022-10-07-inference-mc-approximation.html" class="no-external">
 <div class="listing-date">
 Oct 7, 2022
 </div>
@@ -813,32 +817,30 @@ Gabriel Stechschulte
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="16" data-categories="jupyter" data-listing-date-sort="1658700000000" data-listing-file-modified-sort="1715628320078" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
+<div class="quarto-post image-right" data-index="16" data-categories="jupyter" data-listing-date-sort="1658700000000" data-listing-file-modified-sort="1720275914490" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="517">
 <div class="thumbnail">
-<p><a href="./posts/2022-07-25-mosquito-walk.html"> <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div> </a></p>
+<p><a href="./posts/2022-07-25-mosquito-walk.html" class="no-external"></a></p><a href="./posts/2022-07-25-mosquito-walk.html" class="no-external">
+<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+</a><p><a href="./posts/2022-07-25-mosquito-walk.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2022-07-25-mosquito-walk.html">
 <h3 class="no-anchor listing-title">
-A Fragment of the Sphinx
+<a href="./posts/2022-07-25-mosquito-walk.html" class="no-external">A Fragment of the Sphinx</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2022-07-25-mosquito-walk.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('jupyter'); return false;">
 jupyter
 </div>
 </div>
-<a href="./posts/2022-07-25-mosquito-walk.html">
 <div class="listing-description">
-This code complements the figures and methods described in Chapter 4: A Fragment of the Sphinx of the book <em>Shape: The Hidden Geometry of Everything</em> by Jordan Ellenberg. In 1897, Sir Ronald Ross had discovered that maleria was carried by the bite of the anopheles mosquito. In the late summer of 1904, he gave a lecture…<strong></strong>
+<a href="./posts/2022-07-25-mosquito-walk.html" class="no-external">This code complements the figures and methods described in Chapter 4: A Fragment of the Sphinx of the book <em>Shape: The Hidden Geometry of Everything</em> by Jordan Ellenberg. In…<strong></strong></a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2022-07-25-mosquito-walk.html">
+<a href="./posts/2022-07-25-mosquito-walk.html" class="no-external">
 <div class="listing-date">
 Jul 25, 2022
 </div>
@@ -848,19 +850,19 @@ Gabriel Stechschulte
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="17" data-categories="bayesian-statistics,python" data-listing-date-sort="1658527200000" data-listing-file-modified-sort="1715628320035" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1">
+<div class="quarto-post image-right" data-index="17" data-categories="bayesian-statistics,python" data-listing-date-sort="1658527200000" data-listing-file-modified-sort="1720275914447" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="34">
 <div class="thumbnail">
-<p><a href="./posts/2022-07-23-bmcp-ch-5.html"> <p class="card-img-top"><img src="posts/2022-07-23-bmcp-ch-5_files/figure-html/cell-4-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+<p><a href="./posts/2022-07-23-bmcp-ch-5.html" class="no-external"></a></p><a href="./posts/2022-07-23-bmcp-ch-5.html" class="no-external">
+<p class="card-img-top"><img src="posts/2022-07-23-bmcp-ch-5_files/figure-html/cell-4-output-1.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/2022-07-23-bmcp-ch-5.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2022-07-23-bmcp-ch-5.html">
 <h3 class="no-anchor listing-title">
-Bayesian Modeling and Computation in Pyro - Chapter 5
+<a href="./posts/2022-07-23-bmcp-ch-5.html" class="no-external">Bayesian Modeling and Computation in Pyro - Chapter 5</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2022-07-23-bmcp-ch-5.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('bayesian-statistics'); return false;">
 bayesian-statistics
@@ -869,14 +871,22 @@ bayesian-statistics
 python
 </div>
 </div>
-<a href="./posts/2022-07-23-bmcp-ch-5.html">
 <div class="listing-description">
-
+<a href="./posts/2022-07-23-bmcp-ch-5.html" class="no-external">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-4"><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-5"><span class="im">import</span> arviz <span class="im">as</span> az</span>
+<span id="cb1-6"><span class="im">import</span> torch</span>
+<span id="cb1-7"><span class="im">import</span> pyro</span>
+<span id="cb1-8"><span class="im">import</span> pyro.distributions <span class="im">as</span> d…</span><span id="cb1-9"><span class="im"></span><span class="im"></span></span><span id="cb1-10"><span class="im"></span><span class="im"></span></span><span id="cb1-11"><span class="im"></span><span class="im"></span></span><span id="cb1-12"><span class="im"></span><span class="im"></span></span><span id="cb1-13"><span class="im"></span><span class="im"></span></span><span id="cb1-14"><span class="im"></span><span class="im"></span></span><span id="cb1-15"><span class="st"></span></span><span id="cb1-16"><span class="st"></span><span class="op"></span><span class="dv"></span><span class="dv"></span></span></code></pre></div></details></a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2022-07-23-bmcp-ch-5.html">
+<a href="./posts/2022-07-23-bmcp-ch-5.html" class="no-external">
 <div class="listing-date">
 Jul 23, 2022
 </div>
@@ -886,19 +896,19 @@ Gabriel Stechschulte
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="18" data-categories="bayesian-statistics,python" data-listing-date-sort="1658440800000" data-listing-file-modified-sort="1715628320030" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2">
+<div class="quarto-post image-right" data-index="18" data-categories="bayesian-statistics,python" data-listing-date-sort="1658440800000" data-listing-file-modified-sort="1720275914443" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="213">
 <div class="thumbnail">
-<p><a href="./posts/2022-07-22-bmcp-ch-4.html"> <p class="card-img-top"><img src="posts/2022-07-22-bmcp-ch-4_files/figure-html/cell-6-output-1.svg"  class="thumbnail-image card-img"/></p> </a></p>
+<p><a href="./posts/2022-07-22-bmcp-ch-4.html" class="no-external"></a></p><a href="./posts/2022-07-22-bmcp-ch-4.html" class="no-external">
+<p class="card-img-top"><img src="posts/2022-07-22-bmcp-ch-4_files/figure-html/cell-6-output-1.svg"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/2022-07-22-bmcp-ch-4.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2022-07-22-bmcp-ch-4.html">
 <h3 class="no-anchor listing-title">
-Bayesian Modeling and Computation in Pyro - Chapter 4
+<a href="./posts/2022-07-22-bmcp-ch-4.html" class="no-external">Bayesian Modeling and Computation in Pyro - Chapter 4</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2022-07-22-bmcp-ch-4.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('bayesian-statistics'); return false;">
 bayesian-statistics
@@ -907,14 +917,12 @@ bayesian-statistics
 python
 </div>
 </div>
-<a href="./posts/2022-07-22-bmcp-ch-4.html">
 <div class="listing-description">
-800 rows × 2 columns
+<a href="./posts/2022-07-22-bmcp-ch-4.html" class="no-external">800 rows × 2 columns</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2022-07-22-bmcp-ch-4.html">
+<a href="./posts/2022-07-22-bmcp-ch-4.html" class="no-external">
 <div class="listing-date">
 Jul 22, 2022
 </div>
@@ -924,19 +932,19 @@ Gabriel Stechschulte
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="19" data-categories="bayesian-statistics,python" data-listing-date-sort="1657576800000" data-listing-file-modified-sort="1715628320022" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1">
+<div class="quarto-post image-right" data-index="19" data-categories="bayesian-statistics,python" data-listing-date-sort="1657576800000" data-listing-file-modified-sort="1720275914431" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="118">
 <div class="thumbnail">
-<p><a href="./posts/2022-07-12-bmcp-ch-3.html"> <p class="card-img-top"><img src="posts/2022-07-12-bmcp-ch-3_files/figure-html/cell-9-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+<p><a href="./posts/2022-07-12-bmcp-ch-3.html" class="no-external"></a></p><a href="./posts/2022-07-12-bmcp-ch-3.html" class="no-external">
+<p class="card-img-top"><img src="posts/2022-07-12-bmcp-ch-3_files/figure-html/cell-9-output-1.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/2022-07-12-bmcp-ch-3.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2022-07-12-bmcp-ch-3.html">
 <h3 class="no-anchor listing-title">
-Bayesian Modeling and Computation in Pyro - Chapter 3
+<a href="./posts/2022-07-12-bmcp-ch-3.html" class="no-external">Bayesian Modeling and Computation in Pyro - Chapter 3</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2022-07-12-bmcp-ch-3.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('bayesian-statistics'); return false;">
 bayesian-statistics
@@ -945,14 +953,12 @@ bayesian-statistics
 python
 </div>
 </div>
-<a href="./posts/2022-07-12-bmcp-ch-3.html">
 <div class="listing-description">
-333 rows × 8 columns
+<a href="./posts/2022-07-12-bmcp-ch-3.html" class="no-external">333 rows × 8 columns</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2022-07-12-bmcp-ch-3.html">
+<a href="./posts/2022-07-12-bmcp-ch-3.html" class="no-external">
 <div class="listing-date">
 Jul 12, 2022
 </div>
@@ -962,19 +968,19 @@ Gabriel Stechschulte
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="20" data-categories="probability,optimization" data-listing-date-sort="1655935200000" data-listing-file-modified-sort="1715628320014" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4">
+<div class="quarto-post image-right" data-index="20" data-categories="probability,optimization" data-listing-date-sort="1655935200000" data-listing-file-modified-sort="1720275914423" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="697">
 <div class="thumbnail">
-<p><a href="./posts/2022-06-23-ELBO.html"> <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div> </a></p>
+<p><a href="./posts/2022-06-23-ELBO.html" class="no-external"></a></p><a href="./posts/2022-06-23-ELBO.html" class="no-external">
+<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+</a><p><a href="./posts/2022-06-23-ELBO.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2022-06-23-ELBO.html">
 <h3 class="no-anchor listing-title">
-Variational Inference - ELBO
+<a href="./posts/2022-06-23-ELBO.html" class="no-external">Variational Inference - ELBO</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2022-06-23-ELBO.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('probability'); return false;">
 probability
@@ -983,14 +989,12 @@ probability
 optimization
 </div>
 </div>
-<a href="./posts/2022-06-23-ELBO.html">
 <div class="listing-description">
-We don’t know the real posterior so we are going to choose a distribution <span class="math inline">\(Q(\theta)\)</span> from a family of distributions <span class="math inline">\(Q^*\)</span> that are <strong>easy to work with</strong> and parameterized by <span class="math inline">\(\theta\…</span><em></em><span class="math inline"></span><span class="math inline"></span>
+<a href="./posts/2022-06-23-ELBO.html" class="no-external">We don’t know the real posterior so we are going to choose a distribution <span class="math inline">\(Q(\theta)\)</span> from a family of distributions <span class="math inline">\(Q^*\)</span> that are <strong>easy to work with</strong> and parameterized by <span class="math inline">…</span><em></em><span class="math inline"></span><span class="math inline"></span></a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2022-06-23-ELBO.html">
+<a href="./posts/2022-06-23-ELBO.html" class="no-external">
 <div class="listing-date">
 Jun 23, 2022
 </div>
@@ -1000,25 +1004,25 @@ Gabriel Stechschulte
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="21" data-listing-date-sort="1628546400000" data-listing-file-modified-sort="1715628320014" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5">
+<div class="quarto-post image-right" data-index="21" data-listing-date-sort="1628546400000" data-listing-file-modified-sort="1720275914423" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="861">
 <div class="thumbnail">
-<p><a href="./posts/2021-08-10-No-Code-Dependency-and-Building-Technology.html"> <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div> </a></p>
+<p><a href="./posts/2021-08-10-No-Code-Dependency-and-Building-Technology.html" class="no-external"></a></p><a href="./posts/2021-08-10-No-Code-Dependency-and-Building-Technology.html" class="no-external">
+<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+</a><p><a href="./posts/2021-08-10-No-Code-Dependency-and-Building-Technology.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2021-08-10-No-Code-Dependency-and-Building-Technology.html">
 <h3 class="no-anchor listing-title">
-No Code, Dependency, and Building Technology
+<a href="./posts/2021-08-10-No-Code-Dependency-and-Building-Technology.html" class="no-external">No Code, Dependency, and Building Technology</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2021-08-10-No-Code-Dependency-and-Building-Technology.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-‘Programmers’, loosely speaking, in some form or another have always been developing software to automate tedious and repetitive tasks. Rightly so, as this is one of the…
+<a href="./posts/2021-08-10-No-Code-Dependency-and-Building-Technology.html" class="no-external">‘Programmers’, loosely speaking, in some form or another have always been developing software to automate tedious and repetitive tasks. Rightly so, as this is one of the…</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2021-08-10-No-Code-Dependency-and-Building-Technology.html">
+<a href="./posts/2021-08-10-No-Code-Dependency-and-Building-Technology.html" class="no-external">
 <div class="listing-date">
 Aug 10, 2021
 </div>
@@ -1068,18 +1072,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1111,11 +1104,50 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
-  function tippyHover(el, contentFn) {
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1125,8 +1157,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1138,7 +1179,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1182,6 +1346,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1207,6 +1372,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1267,6 +1458,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+
 
 
 
