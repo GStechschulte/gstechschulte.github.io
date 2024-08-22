@@ -2,7 +2,8 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/2024-07-09-sql-lateral-join.html",
+      "/posts/2024-08-22-sql-stateful-joins.html",
+      "/posts/2024-08-19-dbs-file-formats.html",
       "/posts/2024-03-29-alternative_samplers.html",
       "/posts/2023-12-09-interpret-advanced-usage.html",
       "/posts/2023-11-28-constrained-bayesopt.html",

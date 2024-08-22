@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Gabriel Stechschulte">
-<meta name="dcterms.date" content="2024-08-22">
+<meta name="dcterms.date" content="2024-08-18">
 
-<title>Stateful Joins in SQL – Trajectories</title>
+<title>Data formats and encoding – Trajectories</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -103,35 +103,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -178,9 +149,10 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Stateful Joins in SQL</h1>
+      <h1 class="title">Data formats and encoding</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">database-systems</div>
+                <div class="quarto-category">cmu-db-notes</div>
               </div>
                   </div>
   </div>
@@ -198,7 +170,7 @@ window.Quarto = {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">August 22, 2024</p>
+        <p class="date">August 18, 2024</p>
       </div>
     </div>
     
@@ -217,203 +189,141 @@ window.Quarto = {
 
 
 
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>In some scenarios, one needs to enrich an event stream with data from another source that holds “state”. This state provides additional context to the event stream.</p>
-<p>For example, in manufacturing, a machine may use a set of machine process parameters (acceleration, force, etc.) when producing an item. The process parameters represent the “state” of the machine at production time <span class="math inline">\(t\)</span>. However, the software services that publishes messages on what is being produced and the machine process parameters currently used are separate. Furthermore, to avoid the duplication of data, the service that publishes process parameters only publishes a message when there is a change in state, e.g when an operator changes one of process parameters.</p>
+<div style="text-align:center">
+<p><img src="parquet-architecture.png" alt="Parquet" width="350" height="200"></p>
+</div>
+<p>As the business landscape embraces data-driven approaches for analysis and decision-making, there is a rapid surge in the volume of data requiring storage and processing. This surge has led to the growing popularity of OLAP database systems.</p>
+<p>An OLAP system workload is characterized by long running, complex queries and reads on large portions of the database. In OLAP workloads, the database system is often analyzing and deriving new data from existing data collected on the OLTP side. An OLAP workload is in contrast to OLTP systems, where the workload is characterized by short running repetitive operations that operate on a single entity at a time.</p>
+<p>This blog aims to provide an overview of the popular data storage representations and encoding schemes within OLTP and OLAP database systems. First, OLTP data storage will be discussed followed by OLAP systems.</p>
+<section id="oltp" class="level2">
+<h2 class="anchored" data-anchor-id="oltp">OLTP</h2>
+<section id="file-storage" class="level3">
+<h3 class="anchored" data-anchor-id="file-storage">File storage</h3>
+<p>A DBMS stores a DB as files on disk (as long as the DB is not an in-memory DB). The DBMS <em>storage manager</em> is responsible for managing a DB’s files, e.g.&nbsp;keeping track of what has been read and written to pages as well as much free space is in these pages. It represents the files as a collection of pages.</p>
 </section>
-<section id="data-simulation" class="level2">
-<h2 class="anchored" data-anchor-id="data-simulation">Data simulation</h2>
-<p>Lets simulate some data with TimescaleDB.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> production (</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">time</span> timestamptz <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    product_id <span class="dt">INT</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>);</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> production</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span>,</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>   <span class="dv">1</span> <span class="kw">as</span> product_id</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> generate_series(<span class="st">'2024-01-01 05:00:00'</span>, <span class="st">'2024-01-01 05:05:00'</span>, <span class="dt">INTERVAL</span> <span class="st">'1m'</span>) <span class="kw">AS</span> <span class="dt">time</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">UNION</span> <span class="kw">ALL</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span>,</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span> <span class="kw">as</span> product_id</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> generate_series(<span class="st">'2024-01-01 05:10:00'</span>, <span class="st">'2024-01-01 05:13:00'</span>, <span class="dt">INTERVAL</span> <span class="st">'1m'</span>) <span class="kw">AS</span> <span class="dt">time</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> production;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th style="text-align: left;">time</th>
-<th style="text-align: right;">product_id</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">2024-01-01 05:00:00+00</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">2024-01-01 05:01:00+00</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">2024-01-01 05:02:00+00</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">2024-01-01 05:03:00+00</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">2024-01-01 05:04:00+00</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">2024-01-01 05:05:00+00</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">2024-01-01 05:10:00+00</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">2024-01-01 05:11:00+00</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">2024-01-01 05:12:00+00</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">2024-01-01 05:13:00+00</td>
-<td style="text-align: right;">2</td>
-</tr>
-</tbody>
-</table>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> machine (</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">time</span> timestamptz <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    speed <span class="dt">NUMERIC</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>);</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> machine (<span class="dt">time</span>, speed)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="st">'2024-01-01 02:00:00'</span>:<span class="ch">:timestamptz</span>, <span class="fl">40.0</span>),</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>       (<span class="st">'2024-01-01 05:07:00'</span>:<span class="ch">:timestamptz</span>, <span class="fl">60.0</span>);</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> machine;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th style="text-align: left;">time</th>
-<th style="text-align: right;">speed</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">2024-01-01 02:00:00+00</td>
-<td style="text-align: right;">40.0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">2024-01-01 05:07:00+00</td>
-<td style="text-align: right;">60.0</td>
-</tr>
-</tbody>
-</table>
+<section id="pages" class="level3">
+<h3 class="anchored" data-anchor-id="pages">Pages</h3>
+<p>The DBMS organizes the DB across one or more files in fixed-size blocks called <em>pages</em>. Pages can contain different kinds of data such as tuples, indexes, and log records. But most systems will not mix these types within pages. Additionally, some systems require that pages are <em>self-contained</em>, meaning that all the information needed to read each page is on the page itself.</p>
+<p>Each page is given a unique identifier. Most DBMSs have an indirection layer that maps a page id to a file path and offset. The upper levels of the system will ask for a specific page number. Then, the storage manager will have to turn that page number into a file and an offset to find the page.</p>
+<p>Most DBMSs use fixed-size pages to avoid the engineering overhead needed to support variable-sized pages. There are three concepts of pages within a DBMS: 1. Hardware page (usually 4KB) 2. OS page (4KB) 3. Database page (1-16KB)</p>
+<section id="page-storage-architecture" class="level4">
+<h4 class="anchored" data-anchor-id="page-storage-architecture">Page storage architecture</h4>
+<p>Different DBMSs manage pages in files on disk in different ways. A few of the common organizations are: - Heap file organization - Tree file organization - Sequential/sorted organization (ISAM) - Hash organization ##### Heap files</p>
+<p>A heap file is an unordered collection of pages where tuples are stored in random order. - Create/get/write/delete page - Must also support iterating over all pages</p>
+<p><strong>TODO</strong>: Diagram here…</p>
+<p>It is easy to use if there is only one file. Need meta-data to keep track of what pages exist in multiple files and which ones have free space. The DBMS can locate a page on disk given a page id by using a linked list of pages or a page directory. - <strong>Linked list</strong>: Header page holds pointers to a list of free pages and a list of data pages. However, if the DBMS is looking for a specific page, it has to do a sequential scan on the data page list until it finds the page it is looking for. - <strong>Page directory</strong>: The DBMS maintains special pages that tracks the location of data pages in the database files.</p>
 </section>
-<section id="postgres-stateful-join" class="level2">
-<h2 class="anchored" data-anchor-id="postgres-stateful-join">Postgres stateful join</h2>
-<p>We would like to enrich the <code>production</code> data with the process parameters from <code>machine</code>. Thus, we need to join the <strong>most recent</strong> process parameter with a production event where a production event most occur greater than or equal to the change in machine state.</p>
-<p>This enrichment can be achieved with a <em>stateful join</em> using PostgreSQL’s <code>LATERAL JOIN</code> expression. The <code>LATERAL</code> keyword allows a subquery or derived table to reference columns from tables listed before it in the <code>FROM</code> clause. A <code>LATERAL</code> join is like a for loop: for each row returned by the tables listed before <code>LATERAL</code> in the <code>FROM</code> clause, PostgreSQL will evaluate the <code>LATERAL</code> subquery using the current row’s values. The resulting rows from the <code>LATERAL</code> subquery are joined to the current row, typically using a <code>JOIN</code> condition of <code>ON TRUE</code> since the real join conditions are inside the <code>LATERAL</code> subquery. This process is then repeated for each row or set of rows from the tables preceding <code>LATERAL</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> production prod</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> LATERAL (</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span> <span class="dt">time</span> <span class="kw">as</span> change_time,</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>           speed</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> machine</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">WHERE</span> <span class="dt">time</span> <span class="op">&lt;=</span> prod.<span class="dt">time</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dt">time</span> <span class="kw">DESC</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">LIMIT</span> <span class="dv">1</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    ) <span class="kw">ON</span> <span class="kw">TRUE</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>time</th>
-<th>product_id</th>
-<th>change_time</th>
-<th>speed</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>2024-01-01 05:00:00.000000 +00:00</td>
-<td>1</td>
-<td>2024-01-01 02:00:00.000000 +00:00</td>
-<td>40</td>
-</tr>
-<tr class="even">
-<td>2024-01-01 05:01:00.000000 +00:00</td>
-<td>1</td>
-<td>2024-01-01 02:00:00.000000 +00:00</td>
-<td>40</td>
-</tr>
-<tr class="odd">
-<td>2024-01-01 05:02:00.000000 +00:00</td>
-<td>1</td>
-<td>2024-01-01 02:00:00.000000 +00:00</td>
-<td>40</td>
-</tr>
-<tr class="even">
-<td>2024-01-01 05:03:00.000000 +00:00</td>
-<td>1</td>
-<td>2024-01-01 02:00:00.000000 +00:00</td>
-<td>40</td>
-</tr>
-<tr class="odd">
-<td>2024-01-01 05:04:00.000000 +00:00</td>
-<td>1</td>
-<td>2024-01-01 02:00:00.000000 +00:00</td>
-<td>40</td>
-</tr>
-<tr class="even">
-<td>2024-01-01 05:05:00.000000 +00:00</td>
-<td>1</td>
-<td>2024-01-01 02:00:00.000000 +00:00</td>
-<td>40</td>
-</tr>
-<tr class="odd">
-<td>2024-01-01 05:10:00.000000 +00:00</td>
-<td>2</td>
-<td>2024-01-01 05:07:00.000000 +00:00</td>
-<td>60</td>
-</tr>
-<tr class="even">
-<td>2024-01-01 05:11:00.000000 +00:00</td>
-<td>2</td>
-<td>2024-01-01 05:07:00.000000 +00:00</td>
-<td>60</td>
-</tr>
-<tr class="odd">
-<td>2024-01-01 05:12:00.000000 +00:00</td>
-<td>2</td>
-<td>2024-01-01 05:07:00.000000 +00:00</td>
-<td>60</td>
-</tr>
-<tr class="even">
-<td>2024-01-01 05:13:00.000000 +00:00</td>
-<td>2</td>
-<td>2024-01-01 05:07:00.000000 +00:00</td>
-<td>60</td>
-</tr>
-</tbody>
-</table>
-<p>In our hypothetical manufacturing example, the machine process parameters changed when product <code>2</code> began producing. Before this enrichment process, it wouldn’t have been known why the time to produce product <code>2</code> was faster. However, the <code>LATERAL JOIN</code> allows us to see that the speed increased from 40 to 60.</p>
+<section id="page-layout" class="level4">
+<h4 class="anchored" data-anchor-id="page-layout">Page layout</h4>
+<p>Every page contains a header of metadata about the page’s: - Page size - Checksum - DBMS version - Transaction visibility</p>
+<p>There are two main approaches to laying out data in pages: (1) slotted-pages, and (2) log-structured.</p>
+</section>
+<section id="tuple-oriented-slotted-pages" class="level4">
+<h4 class="anchored" data-anchor-id="tuple-oriented-slotted-pages">Tuple oriented (slotted pages)</h4>
+<p>The most common layout is called <em>slotted pages</em>.</p>
+<p>Slotted pages: Page maps slots to offsets - Most common approach in row-oriented DBMSs today - Header keeps track of the number of used slots, the offset of the starting location of the last used slot, and a slot array, which keeps track of the location of the start of each tuple - To add a tuple, the slot array will grow from the beginning to the end, and the data of the tuples will grow from end to beginning. The page is considered full when the slot array and the tuple data meet.</p>
+<p><strong>TODO</strong>: Diagram here…</p>
+</section>
+<section id="tuple-layout" class="level4">
+<h4 class="anchored" data-anchor-id="tuple-layout">Tuple layout</h4>
+<p>The DBMS assigns each logical tuple a unique identifier that represents its physical location in the DB - File id –&gt; Page id –&gt; Slot number</p>
+<p>A tuple is essentially a sequence of bytes. It is the job of the DBMS to interpret those bytes into attributes (columns) and values. ##### Tuple header</p>
+<p>Each tuple is prefixed with a <em>header</em> that contains meta-data about it - Visibility information for the DBMS’s concurrency control protocol (i.e., information about which transaction created/modified that tuple). - Bit Map for NULL values. - Note that the DBMS does not need to store meta-data about the schema of the database here.</p>
+<section id="tuple-data" class="level5">
+<h5 class="anchored" data-anchor-id="tuple-data">Tuple data</h5>
+<p>Attributes are typically stored in the order that you specify them when you create the table. Most DBMSs do not allow a tuple to exceed the size of a page.</p>
+<p><strong>TODO</strong>: Diagram here…</p>
+</section>
+<section id="tuple-identifier" class="level5">
+<h5 class="anchored" data-anchor-id="tuple-identifier">Tuple identifier</h5>
+<p>Each tuple in the DB is assigned a unique identifier. Most commonly this is <code>page_id + (offset or slot)</code>.</p>
+</section>
+<section id="denormalized-tuple-data" class="level5">
+<h5 class="anchored" data-anchor-id="denormalized-tuple-data">Denormalized tuple data</h5>
+<p>A DBMS can physically <em>denormalize</em> (e.g.&nbsp;pre-join) related tuples and store them together in the same page. - Potentially reduces the amount of I/O for common workload patterns. - Can make updates more expensive.</p>
+<p><strong>TODO</strong>: Diagram here…</p>
+</section>
+</section>
+<section id="conclusion" class="level4">
+<h4 class="anchored" data-anchor-id="conclusion">Conclusion</h4>
+<p>Database is organized in pages. Different ways to track pages. Different ways to store pages. Different ways to store tuples.</p>
+</section>
+</section>
+</section>
+<section id="olap" class="level2">
+<h2 class="anchored" data-anchor-id="olap">OLAP</h2>
+<p>OLAP workloads typically require scanning large portions of a table(s) to analyze data. However, OLAP queries rarely select a single column, i.e.&nbsp;the projection and predicates often involve different columns.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> product_id,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">avg</span>(price)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> sales</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="dt">time</span> <span class="op">&gt;</span> <span class="st">'2024-01-01'</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> product_id;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The DBMS needs to store data in a columnar format for storage and execution benefits. Thus, a columnar scheme that still stores attributes separately but keeps the data for each tuple physically close to each other is desired.</p>
+<section id="pax-storage-model" class="level3">
+<h3 class="anchored" data-anchor-id="pax-storage-model">PAX storage model</h3>
+<p>Partition attributes model (PAX) is a hybrid storage model that vertically partitions attributes within a DB page. - This is what Parquet and ORC use. - The goal is to get the benefit of faster processing on columnar storage while retaining the spatial locality benefits of row storage.</p>
+<p>Horizontally partition data into <em>row groups</em>. Then, vertically partition their attributes into column chunks.</p>
+<p>Global meta-data directory (a zone map) contains offsets to the file’s row groups. Each row group contains its own meta-data header about its contents. The meta-data directory is at the bottom (the footer) because these files are big and we don’t know what the metadata is going to be (min/max value) until we have processed all of the data. This also comes from the Hadoop world and the file is an append-only file, and we can’t make in-place updates. When we are done writing all of the rows groups of the file, we then close the file.</p>
+<p>Zone maps, originally known as Small Materialized Aggregates (SMA), are a type of metadata used in database systems to improve query performance by enabling efficient data pruning. A zone map is essentially a pre-computed aggregate that summarizes the attribute values within a block of tuples. For each block, the zone map stores metadata such as the minimum (MIN), maximum (MAX), average (AVG), sum (SUM), and count (COUNT) of the values in that block. This metadata allows the database management system (DBMS) to quickly determine whether a block contains relevant data for a query without having to scan the entire block.</p>
+<p><strong>TODO</strong>: diagram…</p>
+</section>
+<section id="file-format-decisions" class="level3">
+<h3 class="anchored" data-anchor-id="file-format-decisions">File format decisions</h3>
+<p>There are a number of decisions when architecting a new file format for OLAP. Of which may include: - File meta-data - Format layout - Type system - Encoding schemes - Block comparison - Filters - Nested data</p>
+<section id="file-meta-data" class="level4">
+<h4 class="anchored" data-anchor-id="file-meta-data">File meta-data</h4>
+<p>Files are self-contained to increase portability, i.e.&nbsp;they contain all the relevant information to interpret their contents without external data dependencies.</p>
+<p>Each file maintains global meta-data (usually in the footer) about its contents - Table schema - Row group offsets - Tuple counts / zone counts</p>
+<p>This is opposite to PostgreSQL because in PSQL you have a bunch of files that keep track of the catalog (schema, tables, types, etc.). Then you have pages for the actual data. In order for us to understand what is in our data pages, you need to go read the catalog.</p>
+</section>
+<section id="format-layout" class="level4">
+<h4 class="anchored" data-anchor-id="format-layout">Format layout</h4>
+<p>Most common formats like Apache Parquet and ORC use the PAX storage model that splits data row groups that contain one or more column chunks.</p>
+</section>
+<section id="type-system" class="level4">
+<h4 class="anchored" data-anchor-id="type-system">Type system</h4>
+<p>Defines the data types that the format supports. - Logical: Auxiliary types that map to physical types - Physical: low-level byte representation</p>
+<p>Formats vary in the complexity of their type systems that determine how much upstream producer / consumers need to implement.</p>
+</section>
+<section id="encoding-schemes" class="level4">
+<h4 class="anchored" data-anchor-id="encoding-schemes">Encoding schemes</h4>
+<p>An encoding scheme specifies how the format stores the bytes for contiguous data (can apply multiple encoding schemes on top of each other to further improve compression). - Dictionary encoding (the most common) - Run-length encoding (RLE) - Bitpacking - Delta encoding - Frame-of-reference (FOR)</p>
+<section id="dictionary-compression" class="level5">
+<h5 class="anchored" data-anchor-id="dictionary-compression">Dictionary compression</h5>
+<p>How we convert variable length data, e.g.&nbsp;Strings to fixed-length data that we can then compress.</p>
+<p>Replace frequent values with smaller fixed-length codes and then maintain a mapping (dictionary) from the codes to the original values. - Codes could either be positions (using a hash table) or byte offsets into a dictionary. - Optionally sort values in the dictionary. - Further compress dictionary and encoded columns.</p>
+<p>Format must handle when the number of distinct values in a column is too large. - Parquet: Max dict. size = 1MB - ORC: Pre-compute cardinality and disable if too large.</p>
+</section>
+<section id="block-compression" class="level5">
+<h5 class="anchored" data-anchor-id="block-compression">Block compression</h5>
+<p>Compress data using general-purpose algorithm. Scope of compression is only based on the data provided as input - LZO (1996) - LZ4 (2011) - Snappy (2011) - Zstd (2015)</p>
+<p>Considerations: - Computational overhead - Compress vs.&nbsp;decompress speed - Data opaqueness</p>
+<p>Opaque compression schemes - if you run something through Snappy or Zstd the DB system does not know what those bytes mean and you cannot go and jump to arbitrary offsets to find the data you are looking for. You need to decompress the whole block.</p>
+<p>This made sense back in the 2000s and 2010s because the main bottleneck was disk and network, so we were willing to pay the CPU costs. But know the CPU is actually one of the slower components. ##### Filters</p>
+<p>What is the difference between a filter and an index?—An index tells you where data is, a filter tells you if something <em>does</em> exist. ###### Zone maps</p>
+<ul>
+<li><p>Maintain min/max values per column at the file-level and row group-level.</p></li>
+<li><p>More effective if values are clustered.</p></li>
+<li><p>Parquet and ORC store zone maps in the header of each row group. ###### Bloom filters</p></li>
+<li><p>A probabilistic data-structure (can get false positives but never false negatives).</p></li>
+<li><p>Track the existence of values for each column in a row group. #### Nested data</p></li>
+</ul>
+<p>Real-world data sets often contain semi-structured objects, e.g.&nbsp;JSON, Protobufs.</p>
+<p>A file format will want to encode the contents of these objects as if they were regular columns.</p>
+<p>Two approaches: 1. Record shredding 2. Length + presence encoding</p>
+</section>
+<section id="shredding" class="level5">
+<h5 class="anchored" data-anchor-id="shredding">Shredding</h5>
+<p>Instead of storing the semi-structured data as a “blob” in a column because every single time you need to parse the blob, you need to run JSON functions to extract the structure from it.</p>
+<p>We are going to split it up so that every level in the path is treated as a separate column. Now we can rip through a column for a given field in the JSON, does it have this attribute with a certain value.</p>
+<p>There is always a schema because it doesn’t make sense to have random applications inserting random documents into a table.</p>
+<p><strong>TODO</strong>: insert diagram</p>
+<p>For each path, store it as a separate column and record how many steps deep we are into a given document for that hierarchy. Essentially, we are storing paths as separate columns with additional meta-data about paths.</p>
 
 
+</section>
+</section>
+</section>
 </section>
 
 </main> <!-- /main -->

@@ -5,13 +5,18 @@ categories:
 - database-systems
 - cmu-db-notes
 date: 2024-08-18
+image: parquet-architecture.png
 ---
+
+<div style="text-align:center">
+<img src="parquet-architecture.png" alt="Parquet" width="350" height="200">
+</div>
 
 As the business landscape embraces data-driven approaches for analysis and decision-making, there is a rapid surge in the volume of data requiring storage and processing. This surge has led to the growing popularity of OLAP database systems. 
 
-An OLAP system workload is characterized by long running, complex queries and reads on large portions of the database. In OLAP workloads, the database system is often analyzing and deriving new data from existing data collected on the OLTP side. An OLAP workload is in contrast to OLTP systems, where the workload is characterized by fast, short running operations, repetitive operations and simple queries that operate on a single entity at a time.
+An OLAP system workload is characterized by long running, complex queries and reads on large portions of the database. In OLAP workloads, the database system is often analyzing and deriving new data from existing data collected on the OLTP side. An OLAP workload is in contrast to OLTP systems, where the workload is characterized by short running repetitive operations that operate on a single entity at a time.
 
-This blog aims to provide an overview of the popular data storage representations and encoding encoding schemes within OLTP and OLAP database systems. First, OLTP data storage will be discussed followed by OLAP systems.
+This blog aims to provide an overview of the popular data storage representations and encoding schemes within OLTP and OLAP database systems. First, OLTP data storage will be discussed followed by OLAP systems.
 
 ## OLTP
 
@@ -229,6 +234,7 @@ A file format will want to encode the contents of these objects as if they were 
 Two approaches:
 1. Record shredding
 2. Length + presence encoding
+
 ##### Shredding
 
 Instead of storing the semi-structured data as a "blob" in a column because every single time you need to parse the blob, you need to run JSON functions to extract the structure from it. 
