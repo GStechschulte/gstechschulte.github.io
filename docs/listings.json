@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/2024-09-10-hierarchical-regression-missing-data.html",
       "/posts/2024-08-22-sql-stateful-joins.html",
       "/posts/2024-08-19-dbs-file-formats.html",
       "/posts/2024-03-29-alternative_samplers.html",
