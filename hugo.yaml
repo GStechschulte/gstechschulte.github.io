@@ -1,4 +1,26 @@
 baseURL: https://gstechschulte.github.io
 languageCode: en-us
-title: My New Hugo Site
+title: The Log
 theme: PaperMod
+
+params:
+  enableEmoji: true
+  homeInfoParams:
+    Title: Hi there.
+    Content: My name is Gabriel Stechschulte, a software engineer interested in probabilistic programming and database systems.
+    socialIcons: # optional
+    - name: GitHub
+      url: https://github.com/GStechschulte
+  ShowReadingTime: true
+  ShowCodeCopyButtons: true
+
+menu:
+  main:
+    - identifier: categories
+      name: categories
+      url: /categories/
+      weight: 10
+    - identifier: tags
+      name: tags
+      url: /tags/
+      weight: 20
