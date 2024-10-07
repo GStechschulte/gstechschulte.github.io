@@ -5,12 +5,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>My First Post | The Log</title>
+<title>Variational Inference - Evidence Lower Bound | The Log</title>
 <meta name="keywords" content="">
-<meta name="description" content="Hey, this is&hellip;">
-<meta name="author" content="">
-<link rel="canonical" href="http://localhost:1313/posts/my-first-post/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.fc220c15db4aef0318bbf30adc45d33d4d7c88deff3238b23eb255afdc472ca6.css" integrity="sha256-/CIMFdtK7wMYu/MK3EXTPU18iN7/MjiyPrJVr9xHLKY=" rel="preload stylesheet" as="style">
+<meta name="description" content="We don&rsquo;t know the real posterior so we are going to choose a distribution $Q(\theta)$ from a family of distributions $Q^*$ that are easy to work with and parameterized by $\theta$. The approximate distribution should be as close as possible to the true posterior. This closeness is measured using KL-Divergence. If we have the joint $p(x, z)$ where $x$ is some observed data, the goal is to perform inference: given what we have observed, what can we infer about the latent states?, i.e , we want the posterior.">
+<meta name="author" content="Gabriel Stechschulte">
+<link rel="canonical" href="http://localhost:1313/posts/variational-inference/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.e06e296717ca1485b42270445b6064e38739a541df87459ef5f957e51cd74e72.css" integrity="sha256-4G4pZxfKFIW0InBEW2Bk44c5pUHfh0We9flX5RzXTnI=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
@@ -18,7 +18,7 @@
 <link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/my-first-post/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/variational-inference/">
 <noscript>
     <style>
         #theme-toggle,
@@ -56,6 +56,39 @@
 
     </style>
 </noscript>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
+    integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ"
+    crossorigin="anonymous"
+/>
+<script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"
+    integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY"
+    crossorigin="anonymous"
+></script>
+<script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js"
+    integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR"
+    crossorigin="anonymous"
+></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true },
+            ],
+            throwOnError: false,
+        });
+    });
+</script>
+
+
 </head>
 
 <body class="" id="top">
@@ -117,7 +150,7 @@
   <header class="post-header">
     
     <h1 class="post-title entry-hint-parent">
-      My First Post
+      Variational Inference - Evidence Lower Bound
       <span class="entry-hint" title="Draft">
         <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" fill="currentColor">
           <path
@@ -125,11 +158,43 @@
         </svg>
       </span>
     </h1>
-    <div class="post-meta"><span title='2024-10-07 11:04:45 +0200 CEST'>October 7, 2024</span>&nbsp;·&nbsp;1 min
+    <div class="post-meta"><span title='2022-06-03 18:43:46 +0200 CEST'>June 3, 2022</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;Gabriel Stechschulte
 
 </div>
   </header> 
-  <div class="post-content"><p>Hey, this is&hellip;</p>
+  <div class="post-content"><p>We don&rsquo;t know the real posterior so we are going to choose a distribution $Q(\theta)$ from a family of distributions $Q^*$ that are <strong>easy to work with</strong> and parameterized by $\theta$. The approximate distribution should be <em>as close as possible</em> to the true posterior. This closeness is measured using KL-Divergence. If we have the joint $p(x, z)$ where $x$ is some observed data, the goal is to perform inference: given what we have observed, what can we infer about the latent states?, i.e , we want the posterior.</p>
+<p>Recall Bayes theorem:</p>
+<p>$$p(z | x) = \frac{p(x|z)p(z)}{p(x)}$$</p>
+<p>The problem is the marginal $p(x = D)$ as this could require a hundred, thousand, . . .dimensional integral:</p>
+<p>$$p(x) = \int_{z_0},&hellip;,\int_{z_{D-1}}p(x, z)dz_0,&hellip;,d_{z_D{-1}}$$</p>
+<p>If we want the full posterior and can&rsquo;t compute the marginal, then what&rsquo;s the solution? <strong>Surrogate posterior</strong>. We want to approximate the true posterior using some known distribution:</p>
+<p>$$q(z) \approx p(z|X=D)$$</p>
+<p>where $\approx$ can mean you want the approximated posterior to be &ldquo;as good as possible&rdquo;. Using variational inference, the objective is to minimize the distance between the surrogate $q(z)$ and the true posterior $p(x)$ using KL-Divergence:</p>
+<p>$$q^*(z) = argmin_{q(z) \in Q} (KL(q(z) || p(z|x=D)))$$</p>
+<p>where $Q$ is a more &ldquo;simple&rdquo; distribution. We can restate the KL-divergence as the expectation:</p>
+<p>$$KL(q(z) || p(z|D)) = \mathbb{E_{z \sim q(z)}}[log \frac{q(z)}{p(z|D)}]$$</p>
+<p>which, taking the expectation over $z$, is equivalent to integration:</p>
+<p>$$\int_{z_0}, . . .,\int_{z_{D-1}}q(z)log\frac{q(z)}{p(z|D)}d_{z_0},&hellip;,d_{z_{D-1}}$$</p>
+<p>But, sadly we don&rsquo;t have $p(z \vert D)$ as this is the posterior! We only have the joint. Solution? Recall our KL-divergence:</p>
+<p>$$KL(q(z) || p(z|D))$$</p>
+<p>We can rearrange the terms inside the $log$ so that we can <strong>actually</strong> compute something:</p>
+<p>$$\int_{z}q(z)log(\frac{q(z)p(D)}{p(z, D)})dz$$</p>
+<p>We only have the <strong>joint</strong>. Not the posterior; nor the marginal. We know from Bayes rule that we can express the posterior in terms of the joint $p(z, D)$ divided by the marginal $p(x=D)$:</p>
+<p>$$p(z|D) = \frac{p(Z, D)}{p(D)}$$</p>
+<p>We plug this inside of the $log$:</p>
+<p>$$\int_{z}q(z)log(\frac{q(z)p(D)}{p(z, D)})dz$$</p>
+<p>However, the problem now is that we have reformulated our problem into <strong>another</strong> quantity that we don&rsquo;t have, i.e., the marginal $p(D)$. But we can put the quantity that we don&rsquo;t have outside of the $log$ to form two separate integrals.</p>
+<p>$$\int_z q(z)log(\frac{q(z)}{p(z, D)})dz + \int_zq(z)log(p(D)dz$$</p>
+<p>This is a valid <em>rearrangement</em> because of the properties of logarithms. In this case, the numerator is a product, so this turns into a sum of the second integral. What do we see in these two terms? We see an expectation over the quantity $\frac{q(z)}{p(z, D)}$ and another expectation over $p(D)$. Rewriting in terms of expectation:</p>
+<p>$$\mathbb{E_{z{\sim q(z)}}}[log(\frac{q(z)}{p(z, D)})] + \mathbb{E_{z \sim q(z)}}[log(p(D))]$$</p>
+<p>The right term contains <strong>information we know</strong>—the functional form of the surrogate $q(z)$ and the joint $p(z, D)$ (in the form of a directed graphical model). We still don&rsquo;t have access to $p(D)$ on the right side, but this is a <strong>constant quantity</strong>. The expectation of a quantity that does not contain $z$ is just whatever the expectation was taken over. Because of this, we can again rearrange:</p>
+<p>$$-\mathbb{E_{z \sim q(z)}}[log \frac{p(z, D)}{q(z)}]+log (p(D))$$</p>
+<p>The minus sign is a result of the &ldquo;swapping&rdquo; of the numerator and denominator and is required to make it a <em>valid</em> change. Looking at this, the left side is a function dependent on $q$. In shorthand form, we can call this $\mathcal{L(q)}$. Our KL-divergence is:</p>
+<p>$$KL = \mathcal{-L(q)} + \underbrace{log(p(D))}_\textrm{evidence}$$</p>
+<p>where $p(D)$ is a value between $[0, 1]$ and this value is called the <strong>evidence</strong> which is the <strong>log probability of the data</strong>. If we apply the $log$ to something between $[0, 1]$ then this value will be negative. This value is also <strong>constant</strong> since we have observed the dataset and thus does not change.</p>
+<p>$KL$ is the <strong>distance</strong> (between the posterior and the surrogate) so it must be something positive. If the $KL$ is positive and the evidence is negative, then in order to fulfill this equation, $\mathcal{L}$ must also be negative (negative times a negative is a positive). The $\mathcal{L}$ should be <em>smaller</em> than the evidence, and thus it is called the <strong>lower bound</strong> of the evidence $\rightarrow$ <strong>Evidence Lower Bound</strong> (ELBO).</p>
+<p>Again, ELBO is defined as: $\mathcal{L} = \mathbb{E_{z \sim q(z)}}[log(\frac{p(z, D)}{q(z)})]$ and is important to note that the ELBO is equal to the evidence if and only if the KL-divergence between the surrogate and the true posterior is $0$:</p>
+<p>$$\mathcal{L(q)} = log(p(D)) \textrm{ i.f.f. } KL(q(z)||p(z|D))=0$$</p>
 
 
   </div>

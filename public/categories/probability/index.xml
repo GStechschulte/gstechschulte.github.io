@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Probability on The Log</title>
+    <link>http://localhost:1313/categories/probability/</link>
+    <description>Recent content in Probability on The Log</description>
+    <generator>Hugo -- 0.135.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 23 Jun 2022 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/probability/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Variational Inference - ELBO</title>
+      <link>http://localhost:1313/posts/variational-inference/</link>
+      <pubDate>Thu, 23 Jun 2022 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/variational-inference/</guid>
+      <description>&lt;p&gt;We don&amp;rsquo;t know the real posterior so we are going to choose a distribution $Q(\theta)$ from a family of distributions $Q^*$ that are &lt;strong&gt;easy to work with&lt;/strong&gt; and parameterized by $\theta$. The approximate distribution should be &lt;em&gt;as close as possible&lt;/em&gt; to the true posterior. This closeness is measured using KL-Divergence. If we have the joint $p(x, z)$ where $x$ is some observed data, the goal is to perform inference: given what we have observed, what can we infer about the latent states?, i.e , we want the posterior.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

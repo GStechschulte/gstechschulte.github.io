@@ -6,14 +6,23 @@
     <description>Recent content on The Log</description>
     <generator>Hugo -- 0.135.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 07 Oct 2024 11:04:45 +0200</lastBuildDate>
+    <lastBuildDate>Thu, 10 Aug 2023 18:43:46 +0200</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>My First Post</title>
-      <link>http://localhost:1313/posts/my-first-post/</link>
-      <pubDate>Mon, 07 Oct 2024 11:04:45 +0200</pubDate>
-      <guid>http://localhost:1313/posts/my-first-post/</guid>
-      <description>&lt;p&gt;This is a test&amp;hellip;&lt;/p&gt;</description>
+      <title>Google Summer of Code - Final Report</title>
+      <link>http://localhost:1313/posts/gsoc-final-report/</link>
+      <pubDate>Thu, 10 Aug 2023 18:43:46 +0200</pubDate>
+      <guid>http://localhost:1313/posts/gsoc-final-report/</guid>
+      <description>&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;bambi-logo.png&#34; alt=&#34;alt&#34;  /&gt;
+&lt;/p&gt;
+&lt;p&gt;My project &amp;ldquo;Better tools to interpret complex Bambi regression models&amp;rdquo; was completed under the organization of NumFOCUS, and mentors Tomás Capretto and Osvaldo Martin. Before I describe the project, objectives, and work completed, I would like to thank my mentors Tomás and Osvaldo for their precious time and support throughout the summer. They were always available and timely in communicating over Slack and GitHub, and provided valuable feedback during code reviews. Additionally, I would like to thank NumFOCUS and the Google Summer of Code (GSoC) program for providing the opportunity to work on such an open source project over the summer. It has been an invaluable experience, and I look forward to contributing to open source projects in the future.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Variational Inference - Evidence Lower Bound</title>
+      <link>http://localhost:1313/posts/variational-inference/</link>
+      <pubDate>Fri, 03 Jun 2022 18:43:46 +0200</pubDate>
+      <guid>http://localhost:1313/posts/variational-inference/</guid>
+      <description>&lt;p&gt;We don&amp;rsquo;t know the real posterior so we are going to choose a distribution $Q(\theta)$ from a family of distributions $Q^*$ that are &lt;strong&gt;easy to work with&lt;/strong&gt; and parameterized by $\theta$. The approximate distribution should be &lt;em&gt;as close as possible&lt;/em&gt; to the true posterior. This closeness is measured using KL-Divergence. If we have the joint $p(x, z)$ where $x$ is some observed data, the goal is to perform inference: given what we have observed, what can we infer about the latent states?, i.e , we want the posterior.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
