@@ -3,7 +3,7 @@ title = 'Google Summer of Code - Final Report'
 date = 2023-08-10T18:43:46+02:00
 author = 'Gabriel Stechschulte'
 categories = ['open-source']
-draft = true
+draft = false
 +++
 
 ![alt](bambi-logo.png)
