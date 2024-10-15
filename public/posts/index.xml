@@ -6,8 +6,18 @@
     <description>Recent content in Posts on The Log</description>
     <generator>Hugo -- 0.135.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 10 Aug 2023 18:43:46 +0200</lastBuildDate>
+    <lastBuildDate>Wed, 25 Oct 2023 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Survival Models in Bambi</title>
+      <link>http://localhost:1313/posts/bambi-survival-models/</link>
+      <pubDate>Wed, 25 Oct 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/bambi-survival-models/</guid>
+      <description>&lt;!-- raw HTML omitted --&gt;
+&lt;h1 id=&#34;survival-models&#34;&gt;Survival Models&lt;/h1&gt;
+&lt;p&gt;Survival models, also known as time-to-event models, are specialized statistical methods designed to analyze the time until the occurrence of an event of interest. In this notebook, a review of survival analysis (using non-parametric and parametric methods) and censored data is provided, followed by a survival model implementation in Bambi.&lt;/p&gt;
+&lt;p&gt;This blog post is a copy of the survival models documentation I wrote for &lt;a href=&#34;https://bambinos.github.io/bambi/&#34;&gt;Bambi&lt;/a&gt;. The original post can be found &lt;a href=&#34;https://bambinos.github.io/bambi/notebooks/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Google Summer of Code - Final Report</title>
       <link>http://localhost:1313/posts/gsoc-final-report/</link>
@@ -18,11 +28,28 @@
 &lt;p&gt;My project &amp;ldquo;Better tools to interpret complex Bambi regression models&amp;rdquo; was completed under the organization of NumFOCUS, and mentors Tomás Capretto and Osvaldo Martin. Before I describe the project, objectives, and work completed, I would like to thank my mentors Tomás and Osvaldo for their precious time and support throughout the summer. They were always available and timely in communicating over Slack and GitHub, and provided valuable feedback during code reviews. Additionally, I would like to thank NumFOCUS and the Google Summer of Code (GSoC) program for providing the opportunity to work on such an open source project over the summer. It has been an invaluable experience, and I look forward to contributing to open source projects in the future.&lt;/p&gt;</description>
     </item>
     <item>
+      <title>Monte Carlo Approximation</title>
+      <link>http://localhost:1313/posts/monte-carlo-approximation/</link>
+      <pubDate>Fri, 07 Oct 2022 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/monte-carlo-approximation/</guid>
+      <description>&lt;!-- raw HTML omitted --&gt;
+&lt;h2 id=&#34;inference&#34;&gt;Inference&lt;/h2&gt;
+&lt;p&gt;In the probabilistic approach to machine learning, all unknown quantities—predictions about the future, hidden states of a system, or parameters of a model—are treated as random variables, and endowed with probability distributions. The process of inference corresponds to computing the posterior distribution over these quantities, conditioning on whatever data is available. Given that the posterior is a probability distribution, we can draw samples from it. The samples in this case are parameter values. The Bayesian formalism treats parameter distributions as the degrees of relative plausibility, i.e., if this parameter is chosen, how likely is the data to have arisen? We use Bayes&amp;rsquo; rule for this process of inference. Let $h$ represent the uknown variables and $D$ the known variables, i.e., the data. Given a likelihood $p(D|h)$ and a prior $p(h)$, we can compute the posterior $p(h|D)$ using Bayes&amp;rsquo; rule:&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>Variational Inference - Evidence Lower Bound</title>
       <link>http://localhost:1313/posts/variational-inference/</link>
       <pubDate>Fri, 03 Jun 2022 18:43:46 +0200</pubDate>
       <guid>http://localhost:1313/posts/variational-inference/</guid>
       <description>&lt;p&gt;We don&amp;rsquo;t know the real posterior so we are going to choose a distribution $Q(\theta)$ from a family of distributions $Q^*$ that are &lt;strong&gt;easy to work with&lt;/strong&gt; and parameterized by $\theta$. The approximate distribution should be &lt;em&gt;as close as possible&lt;/em&gt; to the true posterior. This closeness is measured using KL-Divergence. If we have the joint $p(x, z)$ where $x$ is some observed data, the goal is to perform inference: given what we have observed, what can we infer about the latent states?, i.e , we want the posterior.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>No Code, Dependency, and Building Technology</title>
+      <link>http://localhost:1313/posts/no-code-building-technology/2021-08-10-no-code-dependency-and-building-technology/</link>
+      <pubDate>Tue, 10 Aug 2021 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/no-code-building-technology/2021-08-10-no-code-dependency-and-building-technology/</guid>
+      <description>&lt;h2 id=&#34;modernity-and-abstraction&#34;&gt;Modernity and Abstraction&lt;/h2&gt;
+&lt;p&gt;&amp;lsquo;Programmers&amp;rsquo;, loosely speaking, in some form or another have always been developing software to automate tedious and repetitive tasks. Rightly so, as this is one of the tasks computers are designed to perform. As science and technology progresses, and gets more technological, there is a growing seperation between the maker and the user. This is one of the negative externalities of modernism - we enjoy the benefits of a more advanced and technologically adept society, but fewer and fewer people understand the inner workings. Andrej Karpathy has a jokingly short paragraph in his &lt;a href=&#34;https://karpathy.github.io/2019/04/25/recipe/&#34;&gt;blog&lt;/a&gt; on the matter, &amp;ldquo;A courageous developer has taken the burden of understanding query strings, urls, GET/POST requests, HTTP connections, and so on from you and largely hidden the complexity behind a few lines of code. This is what we are now familiar with and expect&amp;rdquo;.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

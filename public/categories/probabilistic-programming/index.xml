@@ -6,8 +6,27 @@
     <description>Recent content in Probabilistic-Programming on The Log</description>
     <generator>Hugo -- 0.135.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 03 Jun 2022 18:43:46 +0200</lastBuildDate>
+    <lastBuildDate>Wed, 25 Oct 2023 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/categories/probabilistic-programming/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Survival Models in Bambi</title>
+      <link>http://localhost:1313/posts/bambi-survival-models/</link>
+      <pubDate>Wed, 25 Oct 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/bambi-survival-models/</guid>
+      <description>&lt;!-- raw HTML omitted --&gt;
+&lt;h1 id=&#34;survival-models&#34;&gt;Survival Models&lt;/h1&gt;
+&lt;p&gt;Survival models, also known as time-to-event models, are specialized statistical methods designed to analyze the time until the occurrence of an event of interest. In this notebook, a review of survival analysis (using non-parametric and parametric methods) and censored data is provided, followed by a survival model implementation in Bambi.&lt;/p&gt;
+&lt;p&gt;This blog post is a copy of the survival models documentation I wrote for &lt;a href=&#34;https://bambinos.github.io/bambi/&#34;&gt;Bambi&lt;/a&gt;. The original post can be found &lt;a href=&#34;https://bambinos.github.io/bambi/notebooks/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Monte Carlo Approximation</title>
+      <link>http://localhost:1313/posts/monte-carlo-approximation/</link>
+      <pubDate>Fri, 07 Oct 2022 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/monte-carlo-approximation/</guid>
+      <description>&lt;!-- raw HTML omitted --&gt;
+&lt;h2 id=&#34;inference&#34;&gt;Inference&lt;/h2&gt;
+&lt;p&gt;In the probabilistic approach to machine learning, all unknown quantities—predictions about the future, hidden states of a system, or parameters of a model—are treated as random variables, and endowed with probability distributions. The process of inference corresponds to computing the posterior distribution over these quantities, conditioning on whatever data is available. Given that the posterior is a probability distribution, we can draw samples from it. The samples in this case are parameter values. The Bayesian formalism treats parameter distributions as the degrees of relative plausibility, i.e., if this parameter is chosen, how likely is the data to have arisen? We use Bayes&amp;rsquo; rule for this process of inference. Let $h$ represent the uknown variables and $D$ the known variables, i.e., the data. Given a likelihood $p(D|h)$ and a prior $p(h)$, we can compute the posterior $p(h|D)$ using Bayes&amp;rsquo; rule:&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Variational Inference - Evidence Lower Bound</title>
       <link>http://localhost:1313/posts/variational-inference/</link>

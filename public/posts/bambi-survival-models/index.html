@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Survival Models in Bambi | The Log</title>
+<meta name="keywords" content="">
+<meta name="description" content="
+Survival Models
+Survival models, also known as time-to-event models, are specialized statistical methods designed to analyze the time until the occurrence of an event of interest. In this notebook, a review of survival analysis (using non-parametric and parametric methods) and censored data is provided, followed by a survival model implementation in Bambi.
+This blog post is a copy of the survival models documentation I wrote for Bambi. The original post can be found here.">
+<meta name="author" content="Gabriel Stechschulte">
+<link rel="canonical" href="http://localhost:1313/posts/bambi-survival-models/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.e06e296717ca1485b42270445b6064e38739a541df87459ef5f957e51cd74e72.css" integrity="sha256-4G4pZxfKFIW0InBEW2Bk44c5pUHfh0We9flX5RzXTnI=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/bambi-survival-models/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
+    integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ"
+    crossorigin="anonymous"
+/>
+<script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"
+    integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY"
+    crossorigin="anonymous"
+></script>
+<script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js"
+    integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR"
+    crossorigin="anonymous"
+></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true },
+            ],
+            throwOnError: false,
+        });
+    });
+</script>
+
+
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="The Log (Alt + H)">The Log</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/categories/" title="categories">
+                    <span>categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="tags">
+                    <span>tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Survival Models in Bambi
+    </h1>
+    <div class="post-meta"><span title='2023-10-25 00:00:00 +0000 UTC'>October 25, 2023</span>&nbsp;·&nbsp;20 min&nbsp;·&nbsp;Gabriel Stechschulte
+
+</div>
+  </header> 
+  <div class="post-content"><!-- raw HTML omitted -->
+<h1 id="survival-models">Survival Models<a hidden class="anchor" aria-hidden="true" href="#survival-models">#</a></h1>
+<p>Survival models, also known as time-to-event models, are specialized statistical methods designed to analyze the time until the occurrence of an event of interest. In this notebook, a review of survival analysis (using non-parametric and parametric methods) and censored data is provided, followed by a survival model implementation in Bambi.</p>
+<p>This blog post is a copy of the survival models documentation I wrote for <a href="https://bambinos.github.io/bambi/">Bambi</a>. The original post can be found <a href="https://bambinos.github.io/bambi/notebooks/">here</a>.</p>
+<h2 id="survival-and-censoring-times">Survival and censoring times<a hidden class="anchor" aria-hidden="true" href="#survival-and-censoring-times">#</a></h2>
+<p>Sometimes the right way to model discrete, countable events is to model not the counts themselves but rather the <strong>time between events</strong>. This gives us information regarding the rate of an event. Survival models are models for countable things, but the outcomes we want to predict are durations. Durations are continuous deviations from some point of reference (so they are all positive values).</p>
+<p>The tricky part with survival models is not the probability distribution assigned to the durations, but dealing with censoring. Censoring occurs when the event of interest does not occur in the window of observation. In a simple scenario, this can happen because the observation period ends before the event occurred. Censored individuals (or units) can not just be dropped from the sample. As an example, we use Richard McElreath&rsquo;s cat adoption example from chapter 11.4 of Statistical Rethinking: Imagine a cohort of 100 cats who start waiting for adoption at the same time. After one month, half of them have been adopted. Now what is the rate of adoption? You can’t compute it using only the cats who have been adopted. You need to also account for the cats who haven’t yet been adopted. The cats who haven’t been adopted yet, but eventually will be adopted, clearly have longer waiting times than the cats who have already been adopted. So the average rate among those who are already adopted is biased upwards—it is confounded by conditioning on adoption.</p>
+<p>Including censored observations requires a new type of model. The key idea is that the same distribution assumption for the outcome tells us both the probability of any observed duration that end in the event as well as the probability that we would wait the observed duration without seeing the event. For each unit, we assume there is a true <em>survival time</em> $T$ as well as a true <em>censoring time</em> $C$. The survival time represents the time at which the event of interest occurs. The censoring time is the time at which censoring occurs. We observe either: the survival, or the censoring time:</p>
+<p>$$Y = \text{min}(T, C)$$</p>
+<p>If the event occurs, then we observe the survival time, else we observe the censoring time. In order to analyze survival data, we first need to understand the two types of censoring: left and right censoring, and how to estimate the survival function.</p>
+<h2 id="left-and-right-censoring">Left and right censoring<a hidden class="anchor" aria-hidden="true" href="#left-and-right-censoring">#</a></h2>
+<p>There are two main &ldquo;types&rdquo; of censoring: right and left. Right censoring occurs when $T \ge Y$, i.e. the true event time $T$ is at least as large as the observed time $Y$. This is a consequence of $Y = \text{min}(T, C)$. Right censoring derives its name from the notion that time is typically read and displayed from left to right. Left sensoring occurs when the true event time $T$ is less than or equal to the observed time $Y$. An example of left censoring could be in a study of pregnancy duration. Suppose that patients are surveyed 250 days (8.2 months) after conception. Some patients may have already had their babies. For these patients, pregnancy duration is <strong>less than</strong> 250 days.</p>
+<h2 id="estimating-the-survival-function">Estimating the survival function<a hidden class="anchor" aria-hidden="true" href="#estimating-the-survival-function">#</a></h2>
+<p>Survival analysis is concerned with estimating the survival function $S(t)$</p>
+<p>$$S(t) = Pr(T &gt; t) = 1 - F(t)$$</p>
+<p>which is a decreasing function that quantifies the probability of surviving past time $t$. Alternatively, $S(t)$ can be expressed as one minus the cumulative distribution function (CDF) $F$ of the event time $T$—referred to as the complementary cumulative distribution function (CCDF). The focus on the survival function is important because for censored observations, we only know that the time-to-event exceeds the observed time $Y$.</p>
+<p>Here, continuing with the cat adoption example, we consider the task of estimating the survival function for cat adoptions. To estimate $S(30) = Pr(T &gt; 30)$, the probability that a cat is not adopted after 30 days, it is tempting to compute the proportion of cats who were adopted before 30 days and subtract this from 1. However, this would be incorrect because it ignores the cats who were not adopted before 30 days but who <strong>will be</strong> adopted later—these cats clearly have longer adoption rates. Thus, if we continued with the naive approach, the average rate of adoption would be biased upwards—it is confounded by conditioning on adoption.</p>
+<p>However, it is possible to overcome this challenge by using the Kaplan-Meier estimator. The Kaplan-Meier estimator is a non-parametric estimator of the survival function that accounts for censoring. Let $d_1 &lt; d_2 &lt; . . . &lt; d_K$ denote the $K$ unique adoption times among the non-censored cats, and $q_k$ denote the number of cats adopted at time $d_k$. For $k = 1,&hellip;,K$, let $r_k$ denote the number of cats not adopted at time $d_k$. By the law of total probability</p>
+<p>$$Pr(T &gt; d_k) = Pr(T &gt; d_k | T &gt; d_{k-1}) Pr(T &gt; d_{k-1}) + Pr(T &gt; d_k | T \leq d_{k-1}) Pr(T \leq d_{k-1})$$</p>
+<p>The fact that $d_{k-1} &lt; d_k$ implies that $Pr(T &gt; d_k | T \leq d_{k-1}) = 0$ (as it is impossible for a cat to be adopted past time $d_k$ if the cat was adopted before time $d_{k-1}$). Thus, if we simplify the above equation and plug into the survival function, we obtain</p>
+<p>$$S(d_k) = Pr(T &gt; d_k | T &gt; d_{k-1})S(d_{k-1})$$</p>
+<p>Now we must estimate the terms on the right-hand side. It is common to use the following estimator</p>
+<p>$$\hat{Pr}(T &gt; d_j | T &gt; d_{j-1}) = \frac{r_j - q_j}{r_j}$$</p>
+<p>which leads us to the Kaplan-Meier estimator of the survival function</p>
+<p>$$\hat{S}(d_k) = \prod_{j=1}^k \frac{r_j - q_j}{r_j}$$</p>
+<p>where $\hat{S}(d_k)$ represents the estimated survival probability up to time $d_k$. The product is taken over all time points up to $k$, where an event occurred. The variables $r_j$ and $q_j$ denote the number of subjects at risk and the number of events at time $d_j$, respectively. The term $\frac{r_j - q_j}{r_j}$ is the conditional probability of surviving the $j$-th time point given that an individual has survived just before $d_j$. Specifically, $r_j - q_j$ are the number of individuals who survived just before $d_j$ and $r_j$ is the number of individuals who survived just after $d_j$, and $r_j$ are those who were at risk $d_j$.</p>
+<h3 id="cat-adoption-survival-function">Cat adoption survival function<a hidden class="anchor" aria-hidden="true" href="#cat-adoption-survival-function">#</a></h3>
+<p>Below we use the <code>KaplanMeierFitter</code> class of the <a href="https://github.com/CamDavidsonPilon/lifelines">lifelines</a> package to compute and visualize the survival curve for cat adoptions from an animal shelter in Austin, Texas beginning October 1st, 2013 until May 30th, 2018 (the last day the shelter rescued a cat). The dataset comes from the <a href="https://data.austintexas.gov/widgets/9t4d-g238">City of Austin Open Data Portal</a> and contains columns such as animal name, date of birth, species, and many more. However, for the purpose of this notebook we are interested in the following columns:</p>
+<ul>
+<li><code>days_to_event</code> - number of days until the cat was adopted (<code>date_in</code> - <code>date_out</code>)</li>
+<li><code>out_event</code> - the reason for the cat leaving this particular shelter, e.g. adopted or transfered.</li>
+<li><code>color</code> - the color of the cat, e.g. white, blue, brown tabby, black.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#| code-fold: true</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> arviz <span style="color:#66d9ef">as</span> az
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> scipy
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> lifelines <span style="color:#f92672">import</span> KaplanMeierFitter
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> bambi <span style="color:#66d9ef">as</span> bmb
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://raw.githubusercontent.com/rmcelreath/rethinking/master/data/AustinCats.csv&#34;</span>
+</span></span><span style="display:flex;"><span>cats_df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(url, sep<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;;&#34;</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>))
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>hist(cats_df[<span style="color:#e6db74">&#34;days_to_event&#34;</span>], bins<span style="color:#f92672">=</span><span style="color:#ae81ff">250</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Uncensored data&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xlim(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">186</span>) <span style="color:#75715e"># limit to 6 months for visibility</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#34;Days Until Adoption&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#34;Count&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#34;Days&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>legend();
+</span></span></code></pre></div><p><img loading="lazy" src="2023-10-25-survival-models-bambi_files/2023-10-25-survival-models-bambi_8_0.png" alt="png"  />
+</p>
+<p>The distribution of days until adoption exhibits a long tail with most cats (if we observe the adopt event) being adopted within the first month of inception. Note that the plot has been truncated to six months for better visibility. Below, we estimate the survival function using the <code>KaplanMeierFitter</code> class from the <code>lifelines</code> package.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>km <span style="color:#f92672">=</span> KaplanMeierFitter()
+</span></span><span style="display:flex;"><span>km_adoptions <span style="color:#f92672">=</span> km<span style="color:#f92672">.</span>fit(
+</span></span><span style="display:flex;"><span>    cats_df[<span style="color:#e6db74">&#34;days_to_event&#34;</span>], 
+</span></span><span style="display:flex;"><span>    cats_df[<span style="color:#e6db74">&#34;out_event&#34;</span>]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">if</span> x <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;Adoption&#34;</span> <span style="color:#66d9ef">else</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>))
+</span></span><span style="display:flex;"><span>km_adoptions<span style="color:#f92672">.</span>plot(label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Kaplan-Meier Estimator&#34;</span>, ax<span style="color:#f92672">=</span>ax)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_ylabel(<span style="color:#e6db74">&#34;Probability of Adoption&#34;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_xlabel(<span style="color:#e6db74">&#34;Days&#34;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_xlim(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">365</span>)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>grid(<span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">&#34;Cat Adoption Survival Curve&#34;</span>);
+</span></span></code></pre></div><p><img loading="lazy" src="2023-10-25-survival-models-bambi_files/2023-10-25-survival-models-bambi_11_0.png" alt="png"  />
+</p>
+<p>The Kaplan-Meier estimator shows that by 100 days, the probability of a cat not being adopted is about $0.15$ percent. After 100 days, the probability of cat not being adopted decreases, albeit at a much slower rate. Thus, if a cat hasn&rsquo;t been adopted by the 100th day, it is more likely the cat will continue to wait for adoption. In the next section, we discuss <code>pm.Censored</code>, a PyMC distrbution that allows us to model censored data.</p>
+<h2 id="the-pmcensored-distribution">The <code>pm.Censored</code> distribution<a hidden class="anchor" aria-hidden="true" href="#the-pmcensored-distribution">#</a></h2>
+<p>The <a href="https://www.pymc.io/projects/docs/en/latest/api/distributions/censored.html">censored distribution</a> from PyMC allows us to make use of a sequential construction, similar to the Kaplan-Meier estimator outlined above, to model censored data. To understand the <code>pm.Censored</code> distribution, lets reason how a distribution may be used to model censored data. For observed adoptions, the probability of observed waiting time can be distributed according to an exponential with some rate $\lambda$
+$$D_i \sim \text{Exponential}(\lambda_i)$$
+or
+$$f(D_i | \lambda_i) = \lambda_i \text{exp}(-\lambda_i D_i)$$
+It’s the censored cats that are tricky. If something else happened before a cat could be adopted, or it simply hasn’t been adopted yet, then we need the probability of not being adopted, conditional on the observation time so far. One way to motivate this is to image a cohort of 100 cats, all joining the shelter on the same day.</p>
+<ul>
+<li>If half have been adopted after 30 days, then the probability of waiting 30 days and still not being adopted is 0.5.</li>
+<li>If after 60 days, only 25 remain, then the probability of waiting 60 days and not yet being adopted is 0.25.</li>
+</ul>
+<p>Thus, any given rate of adoption implies a proportion of the cohort of 100 cats that will remain after any given number of days. This probability comes from the cumulative probability distribution. A cumulative distribution gives the proportion of cats adopted before or at a certain number of days. So $1 - \text{CDF}$, which is the CCDF, gives the probability a cat is not adopted by the same number of days. Remember from the <em>Estimating the survival function</em> section, this is equivalent to the survival function. If the exponential distribution is used, the CDF is</p>
+<p>$$F(D_i | \lambda_i) = 1 - \text{exp}(-\lambda_i D_i)$$</p>
+<p>where the complement is (here we use $S$ to denote the equivalence of the survival function and CCDF)</p>
+<p>$$S(D_i|\lambda) = \text{exp}(-\lambda_i D_i)$$</p>
+<p>Which is what we need in our model since it is the probability of waiting $D_i$ days without being adopted yet. The <code>pm.Censored</code> from PyMC offers a convenient way to model censored data and the probability density function (PDF) is defined as</p>
+<p>\begin{cases}
+0 &amp; \text{for } x &lt; \text{lower}, \
+\text{CDF}(\text{lower}, \text{dist}) &amp; \text{for } x = \text{lower}, \
+\text{PDF}(x, \text{dist}) &amp; \text{for } \text{lower} &lt; x &lt; \text{upper}, \
+1 - \text{CDF}(\text{upper}, \text{dist}) &amp; \text{for } x = \text{upper}, \
+0 &amp; \text{for } x &gt; \text{upper}.
+\end{cases}</p>
+<p>where lower is left-censored and upper is right-censored. Our cat adoption dataset is right-censored. Therefore, lower can be <code>None</code>, and upper is the observed times when an event occurs. The <code>pm.Censored</code> uses the CCDF to answer the question we are interested in: what is the probability of not being adopted yet, given the observation time so far?</p>
+<h3 id="implementation-in-bambi">Implementation in Bambi<a hidden class="anchor" aria-hidden="true" href="#implementation-in-bambi">#</a></h3>
+<p>To understand how this is used, lets use Bambi to recover the parameters of the censored distribution with no predictors. Before the model is fit, <code>days_to_event</code> is scaled to represent months as the raw values contain very large values. This scaling ensures a smoother sampling process.</p>
+<p>Additionally, modeling censored data in Bambi requires a new formula syntax <code>censored(time, event)</code> on the response term. <code>censored</code> indicates we want to model censored data and gets parsed where <code>time</code> and <code>event</code> are passed into a Bambi transformation function <a href="https://github.com/bambinos/bambi/blob/93b2c113333245d9d8b51b4661a218d6a3ce7397/bambi/transformations.py#L12">censored</a>. This function takes two arguments: the first being the observed value $Y$ (in this example <code>time</code>), and the second being the type of censoring of the event. In Bambi, it is possible to have <code>left</code>, <code>none</code>, <code>right</code>, and <code>interval</code> censoring. <code>event</code> needs to be encoded as one of the censoring types. In our cat adoption example, we will encode the adoption event as <code>right</code>.</p>
+<p>Lastly, the <code>exponential</code> distribution is used to model the cat adoption rate parameter. But why not enter <code>censored</code> as the likelihood like we normally do in Bambi? The <code>pm.Censored</code> is indeed eventually used as the likelihood. However, there also needs to be a distribution that models the rate parameter. In this example it is the <code>exponential</code> distribution. This distribution is then used as input into the <code>pm.Censored</code> distribution. For more information on how to use the <code>pm.Censored</code> distribution, see the following PyMC documentation: <a href="https://www.pymc.io/projects/examples/en/latest/generalized_linear_models/GLM-truncated-censored-regression.html#run-the-truncated-and-censored-regressions">Bayesian regression models with truncated and censored data</a> and <a href="https://www.pymc.io/projects/examples/en/latest/survival_analysis/censored_data.html">Censored data models</a>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>cats <span style="color:#f92672">=</span> cats_df<span style="color:#f92672">.</span>copy()
+</span></span><span style="display:flex;"><span>cats[<span style="color:#e6db74">&#34;adopt&#34;</span>] <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>where(cats[<span style="color:#e6db74">&#34;out_event&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;Adoption&#34;</span>, <span style="color:#e6db74">&#34;right&#34;</span>, <span style="color:#e6db74">&#34;none&#34;</span>)
+</span></span><span style="display:flex;"><span>cats[<span style="color:#e6db74">&#34;color_id&#34;</span>] <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>where(cats[<span style="color:#e6db74">&#34;color&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;Black&#34;</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>cats <span style="color:#f92672">=</span> cats[[<span style="color:#e6db74">&#34;days_to_event&#34;</span>, <span style="color:#e6db74">&#34;adopt&#34;</span>, <span style="color:#e6db74">&#34;color_id&#34;</span>]]
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>model_1 <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>Model(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;censored(days_to_event / 31, adopt) ~ 1&#34;</span>, 
+</span></span><span style="display:flex;"><span>    data<span style="color:#f92672">=</span>cats,
+</span></span><span style="display:flex;"><span>    family<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;exponential&#34;</span>,
+</span></span><span style="display:flex;"><span>    link<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;log&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>model_1<span style="color:#f92672">.</span>build()
+</span></span><span style="display:flex;"><span>model_1<span style="color:#f92672">.</span>graph()
+</span></span></code></pre></div><p><img loading="lazy" src="2023-10-25-survival-models-bambi_files/2023-10-25-survival-models-bambi_16_0.svg" alt="svg"  />
+</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>idata_1 <span style="color:#f92672">=</span> model_1<span style="color:#f92672">.</span>fit(
+</span></span><span style="display:flex;"><span>    tune<span style="color:#f92672">=</span><span style="color:#ae81ff">500</span>,
+</span></span><span style="display:flex;"><span>    draws<span style="color:#f92672">=</span><span style="color:#ae81ff">500</span>,
+</span></span><span style="display:flex;"><span>    random_seed<span style="color:#f92672">=</span><span style="color:#ae81ff">42</span>, 
+</span></span><span style="display:flex;"><span>    chains<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>, 
+</span></span><span style="display:flex;"><span>    cores<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><pre><code>Auto-assigning NUTS sampler...
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 10 jobs)
+NUTS: [Intercept]
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>Sampling 4 chains for 500 tune and 500 draw iterations (2_000 + 2_000 draws total) took 5 seconds.
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>az<span style="color:#f92672">.</span>plot_trace(idata_1);
+</span></span></code></pre></div><p><img loading="lazy" src="2023-10-25-survival-models-bambi_files/2023-10-25-survival-models-bambi_18_0.png" alt="png"  />
+</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>summary <span style="color:#f92672">=</span> az<span style="color:#f92672">.</span>summary(idata_1)
+</span></span><span style="display:flex;"><span>summary
+</span></span></code></pre></div><pre><code>/Users/gabestechschulte/miniforge3/envs/bambinos/lib/python3.11/site-packages/xarray/core/concat.py:546: FutureWarning: unique with argument that is not not a Series, Index, ExtensionArray, or np.ndarray is deprecated and will raise in a future version.
+  common_dims = tuple(pd.unique([d for v in vars for d in v.dims]))
+</code></pre>
+<!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>Interpreting the intercept (the cat adoption rate parameter) alone is of not much value. Therefore, lets use the
+survival function to compute the probability of not being adopted after a range of months, given the learned rate parameter $\lambda$. We could dervive the survival function and pass the intercept parameter to it, but SciPy already implements it as <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.expon.html">scipy.stats.expon.sf</a>, so we will just use this implementation.</p>
+<h3 id="cat-adoption-plots">Cat adoption plots<a hidden class="anchor" aria-hidden="true" href="#cat-adoption-plots">#</a></h3>
+<p>The plot below shows the estimated survival function and CCDF for cat adoptions. First, we compute the $0.95$ credible interval (CI) and median value for the intercept. Then, since a log-link was used, the values are exponentiated.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>lambda_preds <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>quantile(
+</span></span><span style="display:flex;"><span>    idata_1[<span style="color:#e6db74">&#34;posterior&#34;</span>][<span style="color:#e6db74">&#34;Intercept&#34;</span>], 
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">0.025</span>, <span style="color:#ae81ff">0.5</span>, <span style="color:#ae81ff">0.975</span>]
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lambda_lower <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">/</span> np<span style="color:#f92672">.</span>exp(lambda_preds[<span style="color:#ae81ff">0</span>])
+</span></span><span style="display:flex;"><span>lambda_median <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">/</span> np<span style="color:#f92672">.</span>exp(lambda_preds[<span style="color:#ae81ff">1</span>])
+</span></span><span style="display:flex;"><span>lambda_upper <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">/</span> np<span style="color:#f92672">.</span>exp(lambda_preds[<span style="color:#ae81ff">2</span>])
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>t <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linspace(<span style="color:#ae81ff">0</span>, max(cats[<span style="color:#e6db74">&#34;days_to_event&#34;</span>] <span style="color:#f92672">/</span> <span style="color:#ae81ff">31</span>), <span style="color:#ae81ff">100</span>)
+</span></span><span style="display:flex;"><span>S0 <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>stats<span style="color:#f92672">.</span>expon<span style="color:#f92672">.</span>sf
+</span></span><span style="display:flex;"><span>cdf <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>stats<span style="color:#f92672">.</span>expon<span style="color:#f92672">.</span>cdf
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(nrows<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, ncols<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">3</span>), sharey<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>plot(t, S0(lambda_median <span style="color:#f92672">*</span> t))
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>fill_between(t, S0(lambda_lower <span style="color:#f92672">*</span> t), S0(lambda_upper <span style="color:#f92672">*</span> t), alpha<span style="color:#f92672">=</span><span style="color:#ae81ff">0.25</span>)
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>grid(<span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>set_xlim(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">12</span>)
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>set_xlabel(<span style="color:#e6db74">&#34;Months&#34;</span>)
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>set_ylabel(<span style="color:#e6db74">&#34;Probability&#34;</span>)
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">&#34;Probability Not Being Adopted by Time $d_k$&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>plot(t, cdf(lambda_median <span style="color:#f92672">*</span> t))
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>fill_between(t, cdf(lambda_lower <span style="color:#f92672">*</span> t), cdf(lambda_upper <span style="color:#f92672">*</span> t), alpha<span style="color:#f92672">=</span><span style="color:#ae81ff">0.25</span>)
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>grid(<span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>vlines(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, linestyles<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dashed&#34;</span>)
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>set_xlabel(<span style="color:#e6db74">&#34;Months&#34;</span>)
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>set_ylabel(<span style="color:#e6db74">&#34;Probability&#34;</span>)
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">&#34;Probability of Being Adopted by Time $d_k$&#34;</span>);
+</span></span></code></pre></div><p><img loading="lazy" src="2023-10-25-survival-models-bambi_files/2023-10-25-survival-models-bambi_23_0.png" alt="png"  />
+</p>
+<p>Analyzing the CCDF (the left plot), the probability of a cat waiting one month without being adopted is about $0.60$, whereas the probability of a cat being adopted by the first month is about $0.40$. Analyzing the CDF (right plot), the majority of cats, about $0.97$, are adopted by the sixth month. Now that we have an intuition on how <code>pm.Censored</code> is used for modeling censored data, in the next section, we will discuss how to model censored data with predictors.</p>
+<h2 id="regression-models-with-a-survival-response">Regression models with a survival response<a hidden class="anchor" aria-hidden="true" href="#regression-models-with-a-survival-response">#</a></h2>
+<p>It is often the case that we would like to understand how various predictors are associated with the survival function. For example, we may want to know if the survival function for cats of different colors or species is different. As outlined above, we cannot simply run a regression on the observed times $Y$ given some predictors $X$. What we are actually interested in is predicting the survival time $T$ given the predictors $X$. To achieve this, we first need to understand the Hazard function and the Cox proportional hazards model.</p>
+<h3 id="the-hazard-function">The hazard function<a hidden class="anchor" aria-hidden="true" href="#the-hazard-function">#</a></h3>
+<p>In survival analysis, it is often more convenient to express the survival function in terms of the hazards rate, which is closely related to the survival function $S(t)$, and is the instantaneous rate of an event occuring at time $t$ given that the event has not yet occured.</p>
+<p>\begin{split}\begin{align*}
+\lambda(t)
+&amp; = \lim_{\Delta t \to 0} \frac{P(t &lt; T &lt; t + \Delta t\ |\ T &gt; t) / \Delta t}{Pr(T &gt; t)} \
+&amp; = \lim_{{\Delta t \to 0}} \frac{Pr(t &lt; T \leq t + \Delta t) / \Delta t}{Pr(T &gt; t)} \
+&amp; = \frac{f(t)}{S(t)}
+\end{align*}\end{split}</p>
+<p>where</p>
+<p>$$f(t) = \lim_{{\Delta t \to 0}} \frac{Pr(t &lt; T \leq t + \Delta t)}{\Delta t}$$</p>
+<p>where $T$ is the (unobserved) survival time and $f(t)$ is the PDF associated with $T$. The relationship between the hazard function and the survival function can be described in terms of the likelihood $L$</p>
+<p>\begin{equation}
+L_i =
+\begin{cases}
+f(y_i) &amp; \text{if the } i\text{th observation is not censored} \
+S(y_i) &amp; \text{if the } i\text{th observation is censored}
+\end{cases}
+\end{equation}</p>
+<p>If $Y = y_i$ and the $i\text{th}$ observation is not censored, then the likelihood is the probability of the event in a tiny interval around time $y_i$. If the $i\text{th}$ observation is censored, then the likelihood is the probability of surviving <strong>at least</strong> until time $y_i$. We have now seen two ways to model the survival times: (1) a non-parametric estimator such as Kaplan-Meier, and (2) a parametric model using the PDF $f(t)$ to estimate the hazard rate. However, what we would really like to do is to model the survival time as a function of the predictors. Thus, instead of working with the PDF $f(t)$, we work directly with the hazard function to model the survival time as a function of predictors.</p>
+<h3 id="the-cox-proportional-hazards-model">The Cox proportional hazards model<a hidden class="anchor" aria-hidden="true" href="#the-cox-proportional-hazards-model">#</a></h3>
+<p>Above, we developed a model with no predictors to recover the parameters of the cat adoption rate, and used this as input into the <code>pm.Censored</code> distribution. Since we would now like to add predictor(s), we need to reformulate our modeling task into a risk regression model as it allows us to model the hazard rate as a function of our predictors. Specifically, the Cox proportional hazards model. With predictors $x_j$ and regression coefficients $\beta$, the hazard rate is modeled as</p>
+<p>$$\lambda(t|x_i) = \lambda_0(t)\text{exp}(\sum_{j=1}^p x_{ij}\beta_j)$$</p>
+<p>where $\lambda_{0}t$ is the baseline hazard rate independent of the predictors. This baseline hazard rate is unspecified (or unidentified) and means that we allow the instantaneous probability of an event at time $t$, given that a subject has survived at least until time $t$, to take any form. Practically speaking, this means that the hazard function is very flexible and can model a wide range of relationships between the covariates and survival time. One can interpret the Cox proportional hazards model as a one-unit increase in $x_{ij}$ corresponds to an increase in $\lambda(t, x_i)$ by a factor of $\text{exp}(\beta_j)$. In the next section, it is discussed how to develop a regression model with survival responses and predictors.</p>
+<h2 id="implementation-in-bambi-1">Implementation in Bambi<a hidden class="anchor" aria-hidden="true" href="#implementation-in-bambi-1">#</a></h2>
+<p>Adding predictors to model the hazard rate as a function of our predictors is trivial in Bambi. We simply continue to use the formula syntax. In the backend, the rate is modeled as a function of the specified predictors in the Bambi model. For example, if in the Bambi model, we specified <code>censored(y, event) ~ 1 + x</code> with an exponential likelihood, then the latent rate $\lambda$ is modeled as an exponential distribution according to</p>
+<p>$$\alpha \sim \mathcal{N}(0, 1)$$
+$$\beta \sim \mathcal{N}(0, 1)$$
+$$\mu = \text{exp}(\alpha + \beta X)$$
+$$\lambda = 1 / \mu$$
+$$Y \sim \text{Exponential}(\lambda)$$</p>
+<p>where $Y$ is then passed to the <code>dist</code> argument of the <code>pm.Censored</code> distribution.</p>
+<h3 id="cat-adoption-rates-by-color">Cat adoption rates by color<a hidden class="anchor" aria-hidden="true" href="#cat-adoption-rates-by-color">#</a></h3>
+<p>However, thanks to Bambi&rsquo;s formula syntax, we can just include the predictors of interest. Below, <code>color_id</code> is added to model the survival probability of black and other colored cats.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>cat_model <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>Model(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;censored(days_to_event / 31, adopt) ~ 0 + color_id&#34;</span>, 
+</span></span><span style="display:flex;"><span>    data<span style="color:#f92672">=</span>cats,
+</span></span><span style="display:flex;"><span>    center_predictors<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span>    priors<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;color_id&#34;</span>: bmb<span style="color:#f92672">.</span>Prior(<span style="color:#e6db74">&#34;Normal&#34;</span>, mu<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, sigma<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)},
+</span></span><span style="display:flex;"><span>    categorical<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;color_id&#34;</span>],
+</span></span><span style="display:flex;"><span>    family<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;exponential&#34;</span>,
+</span></span><span style="display:flex;"><span>    link<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;log&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>cat_model<span style="color:#f92672">.</span>build()
+</span></span><span style="display:flex;"><span>cat_model<span style="color:#f92672">.</span>graph()
+</span></span></code></pre></div><pre><code>/Users/gabestechschulte/miniforge3/envs/bambinos/lib/python3.11/site-packages/formulae/terms/variable.py:87: FutureWarning: is_categorical_dtype is deprecated and will be removed in a future version. Use isinstance(dtype, CategoricalDtype) instead
+  elif is_string_dtype(x) or is_categorical_dtype(x):
+</code></pre>
+<p><img loading="lazy" src="2023-10-25-survival-models-bambi_files/2023-10-25-survival-models-bambi_27_1.svg" alt="svg"  />
+</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>cat_model
+</span></span></code></pre></div><pre><code>       Formula: censored(days_to_event / 31, adopt) ~ 0 + color_id
+        Family: exponential
+          Link: mu = log
+  Observations: 22356
+        Priors: 
+    target = mu
+        Common-level effects
+            color_id ~ Normal(mu: 0.0, sigma: 1.0)
+------
+* To see a plot of the priors call the .plot_priors() method.
+* To see a summary or plot of the posterior pass the object returned by .fit() to az.summary() or az.plot_trace()
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>idata <span style="color:#f92672">=</span> cat_model<span style="color:#f92672">.</span>fit(
+</span></span><span style="display:flex;"><span>    tune<span style="color:#f92672">=</span><span style="color:#ae81ff">500</span>,
+</span></span><span style="display:flex;"><span>    draws<span style="color:#f92672">=</span><span style="color:#ae81ff">500</span>,
+</span></span><span style="display:flex;"><span>    random_seed<span style="color:#f92672">=</span><span style="color:#ae81ff">42</span>, 
+</span></span><span style="display:flex;"><span>    chains<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>, 
+</span></span><span style="display:flex;"><span>    cores<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><pre><code>Auto-assigning NUTS sampler...
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 10 jobs)
+NUTS: [color_id]
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>Sampling 4 chains for 500 tune and 500 draw iterations (2_000 + 2_000 draws total) took 368 seconds.
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>az<span style="color:#f92672">.</span>summary(idata)
+</span></span></code></pre></div><pre><code>/Users/gabestechschulte/miniforge3/envs/bambinos/lib/python3.11/site-packages/xarray/core/concat.py:546: FutureWarning: unique with argument that is not not a Series, Index, ExtensionArray, or np.ndarray is deprecated and will raise in a future version.
+  common_dims = tuple(pd.unique([d for v in vars for d in v.dims]))
+</code></pre>
+<!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>The summary output informs us that, on average, the rate parameter for other cats <code>color_id[0]</code> is lower than the rate for black cats <code>color_id[1]</code>. As performed above, lets plot the survival curves and CDFs for black and other colored cats to get a better understanding of the rate parameters.</p>
+<h3 id="cat-adoption-plots-1">Cat adoption plots<a hidden class="anchor" aria-hidden="true" href="#cat-adoption-plots-1">#</a></h3>
+<p>In the inference data, we have posterior draws for <code>color_id</code> (with corresponding coordinates for other and black cats) where the values represent the sampled rates. However, it is also possible to obtain $Y$, in this example, months to event (as our data has been scaled) by calling <code>model.predict()</code> on the observed or new data. This will add a new data variable <code>censored(y, event)</code> to the posterior group of the inference data.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>new_data <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame({<span style="color:#e6db74">&#34;color_id&#34;</span>: [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>]})
+</span></span><span style="display:flex;"><span>cat_model<span style="color:#f92672">.</span>predict(idata, data<span style="color:#f92672">=</span>new_data, kind<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mean&#34;</span>)
+</span></span></code></pre></div><pre><code>/Users/gabestechschulte/miniforge3/envs/bambinos/lib/python3.11/site-packages/xarray/core/concat.py:546: FutureWarning: unique with argument that is not not a Series, Index, ExtensionArray, or np.ndarray is deprecated and will raise in a future version.
+  common_dims = tuple(pd.unique([d for v in vars for d in v.dims]))
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>other_cats <span style="color:#f92672">=</span> (idata[<span style="color:#e6db74">&#34;posterior&#34;</span>][<span style="color:#e6db74">&#34;censored(days_to_event / 31, adopt)_mean&#34;</span>]
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">.</span>sel({<span style="color:#e6db74">&#34;censored(days_to_event / 31, adopt)_obs&#34;</span>: <span style="color:#ae81ff">0</span>})
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">.</span>values
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">.</span>flatten()
+</span></span><span style="display:flex;"><span>              )
+</span></span><span style="display:flex;"><span>other_cats_preds <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>quantile(other_cats, [<span style="color:#ae81ff">0.025</span>, <span style="color:#ae81ff">0.5</span>, <span style="color:#ae81ff">0.975</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>black_cats <span style="color:#f92672">=</span> (idata[<span style="color:#e6db74">&#34;posterior&#34;</span>][<span style="color:#e6db74">&#34;censored(days_to_event / 31, adopt)_mean&#34;</span>]
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">.</span>sel({<span style="color:#e6db74">&#34;censored(days_to_event / 31, adopt)_obs&#34;</span>: <span style="color:#ae81ff">1</span>})
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">.</span>values<span style="color:#f92672">.</span>
+</span></span><span style="display:flex;"><span>                    flatten()
+</span></span><span style="display:flex;"><span>                    )
+</span></span><span style="display:flex;"><span>black_cats_preds <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>quantile(black_cats, [<span style="color:#ae81ff">0.025</span>, <span style="color:#ae81ff">0.5</span>, <span style="color:#ae81ff">0.975</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lambdas <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;Other cats&#34;</span>: <span style="color:#ae81ff">1</span> <span style="color:#f92672">/</span> other_cats_preds,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;Black cats&#34;</span>: <span style="color:#ae81ff">1</span> <span style="color:#f92672">/</span> black_cats_preds
+</span></span><span style="display:flex;"><span>        }
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(nrows<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, ncols<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">3</span>), sharey<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> key, value <span style="color:#f92672">in</span> lambdas<span style="color:#f92672">.</span>items():
+</span></span><span style="display:flex;"><span>    lower, median, upper <span style="color:#f92672">=</span> value
+</span></span><span style="display:flex;"><span>    ax[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>plot(t, S0(median <span style="color:#f92672">*</span> t), label<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>key<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    ax[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>fill_between(t, S0(lower <span style="color:#f92672">*</span> t), S0(upper <span style="color:#f92672">*</span> t), alpha<span style="color:#f92672">=</span><span style="color:#ae81ff">0.25</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>grid(<span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>set_xlim(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">10</span>)
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>legend()
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">&#34;Probability Not Being Adopted by Time $d_k$&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> key, value <span style="color:#f92672">in</span> lambdas<span style="color:#f92672">.</span>items():
+</span></span><span style="display:flex;"><span>    lower, median, upper <span style="color:#f92672">=</span> value
+</span></span><span style="display:flex;"><span>    ax[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>plot(t, cdf(median <span style="color:#f92672">*</span> t), label<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>key<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    ax[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>fill_between(t, cdf(lower <span style="color:#f92672">*</span> t), cdf(upper <span style="color:#f92672">*</span> t), alpha<span style="color:#f92672">=</span><span style="color:#ae81ff">0.25</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>grid(<span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>set_xlim(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">10</span>)
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>legend()
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">&#34;Probability of Being Adopted by Time $d_k$&#34;</span>);
+</span></span></code></pre></div><p><img loading="lazy" src="2023-10-25-survival-models-bambi_files/2023-10-25-survival-models-bambi_35_0.png" alt="png"  />
+</p>
+<p>Analyzing the CCDF (left plot), we can see that black cats have a slightly higher probability of not being adopted throughout the whole range of $k$. Furthermore, analyzing the CDF (right plot), we can see it also takes a longer time for the majority of black cats to be adopted compared to other colored cats. Below, we plot the distribution of days until adoption for the two groups.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>))
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>hist(
+</span></span><span style="display:flex;"><span>    other_cats <span style="color:#f92672">*</span> <span style="color:#ae81ff">31</span>, 
+</span></span><span style="display:flex;"><span>    bins<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>, 
+</span></span><span style="display:flex;"><span>    density<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Other cats&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>hist(
+</span></span><span style="display:flex;"><span>    black_cats <span style="color:#f92672">*</span> <span style="color:#ae81ff">31</span>, 
+</span></span><span style="display:flex;"><span>    bins<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>,
+</span></span><span style="display:flex;"><span>    density<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Black cats&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>legend()
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#34;Days&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#34;Density&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#34;Distribution of Adoption Times&#34;</span>);
+</span></span></code></pre></div><p><img loading="lazy" src="2023-10-25-survival-models-bambi_files/2023-10-25-survival-models-bambi_37_0.png" alt="png"  />
+</p>
+<p>Scaling adoption times back to days (multiplying by 31), we can see that black cats have longer and a wider range of time until adoptions (about 55 days) than cats that are not black (about 51 days).</p>
+<h2 id="summary">Summary<a hidden class="anchor" aria-hidden="true" href="#summary">#</a></h2>
+<p>In this notebook, we introduced censored data, left and right censoring, and why such data lends itself to specialized statistical methods and models. First, the non-parametric Kaplan-Meier estimator to estimate the survival curve of censored data was introduced. Subsequently, motivated by modeling the survival function as a function of predictors, the hazards rate and Cox proportional hazards model was introduced. Modeling censored data in Bambi requires defining the response as <code>censored(y, event)</code> where <code>event</code> is left or right censoring. To add predictors to the model, simply include them in the formula. Bambi leverages the <code>pm.Censored</code> distribution from PyMC as the likelihood for censored data.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">%</span>load_ext watermark
+</span></span><span style="display:flex;"><span><span style="color:#f92672">%</span>watermark <span style="color:#f92672">-</span>n <span style="color:#f92672">-</span>u <span style="color:#f92672">-</span>v <span style="color:#f92672">-</span>iv <span style="color:#f92672">-</span>w
+</span></span></code></pre></div><pre><code>The watermark extension is already loaded. To reload it, use:
+  %reload_ext watermark
+Last updated: Mon Oct 23 2023
+
+Python implementation: CPython
+Python version       : 3.11.0
+IPython version      : 8.13.2
+
+pymc      : 5.8.1
+arviz     : 0.16.1
+pandas    : 2.1.0
+bambi     : 0.13.0.dev0
+matplotlib: 3.7.1
+numpy     : 1.24.2
+scipy     : 1.11.2
+
+Watermark: 2.3.1
+</code></pre>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="http://localhost:1313/">The Log</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
