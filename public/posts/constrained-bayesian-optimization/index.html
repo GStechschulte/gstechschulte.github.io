@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Outcome Constraints in Bayesian Optimization | The Log</title>
+<meta name="keywords" content="">
+<meta name="description" content="
+#| code-fold: true
+import matplotlib.pyplot as plt
+import torch
+import numpy as np
+
+from botorch.acquisition import qLogExpectedImprovement
+from botorch.fit import fit_gpytorch_model
+from botorch.models import SingleTaskGP
+from botorch.optim import optimize_acqf
+from gpytorch.mlls import ExactMarginalLogLikelihood
+from torch.distributions import Normal
+
+plt.style.use(&#34;https://raw.githubusercontent.com/GStechschulte/filterjax/main/docs/styles.mplstyle&#34;)
+Outcome constraints
+In optimization, it is often the goal that we need to optimize an objective function while satisfying some constraints. For example, we may want to minimize the scrap rate by finding the optimal process parameters of an manufacturing machine. However, we know the scrap rate cannot be below 0. In another setting, we may want to maximize the throughput of a machine, but we know that the throughput cannot exceed the maximum belt speed of the machine. Thus, we need to find regions in the search space that both yield high objective values and satisfy these constraints. In this blog, we will focus on inequality outcome constraints. That is, the domain of the objective function is">
+<meta name="author" content="Gabriel Stechschulte">
+<link rel="canonical" href="http://localhost:1313/posts/constrained-bayesian-optimization/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.e06e296717ca1485b42270445b6064e38739a541df87459ef5f957e51cd74e72.css" integrity="sha256-4G4pZxfKFIW0InBEW2Bk44c5pUHfh0We9flX5RzXTnI=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/constrained-bayesian-optimization/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+    crossorigin="anonymous"
+/>
+<script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+    crossorigin="anonymous"
+></script>
+<script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+    crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"
+></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+            ],
+        });
+    });
+</script>
+
+
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="The Log (Alt + H)">The Log</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/categories/" title="categories">
+                    <span>categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="tags">
+                    <span>tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Outcome Constraints in Bayesian Optimization
+    </h1>
+    <div class="post-meta"><span title='2023-11-28 00:00:00 +0000 UTC'>November 28, 2023</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Gabriel Stechschulte
+
+</div>
+  </header> 
+  <div class="post-content"><!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#| code-fold: true</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> botorch.acquisition <span style="color:#f92672">import</span> qLogExpectedImprovement
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> botorch.fit <span style="color:#f92672">import</span> fit_gpytorch_model
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> botorch.models <span style="color:#f92672">import</span> SingleTaskGP
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> botorch.optim <span style="color:#f92672">import</span> optimize_acqf
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> gpytorch.mlls <span style="color:#f92672">import</span> ExactMarginalLogLikelihood
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> torch.distributions <span style="color:#f92672">import</span> Normal
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>style<span style="color:#f92672">.</span>use(<span style="color:#e6db74">&#34;https://raw.githubusercontent.com/GStechschulte/filterjax/main/docs/styles.mplstyle&#34;</span>)
+</span></span></code></pre></div><h1 id="outcome-constraints">Outcome constraints<a hidden class="anchor" aria-hidden="true" href="#outcome-constraints">#</a></h1>
+<p>In optimization, it is often the goal that we need to optimize an objective function while satisfying some constraints. For example, we may want to minimize the scrap rate by finding the optimal process parameters of an manufacturing machine. However, we know the scrap rate cannot be below 0. In another setting, we may want to maximize the throughput of a machine, but we know that the throughput cannot exceed the maximum belt speed of the machine. Thus, we need to find regions in the search space that both yield high objective values and satisfy these constraints. In this blog, we will focus on inequality <em>outcome constraints</em>. That is, the domain of the objective function is</p>
+<p>$$\text{lower} \le f(x) \le \text{upper}$$</p>
+<p>where $\text{lower}$ and $\text{upper}$ are the lower and upper bounds of the objective function. You need not both bounds, but rather one or the other. The set of points $x&rsquo;$ that satisfy the constraint are called <em>feasible points</em> and the set of points that do not satisfy the constraint are called <em>infeasible points</em>. Often, in tutorials and or books teaching Bayesian optimization, it is assumed we know a cost function a priori that restricts the outcome space in some way, and then an additional model is used to model the constraint. However, in practice, we often only know a lower and or upper bound according to technical specifications. These bounds do not require an additional model.</p>
+<p>In this blog, it will be shown how to use BoTorch to optimize a one-dimensional function with an outcome constraint without using an additional model for the cost (constraint) function. The remainder of the post assumes the reader is already familiar with Bayesian optimization.</p>
+<h2 id="probability-of-feasibility">Probability of feasibility<a hidden class="anchor" aria-hidden="true" href="#probability-of-feasibility">#</a></h2>
+<p>In BoTorch it is common to use a Gaussian Process (GP) to model the objective function. The output of the GP is a Gaussian distribution over the predicted values for a given set of input points. It provides not just a single point estimate but a probabilistic prediction that accounts for uncertainty in the predictions. Thus, for each point in the search space, we have a corresponding Gaussian distribution representing the belief of the objective value at that point.</p>
+<p>Intuitively, if we have defined an outcome constraint, we can compute the probability that $f(x)$ is feasible by taking the cumulative distribution function (CDF) of the predictive distribution and computing the area between the lower bound and the upper bound. For example, imagine a GP has made a prediction given an input $x$. This predictive distribution of the outcome $y$ is shown below. The prediction is normally distributed around $0.0$ with plausible predictions ranging from $-3$ to $3$. Additionally, there is an outcome constraint of the form</p>
+<p>$$0 &lt; f(x)$$</p>
+<p>The probability that the prediction is feasible (above $0$) is computed using the CDF of the predictive distribution. In this example, the probability of feasibility is $0.5$. As will be shown below, this probability can then multiplied by the policy score to get the <em>constrained policy score</em>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#| code-fold: true</span>
+</span></span><span style="display:flex;"><span>xs <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>linspace(<span style="color:#f92672">-</span><span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">100</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>normal <span style="color:#f92672">=</span> Normal(torch<span style="color:#f92672">.</span>tensor([<span style="color:#ae81ff">0.0</span>]), torch<span style="color:#f92672">.</span>tensor([<span style="color:#ae81ff">1.0</span>]))
+</span></span><span style="display:flex;"><span>xs_eval <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>exp(normal<span style="color:#f92672">.</span>log_prob(xs)) <span style="color:#f92672">/</span> torch<span style="color:#f92672">.</span>exp(normal<span style="color:#f92672">.</span>log_prob(xs))<span style="color:#f92672">.</span>sum()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cdf <span style="color:#f92672">=</span> normal<span style="color:#f92672">.</span>cdf(xs)
+</span></span><span style="display:flex;"><span>above <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>where(cdf <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0.5</span>)
+</span></span><span style="display:flex;"><span>prob_feasibility <span style="color:#f92672">=</span> normal<span style="color:#f92672">.</span>cdf(torch<span style="color:#f92672">.</span>zeros(<span style="color:#ae81ff">1</span>))<span style="color:#f92672">.</span>item()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>))
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>plot(xs, xs_eval, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Predictive distribution&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>fill_between(xs, xs_eval, where<span style="color:#f92672">=</span>xs <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>, alpha<span style="color:#f92672">=</span><span style="color:#ae81ff">0.5</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Feasible region&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;Predicted outcome $y$&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;Probability&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Area under the shaded curve: </span><span style="color:#e6db74">{</span>prob_feasibility<span style="color:#e6db74">:</span><span style="color:#e6db74">.2f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>legend()
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()
+</span></span></code></pre></div><p><img loading="lazy" src="2023-11-28-constrained-bayesopt_files/2023-11-28-constrained-bayesopt_4_0.png" alt="png"  />
+</p>
+<h2 id="constrained-policy">Constrained Policy<a hidden class="anchor" aria-hidden="true" href="#constrained-policy">#</a></h2>
+<p>With the probability of feasibility computed, we can scale the policy, e.g. expected improvement (EI), score of each unseen point in the search space by the probability the point is feasible.</p>
+<ul>
+<li>If the data point is likely to satisfy the constraints, then its EI score will be multiplied by a large number (a high probability of feasibility), thus keeping the EI score high.</li>
+<li>If the data point is unlikely to satisfy the constraints, then its EI score will be multiplied by a small number (a small probability of feasibility), thus keeping the EI score small.</li>
+</ul>
+<p>To implement inequality outcome constraints, acquisition functions that utilize Monte-Carlo (MC) sampling are used as this allows us to directly pass a list of constraint callables. These are any acquisition functions that inherit from <a href="https://github.com/pytorch/botorch/blob/c14808f7a1ce28fdb0e7158e47330b1006687682/botorch/acquisition/monte_carlo.py#L145">SampleReducingMCAcqquisitionFunction</a>.</p>
+<h2 id="implementation">Implementation<a hidden class="anchor" aria-hidden="true" href="#implementation">#</a></h2>
+<p>To implement inequality outcome constraints, only a list of constraint callables which map a Tensor of posterior samples of dimension <code>sample_shape x batch-shape x q x m</code>-dim to a <code>sample_shape x batch-shape x q</code>-dim Tensor. The associated constraints are considered satisfied if the output is less than zero. In the example below, we aim to minimize the Forrester function subject to the following constraint that
+$$f(x) &lt; 0$$</p>
+<p><em>Note</em>: Since we are minimizing, the objective function is inverted, and thus the inequality is also inverted.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">objective_fn</span>(x):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span>((x <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">**</span> <span style="color:#ae81ff">2</span>) <span style="color:#f92672">*</span> torch<span style="color:#f92672">.</span>sin(<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> x <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>) <span style="color:#f92672">/</span> <span style="color:#ae81ff">5</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">+</span> x <span style="color:#f92672">/</span> <span style="color:#ae81ff">3</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#| code-fold: true</span>
+</span></span><span style="display:flex;"><span>lb, ub <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>bounds <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor([[lb], [ub]], dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>float)
+</span></span><span style="display:flex;"><span>xs <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>linspace(lb, ub, <span style="color:#ae81ff">100</span>)<span style="color:#f92672">.</span>unsqueeze(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>ys <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>objective_fn(xs)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>n <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>train_x <span style="color:#f92672">=</span> bounds[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">+</span> (bounds[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">-</span> bounds[<span style="color:#ae81ff">0</span>]) <span style="color:#f92672">*</span> torch<span style="color:#f92672">.</span>rand(n, <span style="color:#ae81ff">1</span>, dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>double)
+</span></span><span style="display:flex;"><span>train_y <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>objective_fn(train_x)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>))
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>plot(xs, ys, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Objective&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>scatter(train_x, train_y, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;black&#34;</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Observations&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>axhline(y<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;k&#34;</span>, linestyle<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;--&#34;</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Upper Bound&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>legend();
+</span></span></code></pre></div><p><img loading="lazy" src="2023-11-28-constrained-bayesopt_files/2023-11-28-constrained-bayesopt_8_0.png" alt="png"  />
+</p>
+<p>The Bayesian optimization loop below uses the <code>qLogExpectedImprovement</code> policy. To impose the desired inequality outcome constraint $f(x) &lt; 0$, a list of callables <code>[lambda Z: Z.squeeze(-1) - upper]</code> is passed to <code>constraints</code>. This callable subtracts the posterior samples $Z$ by <code>upper</code> which is $0.0$. If the result of this is less than zero, then the constraint is satisfied.</p>
+<p>Note that $Z$ here would be passing in all outcomes if a multi-task GP had been defined, so you want to index into $Z$ appropriately and make separate callables for each outcome, e.g.  <code>constraints=[lambda Z: Z[..., constraint_outcome_idx]]</code>. However, in this example, there is only one outcome, so we can just use <code>Z.squeeze(-1)</code> to select the correct (and only) outcome dimension.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>n_iterations <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>
+</span></span><span style="display:flex;"><span>upper <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> iteration <span style="color:#f92672">in</span> range(n_iterations):
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;iter: </span><span style="color:#e6db74">{</span>iteration<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    model <span style="color:#f92672">=</span> SingleTaskGP(train_x, train_y, )
+</span></span><span style="display:flex;"><span>    mll <span style="color:#f92672">=</span> ExactMarginalLogLikelihood(model<span style="color:#f92672">.</span>likelihood, model)
+</span></span><span style="display:flex;"><span>    fit_gpytorch_model(mll)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    logEI <span style="color:#f92672">=</span> qLogExpectedImprovement(
+</span></span><span style="display:flex;"><span>        model,
+</span></span><span style="display:flex;"><span>        best_f<span style="color:#f92672">=</span>train_y[train_y <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>max(),
+</span></span><span style="display:flex;"><span>        constraints<span style="color:#f92672">=</span>[
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">lambda</span> Z: Z<span style="color:#f92672">.</span>squeeze(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) <span style="color:#f92672">-</span> upper
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># if there was also a lower bound</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># lambda Z: lower - Z.squeeze(-1),</span>
+</span></span><span style="display:flex;"><span>        ]
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    new_x, _ <span style="color:#f92672">=</span> optimize_acqf(
+</span></span><span style="display:flex;"><span>        acq_function<span style="color:#f92672">=</span>logEI,
+</span></span><span style="display:flex;"><span>        bounds<span style="color:#f92672">=</span>bounds,
+</span></span><span style="display:flex;"><span>        q<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>        num_restarts<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>,
+</span></span><span style="display:flex;"><span>        raw_samples<span style="color:#f92672">=</span><span style="color:#ae81ff">20</span>,
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    new_y <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>objective_fn(new_x)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    train_x <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>cat([train_x, new_x])
+</span></span><span style="display:flex;"><span>    train_y <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>cat([train_y, new_y])
+</span></span></code></pre></div><p>We can then evaluate the policy on unseen data and plot the proposed samples (queries).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">with</span> torch<span style="color:#f92672">.</span>no_grad():
+</span></span><span style="display:flex;"><span>    acquisition_score <span style="color:#f92672">=</span> logEI(xs<span style="color:#f92672">.</span>unsqueeze(<span style="color:#ae81ff">1</span>))
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">4</span>),
+</span></span><span style="display:flex;"><span>    sharex<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    gridspec_kw<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;height_ratios&#34;</span>: [<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span>]}
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>scatter(train_x[:<span style="color:#ae81ff">5</span>], <span style="color:#f92672">-</span>train_y[:<span style="color:#ae81ff">5</span>], color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;black&#34;</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;observed samples&#34;</span>)
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>scatter(train_x[<span style="color:#ae81ff">5</span>:], <span style="color:#f92672">-</span>train_y[<span style="color:#ae81ff">5</span>:], color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;red&#34;</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;proposal samples&#34;</span>)
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>plot(xs, <span style="color:#f92672">-</span>ys, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;objective function&#34;</span>)
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>legend()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>plot(xs, acquisition_score, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;acquisition score&#34;</span>)
+</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>legend();
+</span></span></code></pre></div><p><img loading="lazy" src="2023-11-28-constrained-bayesopt_files/2023-11-28-constrained-bayesopt_13_0.png" alt="png"  />
+</p>
+<p>The objective function has been flipped back to its original form to visually evaluate the optimization loop. Notice how the majority of the proposed points that minimize the objective function are <em>near</em> $0$. Points that are below $0$ happen due to the fact that we are using a probabilistic surrogate model to compute the probability of feasibility. The predictions of this model are not perfect, and thus, it is possible that the optimized policy score informs the next query to be a point below $0.0$. Nonetheless, the minimizing points are found near $-4.2$, $-2.5$, and $-1.5$.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="http://localhost:1313/">The Log</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

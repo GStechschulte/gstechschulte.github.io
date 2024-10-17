@@ -4,6 +4,7 @@ date = 2022-06-03T18:43:46+02:00
 author = 'Gabriel Stechschulte'
 categories = ['probabilistic-programming']
 draft = false
+math = true
 +++
 
 We don't know the real posterior so we are going to choose a distribution $Q(\theta)$ from a family of distributions $Q^*$ that are **easy to work with** and parameterized by $\theta$. The approximate distribution should be *as close as possible* to the true posterior. This closeness is measured using KL-Divergence. If we have the joint $p(x, z)$ where $x$ is some observed data, the goal is to perform inference: given what we have observed, what can we infer about the latent states?, i.e , we want the posterior.

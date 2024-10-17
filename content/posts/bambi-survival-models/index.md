@@ -3,6 +3,7 @@ title: 'Survival Models in Bambi'
 date: 2023-10-25
 author: 'Gabriel Stechschulte'
 draft: false
+math: true
 categories: ['probabilistic-programming']
 ---
 
@@ -16,7 +17,7 @@ This blog post is a copy of the survival models documentation I wrote for [Bambi
 
 ## Survival and censoring times
 
-Sometimes the right way to model discrete, countable events is to model not the counts themselves but rather the **time between events**. This gives us information regarding the rate of an event. Survival models are models for countable things, but the outcomes we want to predict are durations. Durations are continuous deviations from some point of reference (so they are all positive values). 
+Sometimes the right way to model discrete, countable events is to model not the counts themselves but rather the **time between events**. This gives us information regarding the rate of an event. Survival models are models for countable things, but the outcomes we want to predict are durations. Durations are continuous deviations from some point of reference (so they are all positive values).
 
 The tricky part with survival models is not the probability distribution assigned to the durations, but dealing with censoring. Censoring occurs when the event of interest does not occur in the window of observation. In a simple scenario, this can happen because the observation period ends before the event occurred. Censored individuals (or units) can not just be dropped from the sample. As an example, we use Richard McElreath's cat adoption example from chapter 11.4 of Statistical Rethinking: Imagine a cohort of 100 cats who start waiting for adoption at the same time. After one month, half of them have been adopted. Now what is the rate of adoption? You can’t compute it using only the cats who have been adopted. You need to also account for the cats who haven’t yet been adopted. The cats who haven’t been adopted yet, but eventually will be adopted, clearly have longer waiting times than the cats who have already been adopted. So the average rate among those who are already adopted is biased upwards—it is confounded by conditioning on adoption.
 
@@ -48,7 +49,7 @@ The fact that $d_{k-1} < d_k$ implies that $Pr(T > d_k | T \leq d_{k-1}) = 0$ (a
 
 $$S(d_k) = Pr(T > d_k | T > d_{k-1})S(d_{k-1})$$
 
-Now we must estimate the terms on the right-hand side. It is common to use the following estimator 
+Now we must estimate the terms on the right-hand side. It is common to use the following estimator
 
 $$\hat{Pr}(T > d_j | T > d_{j-1}) = \frac{r_j - q_j}{r_j}$$
 
@@ -97,9 +98,9 @@ plt.legend();
 ```
 
 
-    
+
 ![png](2023-10-25-survival-models-bambi_files/2023-10-25-survival-models-bambi_8_0.png)
-    
+
 
 
 The distribution of days until adoption exhibits a long tail with most cats (if we observe the adopt event) being adopted within the first month of inception. Note that the plot has been truncated to six months for better visibility. Below, we estimate the survival function using the `KaplanMeierFitter` class from the `lifelines` package.
@@ -108,7 +109,7 @@ The distribution of days until adoption exhibits a long tail with most cats (if 
 ```python
 km = KaplanMeierFitter()
 km_adoptions = km.fit(
-    cats_df["days_to_event"], 
+    cats_df["days_to_event"],
     cats_df["out_event"].apply(lambda x: 1 if x == "Adoption" else 0)
 )
 ```
@@ -125,9 +126,9 @@ ax.set_title("Cat Adoption Survival Curve");
 ```
 
 
-    
+
 ![png](2023-10-25-survival-models-bambi_files/2023-10-25-survival-models-bambi_11_0.png)
-    
+
 
 
 The Kaplan-Meier estimator shows that by 100 days, the probability of a cat not being adopted is about $0.15$ percent. After 100 days, the probability of cat not being adopted decreases, albeit at a much slower rate. Thus, if a cat hasn't been adopted by the 100th day, it is more likely the cat will continue to wait for adoption. In the next section, we discuss `pm.Censored`, a PyMC distrbution that allows us to model censored data.
@@ -138,9 +139,9 @@ The [censored distribution](https://www.pymc.io/projects/docs/en/latest/api/dist
 $$D_i \sim \text{Exponential}(\lambda_i)$$
 or
 $$f(D_i | \lambda_i) = \lambda_i \text{exp}(-\lambda_i D_i)$$
-It’s the censored cats that are tricky. If something else happened before a cat could be adopted, or it simply hasn’t been adopted yet, then we need the probability of not being adopted, conditional on the observation time so far. One way to motivate this is to image a cohort of 100 cats, all joining the shelter on the same day. 
-- If half have been adopted after 30 days, then the probability of waiting 30 days and still not being adopted is 0.5. 
-- If after 60 days, only 25 remain, then the probability of waiting 60 days and not yet being adopted is 0.25. 
+It’s the censored cats that are tricky. If something else happened before a cat could be adopted, or it simply hasn’t been adopted yet, then we need the probability of not being adopted, conditional on the observation time so far. One way to motivate this is to image a cohort of 100 cats, all joining the shelter on the same day.
+- If half have been adopted after 30 days, then the probability of waiting 30 days and still not being adopted is 0.5.
+- If after 60 days, only 25 remain, then the probability of waiting 60 days and not yet being adopted is 0.25.
 
 Thus, any given rate of adoption implies a proportion of the cohort of 100 cats that will remain after any given number of days. This probability comes from the cumulative probability distribution. A cumulative distribution gives the proportion of cats adopted before or at a certain number of days. So $1 - \text{CDF}$, which is the CCDF, gives the probability a cat is not adopted by the same number of days. Remember from the _Estimating the survival function_ section, this is equivalent to the survival function. If the exponential distribution is used, the CDF is
 
@@ -152,7 +153,7 @@ $$S(D_i|\lambda) = \text{exp}(-\lambda_i D_i)$$
 
 Which is what we need in our model since it is the probability of waiting $D_i$ days without being adopted yet. The `pm.Censored` from PyMC offers a convenient way to model censored data and the probability density function (PDF) is defined as
 
-\begin{cases} 
+\begin{cases}
 0 & \text{for } x < \text{lower}, \\
 \text{CDF}(\text{lower}, \text{dist}) & \text{for } x = \text{lower}, \\
 \text{PDF}(x, \text{dist}) & \text{for } \text{lower} < x < \text{upper}, \\
@@ -164,7 +165,7 @@ where lower is left-censored and upper is right-censored. Our cat adoption datas
 
 ### Implementation in Bambi
 
-To understand how this is used, lets use Bambi to recover the parameters of the censored distribution with no predictors. Before the model is fit, `days_to_event` is scaled to represent months as the raw values contain very large values. This scaling ensures a smoother sampling process. 
+To understand how this is used, lets use Bambi to recover the parameters of the censored distribution with no predictors. Before the model is fit, `days_to_event` is scaled to represent months as the raw values contain very large values. This scaling ensures a smoother sampling process.
 
 Additionally, modeling censored data in Bambi requires a new formula syntax `censored(time, event)` on the response term. `censored` indicates we want to model censored data and gets parsed where `time` and `event` are passed into a Bambi transformation function [censored](https://github.com/bambinos/bambi/blob/93b2c113333245d9d8b51b4661a218d6a3ce7397/bambi/transformations.py#L12). This function takes two arguments: the first being the observed value $Y$ (in this example `time`), and the second being the type of censoring of the event. In Bambi, it is possible to have `left`, `none`, `right`, and `interval` censoring. `event` needs to be encoded as one of the censoring types. In our cat adoption example, we will encode the adoption event as `right`.
 
@@ -181,7 +182,7 @@ cats = cats[["days_to_event", "adopt", "color_id"]]
 
 ```python
 model_1 = bmb.Model(
-    "censored(days_to_event / 31, adopt) ~ 1", 
+    "censored(days_to_event / 31, adopt) ~ 1",
     data=cats,
     family="exponential",
     link="log"
@@ -193,9 +194,9 @@ model_1.graph()
 
 
 
-    
+
 ![svg](2023-10-25-survival-models-bambi_files/2023-10-25-survival-models-bambi_16_0.svg)
-    
+
 
 
 
@@ -204,8 +205,8 @@ model_1.graph()
 idata_1 = model_1.fit(
     tune=500,
     draws=500,
-    random_seed=42, 
-    chains=4, 
+    random_seed=42,
+    chains=4,
     cores=10
 )
 ```
@@ -254,9 +255,9 @@ az.plot_trace(idata_1);
 ```
 
 
-    
+
 ![png](2023-10-25-survival-models-bambi_files/2023-10-25-survival-models-bambi_18_0.png)
-    
+
 
 
 
@@ -330,7 +331,7 @@ The plot below shows the estimated survival function and CCDF for cat adoptions.
 
 ```python
 lambda_preds = np.quantile(
-    idata_1["posterior"]["Intercept"], 
+    idata_1["posterior"]["Intercept"],
     [0.025, 0.5, 0.975]
 )
 
@@ -365,12 +366,12 @@ ax[1].set_title("Probability of Being Adopted by Time $d_k$");
 ```
 
 
-    
+
 ![png](2023-10-25-survival-models-bambi_files/2023-10-25-survival-models-bambi_23_0.png)
-    
 
 
-Analyzing the CCDF (the left plot), the probability of a cat waiting one month without being adopted is about $0.60$, whereas the probability of a cat being adopted by the first month is about $0.40$. Analyzing the CDF (right plot), the majority of cats, about $0.97$, are adopted by the sixth month. Now that we have an intuition on how `pm.Censored` is used for modeling censored data, in the next section, we will discuss how to model censored data with predictors. 
+
+Analyzing the CCDF (the left plot), the probability of a cat waiting one month without being adopted is about $0.60$, whereas the probability of a cat being adopted by the first month is about $0.40$. Analyzing the CDF (right plot), the majority of cats, about $0.97$, are adopted by the sixth month. Now that we have an intuition on how `pm.Censored` is used for modeling censored data, in the next section, we will discuss how to model censored data with predictors.
 
 ## Regression models with a survival response
 
@@ -394,8 +395,8 @@ $$f(t) = \lim_{{\Delta t \to 0}} \frac{Pr(t < T \leq t + \Delta t)}{\Delta t}$$
 where $T$ is the (unobserved) survival time and $f(t)$ is the PDF associated with $T$. The relationship between the hazard function and the survival function can be described in terms of the likelihood $L$
 
 \begin{equation}
-L_i = 
-\begin{cases} 
+L_i =
+\begin{cases}
 f(y_i) & \text{if the } i\text{th observation is not censored} \\
 S(y_i) & \text{if the } i\text{th observation is censored}
 \end{cases}
@@ -430,7 +431,7 @@ However, thanks to Bambi's formula syntax, we can just include the predictors of
 
 ```python
 cat_model = bmb.Model(
-    "censored(days_to_event / 31, adopt) ~ 0 + color_id", 
+    "censored(days_to_event / 31, adopt) ~ 0 + color_id",
     data=cats,
     center_predictors=False,
     priors={"color_id": bmb.Prior("Normal", mu=0, sigma=1)},
@@ -449,9 +450,9 @@ cat_model.graph()
 
 
 
-    
+
 ![svg](2023-10-25-survival-models-bambi_files/2023-10-25-survival-models-bambi_27_1.svg)
-    
+
 
 
 
@@ -467,7 +468,7 @@ cat_model
             Family: exponential
               Link: mu = log
       Observations: 22356
-            Priors: 
+            Priors:
         target = mu
             Common-level effects
                 color_id ~ Normal(mu: 0.0, sigma: 1.0)
@@ -482,8 +483,8 @@ cat_model
 idata = cat_model.fit(
     tune=500,
     draws=500,
-    random_seed=42, 
-    chains=4, 
+    random_seed=42,
+    chains=4,
     cores=10
 )
 ```
@@ -662,9 +663,9 @@ ax[1].set_title("Probability of Being Adopted by Time $d_k$");
 ```
 
 
-    
+
 ![png](2023-10-25-survival-models-bambi_files/2023-10-25-survival-models-bambi_35_0.png)
-    
+
 
 
 Analyzing the CCDF (left plot), we can see that black cats have a slightly higher probability of not being adopted throughout the whole range of $k$. Furthermore, analyzing the CDF (right plot), we can see it also takes a longer time for the majority of black cats to be adopted compared to other colored cats. Below, we plot the distribution of days until adoption for the two groups.
@@ -673,13 +674,13 @@ Analyzing the CCDF (left plot), we can see that black cats have a slightly highe
 ```python
 plt.figure(figsize=(7, 3))
 plt.hist(
-    other_cats * 31, 
-    bins=50, 
+    other_cats * 31,
+    bins=50,
     density=True,
     label="Other cats"
 )
 plt.hist(
-    black_cats * 31, 
+    black_cats * 31,
     bins=50,
     density=True,
     label="Black cats"
@@ -691,9 +692,9 @@ plt.title("Distribution of Adoption Times");
 ```
 
 
-    
+
 ![png](2023-10-25-survival-models-bambi_files/2023-10-25-survival-models-bambi_37_0.png)
-    
+
 
 
 Scaling adoption times back to days (multiplying by 31), we can see that black cats have longer and a wider range of time until adoptions (about 55 days) than cats that are not black (about 51 days).
@@ -711,11 +712,11 @@ In this notebook, we introduced censored data, left and right censoring, and why
     The watermark extension is already loaded. To reload it, use:
       %reload_ext watermark
     Last updated: Mon Oct 23 2023
-    
+
     Python implementation: CPython
     Python version       : 3.11.0
     IPython version      : 8.13.2
-    
+
     pymc      : 5.8.1
     arviz     : 0.16.1
     pandas    : 2.1.0
@@ -723,7 +724,5 @@ In this notebook, we introduced censored data, left and right censoring, and why
     matplotlib: 3.7.1
     numpy     : 1.24.2
     scipy     : 1.11.2
-    
-    Watermark: 2.3.1
-    
 
+    Watermark: 2.3.1

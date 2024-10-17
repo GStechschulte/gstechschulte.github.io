@@ -6,8 +6,50 @@
     <description>Recent content in Posts on The Log</description>
     <generator>Hugo -- 0.135.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 25 Oct 2023 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 29 Mar 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Alternative Samplers to NUTS in Bambi</title>
+      <link>http://localhost:1313/posts/bambi-alternative-samplers/</link>
+      <pubDate>Fri, 29 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/bambi-alternative-samplers/</guid>
+      <description>&lt;!-- raw HTML omitted --&gt;
+&lt;h1 id=&#34;alternative-sampling-backends&#34;&gt;Alternative sampling backends&lt;/h1&gt;
+&lt;p&gt;This blog post is a copy of the alternative samplers documentation I wrote for &lt;a href=&#34;https://bambinos.github.io/bambi/&#34;&gt;Bambi&lt;/a&gt;. The original post can be found &lt;a href=&#34;https://bambinos.github.io/bambi/notebooks/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In Bambi, the sampler used is automatically selected given the type of variables used in the model. For inference, Bambi supports both MCMC and variational inference. By default, Bambi uses PyMC&amp;rsquo;s implementation of the adaptive Hamiltonian Monte Carlo (HMC) algorithm for sampling. Also known as the No-U-Turn Sampler (NUTS). This sampler is a good choice for many models. However, it is not the only sampling method, nor is PyMC the only library implementing NUTS.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Advanced Interpret Usage in Bambi</title>
+      <link>http://localhost:1313/posts/bambi-advanced-marginal-effects/</link>
+      <pubDate>Sat, 09 Dec 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/bambi-advanced-marginal-effects/</guid>
+      <description>&lt;!-- raw HTML omitted --&gt;
+&lt;h1 id=&#34;interpret-advanced-usage&#34;&gt;Interpret Advanced Usage&lt;/h1&gt;
+&lt;p&gt;The &lt;code&gt;interpret&lt;/code&gt; module is inspired by the R package &lt;a href=&#34;https://marginaleffects.com&#34;&gt;marginaleffects&lt;/a&gt; and ports the core functionality of {marginaleffects} to Bambi. To close the gap of non-supported functionality in Bambi, &lt;code&gt;interpret&lt;/code&gt; now provides a set of helper functions to aid the user in more advanced and complex analysis not covered within the &lt;code&gt;comparisons&lt;/code&gt;, &lt;code&gt;predictions&lt;/code&gt;, and &lt;code&gt;slopes&lt;/code&gt; functions.&lt;/p&gt;
+&lt;p&gt;These helper functions are &lt;code&gt;data_grid&lt;/code&gt; and &lt;code&gt;select_draws&lt;/code&gt;. The &lt;code&gt;data_grid&lt;/code&gt; can be used to create a pairwise grid of data points for the user to pass to &lt;code&gt;model.predict&lt;/code&gt;. Subsequently, &lt;code&gt;select_draws&lt;/code&gt; is used to select the draws from the posterior (or posterior predictive) group of the InferenceData object returned by the predict method that correspond to the data points that &amp;ldquo;produced&amp;rdquo; that draw.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Outcome Constraints in Bayesian Optimization</title>
+      <link>http://localhost:1313/posts/constrained-bayesian-optimization/</link>
+      <pubDate>Tue, 28 Nov 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/constrained-bayesian-optimization/</guid>
+      <description>&lt;!-- raw HTML omitted --&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#| code-fold: true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; matplotlib.pyplot &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; plt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; torch
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; numpy &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; np
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; botorch.acquisition &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; qLogExpectedImprovement
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; botorch.fit &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; fit_gpytorch_model
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; botorch.models &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; SingleTaskGP
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; botorch.optim &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; optimize_acqf
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; gpytorch.mlls &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; ExactMarginalLogLikelihood
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; torch.distributions &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; Normal
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;style&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;use(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;https://raw.githubusercontent.com/GStechschulte/filterjax/main/docs/styles.mplstyle&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;outcome-constraints&#34;&gt;Outcome constraints&lt;/h1&gt;
+&lt;p&gt;In optimization, it is often the goal that we need to optimize an objective function while satisfying some constraints. For example, we may want to minimize the scrap rate by finding the optimal process parameters of an manufacturing machine. However, we know the scrap rate cannot be below 0. In another setting, we may want to maximize the throughput of a machine, but we know that the throughput cannot exceed the maximum belt speed of the machine. Thus, we need to find regions in the search space that both yield high objective values and satisfy these constraints. In this blog, we will focus on inequality &lt;em&gt;outcome constraints&lt;/em&gt;. That is, the domain of the objective function is&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Survival Models in Bambi</title>
       <link>http://localhost:1313/posts/bambi-survival-models/</link>
@@ -19,6 +61,63 @@
 &lt;p&gt;This blog post is a copy of the survival models documentation I wrote for &lt;a href=&#34;https://bambinos.github.io/bambi/&#34;&gt;Bambi&lt;/a&gt;. The original post can be found &lt;a href=&#34;https://bambinos.github.io/bambi/notebooks/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     <item>
+      <title>Predict New Groups with Hierarchical Models in Bambi</title>
+      <link>http://localhost:1313/posts/bambi-predict-new-groups/</link>
+      <pubDate>Tue, 10 Oct 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/bambi-predict-new-groups/</guid>
+      <description>&lt;!-- raw HTML omitted --&gt;
+&lt;h1 id=&#34;predict-new-groups&#34;&gt;Predict New Groups&lt;/h1&gt;
+&lt;p&gt;In Bambi, it is possible to perform predictions on new, unseen, groups of data that were not in the observed data used to fit the model with the argument &lt;code&gt;sample_new_groups&lt;/code&gt; in the &lt;code&gt;model.predict()&lt;/code&gt; method. This is useful in the context of hierarchical modeling, where groups are assumed to be a sample from a larger group.&lt;/p&gt;
+&lt;p&gt;This blog post is a copy of the zero inflated models documentation I wrote for &lt;a href=&#34;https://bambinos.github.io/bambi/&#34;&gt;Bambi&lt;/a&gt;. The original post can be found &lt;a href=&#34;https://bambinos.github.io/bambi/notebooks/predict_new_groups.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Ordinal Models in Bambi</title>
+      <link>http://localhost:1313/posts/bambi-ordinal-models/</link>
+      <pubDate>Fri, 29 Sep 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/bambi-ordinal-models/</guid>
+      <description>&lt;!-- raw HTML omitted --&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#| code-fold: true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; arviz &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; az
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; matplotlib.pyplot &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; plt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; matplotlib.lines &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; Line2D
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; numpy &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; np
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; pandas &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; pd
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; warnings
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; bambi &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; bmb
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;warnings&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;filterwarnings(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ignore&amp;#34;&lt;/span&gt;, category&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;FutureWarning&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;ordinal-regression&#34;&gt;Ordinal Regression&lt;/h1&gt;
+&lt;p&gt;This blog post is a copy of the ordinal models documentation I wrote for &lt;a href=&#34;https://bambinos.github.io/bambi/&#34;&gt;Bambi&lt;/a&gt;. The original post can be found &lt;a href=&#34;https://bambinos.github.io/bambi/notebooks/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In some scenarios, the response variable is discrete, like a count, and ordered. Common examples of such data come from questionnaires where the respondent is asked to rate a product, service, or experience on a scale. This scale is often referred to as a &lt;a href=&#34;https://en.wikipedia.org/wiki/Likert_scale&#34;&gt;Likert scale&lt;/a&gt;. For example, a five-level Likert scale could be:&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Zero Inflated Models in Bambi</title>
+      <link>http://localhost:1313/posts/bambi-zip-models/</link>
+      <pubDate>Fri, 29 Sep 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/bambi-zip-models/</guid>
+      <description>&lt;!-- raw HTML omitted --&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#| code-fold: true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; arviz &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; az
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; matplotlib.pyplot &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; plt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; matplotlib.lines &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; Line2D
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; numpy &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; np
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; pandas &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; pd
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; scipy.stats &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; stats
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; seaborn &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; sns
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; warnings
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; bambi &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; bmb
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;warnings&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;simplefilter(action&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;ignore&amp;#39;&lt;/span&gt;, category&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;FutureWarning&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;zero-inflated-models&#34;&gt;Zero inflated models&lt;/h1&gt;
+&lt;p&gt;This blog post is a copy of the zero inflated models documentation I wrote for &lt;a href=&#34;https://bambinos.github.io/bambi/&#34;&gt;Bambi&lt;/a&gt;. The original post can be found &lt;a href=&#34;https://bambinos.github.io/bambi/notebooks/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>Google Summer of Code - Final Report</title>
       <link>http://localhost:1313/posts/gsoc-final-report/</link>
       <pubDate>Thu, 10 Aug 2023 18:43:46 +0200</pubDate>
@@ -26,6 +125,23 @@
       <description>&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;bambi-logo.png&#34; alt=&#34;alt&#34;  /&gt;
 &lt;/p&gt;
 &lt;p&gt;My project &amp;ldquo;Better tools to interpret complex Bambi regression models&amp;rdquo; was completed under the organization of NumFOCUS, and mentors Tomás Capretto and Osvaldo Martin. Before I describe the project, objectives, and work completed, I would like to thank my mentors Tomás and Osvaldo for their precious time and support throughout the summer. They were always available and timely in communicating over Slack and GitHub, and provided valuable feedback during code reviews. Additionally, I would like to thank NumFOCUS and the Google Summer of Code (GSoC) program for providing the opportunity to work on such an open source project over the summer. It has been an invaluable experience, and I look forward to contributing to open source projects in the future.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Google Summer of Code - Average Predictive Slopes</title>
+      <link>http://localhost:1313/posts/bambi-slopes/</link>
+      <pubDate>Tue, 01 Aug 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/bambi-slopes/</guid>
+      <description>&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;It is currently the beginning of week ten of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the basic functionality of the &lt;code&gt;plot_slopes&lt;/code&gt;. Subsequently, week 11 was reserved to further develop the &lt;code&gt;plot_slopes&lt;/code&gt; function, and to write tests and a notebook for the documentation, respectively.&lt;/p&gt;
+&lt;p&gt;However, at the beginning of week ten, I have a &lt;a href=&#34;https://github.com/bambinos/bambi/pull/699&#34;&gt;PR&lt;/a&gt; open with the majority of the functionality that &lt;a href=&#34;https://vincentarelbundock.github.io/marginaleffects/&#34;&gt;marginaleffects&lt;/a&gt; has for &lt;code&gt;slopes&lt;/code&gt;. In addition, I also exposed the &lt;code&gt;slopes&lt;/code&gt; function, added tests, and have a &lt;a href=&#34;https://github.com/bambinos/bambi/pull/701&#34;&gt;PR&lt;/a&gt; open for the documentation.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Google Summer of Code - Average Predictive Comparisons</title>
+      <link>http://localhost:1313/posts/bambi-comparisons/</link>
+      <pubDate>Fri, 30 Jun 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/bambi-comparisons/</guid>
+      <description>&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;It is currently the end of week five of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the core functionality of the &lt;code&gt;plot_comparisons&lt;/code&gt;. Subsequently, week six and seven were to be spent further developing the &lt;code&gt;plot_comparisons&lt;/code&gt; function, and writing tests and a demo notebook for the documentation, respectively. However, at the end of week five, I have a PR open with the majority of the functionality that &lt;a href=&#34;https://vincentarelbundock.github.io/marginaleffects/&#34;&gt;marginaleffects&lt;/a&gt; has. In addition, I also exposed the &lt;code&gt;comparisons&lt;/code&gt; function, added tests (which can and will be improved), and have started on documentation.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Monte Carlo Approximation</title>

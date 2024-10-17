@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Google Summer of Code - Average Predictive Slopes | The Log</title>
+<meta name="keywords" content="">
+<meta name="description" content="
+It is currently the beginning of week ten of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the basic functionality of the plot_slopes. Subsequently, week 11 was reserved to further develop the plot_slopes function, and to write tests and a notebook for the documentation, respectively.
+However, at the beginning of week ten, I have a PR open with the majority of the functionality that marginaleffects has for slopes. In addition, I also exposed the slopes function, added tests, and have a PR open for the documentation.">
+<meta name="author" content="Gabriel Stechschulte">
+<link rel="canonical" href="http://localhost:1313/posts/bambi-slopes/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.e06e296717ca1485b42270445b6064e38739a541df87459ef5f957e51cd74e72.css" integrity="sha256-4G4pZxfKFIW0InBEW2Bk44c5pUHfh0We9flX5RzXTnI=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/bambi-slopes/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+    crossorigin="anonymous"
+/>
+<script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+    crossorigin="anonymous"
+></script>
+<script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+    crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"
+></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+            ],
+        });
+    });
+</script>
+
+
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="The Log (Alt + H)">The Log</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/categories/" title="categories">
+                    <span>categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="tags">
+                    <span>tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Google Summer of Code - Average Predictive Slopes
+    </h1>
+    <div class="post-meta"><span title='2023-08-01 00:00:00 +0000 UTC'>August 1, 2023</span>&nbsp;·&nbsp;19 min&nbsp;·&nbsp;Gabriel Stechschulte
+
+</div>
+  </header> 
+  <div class="post-content"><!-- raw HTML omitted -->
+<p>It is currently the beginning of week ten of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the basic functionality of the <code>plot_slopes</code>. Subsequently, week 11 was reserved to further develop the <code>plot_slopes</code> function, and to write tests and a notebook for the documentation, respectively.</p>
+<p>However, at the beginning of week ten, I have a <a href="https://github.com/bambinos/bambi/pull/699">PR</a> open with the majority of the functionality that <a href="https://vincentarelbundock.github.io/marginaleffects/">marginaleffects</a> has for <code>slopes</code>. In addition, I also exposed the <code>slopes</code> function, added tests, and have a <a href="https://github.com/bambinos/bambi/pull/701">PR</a> open for the documentation.</p>
+<p>Below is the documentation for <code>slopes</code> and <code>plot_slopes</code> in Bambi, and is a culmination of the work completed in weeks five through nine.</p>
+<h1 id="plot-slopes">Plot Slopes<a hidden class="anchor" aria-hidden="true" href="#plot-slopes">#</a></h1>
+<p>Bambi&rsquo;s sub-package <code>interpret</code> features a set of functions to help interpret complex regression models. The sub-package is inspired by the R package <a href="https://vincentarelbundock.github.io/marginaleffects/articles/predictions.html#conditional-adjusted-predictions-plot">marginaleffects</a>. In this notebook we will discuss two functions <code>slopes</code> and <code>plot_slopes</code>. These two functions allow the modeler to easier interpret slopes, either by a inspecting a summary output or plotting them.</p>
+<p>Below, it is described why estimating the slope of the prediction function is useful in interpreting generalized linear models (GLMs), how this methodology is implemented in Bambi, and how to use <code>slopes</code> and <code>plot_slopes</code>. It is assumed that the reader is familiar with the basics of GLMs. If not, refer to the Bambi <a href="https://bambinos.github.io/bambi/notebooks/how_bambi_works.html#Link-functions">Basic Building Blocks</a> example.</p>
+<h2 id="interpretation-of-regression-coefficients">Interpretation of Regression Coefficients<a hidden class="anchor" aria-hidden="true" href="#interpretation-of-regression-coefficients">#</a></h2>
+<p>Assuming we have fit a linear regression model of the form</p>
+<p>$$y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \dots + \beta_k x_k + \epsilon$$</p>
+<p>the &ldquo;safest&rdquo; interpretation of the regression coefficients $\beta$ is as a comparison between two groups of items that differ by $1$ in the relevant predictor variable $x_i$ while being identical in all the other predictors. Formally, the predicted difference between two items $i$ and $j$ that differ by an amount $n$ on predictor $k$, but are identical on all other predictors, the predicted difference is $y_i - y_j$ is $\beta_kx$, on average.</p>
+<p>However, once we move away from a regression model with a Gaussian response, the identity function, and no interaction terms, the interpretation of the coefficients are not as straightforward. For example, in a logistic regression model, the coefficients are on a different scale and are measured in logits (log odds), not probabilities or percentage points. Thus, you cannot interpret the coefficents as a &ldquo;one unit increase in $x_k$ is associated with an $n$ percentage point decrease in $y$&rdquo;. First, the logits must be converted to the probability scale. Secondly, a one unit change in $x_k$ may produce a larger or smaller change in the outcome, depending upon how far away from zero the logits are.</p>
+<p><code>slopes</code> and <code>plot_slopes</code>, by default, computes quantities of interest on the response scale for GLMs. For example, for a logistic regression model, this is the probability scale, and for a Poisson regression model, this is the count scale.</p>
+<h3 id="interpreting-interaction-effects">Interpreting interaction effects<a hidden class="anchor" aria-hidden="true" href="#interpreting-interaction-effects">#</a></h3>
+<p>Specifying interactions in a regression model is a way of allowing parameters to be conditional on certain aspects of the data. By contrast, for a model with no interactions, the parameters are <strong>not</strong> conditional and thus, the value of one parameter is not dependent on the value of another covariate. However, once interactions exist, multiple parameters are always in play at the same time. Additionally, interactions can be specified for either categorical, continuous, or both types of covariates. Thus, making the interpretation of the parameters more difficult.</p>
+<p>With GLMs, every covariate essentially interacts with itself because of the link function. To demonstrate parameters interacting with themselves, consider the mean of a Gaussian linear model with an identity link function</p>
+<p>$$\mu = \alpha + \beta x$$</p>
+<p>where the rate of change in $\mu$ with respect to $x$ is just $\beta$, i.e., the rate of change is constant no matter what the value of $x$ is. But when we consider GLMs with link functions used to map outputs to exponential family distribution parameters, calculating the derivative of the mean output $\mu$ with respect to the predictor is not as straightforward as in the Gaussian linear model. For example, computing the rate of change in a binomial probability $p$ with respect to $x$</p>
+<p>$$p = \frac{exp(\alpha + \beta x)}{1 + exp(\alpha + \beta x)}$$</p>
+<p>And taking the derivative of $p$ with respect to $x$ yields</p>
+<p>$$\frac{\partial p}{\partial x} = \frac{\beta}{2(1 + cosh(\alpha + \beta x))}$$</p>
+<p>Since $x$ appears in the derivative, the impact of a change in $x$ depends upon $x$, i.e., an interaction with itself even though no interaction term was specified in the model.Thus, visualizing the rate of change in the mean response with respect to a covariate $x$ becomes a useful tool in interpreting GLMs.</p>
+<h2 id="average-predictive-slopes">Average Predictive Slopes<a hidden class="anchor" aria-hidden="true" href="#average-predictive-slopes">#</a></h2>
+<p>Here, we adopt the notation from Chapter 14.4 of <a href="https://avehtari.github.io/ROS-Examples/">Regression and Other Stories</a> to first describe average predictive differences which is essential to computing <code>slopes</code>, and then secondly, average predictive slopes. Assume we have fit a Bambi model predicting an outcome $Y$ based on inputs $X$ and parameters $\theta$. Consider the following scalar inputs:</p>
+<p>$$w: \text{the input of interest}$$
+$$c: \text{all the other inputs}$$
+$$X = (w, c)$$</p>
+<p>In contrast to <code>comparisons</code>, for <code>slopes</code> we are interested in comparing $w^{\text{value}}$ to $w^{\text{value}+\epsilon}$ (perhaps age = 60 and 60.0001 respectively) with all other inputs $c$ held constant. The <em>predictive difference</em> in the outcome changing <strong>only</strong> $w$ is:</p>
+<p>$$\text{average predictive difference} = \mathbb{E}(y|w^{\text{value}}, c, \theta) - \mathbb{E}(y|w^{\text{value}+\epsilon}, c, \theta)$$</p>
+<p>Selecting $w$ and $w^{\text{value}+\epsilon}$ and averaging over all other inputs $c$ in the data gives you a new &ldquo;hypothetical&rdquo; dataset and corresponds to counting all pairs of transitions of $(w^\text{value})$ to $(w^{\text{value}+\epsilon})$, i.e., differences in $w$ with $c$ held constant. The difference between these two terms is the average predictive difference.</p>
+<p>However, to obtain the slope estimate, we need to take the above formula and divide by $\epsilon$ to obtain the <em>average predictive slope</em>:</p>
+<p>$$\text{average predictive slope} = \frac{\mathbb{E}(y|w^{\text{value}}, c, \theta) - \mathbb{E}(y|w^{\text{value}+\epsilon}, c, \theta)}{\epsilon}$$</p>
+<h2 id="computing-slopes">Computing Slopes<a hidden class="anchor" aria-hidden="true" href="#computing-slopes">#</a></h2>
+<p>The objective of <code>slopes</code> and <code>plot_slopes</code> is to compute the rate of change (slope) in the mean of the response $y$ with respect to a small change $\epsilon$ in the predictor $x$ conditional on other covariates $c$ specified in the model. $w$ is specified by the user and the original value is either provided by the user, else a default value (the mean) is computed by Bambi. The values for the other covariates $c$ specified in the model can be determined under the following three scenarios:</p>
+<ol>
+<li>user provided values</li>
+<li>a grid of equally spaced and central values</li>
+<li>empirical distribution (original data used to fit the model)</li>
+</ol>
+<p>In the case of (1) and (2) above, Bambi assembles all pairwise combinations (transitions) of $w$ and $c$ into a new &ldquo;hypothetical&rdquo; dataset. In (3), Bambi uses the original $c$, and adds a small amount $\epsilon$ to each unit of observation&rsquo;s $w$. In each scenario, predictions are made on the data using the fitted model. Once the predictions are made, comparisons are computed using the posterior samples by taking the difference in the predicted outcome for each pair of transitions and dividing by $\epsilon$. The average of these slopes is the average predictive slopes.</p>
+<p>For variables $w$ with a string or categorical data type, the <code>comparisons</code> function is called to compute the expected difference in group means. Please refer to the <a href="https://bambinos.github.io/bambi/notebooks/plot_comparisons.html">comparisons</a> documentation for more details.</p>
+<p>Below, we present several examples showing how to use Bambi to perform these computations for us, and to return either a summary dataframe, or a visualization of the results.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> arviz <span style="color:#66d9ef">as</span> az
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> bambi <span style="color:#66d9ef">as</span> bmb
+</span></span></code></pre></div><h2 id="logistic-regression">Logistic Regression<a hidden class="anchor" aria-hidden="true" href="#logistic-regression">#</a></h2>
+<p>To demonstrate <code>slopes</code> and <code>plot_slopes</code>, we will use the <a href="https://vincentarelbundock.github.io/Rdatasets/doc/carData/Wells.html">well switching dataset</a> to model the probability a household in Bangladesh switches water wells. The data are for an area of Arahazar Upazila, Bangladesh. The researchers labelled each well with its level of arsenic and an indication of whether the well was “safe” or “unsafe”. Those using unsafe wells were encouraged to switch. After several years, it was determined whether each household using an unsafe well had changed its well. The data contains $3020$ observations on the following five variables:</p>
+<ul>
+<li><code>switch</code>: a factor with levels <code>no</code> and <code>yes</code> indicating whether the household switched to a new well</li>
+<li><code>arsenic</code>: the level of arsenic in the old well (measured in micrograms per liter)</li>
+<li><code>dist</code>: the distance to the nearest safe well (measured in meters)</li>
+<li><code>assoc</code>: a factor with levels <code>no</code> and <code>yes</code> indicating whether the household is a member of an arsenic education group</li>
+<li><code>educ</code>: years of education of the household head</li>
+</ul>
+<p>First, a logistic regression model with no interactions is fit to the data. Subsequently, to demonstrate the benefits of <code>plot_slopes</code> in interpreting interactions, we will fit a logistic regression model with an interaction term.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>data <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#34;http://www.stat.columbia.edu/~gelman/arm/examples/arsenic/wells.dat&#34;</span>, sep<span style="color:#f92672">=</span><span style="color:#e6db74">&#34; &#34;</span>)
+</span></span><span style="display:flex;"><span>data[<span style="color:#e6db74">&#34;switch&#34;</span>] <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>Categorical(data[<span style="color:#e6db74">&#34;switch&#34;</span>])
+</span></span><span style="display:flex;"><span>data[<span style="color:#e6db74">&#34;dist100&#34;</span>] <span style="color:#f92672">=</span> data[<span style="color:#e6db74">&#34;dist&#34;</span>] <span style="color:#f92672">/</span> <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span>data[<span style="color:#e6db74">&#34;educ4&#34;</span>] <span style="color:#f92672">=</span> data[<span style="color:#e6db74">&#34;educ&#34;</span>] <span style="color:#f92672">/</span> <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>data<span style="color:#f92672">.</span>head()
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>well_model <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>Model(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;switch ~ dist100 + arsenic + educ4&#34;</span>,
+</span></span><span style="display:flex;"><span>    data,
+</span></span><span style="display:flex;"><span>    family<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;bernoulli&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>well_idata <span style="color:#f92672">=</span> well_model<span style="color:#f92672">.</span>fit(
+</span></span><span style="display:flex;"><span>    draws<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>,
+</span></span><span style="display:flex;"><span>    target_accept<span style="color:#f92672">=</span><span style="color:#ae81ff">0.95</span>,
+</span></span><span style="display:flex;"><span>    random_seed<span style="color:#f92672">=</span><span style="color:#ae81ff">1234</span>,
+</span></span><span style="display:flex;"><span>    chains<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><pre><code>Modeling the probability that switch==0
+Auto-assigning NUTS sampler...
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [Intercept, dist100, arsenic, educ4]
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 3 seconds.
+</code></pre>
+<h3 id="user-provided-values">User provided values<a hidden class="anchor" aria-hidden="true" href="#user-provided-values">#</a></h3>
+<p>First, an example of scenario 1 (user provided values) is given below. In both <code>plot_slopes</code> and <code>slopes</code>, $w$ and $c$ are represented by <code>wrt</code> (with respect to) and <code>conditional</code>, respectively. The modeler has the ability to pass their own values for <code>wrt</code> and <code>conditional</code> by using a dictionary where the key-value pairs are the covariate and value(s) of interest.</p>
+<p>For example, if we wanted to compute the slope of the probability of switching wells for a typical <code>arsenic</code> value of $1.3$ conditional on a range of <code>dist</code> and <code>educ</code> values, we would pass the following dictionary in the code block below. By default, for $w$, Bambi compares $w^\text{value}$ to $w^{\text{value} + \epsilon}$ where $\epsilon =$ <code>1e-4</code>. However, the value for $\epsilon$ can be changed by passing a value to the argument <code>eps</code>.</p>
+<p>Thus, in this example, $w^\text{value} = 1.3$ and $w^{\text{value} + \epsilon} = 1.3001$. The user is not limited to passing a list for the values. A <code>np.array</code> can also be used. Furthermore, Bambi by default, maps the order of the dict keys to the main, group, and panel of the matplotlib figure. Below, since <code>dist100</code> is the first key, this is used for the x-axis, and <code>educ4</code> is used for the group (color). If a third key was passed, it would be used for the panel (facet).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>plot_slopes(
+</span></span><span style="display:flex;"><span>    well_model,
+</span></span><span style="display:flex;"><span>    well_idata,
+</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;arsenic&#34;</span>: <span style="color:#ae81ff">1.3</span>},
+</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;dist100&#34;</span>: [<span style="color:#ae81ff">0.20</span>, <span style="color:#ae81ff">0.50</span>, <span style="color:#ae81ff">0.80</span>], <span style="color:#e6db74">&#34;educ4&#34;</span>: [<span style="color:#ae81ff">1.00</span>, <span style="color:#ae81ff">1.20</span>, <span style="color:#ae81ff">2.00</span>]},
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>fig<span style="color:#f92672">.</span>set_size_inches(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>)
+</span></span><span style="display:flex;"><span>fig<span style="color:#f92672">.</span>axes[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>set_ylabel(<span style="color:#e6db74">&#34;Slope of Well Switching Probability&#34;</span>);
+</span></span></code></pre></div><p><img loading="lazy" src="2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_12_0.png" alt="png"  />
+</p>
+<p>The plot above shows that, for example, conditional on <code>dist100</code> $= 0.2$ and <code>educ4</code> $= 1.0$ a unit increase in <code>arsenic</code> is associated with households being $11$% less likely to switch wells. Notice that even though we fit a logistic regression model where the coefficients are on the log-odds scale, the <code>slopes</code> function returns the slope on the probability scale. Thus, we can interpret the y-axis (slope) as the expected change in the probability of switching wells for a unit increase in <code>arsenic</code> conditional on the specified covariates.</p>
+<p><code>slopes</code> can be called directly to view a summary dataframe that includes the term name, estimate type (discussed in detail in the <em>interpreting coefficients as an elasticity</em> section), values $w$ used to compute the estimate, the specified conditional covariates $c$, and the expected slope of the outcome with the uncertainty interval (by default the $94$% highest density interval is computed).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>slopes(
+</span></span><span style="display:flex;"><span>    well_model,
+</span></span><span style="display:flex;"><span>    well_idata,
+</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;arsenic&#34;</span>: <span style="color:#ae81ff">1.5</span>},
+</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;dist100&#34;</span>: [<span style="color:#ae81ff">0.20</span>, <span style="color:#ae81ff">0.50</span>, <span style="color:#ae81ff">0.80</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;educ4&#34;</span>: [<span style="color:#ae81ff">1.00</span>, <span style="color:#ae81ff">1.20</span>, <span style="color:#ae81ff">2.00</span>]
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>Since all covariates used to fit the model were also specified to compute the slopes, no default value is used for unspecified covariates. A default value is computed for the unspecified covariates because in order to peform predictions, Bambi is expecting a value for each covariate used to fit the model. Additionally, with GLM models, average predictive slopes are conditional in the sense that the estimate depends on the values of <strong>all</strong> the covariates in the model. Thus, for unspecified covariates, <code>slopes</code> and <code>plot_slopes</code> computes a default value (mean or mode based on the data type of the covariate). Each row in the summary dataframe is read as &ldquo;the slope (or rate of change) of the probability of switching wells with respect to a small change in $w$ conditional on $c$ is $y$&rdquo;.</p>
+<h3 id="multiple-slope-values">Multiple slope values<a hidden class="anchor" aria-hidden="true" href="#multiple-slope-values">#</a></h3>
+<p>Users can also compute slopes on multiple values for <code>wrt</code>. For example, if we want to compute the slope of $y$ with respect to <code>arsenic</code> $= 1.5$, $2.0$, and $2.5$, simply pass a list or numpy array as the dictionary values for <code>wrt</code>. Keeping the conditional covariate and values the same, the following slope estimates are computed below.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>multiple_values <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>slopes(
+</span></span><span style="display:flex;"><span>    well_model,
+</span></span><span style="display:flex;"><span>    well_idata,
+</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;arsenic&#34;</span>: [<span style="color:#ae81ff">1.5</span>, <span style="color:#ae81ff">2.0</span>, <span style="color:#ae81ff">2.5</span>]},
+</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;dist100&#34;</span>: [<span style="color:#ae81ff">0.20</span>, <span style="color:#ae81ff">0.50</span>, <span style="color:#ae81ff">0.80</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;educ4&#34;</span>: [<span style="color:#ae81ff">1.00</span>, <span style="color:#ae81ff">1.20</span>, <span style="color:#ae81ff">2.00</span>]
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>multiple_values<span style="color:#f92672">.</span>head(<span style="color:#ae81ff">6</span>)
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>The output above is essentially the same as the summary dataframe when we only passed one value to <code>wrt</code>. However, now each element (value) in the list gets a small amount $\epsilon$ added to it, and the slope is calculated for each of these values.</p>
+<h3 id="conditional-slopes">Conditional slopes<a hidden class="anchor" aria-hidden="true" href="#conditional-slopes">#</a></h3>
+<p>As stated in the <em>interpreting interaction effects</em> section, interpreting coefficients of multiple interaction terms can be difficult and cumbersome. Thus, <code>plot_slopes</code> provides an effective way to visualize the conditional slopes of the interaction effects. Below, we will use the same well switching dataset, but with interaction terms. Specifically, one interaction is added between <code>dist100</code> and <code>educ4</code>, and another between <code>arsenic</code> and <code>educ4</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>well_model_interact <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>Model(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;switch ~ dist100 + arsenic + educ4 + dist100:educ4 + arsenic:educ4&#34;</span>,
+</span></span><span style="display:flex;"><span>    data,
+</span></span><span style="display:flex;"><span>    family<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;bernoulli&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>well_idata_interact <span style="color:#f92672">=</span> well_model_interact<span style="color:#f92672">.</span>fit(
+</span></span><span style="display:flex;"><span>    draws<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>,
+</span></span><span style="display:flex;"><span>    target_accept<span style="color:#f92672">=</span><span style="color:#ae81ff">0.95</span>,
+</span></span><span style="display:flex;"><span>    random_seed<span style="color:#f92672">=</span><span style="color:#ae81ff">1234</span>,
+</span></span><span style="display:flex;"><span>    chains<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><pre><code>Modeling the probability that switch==0
+
+
+Auto-assigning NUTS sampler...
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [Intercept, dist100, arsenic, educ4, dist100:educ4, arsenic:educ4]
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 15 seconds.
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># summary of coefficients</span>
+</span></span><span style="display:flex;"><span>az<span style="color:#f92672">.</span>summary(well_idata_interact)
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>The coefficients of the linear model are shown in the table above. The interaction coefficents indicate the slope varies in a continuous fashion with the continuous variable.</p>
+<p>A negative value for <code>arsenic:dist100</code> indicates that the &ldquo;effect&rdquo; of arsenic on the outcome is less negative as distance from the well increases. Similarly, a negative value for <code>arsenic:educ4</code> indicates that the &ldquo;effect&rdquo; of arsenic on the outcome is more negative as education increases. Remember, these coefficients are still on the logit scale. Furthermore, as more variables and interaction terms are added to the model, interpreting these coefficients becomes more difficult.</p>
+<p>Thus, lets use <code>plot_slopes</code> to visually see how the slope changes with respect to <code>arsenic</code> conditional on <code>dist100</code> and <code>educ4</code> changing. Notice in the code block below how parameters are passed to the <code>subplot_kwargs</code> and <code>fig_kwargs</code> arguments. At times, it can be useful to pass specific <code>group</code> and <code>panel</code> arguments to aid in the interpretation of the plot. Therefore, <code>subplot_kwargs</code> allows the user to manipulate the plotting by passing a dictionary where the keys are <code>{&quot;main&quot;: ..., &quot;group&quot;: ..., &quot;panel&quot;: ...}</code> and the values are the names of the covariates to be plotted. <code>fig_kwargs</code> are figure level key word arguments such as <code>figsize</code> and <code>sharey</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>plot_slopes(
+</span></span><span style="display:flex;"><span>    well_model_interact,
+</span></span><span style="display:flex;"><span>    well_idata_interact,
+</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;arsenic&#34;</span>,
+</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;dist100&#34;</span>, <span style="color:#e6db74">&#34;educ4&#34;</span>],
+</span></span><span style="display:flex;"><span>    subplot_kwargs<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;main&#34;</span>: <span style="color:#e6db74">&#34;dist100&#34;</span>, <span style="color:#e6db74">&#34;group&#34;</span>: <span style="color:#e6db74">&#34;educ4&#34;</span>, <span style="color:#e6db74">&#34;panel&#34;</span>: <span style="color:#e6db74">&#34;educ4&#34;</span>},
+</span></span><span style="display:flex;"><span>    fig_kwargs<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;figsize&#34;</span>: (<span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">4</span>), <span style="color:#e6db74">&#34;sharey&#34;</span>: <span style="color:#66d9ef">True</span>},
+</span></span><span style="display:flex;"><span>    legend<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p><img loading="lazy" src="2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_23_0.png" alt="png"  />
+</p>
+<p>With interaction terms now defined, it can be seen how the slope of the outcome with respect to <code>arsenic</code> differ depending on the value of <code>educ4</code>. Especially in the case of <code>educ4</code> $= 4.25$, the slope is more &ldquo;constant&rdquo;, but with greater uncertainty. Lets compare this with the model that does not include any interaction terms.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>plot_slopes(
+</span></span><span style="display:flex;"><span>    well_model,
+</span></span><span style="display:flex;"><span>    well_idata,
+</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;arsenic&#34;</span>,
+</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;dist100&#34;</span>, <span style="color:#e6db74">&#34;educ4&#34;</span>],
+</span></span><span style="display:flex;"><span>    subplot_kwargs<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;main&#34;</span>: <span style="color:#e6db74">&#34;dist100&#34;</span>, <span style="color:#e6db74">&#34;group&#34;</span>: <span style="color:#e6db74">&#34;educ4&#34;</span>, <span style="color:#e6db74">&#34;panel&#34;</span>: <span style="color:#e6db74">&#34;educ4&#34;</span>},
+</span></span><span style="display:flex;"><span>    fig_kwargs<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;figsize&#34;</span>: (<span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">4</span>), <span style="color:#e6db74">&#34;sharey&#34;</span>: <span style="color:#66d9ef">True</span>},
+</span></span><span style="display:flex;"><span>    legend<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p><img loading="lazy" src="2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_25_0.png" alt="png"  />
+</p>
+<p>For the non-interaction model, conditional on a range of values for <code>educ4</code> and <code>dist100</code>, the slopes of the outcome are nearly identical.</p>
+<h3 id="unit-level-slopes">Unit level slopes<a hidden class="anchor" aria-hidden="true" href="#unit-level-slopes">#</a></h3>
+<p>Evaluating average predictive slopes at central values for the conditional covariates $c$ can be problematic when the inputs have a large variance since no single central value (mean, median, etc.) is representative of the covariate. This is especially true when $c$ exhibits bi or multimodality. Thus, it may be desireable to use the empirical distribution of $c$ to compute the predictive slopes, and then average over a specific or set of covariates to obtain average slopes. To achieve unit level slopes, do not pass a parameter into <code>conditional</code> and or specify <code>None</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>unit_level <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>slopes(
+</span></span><span style="display:flex;"><span>    well_model_interact,
+</span></span><span style="display:flex;"><span>    well_idata_interact,
+</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;arsenic&#34;</span>,
+</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># empirical distribution</span>
+</span></span><span style="display:flex;"><span>print(unit_level<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">==</span> well_model_interact<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>])
+</span></span><span style="display:flex;"><span>unit_level<span style="color:#f92672">.</span>head(<span style="color:#ae81ff">10</span>)
+</span></span></code></pre></div><pre><code>True
+</code></pre>
+<!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>well_model_interact<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>head(<span style="color:#ae81ff">10</span>)
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>Above, <code>unit_level</code> is the slopes summary dataframe and <code>well_model_interact.data</code> is the empirical data used to fit the model. Notice how the values for $c$ are identical in both dataframes. However, for $w$, the values are the original $w$ value plus $\epsilon$. Thus, the <code>estimate</code> value represents the instantaneous rate of change for that unit of observation. However, these unit level slopes are difficult to interpret since each row may have a different slope estimate. Therefore, it is useful to average over (marginalize) the estimates to summarize the unit level predictive slopes.</p>
+<h4 id="marginalizing-over-covariates">Marginalizing over covariates<a hidden class="anchor" aria-hidden="true" href="#marginalizing-over-covariates">#</a></h4>
+<p>Since the empirical distrubution is used for computing the average predictive slopes, the same number of rows ($3020$) is returned as the data used to fit the model. To average over a covariate, use the <code>average_by</code> argument. If <code>True</code> is passed, then <code>slopes</code> averages over all covariates. Else, if a single or list of covariates are passed, then <code>slopes</code> averages by the covariates passed.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>slopes(
+</span></span><span style="display:flex;"><span>    well_model_interact,
+</span></span><span style="display:flex;"><span>    well_idata_interact,
+</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;arsenic&#34;</span>,
+</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>    average_by<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>The code block above is equivalent to taking the mean of the <code>estimate</code> and uncertainty columns. For example:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>unit_level[[<span style="color:#e6db74">&#34;estimate&#34;</span>, <span style="color:#e6db74">&#34;lower_3.0%&#34;</span>, <span style="color:#e6db74">&#34;upper_97.0%&#34;</span>]]<span style="color:#f92672">.</span>mean()
+</span></span></code></pre></div><pre><code>estimate      -0.111342
+lower_3.0%    -0.134846
+upper_97.0%   -0.088171
+dtype: float64
+</code></pre>
+<h4 id="average-by-subgroups">Average by subgroups<a hidden class="anchor" aria-hidden="true" href="#average-by-subgroups">#</a></h4>
+<p>Averaging over all covariates may not be desired, and you would rather average by a group or specific covariate. To perform averaging by subgroups, users can pass a single or list of covariates to <code>average_by</code> to average over specific covariates. For example, if we wanted to average by <code>educ4</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># average by educ4</span>
+</span></span><span style="display:flex;"><span>bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>slopes(
+</span></span><span style="display:flex;"><span>    well_model_interact,
+</span></span><span style="display:flex;"><span>    well_idata_interact,
+</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;arsenic&#34;</span>,
+</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>    average_by<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;educ4&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># average by both educ4 and dist100</span>
+</span></span><span style="display:flex;"><span>bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>slopes(
+</span></span><span style="display:flex;"><span>    well_model_interact,
+</span></span><span style="display:flex;"><span>    well_idata_interact,
+</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;arsenic&#34;</span>,
+</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>    average_by<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;educ4&#34;</span>, <span style="color:#e6db74">&#34;dist100&#34;</span>]
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>It is still possible to use <code>plot_slopes</code> when passing an argument to <code>average_by</code>. In the plot below, the empirical distribution is used to compute unit level slopes with respect to <code>arsenic</code> and then averaged over <code>educ4</code> to obtain the average predictive slopes.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>plot_slopes(
+</span></span><span style="display:flex;"><span>    well_model_interact,
+</span></span><span style="display:flex;"><span>    well_idata_interact,
+</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;arsenic&#34;</span>,
+</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>    average_by<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;educ4&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>fig<span style="color:#f92672">.</span>set_size_inches(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>)
+</span></span></code></pre></div><p><img loading="lazy" src="2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_39_0.png" alt="png"  />
+</p>
+<h3 id="interpreting-coefficients-as-an-elasticity">Interpreting coefficients as an elasticity<a hidden class="anchor" aria-hidden="true" href="#interpreting-coefficients-as-an-elasticity">#</a></h3>
+<p>In some fields, such as economics, it is useful to interpret the results of a regression model in terms of an elasticity (a percent change in $x$ is associated with a percent change in $y$) or semi-elasticity (a unit change in $x$ is associated with a percent change in $y$, or vice versa). Typically, this is achieved by fitting a model where either the outcome and or the covariates are log-transformed. However, since the log transformation is performed by the modeler, to compute elasticities for <code>slopes</code> and <code>plot_slopes</code>, Bambi &ldquo;post-processes&rdquo; the predictions to compute the elasticities. Below, it is shown the possible elasticity arguments and how they are computed for <code>slopes</code> and <code>plot_slopes</code>:</p>
+<ul>
+<li><code>eyex</code>: a percentage point increase in $x_1$ is associated with an $n$ percentage point increase in $y$</li>
+</ul>
+<p>$$\frac{\partial \hat{y}}{\partial x_1} * \frac{x_1}{\hat{y}}$$</p>
+<ul>
+<li><code>eydx</code>: a unit increase in $x_1$ is associated with an $n$ percentage point increase in $y$</li>
+</ul>
+<p>$$\frac{\partial \hat{y}}{\partial x_1} * \frac{1}{\hat{y}}$$</p>
+<ul>
+<li><code>dyex</code>: a percentage point increase in $x_1$ is associated with an $n$ unit increase in $y$</li>
+</ul>
+<p>$$\frac{\partial \hat{y}}{\partial x_1} * x_1$$</p>
+<p>Below, each code cell shows the same model, and <code>wrt</code> and <code>conditional</code> argument, but with a different elasticity (<code>slope</code>) argument. By default, <code>dydx</code> (a derivative with no post-processing) is used.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>slopes(
+</span></span><span style="display:flex;"><span>    well_model_interact,
+</span></span><span style="display:flex;"><span>    well_idata_interact,
+</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;arsenic&#34;</span>,
+</span></span><span style="display:flex;"><span>    slope<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;eyex&#34;</span>,
+</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>    average_by<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>slopes(
+</span></span><span style="display:flex;"><span>    well_model_interact,
+</span></span><span style="display:flex;"><span>    well_idata_interact,
+</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;arsenic&#34;</span>,
+</span></span><span style="display:flex;"><span>    slope<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;eydx&#34;</span>,
+</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>    average_by<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>slopes(
+</span></span><span style="display:flex;"><span>    well_model_interact,
+</span></span><span style="display:flex;"><span>    well_idata_interact,
+</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;arsenic&#34;</span>,
+</span></span><span style="display:flex;"><span>    slope<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dyex&#34;</span>,
+</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>    average_by<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p><code>slope</code> is also an argument for <code>plot_slopes</code>. Below, we visualize the elasticity with respect to <code>arsenic</code> conditional on a range of <code>dist100</code> and <code>educ4</code> values (notice this is the same plot as in the <em>conditional slopes</em> section).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>plot_slopes(
+</span></span><span style="display:flex;"><span>    well_model_interact,
+</span></span><span style="display:flex;"><span>    well_idata_interact,
+</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;arsenic&#34;</span>,
+</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;dist100&#34;</span>, <span style="color:#e6db74">&#34;educ4&#34;</span>],
+</span></span><span style="display:flex;"><span>    slope<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;eyex&#34;</span>,
+</span></span><span style="display:flex;"><span>    subplot_kwargs<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;main&#34;</span>: <span style="color:#e6db74">&#34;dist100&#34;</span>, <span style="color:#e6db74">&#34;group&#34;</span>: <span style="color:#e6db74">&#34;educ4&#34;</span>, <span style="color:#e6db74">&#34;panel&#34;</span>: <span style="color:#e6db74">&#34;educ4&#34;</span>},
+</span></span><span style="display:flex;"><span>    fig_kwargs<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;figsize&#34;</span>: (<span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">4</span>), <span style="color:#e6db74">&#34;sharey&#34;</span>: <span style="color:#66d9ef">True</span>},
+</span></span><span style="display:flex;"><span>    legend<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p><img loading="lazy" src="2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_45_0.png" alt="png"  />
+</p>
+<h3 id="categorical-covariates">Categorical covariates<a hidden class="anchor" aria-hidden="true" href="#categorical-covariates">#</a></h3>
+<p>As mentioned in the <em>computing slopes</em> section, if you pass a variable with a string or categorical data type, the <code>comparisons</code> function will be called to compute the expected difference in group means. Here, we fit the same interaction model as above, albeit, by specifying <code>educ4</code> as an ordinal data type.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>data <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#34;http://www.stat.columbia.edu/~gelman/arm/examples/arsenic/wells.dat&#34;</span>, sep<span style="color:#f92672">=</span><span style="color:#e6db74">&#34; &#34;</span>)
+</span></span><span style="display:flex;"><span>data[<span style="color:#e6db74">&#34;switch&#34;</span>] <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>Categorical(data[<span style="color:#e6db74">&#34;switch&#34;</span>])
+</span></span><span style="display:flex;"><span>data[<span style="color:#e6db74">&#34;dist100&#34;</span>] <span style="color:#f92672">=</span> data[<span style="color:#e6db74">&#34;dist&#34;</span>] <span style="color:#f92672">/</span> <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span>data[<span style="color:#e6db74">&#34;educ4&#34;</span>] <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>Categorical(data[<span style="color:#e6db74">&#34;educ&#34;</span>] <span style="color:#f92672">/</span> <span style="color:#ae81ff">4</span>, ordered<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>well_model_interact <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>Model(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;switch ~ dist100 + arsenic + educ4 + dist100:educ4 + arsenic:educ4&#34;</span>,
+</span></span><span style="display:flex;"><span>    data,
+</span></span><span style="display:flex;"><span>    family<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;bernoulli&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>well_idata_interact <span style="color:#f92672">=</span> well_model_interact<span style="color:#f92672">.</span>fit(
+</span></span><span style="display:flex;"><span>    draws<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>,
+</span></span><span style="display:flex;"><span>    target_accept<span style="color:#f92672">=</span><span style="color:#ae81ff">0.95</span>,
+</span></span><span style="display:flex;"><span>    random_seed<span style="color:#f92672">=</span><span style="color:#ae81ff">1234</span>,
+</span></span><span style="display:flex;"><span>    chains<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><pre><code>Modeling the probability that switch==0
+Auto-assigning NUTS sampler...
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [Intercept, dist100, arsenic, educ4, dist100:educ4, arsenic:educ4]
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 319 seconds.
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>plot_slopes(
+</span></span><span style="display:flex;"><span>    well_model_interact,
+</span></span><span style="display:flex;"><span>    well_idata_interact,
+</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;educ4&#34;</span>,
+</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dist100&#34;</span>,
+</span></span><span style="display:flex;"><span>    average_by<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dist100&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>fig<span style="color:#f92672">.</span>set_size_inches(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>)
+</span></span></code></pre></div><p><img loading="lazy" src="2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_49_0.png" alt="png"  />
+</p>
+<p>As the model was fit with <code>educ4</code> as a categorical data type, Bambi recognized this, and calls <code>comparisons</code> to compute the differences between each level of <code>educ4</code>. As <code>educ4</code> contains many category levels, a covariate must be passed to <code>average_by</code> in order to perform plotting. Below, we can see this plot is equivalent to <code>plot_comparisons</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>plot_comparisons(
+</span></span><span style="display:flex;"><span>    well_model_interact,
+</span></span><span style="display:flex;"><span>    well_idata_interact,
+</span></span><span style="display:flex;"><span>    contrast<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;educ4&#34;</span>,
+</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dist100&#34;</span>,
+</span></span><span style="display:flex;"><span>    average_by<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dist100&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>fig<span style="color:#f92672">.</span>set_size_inches(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>)
+</span></span></code></pre></div><p><img loading="lazy" src="2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_51_0.png" alt="png"  />
+</p>
+<p>However, computing the predictive difference between each <code>educ4</code> level may not be desired. Thus, in <code>plot_slopes</code>, as in <code>plot_comparisons</code>, if <code>wrt</code> is a categorical or string data type, it is possible to specify the <code>wrt</code> values. For example, if we wanted to compute the expected difference in probability of switching wells for when <code>educ4</code> is $4$ versus $1$ conditional on a range of <code>dist100</code> and <code>arsenic</code> values, we would pass the following dictionary in the code block below. Please refer to the <a href="https://bambinos.github.io/bambi/notebooks/plot_comparisons.html">comparisons</a> documentation for more details.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>plot_slopes(
+</span></span><span style="display:flex;"><span>    well_model_interact,
+</span></span><span style="display:flex;"><span>    well_idata_interact,
+</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;educ4&#34;</span>: [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>]},
+</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dist100&#34;</span>,
+</span></span><span style="display:flex;"><span>    average_by<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dist100&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>fig<span style="color:#f92672">.</span>set_size_inches(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>)
+</span></span></code></pre></div><p><img loading="lazy" src="2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_53_0.png" alt="png"  />
+</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">%</span>load_ext watermark
+</span></span><span style="display:flex;"><span><span style="color:#f92672">%</span>watermark <span style="color:#f92672">-</span>n <span style="color:#f92672">-</span>u <span style="color:#f92672">-</span>v <span style="color:#f92672">-</span>iv <span style="color:#f92672">-</span>w
+</span></span></code></pre></div><pre><code>Last updated: Wed Aug 16 2023
+
+Python implementation: CPython
+Python version       : 3.11.0
+IPython version      : 8.13.2
+
+pandas: 2.0.1
+arviz : 0.15.1
+bambi : 0.10.0.dev0
+
+Watermark: 2.3.1
+</code></pre>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="http://localhost:1313/">The Log</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

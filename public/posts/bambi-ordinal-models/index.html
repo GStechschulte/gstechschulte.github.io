@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Ordinal Models in Bambi | The Log</title>
+<meta name="keywords" content="">
+<meta name="description" content="
+#| code-fold: true
+import arviz as az
+import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
+import numpy as np
+import pandas as pd
+import warnings
+
+import bambi as bmb
+
+warnings.filterwarnings(&#34;ignore&#34;, category=FutureWarning)
+WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions.
+
+Ordinal Regression
+This blog post is a copy of the ordinal models documentation I wrote for Bambi. The original post can be found here.
+In some scenarios, the response variable is discrete, like a count, and ordered. Common examples of such data come from questionnaires where the respondent is asked to rate a product, service, or experience on a scale. This scale is often referred to as a Likert scale. For example, a five-level Likert scale could be:">
+<meta name="author" content="Gabriel Stechschulte">
+<link rel="canonical" href="http://localhost:1313/posts/bambi-ordinal-models/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.e06e296717ca1485b42270445b6064e38739a541df87459ef5f957e51cd74e72.css" integrity="sha256-4G4pZxfKFIW0InBEW2Bk44c5pUHfh0We9flX5RzXTnI=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/bambi-ordinal-models/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+    crossorigin="anonymous"
+/>
+<script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+    crossorigin="anonymous"
+></script>
+<script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+    crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"
+></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+            ],
+        });
+    });
+</script>
+
+
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="The Log (Alt + H)">The Log</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/categories/" title="categories">
+                    <span>categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="tags">
+                    <span>tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Ordinal Models in Bambi
+    </h1>
+    <div class="post-meta"><span title='2023-09-29 00:00:00 +0000 UTC'>September 29, 2023</span>&nbsp;·&nbsp;18 min&nbsp;·&nbsp;Gabriel Stechschulte
+
+</div>
+  </header> 
+  <div class="post-content"><!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#| code-fold: true</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> arviz <span style="color:#66d9ef">as</span> az
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> matplotlib.lines <span style="color:#f92672">import</span> Line2D
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> warnings
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> bambi <span style="color:#66d9ef">as</span> bmb
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>warnings<span style="color:#f92672">.</span>filterwarnings(<span style="color:#e6db74">&#34;ignore&#34;</span>, category<span style="color:#f92672">=</span><span style="color:#a6e22e">FutureWarning</span>)
+</span></span></code></pre></div><pre><code>WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions.
+</code></pre>
+<h1 id="ordinal-regression">Ordinal Regression<a hidden class="anchor" aria-hidden="true" href="#ordinal-regression">#</a></h1>
+<p>This blog post is a copy of the ordinal models documentation I wrote for <a href="https://bambinos.github.io/bambi/">Bambi</a>. The original post can be found <a href="https://bambinos.github.io/bambi/notebooks/">here</a>.</p>
+<p>In some scenarios, the response variable is discrete, like a count, and ordered. Common examples of such data come from questionnaires where the respondent is asked to rate a product, service, or experience on a scale. This scale is often referred to as a <a href="https://en.wikipedia.org/wiki/Likert_scale">Likert scale</a>. For example, a five-level Likert scale could be:</p>
+<ul>
+<li>1 = Strongly disagree</li>
+<li>2 = Disagree</li>
+<li>3 = Neither agree nor disagree</li>
+<li>4 = Agree</li>
+<li>5 = Strongly agree</li>
+</ul>
+<p>The result is a set of <strong>ordered categories</strong> where each category has an associated numeric value (1-5). However, you can&rsquo;t compute a meaningful difference between the categories. Moreover, the response variable can also be a count where meaningful differences can be computed. For example, a restaurant can be rated on a scale of 1-5 stars where 1 is the worst and 5 is the best. Yes, you can compute the difference between 1 and 2 stars, but it is often treated as ordinal in an applied setting.</p>
+<p>Ordinal data presents three challenges when modelling:</p>
+<ol>
+<li>Unlike a count, the differences in the values are not necessarily equidistant or meaningful. For example, computing the difference between &ldquo;Strongly disagree&rdquo; and &ldquo;Disagree&rdquo;. Or, in the case of the restaurant rating, it may be much harder for a restuarant to go from 4 to 5 stars than from 2 to 3 stars.</li>
+<li>The distribution of ordinal responses may be nonnormal as the response is not continuous; particularly if larger response levels are infrequently chosen compared to lower ones.</li>
+<li>The variances of the unobserved variables that underlie the observed ordered category may differ between the category, time points, etc.</li>
+</ol>
+<p>Thus, treating ordered categories as continuous is not appropriate. To this extent, Bambi supports two classes of ordinal regression models: (1) cumulative, and (2) sequential. Below, it is demonstrated how to fit these two models using Bambi to overcome the challenges of ordered category response data.</p>
+<h2 id="cumulative-model">Cumulative model<a hidden class="anchor" aria-hidden="true" href="#cumulative-model">#</a></h2>
+<p>A cumulative model assumes that the observed ordinal variable $Y$ originates from the &ldquo;categorization&rdquo; of a latent continuous variable $Z$. To model the categorization process, the model assumes that there are $K$ thresholds (or cutpoints) $\tau_k$ that partition $Z$ into $K+1$ observable, ordered categories of $Y$. The subscript $k$ in $\tau_k$ is an index that associates that threshold to a particular category $k$. For example, if the response has three categories such as &ldquo;disagree&rdquo;, &ldquo;neither agree nor disagree&rdquo;, and &ldquo;agree&rdquo;, then there are two thresholds $\tau_1$ and $\tau_2$ that partition $Z$ into $K+1 = 3$ categories. Additionally, if we assume $Z$ to have a certain distribution (e.g., Normal) with a cumulative distribution function $F$, the probability of $Y$ being equal to category $k$ is</p>
+<p>$$P(Y = k) = F(\tau_k) - F(\tau_{k-1})$$</p>
+<p>where $F(\tau)$ is a cumulative probability. For example, suppose we are interested in the probability of each category stated above, and have two thresholds $\tau_1 = -1, \tau_2 = 1$ for the three categories. Additionally, if we assume $Z$ to be normally distributed with $\sigma = 1$ and a cumulative distribution function $\Phi$ then</p>
+<p>$$P(Y = 1) = \Phi(\tau_1) = \Phi(-1)$$</p>
+<p>$$P(Y = 2) = \Phi(\tau_2) - \Phi(\tau_1) = \Phi(1) - \Phi(-1)$$</p>
+<p>$$P(Y = 3) = 1 - \Phi(\tau_2) = 1 - \Phi(1)$$</p>
+<p>But how to set the values of the thresholds? By default, Bambi uses a Normal distribution with a grid of evenly spaced $\mu$ that depends on the number of response levels as the prior for the thresholds. Additionally, since the thresholds need to be orderd, Bambi applies a transformation to the values such that the order is preserved. Furthermore, the model specification for ordinal regression typically transforms the cumulative probabilities using the log-cumulative-odds (logit) transformation. Therefore, the learned parameters for the thresholds $\tau$ will be logits.</p>
+<p>Lastly, as each $F(\tau)$ implies a cumulative probability for each category, the largest response level always has a cumulative probability of 1. Thus, we effectively do not need a parameter for it due to the law of total probability. For example, for three response values, we only need two thresholds as two thresholds partition $Z$ into $K+1$ categories.</p>
+<h3 id="the-moral-intuition-dataset">The moral intuition dataset<a hidden class="anchor" aria-hidden="true" href="#the-moral-intuition-dataset">#</a></h3>
+<p>To illustrate an cumulative ordinal model, we will model data from a series of experiments conducted by philsophers (this example comes from Richard McElreath&rsquo;s <a href="https://xcelab.net/rm/statistical-rethinking/">Statistical Rethinking</a>). The experiments aim to collect empirical evidence relevant to debates about moral intuition, the forms of reasoning through which people develop judgments about the moral goodness and badness of actions.</p>
+<p>In the dataset there are 12 columns and 9930 rows, comprising data for 331 unique individuals. The response we are interested in <code>response</code>, is an integer from 1 to 7 indicating how morally permissible the participant found the action to be taken (or not) in the story. The predictors are as follows:</p>
+<ul>
+<li><code>action</code>: a factor with levels 0 and 1 where 1 indicates that the story contained &ldquo;harm caused by action is morally worse than equivalent harm caused by omission&rdquo;.</li>
+<li><code>intention</code>: a factor with levels 0 and 1 where 1 indicates that the story contained &ldquo;harm intended as the means to a goal is morally worse than equivalent harm foreseen as the side effect of a goal&rdquo;.</li>
+<li><code>contact</code>: a factor with levels 0 and 1 where 1 indicates that the story contained &ldquo;using physical contact to cause harm to a victim is morally worse than causing equivalent harm to a victim without using physical contact&rdquo;.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>trolly <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#34;https://raw.githubusercontent.com/rmcelreath/rethinking/master/data/Trolley.csv&#34;</span>, sep<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;;&#34;</span>)
+</span></span><span style="display:flex;"><span>trolly <span style="color:#f92672">=</span> trolly[[<span style="color:#e6db74">&#34;response&#34;</span>, <span style="color:#e6db74">&#34;action&#34;</span>, <span style="color:#e6db74">&#34;intention&#34;</span>, <span style="color:#e6db74">&#34;contact&#34;</span>]]
+</span></span><span style="display:flex;"><span>trolly[<span style="color:#e6db74">&#34;action&#34;</span>] <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>Categorical(trolly[<span style="color:#e6db74">&#34;action&#34;</span>], ordered<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>trolly[<span style="color:#e6db74">&#34;intention&#34;</span>] <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>Categorical(trolly[<span style="color:#e6db74">&#34;intention&#34;</span>], ordered<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>trolly[<span style="color:#e6db74">&#34;contact&#34;</span>] <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>Categorical(trolly[<span style="color:#e6db74">&#34;contact&#34;</span>], ordered<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>trolly[<span style="color:#e6db74">&#34;response&#34;</span>] <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>Categorical(trolly[<span style="color:#e6db74">&#34;response&#34;</span>], ordered<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 7 ordered categories from 1-7</span>
+</span></span><span style="display:flex;"><span>trolly<span style="color:#f92672">.</span>response<span style="color:#f92672">.</span>unique()
+</span></span></code></pre></div><pre><code>[4, 3, 5, 2, 1, 7, 6]
+Categories (7, int64): [1 &lt; 2 &lt; 3 &lt; 4 &lt; 5 &lt; 6 &lt; 7]
+</code></pre>
+<h3 id="intercept-only-model">Intercept only model<a hidden class="anchor" aria-hidden="true" href="#intercept-only-model">#</a></h3>
+<p>Before we fit a model with predictors, let&rsquo;s attempt to recover the parameters of an ordinal model using only the thresholds to get a feel for the cumulative family. Traditionally, in Bambi if we wanted to recover the parameters of the likelihood, we would use an intercept only model and write the formula as <code>response ~ 1</code> where <code>1</code> indicates to include the intercept. However, in the case of ordinal regression, the thresholds &ldquo;take the place&rdquo; of the intercept. Thus, we can write the formula as <code>response ~ 0</code> to indicate that we do not want to include an intercept. To fit a cumulative ordinal model, we pass <code>family=&quot;cumulative&quot;</code>. To compare the thresholds only model, we compute the empirical log-cumulative-odds of the categories directly from the data below and generate a bar plot of the response probabilities.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>pr_k <span style="color:#f92672">=</span> trolly<span style="color:#f92672">.</span>response<span style="color:#f92672">.</span>value_counts()<span style="color:#f92672">.</span>sort_index()<span style="color:#f92672">.</span>values <span style="color:#f92672">/</span> trolly<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>cum_pr_k <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>cumsum(pr_k)
+</span></span><span style="display:flex;"><span>logit_func <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> x: np<span style="color:#f92672">.</span>log(x <span style="color:#f92672">/</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> x))
+</span></span><span style="display:flex;"><span>cum_logit <span style="color:#f92672">=</span> logit_func(cum_pr_k)
+</span></span><span style="display:flex;"><span>cum_logit
+</span></span></code></pre></div><pre><code>/var/folders/rl/y69t95y51g90tvd6gjzzs59h0000gn/T/ipykernel_22293/1548491577.py:3: RuntimeWarning: invalid value encountered in log
+  logit_func = lambda x: np.log(x / (1 - x))
+
+
+
+
+
+array([-1.91609116, -1.26660559, -0.718634  ,  0.24778573,  0.88986365,
+        1.76938091,         nan])
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>))
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>bar(np<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">8</span>), pr_k)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#34;Probability&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#34;Response&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#34;Empirical probability of each response category&#34;</span>);
+</span></span></code></pre></div><p><img loading="lazy" src="2023-09-29-ordinal-models-bambi_files/2023-09-29-ordinal-models-bambi_9_0.png" alt="png"  />
+</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>model <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>Model(<span style="color:#e6db74">&#34;response ~ 0&#34;</span>, data<span style="color:#f92672">=</span>trolly, family<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;cumulative&#34;</span>)
+</span></span><span style="display:flex;"><span>idata <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>fit(random_seed<span style="color:#f92672">=</span><span style="color:#ae81ff">1234</span>)
+</span></span></code></pre></div><p>Below, the components of the model are outputed. Notice how the thresholds are a grid of six values ranging from -2 to 2.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>model
+</span></span></code></pre></div><pre><code>       Formula: response ~ 0 + action + intention + contact + action:intention + contact:intention
+        Family: cumulative
+          Link: p = logit
+  Observations: 9930
+        Priors:
+    target = p
+        Common-level effects
+            action ~ Normal(mu: 0.0, sigma: 5.045)
+            intention ~ Normal(mu: 0.0, sigma: 5.0111)
+            contact ~ Normal(mu: 0.0, sigma: 6.25)
+            action:intention ~ Normal(mu: 0.0, sigma: 6.7082)
+            contact:intention ~ Normal(mu: 0.0, sigma: 8.3333)
+
+        Auxiliary parameters
+            threshold ~ Normal(mu: [-2.  -1.2 -0.4  0.4  1.2  2. ], sigma: 1.0, transform: ordered)
+------
+* To see a plot of the priors call the .plot_priors() method.
+* To see a summary or plot of the posterior pass the object returned by .fit() to az.summary() or az.plot_trace()
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>az<span style="color:#f92672">.</span>summary(idata)
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>Viewing the summary dataframe, we see a total of six  <code>response_threshold</code> coefficients. Why six? Remember, we get the last parameter for free. Since there are seven categories, we only need six cutpoints. The index (using zero based indexing) of the <code>response_threshold</code> indicates the category that the threshold is associated with. Comparing to the empirical log-cumulative-odds computation above, the mean of the posterior distribution for each category is close to the empirical value.</p>
+<p>As the the log cumulative link is used, we need to apply the inverse of the logit function to transform back to cumulative probabilities. Below, we plot the cumulative probabilities for each category.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>expit_func <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> x: <span style="color:#ae81ff">1</span> <span style="color:#f92672">/</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">+</span> np<span style="color:#f92672">.</span>exp(<span style="color:#f92672">-</span>x))
+</span></span><span style="display:flex;"><span>cumprobs <span style="color:#f92672">=</span> expit_func(idata<span style="color:#f92672">.</span>posterior<span style="color:#f92672">.</span>response_threshold)<span style="color:#f92672">.</span>mean((<span style="color:#e6db74">&#34;chain&#34;</span>, <span style="color:#e6db74">&#34;draw&#34;</span>))
+</span></span><span style="display:flex;"><span>cumprobs <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>append(cumprobs, <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>))
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>plot(sorted(trolly<span style="color:#f92672">.</span>response<span style="color:#f92672">.</span>unique()), cumprobs, marker<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;o&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#34;Cumulative probability&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#34;Response category&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#34;Cumulative probabilities of response categories&#34;</span>);
+</span></span></code></pre></div><p><img loading="lazy" src="2023-09-29-ordinal-models-bambi_files/2023-09-29-ordinal-models-bambi_15_0.png" alt="png"  />
+</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>))
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">6</span>):
+</span></span><span style="display:flex;"><span>    outcome <span style="color:#f92672">=</span> expit_func(idata<span style="color:#f92672">.</span>posterior<span style="color:#f92672">.</span>response_threshold)<span style="color:#f92672">.</span>sel(response_threshold_dim<span style="color:#f92672">=</span>i)<span style="color:#f92672">.</span>to_numpy()<span style="color:#f92672">.</span>flatten()
+</span></span><span style="display:flex;"><span>    ax<span style="color:#f92672">.</span>hist(outcome, bins<span style="color:#f92672">=</span><span style="color:#ae81ff">15</span>, alpha<span style="color:#f92672">=</span><span style="color:#ae81ff">0.5</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Category: </span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_xlabel(<span style="color:#e6db74">&#34;Probability&#34;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_ylabel(<span style="color:#e6db74">&#34;Count&#34;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">&#34;Cumulative Probability by Category&#34;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>legend(bbox_to_anchor<span style="color:#f92672">=</span>(<span style="color:#ae81ff">1.04</span>, <span style="color:#ae81ff">1</span>), loc<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;upper left&#34;</span>);
+</span></span></code></pre></div><p><img loading="lazy" src="2023-09-29-ordinal-models-bambi_files/2023-09-29-ordinal-models-bambi_16_0.png" alt="png"  />
+</p>
+<p>We can take the derivative of the cumulative probabilities to get the posterior probabilities for each category. Notice how the posterior probabilities in the barplot below are close to the empirical probabilities in barplot above.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># derivative</span>
+</span></span><span style="display:flex;"><span>ddx <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>diff(cumprobs)
+</span></span><span style="display:flex;"><span>probs <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>insert(ddx, <span style="color:#ae81ff">0</span>, cumprobs[<span style="color:#ae81ff">0</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>))
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>bar(sorted(trolly<span style="color:#f92672">.</span>response<span style="color:#f92672">.</span>unique()), probs)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#34;Probability&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#34;Response category&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#34;Posterior Probability of each response category&#34;</span>);
+</span></span></code></pre></div><p><img loading="lazy" src="2023-09-29-ordinal-models-bambi_files/2023-09-29-ordinal-models-bambi_18_0.png" alt="png"  />
+</p>
+<p>Notice in the plots above, the jump in probability from category 3 to 4. Additionally, the estimates of the coefficients is precise for each category. Now that we have an understanding how the cumulative link function is applied to produce ordered cumulative outcomes, we will add predictors to the model.</p>
+<h3 id="adding-predictors">Adding predictors<a hidden class="anchor" aria-hidden="true" href="#adding-predictors">#</a></h3>
+<p>In the cumulative model described above, adding predictors was explicitly left out. In this section, it is described how predictors are added to ordinal cumulative models. When adding predictor variables, what we would like is for any predictor, as it increases, predictions are moved progressively (increased) through the categories in sequence. A linear regression is formed for $Z$ by adding a predictor term $\eta$</p>
+<p>$$\eta = \beta_1 x_1 + \beta_2 x_2 +, . . ., \beta_n x_n$$</p>
+<p>Notice how similar this looks to an ordinary linear model. However, there is no intercept or error term. This is because the intercept is replaced by the threshold $\tau$ and the error term $\epsilon$ is added seperately to obtain</p>
+<p>$$Z = \eta + \epsilon$$</p>
+<p>Putting the predictor term together with the thresholds and cumulative distribution function, we obtain the probability of $Y$ being equal to a category $k$ as</p>
+<p>$$Pr(Y = k | \eta) = F(\tau_k - \eta) - F(\tau_{k-1} - \eta)$$</p>
+<p>The same predictor term $\eta$ is subtracted from each threshold because if we decrease the log-cumulative-odds of every outcome value $k$ below the maximum, this shifts probability mass upwards towards higher outcome values. Thus, positive $\beta$ values correspond to increasing $x$, which is associated with an increase in the mean response $Y$. The parameters to be estimated from the model are the thresholds $\tau$ and the predictor terms $\eta$ coefficients.</p>
+<p>To add predictors for ordinal models in Bambi, we continue to use the formula interface.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>model <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>Model(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;response ~ 0 + action + intention + contact + action:intention + contact:intention&#34;</span>,
+</span></span><span style="display:flex;"><span>    data<span style="color:#f92672">=</span>trolly,
+</span></span><span style="display:flex;"><span>    family<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;cumulative&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>idata <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>fit(random_seed<span style="color:#f92672">=</span><span style="color:#ae81ff">1234</span>)
+</span></span></code></pre></div><p>In the summary dataframe below, we only select the predictor variables as the thresholds are not of interest at the moment.</p>
+<p>In the summary dataframe below, we only select the predictor variables as the cutpoints are not of interest at the moment.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>az<span style="color:#f92672">.</span>summary(
+</span></span><span style="display:flex;"><span>    idata,
+</span></span><span style="display:flex;"><span>    var_names<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;action&#34;</span>, <span style="color:#e6db74">&#34;intention&#34;</span>, <span style="color:#e6db74">&#34;contact&#34;</span>,
+</span></span><span style="display:flex;"><span>               <span style="color:#e6db74">&#34;action:intention&#34;</span>, <span style="color:#e6db74">&#34;contact:intention&#34;</span>]
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>The posterior distribution of the slopes are all negative indicating that each of these story features reduces the rating—the acceptability of the story. Below, a forest plot is used to make this insight more clear.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>az<span style="color:#f92672">.</span>plot_forest(
+</span></span><span style="display:flex;"><span>    idata,
+</span></span><span style="display:flex;"><span>    combined<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    var_names<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;action&#34;</span>, <span style="color:#e6db74">&#34;intention&#34;</span>, <span style="color:#e6db74">&#34;contact&#34;</span>,
+</span></span><span style="display:flex;"><span>               <span style="color:#e6db74">&#34;action:intention&#34;</span>, <span style="color:#e6db74">&#34;contact:intention&#34;</span>],
+</span></span><span style="display:flex;"><span>    figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>),
+</span></span><span style="display:flex;"><span>    textsize<span style="color:#f92672">=</span><span style="color:#ae81ff">11</span>
+</span></span><span style="display:flex;"><span>);
+</span></span></code></pre></div><p><img loading="lazy" src="2023-09-29-ordinal-models-bambi_files/2023-09-29-ordinal-models-bambi_26_0.png" alt="png"  />
+</p>
+<p>Again, we can plot the cumulative probability of each category. Compared to the same plot above, notice how most of the category probabilities have been shifted to the left. Additionally, there is more uncertainty for category 3, 4, and 5.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>))
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">6</span>):
+</span></span><span style="display:flex;"><span>    outcome <span style="color:#f92672">=</span> expit_func(idata<span style="color:#f92672">.</span>posterior<span style="color:#f92672">.</span>response_threshold)<span style="color:#f92672">.</span>sel(response_threshold_dim<span style="color:#f92672">=</span>i)<span style="color:#f92672">.</span>to_numpy()<span style="color:#f92672">.</span>flatten()
+</span></span><span style="display:flex;"><span>    ax<span style="color:#f92672">.</span>hist(outcome, bins<span style="color:#f92672">=</span><span style="color:#ae81ff">15</span>, alpha<span style="color:#f92672">=</span><span style="color:#ae81ff">0.5</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Category: </span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_xlabel(<span style="color:#e6db74">&#34;Probability&#34;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_ylabel(<span style="color:#e6db74">&#34;Count&#34;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">&#34;Cumulative Probability by Category&#34;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>legend(bbox_to_anchor<span style="color:#f92672">=</span>(<span style="color:#ae81ff">1.04</span>, <span style="color:#ae81ff">1</span>), loc<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;upper left&#34;</span>);
+</span></span></code></pre></div><p><img loading="lazy" src="2023-09-29-ordinal-models-bambi_files/2023-09-29-ordinal-models-bambi_28_0.png" alt="png"  />
+</p>
+<h3 id="posterior-predictive-distribution">Posterior predictive distribution<a hidden class="anchor" aria-hidden="true" href="#posterior-predictive-distribution">#</a></h3>
+<p>To get a sense of how well the ordinal model fits the data, we can plot samples from the posterior predictive distribution. To plot the samples, a utility function is defined below to assist in the plotting of discrete values.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">adjust_lightness</span>(color, amount<span style="color:#f92672">=</span><span style="color:#ae81ff">0.5</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">import</span> matplotlib.colors <span style="color:#66d9ef">as</span> mc
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">import</span> colorsys
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        c <span style="color:#f92672">=</span> mc<span style="color:#f92672">.</span>cnames[color]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span>:
+</span></span><span style="display:flex;"><span>        c <span style="color:#f92672">=</span> color
+</span></span><span style="display:flex;"><span>    c <span style="color:#f92672">=</span> colorsys<span style="color:#f92672">.</span>rgb_to_hls(<span style="color:#f92672">*</span>mc<span style="color:#f92672">.</span>to_rgb(c))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> colorsys<span style="color:#f92672">.</span>hls_to_rgb(c[<span style="color:#ae81ff">0</span>], c[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">*</span> amount, c[<span style="color:#ae81ff">2</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">plot_ppc_discrete</span>(idata, bins, ax):
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add_discrete_bands</span>(x, lower, upper, ax, <span style="color:#f92672">**</span>kwargs):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> i, (l, u) <span style="color:#f92672">in</span> enumerate(zip(lower, upper)):
+</span></span><span style="display:flex;"><span>            s <span style="color:#f92672">=</span> slice(i, i <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>            ax<span style="color:#f92672">.</span>fill_between(x[s], [l, l], [u, u], <span style="color:#f92672">**</span>kwargs)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    var_name <span style="color:#f92672">=</span> list(idata<span style="color:#f92672">.</span>observed_data<span style="color:#f92672">.</span>data_vars)[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>    y_obs <span style="color:#f92672">=</span> idata<span style="color:#f92672">.</span>observed_data[var_name]<span style="color:#f92672">.</span>to_numpy()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    counts_list <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> draw_values <span style="color:#f92672">in</span> az<span style="color:#f92672">.</span>extract(idata, <span style="color:#e6db74">&#34;posterior_predictive&#34;</span>)[var_name]<span style="color:#f92672">.</span>to_numpy()<span style="color:#f92672">.</span>T:
+</span></span><span style="display:flex;"><span>        counts, _ <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>histogram(draw_values, bins<span style="color:#f92672">=</span>bins)
+</span></span><span style="display:flex;"><span>        counts_list<span style="color:#f92672">.</span>append(counts)
+</span></span><span style="display:flex;"><span>    counts_arr <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>stack(counts_list)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    qts_90 <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>quantile(counts_arr, (<span style="color:#ae81ff">0.05</span>, <span style="color:#ae81ff">0.95</span>), axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    qts_70 <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>quantile(counts_arr, (<span style="color:#ae81ff">0.15</span>, <span style="color:#ae81ff">0.85</span>), axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    qts_50 <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>quantile(counts_arr, (<span style="color:#ae81ff">0.25</span>, <span style="color:#ae81ff">0.75</span>), axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    qts_30 <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>quantile(counts_arr, (<span style="color:#ae81ff">0.35</span>, <span style="color:#ae81ff">0.65</span>), axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    median <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>quantile(counts_arr, <span style="color:#ae81ff">0.5</span>, axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    colors <span style="color:#f92672">=</span> [adjust_lightness(<span style="color:#e6db74">&#34;C0&#34;</span>, x) <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> [<span style="color:#ae81ff">1.8</span>, <span style="color:#ae81ff">1.6</span>, <span style="color:#ae81ff">1.4</span>, <span style="color:#ae81ff">1.2</span>, <span style="color:#ae81ff">0.9</span>]]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    add_discrete_bands(bins, qts_90[<span style="color:#ae81ff">0</span>], qts_90[<span style="color:#ae81ff">1</span>], ax<span style="color:#f92672">=</span>ax, color<span style="color:#f92672">=</span>colors[<span style="color:#ae81ff">0</span>])
+</span></span><span style="display:flex;"><span>    add_discrete_bands(bins, qts_70[<span style="color:#ae81ff">0</span>], qts_70[<span style="color:#ae81ff">1</span>], ax<span style="color:#f92672">=</span>ax, color<span style="color:#f92672">=</span>colors[<span style="color:#ae81ff">1</span>])
+</span></span><span style="display:flex;"><span>    add_discrete_bands(bins, qts_50[<span style="color:#ae81ff">0</span>], qts_50[<span style="color:#ae81ff">1</span>], ax<span style="color:#f92672">=</span>ax, color<span style="color:#f92672">=</span>colors[<span style="color:#ae81ff">2</span>])
+</span></span><span style="display:flex;"><span>    add_discrete_bands(bins, qts_30[<span style="color:#ae81ff">0</span>], qts_30[<span style="color:#ae81ff">1</span>], ax<span style="color:#f92672">=</span>ax, color<span style="color:#f92672">=</span>colors[<span style="color:#ae81ff">3</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ax<span style="color:#f92672">.</span>step(bins[:<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>], median, color<span style="color:#f92672">=</span>colors[<span style="color:#ae81ff">4</span>], lw<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, where<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span>)
+</span></span><span style="display:flex;"><span>    ax<span style="color:#f92672">.</span>hist(y_obs, bins<span style="color:#f92672">=</span>bins, histtype<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;step&#34;</span>, lw<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;black&#34;</span>, align<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mid&#34;</span>)
+</span></span><span style="display:flex;"><span>    handles <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>        Line2D([], [], label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Observed data&#34;</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;black&#34;</span>, lw<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>),
+</span></span><span style="display:flex;"><span>        Line2D([], [], label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Posterior predictive median&#34;</span>, color<span style="color:#f92672">=</span>colors[<span style="color:#ae81ff">4</span>], lw<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>    ax<span style="color:#f92672">.</span>legend(handles<span style="color:#f92672">=</span>handles)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> ax
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>idata_pps <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>predict(idata<span style="color:#f92672">=</span>idata, kind<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pps&#34;</span>, inplace<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>bins <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">7</span>)
+</span></span><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>))
+</span></span><span style="display:flex;"><span>ax <span style="color:#f92672">=</span> plot_ppc_discrete(idata_pps, bins, ax)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_xlabel(<span style="color:#e6db74">&#34;Response category&#34;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_ylabel(<span style="color:#e6db74">&#34;Count&#34;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">&#34;Cumulative model - Posterior Predictive Distribution&#34;</span>);
+</span></span></code></pre></div><p><img loading="lazy" src="2023-09-29-ordinal-models-bambi_files/2023-09-29-ordinal-models-bambi_31_0.png" alt="png"  />
+</p>
+<h2 id="sequential-model">Sequential Model<a hidden class="anchor" aria-hidden="true" href="#sequential-model">#</a></h2>
+<p>For some ordinal variables, the assumption of a <strong>single</strong> underlying continuous variable (as in cumulative models) may not be appropriate. If the response can be understood as being the result of a sequential process, such that a higher response category is possible only after all lower categories are achieved, then a sequential model may be more appropriate than a cumulative model.</p>
+<p>Sequential models assume that for <strong>every</strong> category $k$ there is a latent continuous variable $Z$ that determines the transition between categories $k$ and $k+1$. Now, a threshold $\tau$ belongs to each latent process. If there are 3 categories, then there are 3 latent processes. If $Z_k$ is greater than the threshold $\tau_k$, the sequential process continues, otherwise it stops at category $k$. As with the cumulative model, we assume a distribution for $Z_k$ with a cumulative distribution function $F$.</p>
+<p>As an example, lets suppose we are interested in modeling the probability a boxer makes it to round 3. This implies that the particular boxer in question survived round 1 $Z_1 &gt; \tau_1$ , 2 $Z_2 &gt; \tau_2$, and 3 $Z_3 &gt; \tau_3$. This can be written as</p>
+<p>$$Pr(Y = 3) = (1 - P(Z_1 \leq \tau_1)) * (1 - P(Z_2 \leq \tau_2)) * P(Z_3 \leq \tau_3)$$</p>
+<p>As in the cumulative model above, if we assume $Y$ to be normally distributed with the thresholds $\tau_1 = -1, \tau_2 = 0, \tau_3 = 1$ and cumulative distribution function $\Phi$ then</p>
+<p>$$Pr(Y = 3) = (1 - \Phi(\tau_1)) * (1 - \Phi(\tau_2)) * \Phi(\tau_3)$$</p>
+<p>To add predictors to this sequential model, we follow the same specification in the <em>Adding Predictors</em> section above. Thus, the sequential model with predictor terms becomes</p>
+<p>$$P(Y = k) = F(\tau_k - \eta) * \prod_{j=1}^{k-1}{(1 - F(\tau_j - \eta))}$$</p>
+<p>Thus, the probability that $Y$ is equal to category $k$ is equal to the probability that it did not fall in one of the former categories $1: k-1$ multiplied by the probability that the sequential process stopped at $k$ rather than continuing past it.</p>
+<h3 id="human-resources-attrition-dataset">Human resources attrition dataset<a hidden class="anchor" aria-hidden="true" href="#human-resources-attrition-dataset">#</a></h3>
+<p>To illustrate an sequential model with a stopping ratio link function, we will use data from the IBM human resources employee attrition and performance <a href="https://www.kaggle.com/datasets/pavansubhasht/ibm-hr-analytics-attrition-dataset">dataset</a>. The original dataset contains 1470 rows and 35 columns. However, our goal is to model the total working years of employees using age as a predictor. This data lends itself to a sequential model as the response, total working years, is a sequential process. In order to have 10 years of working experience, it is necessarily true that the employee had 9 years of working experience. Additionally, age is choosen as a predictor as it is positively correlated with total working years.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>attrition <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#34;data/hr_employee_attrition.tsv.txt&#34;</span>, sep<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>attrition <span style="color:#f92672">=</span> attrition[attrition[<span style="color:#e6db74">&#34;Attrition&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;No&#34;</span>]
+</span></span><span style="display:flex;"><span>attrition[<span style="color:#e6db74">&#34;YearsAtCompany&#34;</span>] <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>Categorical(attrition[<span style="color:#e6db74">&#34;YearsAtCompany&#34;</span>], ordered<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>attrition[[<span style="color:#e6db74">&#34;YearsAtCompany&#34;</span>, <span style="color:#e6db74">&#34;Age&#34;</span>]]<span style="color:#f92672">.</span>head()
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>Below, the empirical probabilities of the response categories are computed. Employees are most likely to stay at the company between 1 and 10 years.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>pr_k <span style="color:#f92672">=</span> attrition<span style="color:#f92672">.</span>YearsAtCompany<span style="color:#f92672">.</span>value_counts()<span style="color:#f92672">.</span>sort_index()<span style="color:#f92672">.</span>values <span style="color:#f92672">/</span> attrition<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>))
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>bar(np<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">36</span>), pr_k)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#34;Response category&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#34;Probability&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#34;Empirical probability of each response category&#34;</span>);
+</span></span></code></pre></div><p><img loading="lazy" src="2023-09-29-ordinal-models-bambi_files/2023-09-29-ordinal-models-bambi_36_0.png" alt="png"  />
+</p>
+<h3 id="default-prior-of-thresholds">Default prior of thresholds<a hidden class="anchor" aria-hidden="true" href="#default-prior-of-thresholds">#</a></h3>
+<p>Before we fit the sequential model, it&rsquo;s worth mentioning that the default priors for the thresholds in a sequential model are different than the cumulative model. In the cumulative model, the default prior for the thresholds is a Normal distribution with a grid of evenly spaced $\mu$ where an ordered transformation is applied to ensure the ordering of the values. However, in the sequential model, the ordering of the thresholds does not matter. Thus, the default prior for the thresholds is a Normal distribution with a zero $\mu$ vector of length $k - 1$ where $k$ is the number of response levels. Refer to the <a href="https://bambinos.github.io/bambi/notebooks/getting_started.html#specifying-priors">getting started</a> docs if you need a refresher on priors in Bambi.</p>
+<p>Subsequently, fitting a sequential model is similar to fitting a cumulative model. The only difference is that we pass <code>family=&quot;sratio&quot;</code> to the <code>bambi.Model</code> constructor.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>sequence_model <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>Model(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;YearsAtCompany ~ 0 + TotalWorkingYears&#34;</span>,
+</span></span><span style="display:flex;"><span>    data<span style="color:#f92672">=</span>attrition,
+</span></span><span style="display:flex;"><span>    family<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sratio&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>sequence_idata <span style="color:#f92672">=</span> sequence_model<span style="color:#f92672">.</span>fit(random_seed<span style="color:#f92672">=</span><span style="color:#ae81ff">1234</span>)
+</span></span></code></pre></div><pre><code>Only 250 samples in chain.
+Auto-assigning NUTS sampler...
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [YearsAtCompany_threshold, TotalWorkingYears]
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>Sampling 4 chains for 250 tune and 250 draw iterations (1_000 + 1_000 draws total) took 148 seconds.
+The rhat statistic is larger than 1.01 for some parameters. This indicates problems during sampling. See https://arxiv.org/abs/1903.08008 for details
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>sequence_model
+</span></span></code></pre></div><pre><code>       Formula: YearsAtCompany ~ 0 + TotalWorkingYears
+        Family: sratio
+          Link: p = logit
+  Observations: 1233
+        Priors:
+    target = p
+        Common-level effects
+            TotalWorkingYears ~ Normal(mu: 0.0, sigma: 0.3223)
+
+        Auxiliary parameters
+            threshold ~ Normal(mu: [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+             0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.], sigma: 1.0)
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>az<span style="color:#f92672">.</span>summary(sequence_idata)
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>The coefficients are still on the logits scale, so we need to apply the inverse of the logit function to transform back to probabilities. Below, we plot the probabilities for each category.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>probs <span style="color:#f92672">=</span> expit_func(sequence_idata<span style="color:#f92672">.</span>posterior<span style="color:#f92672">.</span>YearsAtCompany_threshold)<span style="color:#f92672">.</span>mean((<span style="color:#e6db74">&#34;chain&#34;</span>, <span style="color:#e6db74">&#34;draw&#34;</span>))
+</span></span><span style="display:flex;"><span>probs <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>append(probs, <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>))
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>plot(sorted(attrition<span style="color:#f92672">.</span>YearsAtCompany<span style="color:#f92672">.</span>unique()), probs, marker<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;o&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#34;Probability&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#34;Response category&#34;</span>);
+</span></span></code></pre></div><p><img loading="lazy" src="2023-09-29-ordinal-models-bambi_files/2023-09-29-ordinal-models-bambi_42_0.png" alt="png"  />
+</p>
+<p>This plot can seem confusing at first. Remember, the sequential model is a product of probabilities, i.e., the probability that $Y$ is equal to category $k$ is equal to the probability that it did not fall in one of the former categories $1: k-1$ multiplied by the probability that the sequential process stopped at $k$. Thus, the probability of category 5 is the probability that the sequential process did not fall in 0, 1, 2, 3, or 4 multiplied by the probability that the sequential process stopped at 5. This makes sense why the probability of category 36 is 1. There is no category after 36, so once you multiply all of the previous probabilities with the current category, you get 1. This is the reason for the &ldquo;cumulative-like&rdquo; shape of the plot. But if the coefficients were truly cumulative, the probability could not decreases as $k$ increases.</p>
+<h3 id="posterior-predictive-samples">Posterior predictive samples<a hidden class="anchor" aria-hidden="true" href="#posterior-predictive-samples">#</a></h3>
+<p>Again, using the posterior predictive samples, we can visualize the model fit against the observed data. In the case of the sequential model, the model does an alright job of capturing the observed frequencies of the categories. For pedagogical purposes, this fit is sufficient.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>idata_pps <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>predict(idata<span style="color:#f92672">=</span>idata, kind<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pps&#34;</span>, inplace<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>bins <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">35</span>)
+</span></span><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>))
+</span></span><span style="display:flex;"><span>ax <span style="color:#f92672">=</span> plot_ppc_discrete(idata_pps, bins, ax)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_xlabel(<span style="color:#e6db74">&#34;Response category&#34;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_ylabel(<span style="color:#e6db74">&#34;Count&#34;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">&#34;Sequential model - Posterior Predictive Distribution&#34;</span>);
+</span></span></code></pre></div><p><img loading="lazy" src="2023-09-29-ordinal-models-bambi_files/2023-09-29-ordinal-models-bambi_45_0.png" alt="png"  />
+</p>
+<h2 id="summary">Summary<a hidden class="anchor" aria-hidden="true" href="#summary">#</a></h2>
+<p>This notebook demonstrated how to fit cumulative and sequential ordinal regression models using Bambi. Cumulative models focus on modeling the cumulative probabilities of an ordinal outcome variable taking on values up to and including a certain category, whereas a sequential model focuses on modeling the probability that an ordinal outcome variable stops at a particular category, rather than continuing to higher categories. To achieve this, both models assume that the reponse variable originates from a categorization of a latent continuous variable $Z$. However, the cumulative model assumes that there are $K$ thresholds $\tau_k$ that partition $Z$ into $K+1$ observable, ordered categories of $Y$. The sequential model assumes that for every category $k$ there is a latent continuous variable $Z$ that determines the transition between categories $k$ and $k+1$; thus, a threshold $\tau$ belongs to each latent process.</p>
+<p>Cumulative models can be used in situations where the outcome variable is on the Likert scale, and you are interested in understanding the impact of predictors on the probability of reaching or exceeding specific categories. Sequential models are particularly useful when you are interested in understanding the predictors that influence the decision to stop at a specific response level. It&rsquo;s well-suited for analyzing data where categories represent stages, and the focus is on the transitions between these stages.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">%</span>load_ext watermark
+</span></span><span style="display:flex;"><span><span style="color:#f92672">%</span>watermark <span style="color:#f92672">-</span>n <span style="color:#f92672">-</span>u <span style="color:#f92672">-</span>v <span style="color:#f92672">-</span>iv <span style="color:#f92672">-</span>w
+</span></span></code></pre></div><pre><code>Last updated: Fri Sep 15 2023
+
+Python implementation: CPython
+Python version       : 3.11.0
+IPython version      : 8.13.2
+
+bambi     : 0.13.0.dev0
+arviz     : 0.15.1
+numpy     : 1.24.2
+pandas    : 2.0.1
+matplotlib: 3.7.1
+
+Watermark: 2.3.1
+</code></pre>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="http://localhost:1313/">The Log</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

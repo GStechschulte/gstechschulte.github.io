@@ -3,6 +3,7 @@ title: 'Monte Carlo Approximation'
 date: 2022-10-07
 author: 'Gabriel Stechschulte'
 draft: false
+math: true
 categories: ['probabilistic-programming']
 ---
 

@@ -61,21 +61,19 @@ This blog post is a copy of the survival models documentation I wrote for Bambi.
 </noscript>
 <link
     rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
-    integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ"
+    href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
     crossorigin="anonymous"
 />
 <script
     defer
-    src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"
-    integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY"
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
     crossorigin="anonymous"
 ></script>
 <script
     defer
-    src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js"
-    integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR"
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
     crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"
 ></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -83,10 +81,7 @@ This blog post is a copy of the survival models documentation I wrote for Bambi.
             delimiters: [
                 { left: "$$", right: "$$", display: true },
                 { left: "$", right: "$", display: false },
-                { left: "\\(", right: "\\)", display: false },
-                { left: "\\[", right: "\\]", display: true },
             ],
-            throwOnError: false,
         });
     });
 </script>
@@ -216,7 +211,7 @@ This blog post is a copy of the survival models documentation I wrote for Bambi.
 <p>The distribution of days until adoption exhibits a long tail with most cats (if we observe the adopt event) being adopted within the first month of inception. Note that the plot has been truncated to six months for better visibility. Below, we estimate the survival function using the <code>KaplanMeierFitter</code> class from the <code>lifelines</code> package.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>km <span style="color:#f92672">=</span> KaplanMeierFitter()
 </span></span><span style="display:flex;"><span>km_adoptions <span style="color:#f92672">=</span> km<span style="color:#f92672">.</span>fit(
-</span></span><span style="display:flex;"><span>    cats_df[<span style="color:#e6db74">&#34;days_to_event&#34;</span>], 
+</span></span><span style="display:flex;"><span>    cats_df[<span style="color:#e6db74">&#34;days_to_event&#34;</span>],
 </span></span><span style="display:flex;"><span>    cats_df[<span style="color:#e6db74">&#34;out_event&#34;</span>]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">if</span> x <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;Adoption&#34;</span> <span style="color:#66d9ef">else</span> <span style="color:#ae81ff">0</span>)
 </span></span><span style="display:flex;"><span>)
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>))
@@ -261,7 +256,7 @@ It’s the censored cats that are tricky. If something else happened before a ca
 </span></span><span style="display:flex;"><span>cats[<span style="color:#e6db74">&#34;color_id&#34;</span>] <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>where(cats[<span style="color:#e6db74">&#34;color&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;Black&#34;</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>)
 </span></span><span style="display:flex;"><span>cats <span style="color:#f92672">=</span> cats[[<span style="color:#e6db74">&#34;days_to_event&#34;</span>, <span style="color:#e6db74">&#34;adopt&#34;</span>, <span style="color:#e6db74">&#34;color_id&#34;</span>]]
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>model_1 <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>Model(
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;censored(days_to_event / 31, adopt) ~ 1&#34;</span>, 
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;censored(days_to_event / 31, adopt) ~ 1&#34;</span>,
 </span></span><span style="display:flex;"><span>    data<span style="color:#f92672">=</span>cats,
 </span></span><span style="display:flex;"><span>    family<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;exponential&#34;</span>,
 </span></span><span style="display:flex;"><span>    link<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;log&#34;</span>
@@ -273,8 +268,8 @@ It’s the censored cats that are tricky. If something else happened before a ca
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>idata_1 <span style="color:#f92672">=</span> model_1<span style="color:#f92672">.</span>fit(
 </span></span><span style="display:flex;"><span>    tune<span style="color:#f92672">=</span><span style="color:#ae81ff">500</span>,
 </span></span><span style="display:flex;"><span>    draws<span style="color:#f92672">=</span><span style="color:#ae81ff">500</span>,
-</span></span><span style="display:flex;"><span>    random_seed<span style="color:#f92672">=</span><span style="color:#ae81ff">42</span>, 
-</span></span><span style="display:flex;"><span>    chains<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>, 
+</span></span><span style="display:flex;"><span>    random_seed<span style="color:#f92672">=</span><span style="color:#ae81ff">42</span>,
+</span></span><span style="display:flex;"><span>    chains<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>,
 </span></span><span style="display:flex;"><span>    cores<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>
 </span></span><span style="display:flex;"><span>)
 </span></span></code></pre></div><pre><code>Auto-assigning NUTS sampler...
@@ -311,7 +306,7 @@ survival function to compute the probability of not being adopted after a range 
 <h3 id="cat-adoption-plots">Cat adoption plots<a hidden class="anchor" aria-hidden="true" href="#cat-adoption-plots">#</a></h3>
 <p>The plot below shows the estimated survival function and CCDF for cat adoptions. First, we compute the $0.95$ credible interval (CI) and median value for the intercept. Then, since a log-link was used, the values are exponentiated.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>lambda_preds <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>quantile(
-</span></span><span style="display:flex;"><span>    idata_1[<span style="color:#e6db74">&#34;posterior&#34;</span>][<span style="color:#e6db74">&#34;Intercept&#34;</span>], 
+</span></span><span style="display:flex;"><span>    idata_1[<span style="color:#e6db74">&#34;posterior&#34;</span>][<span style="color:#e6db74">&#34;Intercept&#34;</span>],
 </span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">0.025</span>, <span style="color:#ae81ff">0.5</span>, <span style="color:#ae81ff">0.975</span>]
 </span></span><span style="display:flex;"><span>)
 </span></span><span style="display:flex;"><span>
@@ -378,7 +373,7 @@ $$Y \sim \text{Exponential}(\lambda)$$</p>
 <h3 id="cat-adoption-rates-by-color">Cat adoption rates by color<a hidden class="anchor" aria-hidden="true" href="#cat-adoption-rates-by-color">#</a></h3>
 <p>However, thanks to Bambi&rsquo;s formula syntax, we can just include the predictors of interest. Below, <code>color_id</code> is added to model the survival probability of black and other colored cats.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>cat_model <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>Model(
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;censored(days_to_event / 31, adopt) ~ 0 + color_id&#34;</span>, 
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;censored(days_to_event / 31, adopt) ~ 0 + color_id&#34;</span>,
 </span></span><span style="display:flex;"><span>    data<span style="color:#f92672">=</span>cats,
 </span></span><span style="display:flex;"><span>    center_predictors<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,
 </span></span><span style="display:flex;"><span>    priors<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;color_id&#34;</span>: bmb<span style="color:#f92672">.</span>Prior(<span style="color:#e6db74">&#34;Normal&#34;</span>, mu<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, sigma<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)},
@@ -398,7 +393,7 @@ $$Y \sim \text{Exponential}(\lambda)$$</p>
         Family: exponential
           Link: mu = log
   Observations: 22356
-        Priors: 
+        Priors:
     target = mu
         Common-level effects
             color_id ~ Normal(mu: 0.0, sigma: 1.0)
@@ -409,8 +404,8 @@ $$Y \sim \text{Exponential}(\lambda)$$</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>idata <span style="color:#f92672">=</span> cat_model<span style="color:#f92672">.</span>fit(
 </span></span><span style="display:flex;"><span>    tune<span style="color:#f92672">=</span><span style="color:#ae81ff">500</span>,
 </span></span><span style="display:flex;"><span>    draws<span style="color:#f92672">=</span><span style="color:#ae81ff">500</span>,
-</span></span><span style="display:flex;"><span>    random_seed<span style="color:#f92672">=</span><span style="color:#ae81ff">42</span>, 
-</span></span><span style="display:flex;"><span>    chains<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>, 
+</span></span><span style="display:flex;"><span>    random_seed<span style="color:#f92672">=</span><span style="color:#ae81ff">42</span>,
+</span></span><span style="display:flex;"><span>    chains<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>,
 </span></span><span style="display:flex;"><span>    cores<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>
 </span></span><span style="display:flex;"><span>)
 </span></span></code></pre></div><pre><code>Auto-assigning NUTS sampler...
@@ -490,13 +485,13 @@ NUTS: [color_id]
 <p>Analyzing the CCDF (left plot), we can see that black cats have a slightly higher probability of not being adopted throughout the whole range of $k$. Furthermore, analyzing the CDF (right plot), we can see it also takes a longer time for the majority of black cats to be adopted compared to other colored cats. Below, we plot the distribution of days until adoption for the two groups.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>))
 </span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>hist(
-</span></span><span style="display:flex;"><span>    other_cats <span style="color:#f92672">*</span> <span style="color:#ae81ff">31</span>, 
-</span></span><span style="display:flex;"><span>    bins<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>, 
+</span></span><span style="display:flex;"><span>    other_cats <span style="color:#f92672">*</span> <span style="color:#ae81ff">31</span>,
+</span></span><span style="display:flex;"><span>    bins<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>,
 </span></span><span style="display:flex;"><span>    density<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
 </span></span><span style="display:flex;"><span>    label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Other cats&#34;</span>
 </span></span><span style="display:flex;"><span>)
 </span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>hist(
-</span></span><span style="display:flex;"><span>    black_cats <span style="color:#f92672">*</span> <span style="color:#ae81ff">31</span>, 
+</span></span><span style="display:flex;"><span>    black_cats <span style="color:#f92672">*</span> <span style="color:#ae81ff">31</span>,
 </span></span><span style="display:flex;"><span>    bins<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>,
 </span></span><span style="display:flex;"><span>    density<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
 </span></span><span style="display:flex;"><span>    label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Black cats&#34;</span>

@@ -59,21 +59,19 @@
 </noscript>
 <link
     rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
-    integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ"
+    href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
     crossorigin="anonymous"
 />
 <script
     defer
-    src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"
-    integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY"
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
     crossorigin="anonymous"
 ></script>
 <script
     defer
-    src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js"
-    integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR"
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
     crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"
 ></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -81,10 +79,7 @@
             delimiters: [
                 { left: "$$", right: "$$", display: true },
                 { left: "$", right: "$", display: false },
-                { left: "\\(", right: "\\)", display: false },
-                { left: "\\[", right: "\\]", display: true },
             ],
-            throwOnError: false,
         });
     });
 </script>
@@ -152,10 +147,13 @@
 
 <ul class="terms-tags">
     <li>
+        <a href="http://localhost:1313/categories/gsoc/">gsoc <sup><strong><sup>1</sup></strong></sup> </a>
+    </li>
+    <li>
         <a href="http://localhost:1313/categories/open-source/">open-source <sup><strong><sup>1</sup></strong></sup> </a>
     </li>
     <li>
-        <a href="http://localhost:1313/categories/probabilistic-programming/">probabilistic-programming <sup><strong><sup>3</sup></strong></sup> </a>
+        <a href="http://localhost:1313/categories/probabilistic-programming/">probabilistic-programming <sup><strong><sup>11</sup></strong></sup> </a>
     </li>
 </ul>
     </main>

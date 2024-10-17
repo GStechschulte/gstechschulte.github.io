@@ -59,21 +59,19 @@
 </noscript>
 <link
     rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
-    integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ"
+    href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
     crossorigin="anonymous"
 />
 <script
     defer
-    src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"
-    integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY"
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
     crossorigin="anonymous"
 ></script>
 <script
     defer
-    src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js"
-    integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR"
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
     crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"
 ></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -81,10 +79,7 @@
             delimiters: [
                 { left: "$$", right: "$$", display: true },
                 { left: "$", right: "$", display: false },
-                { left: "\\(", right: "\\)", display: false },
-                { left: "\\[", right: "\\]", display: true },
             ],
-            throwOnError: false,
         });
     });
 </script>
@@ -154,6 +149,47 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Alternative Samplers to NUTS in Bambi
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> Alternative sampling backends This blog post is a copy of the alternative samplers documentation I wrote for Bambi. The original post can be found here.
+In Bambi, the sampler used is automatically selected given the type of variables used in the model. For inference, Bambi supports both MCMC and variational inference. By default, Bambi uses PyMC’s implementation of the adaptive Hamiltonian Monte Carlo (HMC) algorithm for sampling. Also known as the No-U-Turn Sampler (NUTS). This sampler is a good choice for many models. However, it is not the only sampling method, nor is PyMC the only library implementing NUTS.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-03-29 00:00:00 +0000 UTC'>March 29, 2024</span>&nbsp;·&nbsp;79 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Alternative Samplers to NUTS in Bambi" href="http://localhost:1313/posts/bambi-alternative-samplers/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Advanced Interpret Usage in Bambi
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> Interpret Advanced Usage The interpret module is inspired by the R package marginaleffects and ports the core functionality of {marginaleffects} to Bambi. To close the gap of non-supported functionality in Bambi, interpret now provides a set of helper functions to aid the user in more advanced and complex analysis not covered within the comparisons, predictions, and slopes functions.
+These helper functions are data_grid and select_draws. The data_grid can be used to create a pairwise grid of data points for the user to pass to model.predict. Subsequently, select_draws is used to select the draws from the posterior (or posterior predictive) group of the InferenceData object returned by the predict method that correspond to the data points that “produced” that draw.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-12-09 00:00:00 +0000 UTC'>December 9, 2023</span>&nbsp;·&nbsp;30 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Advanced Interpret Usage in Bambi" href="http://localhost:1313/posts/bambi-advanced-marginal-effects/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Outcome Constraints in Bayesian Optimization
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> #| code-fold: true import matplotlib.pyplot as plt import torch import numpy as np from botorch.acquisition import qLogExpectedImprovement from botorch.fit import fit_gpytorch_model from botorch.models import SingleTaskGP from botorch.optim import optimize_acqf from gpytorch.mlls import ExactMarginalLogLikelihood from torch.distributions import Normal plt.style.use(&#34;https://raw.githubusercontent.com/GStechschulte/filterjax/main/docs/styles.mplstyle&#34;) Outcome constraints In optimization, it is often the goal that we need to optimize an objective function while satisfying some constraints. For example, we may want to minimize the scrap rate by finding the optimal process parameters of an manufacturing machine. However, we know the scrap rate cannot be below 0. In another setting, we may want to maximize the throughput of a machine, but we know that the throughput cannot exceed the maximum belt speed of the machine. Thus, we need to find regions in the search space that both yield high objective values and satisfy these constraints. In this blog, we will focus on inequality outcome constraints. That is, the domain of the objective function is
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-11-28 00:00:00 +0000 UTC'>November 28, 2023</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Outcome Constraints in Bayesian Optimization" href="http://localhost:1313/posts/constrained-bayesian-optimization/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Survival Models in Bambi
     </h2>
   </header>
@@ -164,6 +200,47 @@ This blog post is a copy of the survival models documentation I wrote for Bambi.
   </div>
   <footer class="entry-footer"><span title='2023-10-25 00:00:00 +0000 UTC'>October 25, 2023</span>&nbsp;·&nbsp;20 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
   <a class="entry-link" aria-label="post link to Survival Models in Bambi" href="http://localhost:1313/posts/bambi-survival-models/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Predict New Groups with Hierarchical Models in Bambi
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> Predict New Groups In Bambi, it is possible to perform predictions on new, unseen, groups of data that were not in the observed data used to fit the model with the argument sample_new_groups in the model.predict() method. This is useful in the context of hierarchical modeling, where groups are assumed to be a sample from a larger group.
+This blog post is a copy of the zero inflated models documentation I wrote for Bambi. The original post can be found here.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-10-10 00:00:00 +0000 UTC'>October 10, 2023</span>&nbsp;·&nbsp;11 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Predict New Groups with Hierarchical Models in Bambi" href="http://localhost:1313/posts/bambi-predict-new-groups/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Ordinal Models in Bambi
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> #| code-fold: true import arviz as az import matplotlib.pyplot as plt from matplotlib.lines import Line2D import numpy as np import pandas as pd import warnings import bambi as bmb warnings.filterwarnings(&#34;ignore&#34;, category=FutureWarning) WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions. Ordinal Regression This blog post is a copy of the ordinal models documentation I wrote for Bambi. The original post can be found here.
+In some scenarios, the response variable is discrete, like a count, and ordered. Common examples of such data come from questionnaires where the respondent is asked to rate a product, service, or experience on a scale. This scale is often referred to as a Likert scale. For example, a five-level Likert scale could be:
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-09-29 00:00:00 +0000 UTC'>September 29, 2023</span>&nbsp;·&nbsp;18 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Ordinal Models in Bambi" href="http://localhost:1313/posts/bambi-ordinal-models/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Zero Inflated Models in Bambi
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> #| code-fold: true import arviz as az import matplotlib.pyplot as plt from matplotlib.lines import Line2D import numpy as np import pandas as pd import scipy.stats as stats import seaborn as sns import warnings import bambi as bmb warnings.simplefilter(action=&#39;ignore&#39;, category=FutureWarning) WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions. Zero inflated models This blog post is a copy of the zero inflated models documentation I wrote for Bambi. The original post can be found here.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-09-29 00:00:00 +0000 UTC'>September 29, 2023</span>&nbsp;·&nbsp;15 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Zero Inflated Models in Bambi" href="http://localhost:1313/posts/bambi-zip-models/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -181,42 +258,36 @@ This blog post is a copy of the survival models documentation I wrote for Bambi.
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Monte Carlo Approximation
+    <h2 class="entry-hint-parent">Google Summer of Code - Average Predictive Slopes
     </h2>
   </header>
   <div class="entry-content">
-    <p> Inference In the probabilistic approach to machine learning, all unknown quantities—predictions about the future, hidden states of a system, or parameters of a model—are treated as random variables, and endowed with probability distributions. The process of inference corresponds to computing the posterior distribution over these quantities, conditioning on whatever data is available. Given that the posterior is a probability distribution, we can draw samples from it. The samples in this case are parameter values. The Bayesian formalism treats parameter distributions as the degrees of relative plausibility, i.e., if this parameter is chosen, how likely is the data to have arisen? We use Bayes’ rule for this process of inference. Let $h$ represent the uknown variables and $D$ the known variables, i.e., the data. Given a likelihood $p(D|h)$ and a prior $p(h)$, we can compute the posterior $p(h|D)$ using Bayes’ rule:
+    <p> It is currently the beginning of week ten of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the basic functionality of the plot_slopes. Subsequently, week 11 was reserved to further develop the plot_slopes function, and to write tests and a notebook for the documentation, respectively.
+However, at the beginning of week ten, I have a PR open with the majority of the functionality that marginaleffects has for slopes. In addition, I also exposed the slopes function, added tests, and have a PR open for the documentation.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2022-10-07 00:00:00 +0000 UTC'>October 7, 2022</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Monte Carlo Approximation" href="http://localhost:1313/posts/monte-carlo-approximation/"></a>
+  <footer class="entry-footer"><span title='2023-08-01 00:00:00 +0000 UTC'>August 1, 2023</span>&nbsp;·&nbsp;19 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Google Summer of Code - Average Predictive Slopes" href="http://localhost:1313/posts/bambi-slopes/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Variational Inference - Evidence Lower Bound
+    <h2 class="entry-hint-parent">Google Summer of Code - Average Predictive Comparisons
     </h2>
   </header>
   <div class="entry-content">
-    <p>We don’t know the real posterior so we are going to choose a distribution $Q(\theta)$ from a family of distributions $Q^*$ that are easy to work with and parameterized by $\theta$. The approximate distribution should be as close as possible to the true posterior. This closeness is measured using KL-Divergence. If we have the joint $p(x, z)$ where $x$ is some observed data, the goal is to perform inference: given what we have observed, what can we infer about the latent states?, i.e , we want the posterior.
+    <p> It is currently the end of week five of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the core functionality of the plot_comparisons. Subsequently, week six and seven were to be spent further developing the plot_comparisons function, and writing tests and a demo notebook for the documentation, respectively. However, at the end of week five, I have a PR open with the majority of the functionality that marginaleffects has. In addition, I also exposed the comparisons function, added tests (which can and will be improved), and have started on documentation.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2022-06-03 18:43:46 +0200 +0200'>June 3, 2022</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Variational Inference - Evidence Lower Bound" href="http://localhost:1313/posts/variational-inference/"></a>
+  <footer class="entry-footer"><span title='2023-06-30 00:00:00 +0000 UTC'>June 30, 2023</span>&nbsp;·&nbsp;16 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Google Summer of Code - Average Predictive Comparisons" href="http://localhost:1313/posts/bambi-comparisons/"></a>
 </article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">No Code, Dependency, and Building Technology
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Modernity and Abstraction ‘Programmers’, loosely speaking, in some form or another have always been developing software to automate tedious and repetitive tasks. Rightly so, as this is one of the tasks computers are designed to perform. As science and technology progresses, and gets more technological, there is a growing seperation between the maker and the user. This is one of the negative externalities of modernism - we enjoy the benefits of a more advanced and technologically adept society, but fewer and fewer people understand the inner workings. Andrej Karpathy has a jokingly short paragraph in his blog on the matter, “A courageous developer has taken the burden of understanding query strings, urls, GET/POST requests, HTTP connections, and so on from you and largely hidden the complexity behind a few lines of code. This is what we are now familiar with and expect”.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2021-08-10 00:00:00 +0000 UTC'>August 10, 2021</span>&nbsp;·&nbsp;5 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to No Code, Dependency, and Building Technology" href="http://localhost:1313/posts/no-code-building-technology/2021-08-10-no-code-dependency-and-building-technology/"></a>
-</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="next" href="http://localhost:1313/posts/page/2/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
     </main>
     
 <footer class="footer">

@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Predict New Groups with Hierarchical Models in Bambi | The Log</title>
+<meta name="keywords" content="">
+<meta name="description" content="
+Predict New Groups
+In Bambi, it is possible to perform predictions on new, unseen, groups of data that were not in the observed data used to fit the model with the argument sample_new_groups in the model.predict() method. This is useful in the context of hierarchical modeling, where groups are assumed to be a sample from a larger group.
+This blog post is a copy of the zero inflated models documentation I wrote for Bambi. The original post can be found here.">
+<meta name="author" content="Gabriel Stechschulte">
+<link rel="canonical" href="http://localhost:1313/posts/bambi-predict-new-groups/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.e06e296717ca1485b42270445b6064e38739a541df87459ef5f957e51cd74e72.css" integrity="sha256-4G4pZxfKFIW0InBEW2Bk44c5pUHfh0We9flX5RzXTnI=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/bambi-predict-new-groups/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+    crossorigin="anonymous"
+/>
+<script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+    crossorigin="anonymous"
+></script>
+<script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+    crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"
+></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+            ],
+        });
+    });
+</script>
+
+
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="The Log (Alt + H)">The Log</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/categories/" title="categories">
+                    <span>categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="tags">
+                    <span>tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Predict New Groups with Hierarchical Models in Bambi
+    </h1>
+    <div class="post-meta"><span title='2023-10-10 00:00:00 +0000 UTC'>October 10, 2023</span>&nbsp;·&nbsp;11 min&nbsp;·&nbsp;Gabriel Stechschulte
+
+</div>
+  </header> 
+  <div class="post-content"><!-- raw HTML omitted -->
+<h1 id="predict-new-groups">Predict New Groups<a hidden class="anchor" aria-hidden="true" href="#predict-new-groups">#</a></h1>
+<p>In Bambi, it is possible to perform predictions on new, unseen, groups of data that were not in the observed data used to fit the model with the argument <code>sample_new_groups</code> in the <code>model.predict()</code> method. This is useful in the context of hierarchical modeling, where groups are assumed to be a sample from a larger group.</p>
+<p>This blog post is a copy of the zero inflated models documentation I wrote for <a href="https://bambinos.github.io/bambi/">Bambi</a>. The original post can be found <a href="https://bambinos.github.io/bambi/notebooks/predict_new_groups.html">here</a>.</p>
+<p>Below, it is first described how predictions at multiple levels and for unseen groups are possible with hierarchical models. Then, it is described how this is performed in Bambi. Lastly, a hierarchical model is developed to show how to use the <code>sample_new_groups</code> argument in the <code>model.predict()</code> method, and within the <code>interpret</code> sub-package. For users coming from <code>brms</code> in R, this is equivalent to the <code>sample_new_levels</code> argument.</p>
+<h2 id="hierarchical-models-and-predictions-at-multiple-levels">Hierarchical models and predictions at multiple levels<a hidden class="anchor" aria-hidden="true" href="#hierarchical-models-and-predictions-at-multiple-levels">#</a></h2>
+<p>A feature of hierarchical models is that they are able to make predictions at multiple levels. For example, if we were to use the penguin <a href="https://www.kaggle.com/code/parulpandey/penguin-dataset-the-new-iris">dataset</a> to fit a hierchical regression to estimate the body mass of each penguin species given a set of predictors, we could estimate the mass of all penguins <strong>and</strong> each individual species at the same time. Thus, in this example, there are predictions for two levels: (1) the population level, and (2) the species level.</p>
+<p>Additionally, a hierarchical model can be used to make predictions for groups (levels) that were never seen before if a hyperprior is defined over the group-specific effect. With a hyperior defined on group-specific effects, the groups do not share one fixed parameter, but rather share a hyperprior distribution which describes the distribution for the parameter of the prior itself. Lets write a hierarchical model (without intercepts) with a hyperprior defined for group-specific effects in statistical notation so this concept becomes more clear:</p>
+<p>$$\beta_{\mu h} \sim \mathcal{N}(0, 10)$$
+$$\beta_{\sigma h} \sim \mathcal{HN}(10)$$
+$$\beta_{m} \sim \mathcal{N}(\beta_{\mu h}, \beta_{\sigma h})$$
+$$\sigma_{h} \sim \mathcal{HN}(10)$$
+$$\sigma_{m} \sim \mathcal{HN}(\sigma_{h})$$
+$$Y \sim \mathcal{N}(\beta_{m} * X_{m}, \sigma_{m})$$</p>
+<p>The parameters $\beta_{\mu h}, \beta_{\sigma h}$ of the group-specific effect prior $\beta_{m}$ come from hyperprior distributions. Thus, if we would like to make predictions for a new, unseen, group, we can do so by first sampling from these hyperprior distributions to obtain the parameters for the new group, and then sample from the posterior or posterior predictive distribution to obtain the estimates for the new group. For a more in depth explanation of hierarchical models in Bambi, see either: the <a href="https://bambinos.github.io/bambi/notebooks/radon_example.html#varying-intercept-and-slope-model">radon example</a>, or the <a href="https://bambinos.github.io/bambi/notebooks/sleepstudy.html">sleep study example</a>.</p>
+<h2 id="sampling-new-groups-in-bambi">Sampling new groups in Bambi<a hidden class="anchor" aria-hidden="true" href="#sampling-new-groups-in-bambi">#</a></h2>
+<p>If data with unseen groups are passed to the <code>new_data</code> argument of the <code>model.predict()</code> method, Bambi first needs to identify if that group exists, and if not, to evaluate the new group with the respective group-specific term. This evaluation updates the <a href="https://bambinos.github.io/bambi/notebooks/how_bambi_works.html#design-matrix">design matrix</a> initially used to fit the model with the new group(s). This is achieved with the <code>.evaluate_new_data</code> method in the <a href="https://github.com/bambinos/formulae">formulae</a> package.</p>
+<p>Once the design matrix has been updated, Bambi can perform predictions on the new, unseen, groups by specifying <code>sample_new_groups=True</code> in <code>model.predict()</code>. Each posterior sample for the new groups is drawn from the posterior draws of a randomly selected existing group. Since different groups may be selected at each draw, the end result represents the variation across existing groups.</p>
+<h2 id="hierarchical-regression">Hierarchical regression<a hidden class="anchor" aria-hidden="true" href="#hierarchical-regression">#</a></h2>
+<p>To demonstrate the <code>sample_new_groups</code> argument, we will develop a hierarchical model on the <a href="https://www.kaggle.com/c/osic-pulmonary-fibrosis-progression">OSIC Pulmonary Fibrosis Progression</a> dataset. Pulmonary fibrosis is a disorder with no known cause and no known cure, created by scarring of the lungs. Using a hierarchical model, the objective is to predict a patient’s severity of decline in lung function. Lung function is assessed based on output from a spirometer, which measures the forced vital capacity (FVC), i.e. the volume of air exhaled by the patient.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#| code-fold: true</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> arviz <span style="color:#66d9ef">as</span> az
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> warnings
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> bambi <span style="color:#66d9ef">as</span> bmb
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>warnings<span style="color:#f92672">.</span>simplefilter(action<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ignore&#34;</span>, category<span style="color:#f92672">=</span><span style="color:#a6e22e">FutureWarning</span>)
+</span></span></code></pre></div><h3 id="the-osic-pulmonary-fibrosis-progression-dataset">The OSIC pulmonary fibrosis progression dataset<a hidden class="anchor" aria-hidden="true" href="#the-osic-pulmonary-fibrosis-progression-dataset">#</a></h3>
+<p>In the dataset, we were provided with a baseline chest computerized tomography (CT) scan and associated clinical information for a set of patients where the columns represent the following</p>
+<ul>
+<li><code>patient</code>- a unique id for each patient</li>
+<li><code>weeks</code>- the relative number of weeks pre/post the baseline CT (may be negative)</li>
+<li><code>fvc</code> - the recorded lung capacity in millilitres (ml)</li>
+<li><code>percent</code>- a computed field which approximates the patient&rsquo;s FVC as a percent of the typical FVC for a person of similar characteristics</li>
+<li><code>sex</code> - male or female</li>
+<li><code>smoking_status</code> - ex-smoker, never smoked, currently smokes</li>
+<li><code>age</code> - age of the patient</li>
+</ul>
+<p>A patient has an image acquired at time <code>week = 0</code> and has numerous follow up visits over the course of approximately 1-2 years, at which time their FVC is measured. Below, we randomly sample three patients and plot their FVC measurements over time.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>data <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;https://gist.githubusercontent.com/ucals/&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;2cf9d101992cb1b78c2cdd6e3bac6a4b/raw/&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;43034c39052dcf97d4b894d2ec1bc3f90f3623d9/&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;osic_pulmonary_fibrosis.csv&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>data<span style="color:#f92672">.</span>columns <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>columns<span style="color:#f92672">.</span>str<span style="color:#f92672">.</span>lower()
+</span></span><span style="display:flex;"><span>data<span style="color:#f92672">.</span>columns <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>columns<span style="color:#f92672">.</span>str<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#34;smokingstatus&#34;</span>, <span style="color:#e6db74">&#34;smoking_status&#34;</span>)
+</span></span><span style="display:flex;"><span>data
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">label_encoder</span>(labels):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Encode patient IDs as integers.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    unique_labels <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>unique(labels)
+</span></span><span style="display:flex;"><span>    label_to_index <span style="color:#f92672">=</span> {label: index <span style="color:#66d9ef">for</span> index, label <span style="color:#f92672">in</span> enumerate(unique_labels)}
+</span></span><span style="display:flex;"><span>    encoded_labels <span style="color:#f92672">=</span> labels<span style="color:#f92672">.</span>map(label_to_index)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> encoded_labels
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>predictors <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;patient&#34;</span>, <span style="color:#e6db74">&#34;weeks&#34;</span>, <span style="color:#e6db74">&#34;fvc&#34;</span>, <span style="color:#e6db74">&#34;smoking_status&#34;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>data[<span style="color:#e6db74">&#34;patient&#34;</span>] <span style="color:#f92672">=</span> label_encoder(data[<span style="color:#e6db74">&#39;patient&#39;</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>data[<span style="color:#e6db74">&#34;weeks&#34;</span>] <span style="color:#f92672">=</span> (data[<span style="color:#e6db74">&#34;weeks&#34;</span>] <span style="color:#f92672">-</span> data[<span style="color:#e6db74">&#34;weeks&#34;</span>]<span style="color:#f92672">.</span>min()) <span style="color:#f92672">/</span> (
+</span></span><span style="display:flex;"><span>    data[<span style="color:#e6db74">&#34;weeks&#34;</span>]<span style="color:#f92672">.</span>max() <span style="color:#f92672">-</span> data[<span style="color:#e6db74">&#34;weeks&#34;</span>]<span style="color:#f92672">.</span>min()
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>data[<span style="color:#e6db74">&#34;fvc&#34;</span>] <span style="color:#f92672">=</span> (data[<span style="color:#e6db74">&#34;fvc&#34;</span>] <span style="color:#f92672">-</span> data[<span style="color:#e6db74">&#34;fvc&#34;</span>]<span style="color:#f92672">.</span>min()) <span style="color:#f92672">/</span> (
+</span></span><span style="display:flex;"><span>    data[<span style="color:#e6db74">&#34;fvc&#34;</span>]<span style="color:#f92672">.</span>max() <span style="color:#f92672">-</span> data[<span style="color:#e6db74">&#34;fvc&#34;</span>]<span style="color:#f92672">.</span>min()
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>data <span style="color:#f92672">=</span> data[predictors]
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>patient_id <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>sample(n<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>, random_state<span style="color:#f92672">=</span><span style="color:#ae81ff">42</span>)[<span style="color:#e6db74">&#34;patient&#34;</span>]<span style="color:#f92672">.</span>values
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>, figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">3</span>), sharey<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i, p <span style="color:#f92672">in</span> enumerate(patient_id):
+</span></span><span style="display:flex;"><span>    patient_data <span style="color:#f92672">=</span> data[data[<span style="color:#e6db74">&#34;patient&#34;</span>] <span style="color:#f92672">==</span> p]
+</span></span><span style="display:flex;"><span>    ax[i]<span style="color:#f92672">.</span>scatter(patient_data[<span style="color:#e6db74">&#34;weeks&#34;</span>], patient_data[<span style="color:#e6db74">&#34;fvc&#34;</span>])
+</span></span><span style="display:flex;"><span>    ax[i]<span style="color:#f92672">.</span>set_xlabel(<span style="color:#e6db74">&#34;weeks&#34;</span>)
+</span></span><span style="display:flex;"><span>    ax[i]<span style="color:#f92672">.</span>set_ylabel(<span style="color:#e6db74">&#34;fvc&#34;</span>)
+</span></span><span style="display:flex;"><span>    ax[i]<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;patient </span><span style="color:#e6db74">{</span>p<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>tight_layout()
+</span></span></code></pre></div><p><img loading="lazy" src="2023-10-10-predict-groups-bambi_files/2023-10-10-predict-groups-bambi_10_0.png" alt="png"  />
+</p>
+<p>The plots show variability in FVC measurements, unequal time intervals between follow up visits, and different number of visits per patient. This is a good scenario to use a hierarchical model, where we can model the FVC measurements for each patient as a function of time, and also model the variability in the FVC measurements across patients.</p>
+<h3 id="partial-pooling-model">Partial pooling model<a hidden class="anchor" aria-hidden="true" href="#partial-pooling-model">#</a></h3>
+<p>The hierarchical model we will develop is a partially pooled model using the predictors <code>weeks</code>, <code>smoking_status</code>, and <code>patient</code> to predict the response <code>fvc</code>. We will estimate the following model with common and group-effects:</p>
+<ul>
+<li>common-effects: <code>weeks</code> and <code>smoking_status</code></li>
+<li>group-effects: the slope of <code>weeks</code> will vary by <code>patient</code></li>
+</ul>
+<p>Additionally, the global intercept is not included. Since the global intercept is excluded, <code>smoking_status</code> uses cell means encoding (i.e. the coefficient represents the estimate for each <code>smoking_status</code> category of the entire group). This logic also applies for <code>weeks</code>. However, a group-effect is also specified for <code>weeks</code>, which means that the association between <code>weeks</code> and the <code>fvc</code> is allowed to vary by individual <code>patients</code>.</p>
+<p>Below, the default prior for the group-effect sigma is changed from <code>HalfNormal</code> to a <code>Gamma</code> distribution. Additionally, the model graph shows the model has been reparameterized to be non-centered. This is the default when there are group-effects in Bambi.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>priors <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;weeks|patient&#34;</span>: bmb<span style="color:#f92672">.</span>Prior(<span style="color:#e6db74">&#34;Normal&#34;</span>, mu<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, sigma<span style="color:#f92672">=</span>bmb<span style="color:#f92672">.</span>Prior(<span style="color:#e6db74">&#34;Gamma&#34;</span>, alpha<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>, beta<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>)),
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>Model(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;fvc ~ 0 + weeks + smoking_status + (0 + weeks | patient)&#34;</span>,
+</span></span><span style="display:flex;"><span>    data,
+</span></span><span style="display:flex;"><span>    priors<span style="color:#f92672">=</span>priors,
+</span></span><span style="display:flex;"><span>    categorical<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;patient&#34;</span>, <span style="color:#e6db74">&#34;smoking_status&#34;</span>],
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>build()
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>graph()
+</span></span></code></pre></div><p><img loading="lazy" src="2023-10-10-predict-groups-bambi_files/2023-10-10-predict-groups-bambi_13_0.svg" alt="svg"  />
+</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>idata <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>fit(
+</span></span><span style="display:flex;"><span>    draws<span style="color:#f92672">=</span><span style="color:#ae81ff">1500</span>,
+</span></span><span style="display:flex;"><span>    tune<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>,
+</span></span><span style="display:flex;"><span>    target_accept<span style="color:#f92672">=</span><span style="color:#ae81ff">0.95</span>,
+</span></span><span style="display:flex;"><span>    chains<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>,
+</span></span><span style="display:flex;"><span>    random_seed<span style="color:#f92672">=</span><span style="color:#ae81ff">42</span>,
+</span></span><span style="display:flex;"><span>    cores<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>,
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><pre><code>Auto-assigning NUTS sampler...
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 10 jobs)
+NUTS: [fvc_sigma, weeks, smoking_status, weeks|patient_sigma, weeks|patient_offset]
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>Sampling 4 chains for 1_000 tune and 1_500 draw iterations (4_000 + 6_000 draws total) took 10 seconds.
+</code></pre>
+<h3 id="model-criticism">Model criticism<a hidden class="anchor" aria-hidden="true" href="#model-criticism">#</a></h3>
+<p>Hierarchical models can induce difficult posterior geometries to sample from. Below, we quickly analyze the traces to ensure sampling went well.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>az<span style="color:#f92672">.</span>plot_trace(idata)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>tight_layout();
+</span></span></code></pre></div><p><img loading="lazy" src="2023-10-10-predict-groups-bambi_files/2023-10-10-predict-groups-bambi_16_0.png" alt="png"  />
+</p>
+<p>Analyzing the marginal posteriors of <code>weeks</code> and <code>weeks|patient</code>, we see that the slope can be very different for some individuals. <code>weeks</code> indicates that as a population, the slope is negative. However, <code>weeks|patients</code> indicates some patients are negative, some are positive, and some are close to zero. Moreover, there are varying levels of uncertainty observed in the coefficients for the three different values of the <code>smoking_status</code> variable.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>az<span style="color:#f92672">.</span>summary(idata, var_names<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;weeks&#34;</span>, <span style="color:#e6db74">&#34;smoking_status&#34;</span>, <span style="color:#e6db74">&#34;fvc_sigma&#34;</span>, <span style="color:#e6db74">&#34;weeks|patient_sigma&#34;</span>])
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>The effective sample size (ESS) is much lower for the <code>weeks</code> and <code>weeks|patient_sigma</code> parameters. This can also be inferred visually by looking at the trace plots for these parameters above. There seems to be some autocorrelation in the samples for these parameters. However, for the sake of this example, we will not worry about this.</p>
+<h3 id="predict-observed-patients">Predict observed patients<a hidden class="anchor" aria-hidden="true" href="#predict-observed-patients">#</a></h3>
+<p>First, we will use the posterior distribution to plot the mean and 95% credible interval for the FVC measurements of the three randomly sampled patients above.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>preds <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>predict(idata, kind<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mean&#34;</span>, inplace<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>fvc_mean <span style="color:#f92672">=</span> az<span style="color:#f92672">.</span>extract(preds[<span style="color:#e6db74">&#34;posterior&#34;</span>])[<span style="color:#e6db74">&#34;fvc_mean&#34;</span>]
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># plot posterior predictions</span>
+</span></span><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>, figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">3</span>), sharey<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i, p <span style="color:#f92672">in</span> enumerate(patient_id):
+</span></span><span style="display:flex;"><span>    idx <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>index[data[<span style="color:#e6db74">&#34;patient&#34;</span>] <span style="color:#f92672">==</span> p]<span style="color:#f92672">.</span>tolist()
+</span></span><span style="display:flex;"><span>    weeks <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>loc[idx, <span style="color:#e6db74">&#34;weeks&#34;</span>]<span style="color:#f92672">.</span>values
+</span></span><span style="display:flex;"><span>    fvc <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>loc[idx, <span style="color:#e6db74">&#34;fvc&#34;</span>]<span style="color:#f92672">.</span>values
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ax[i]<span style="color:#f92672">.</span>scatter(weeks, fvc)
+</span></span><span style="display:flex;"><span>    az<span style="color:#f92672">.</span>plot_hdi(weeks, fvc_mean[idx]<span style="color:#f92672">.</span>T, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;C0&#34;</span>, ax<span style="color:#f92672">=</span>ax[i])
+</span></span><span style="display:flex;"><span>    ax[i]<span style="color:#f92672">.</span>plot(weeks, fvc_mean[idx]<span style="color:#f92672">.</span>mean(axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>), color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;C0&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ax[i]<span style="color:#f92672">.</span>set_xlabel(<span style="color:#e6db74">&#34;weeks&#34;</span>)
+</span></span><span style="display:flex;"><span>    ax[i]<span style="color:#f92672">.</span>set_ylabel(<span style="color:#e6db74">&#34;fvc&#34;</span>)
+</span></span><span style="display:flex;"><span>    ax[i]<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;patient </span><span style="color:#e6db74">{</span>p<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>tight_layout()
+</span></span></code></pre></div><p><img loading="lazy" src="2023-10-10-predict-groups-bambi_files/2023-10-10-predict-groups-bambi_22_0.png" alt="png"  />
+</p>
+<p>The plots show that the posterior estimates seem to fit the three patients well. Where there are more observations, the credible interval is smaller, and where there are fewer observations, the credible interval is larger. Next, we will predict new, unseen, patients.</p>
+<h3 id="predict-new-patients">Predict new patients<a hidden class="anchor" aria-hidden="true" href="#predict-new-patients">#</a></h3>
+<p>Imagine the cost of acquiring a CT scan increases dramatically, and we would like to interopolate the FVC measurement for a new patient with a given set of clinical information <code>smoking_status</code> and <code>weeks</code>. We achieve this by passing this data to the predict method and setting <code>sample_new_groups=True</code>. As outlined in the <em>Sampling new groups in Bambi</em> section, this new data is evaluated by <code>formulae</code> to update the design matrix, and then predictions are made for the new group by sampling from the posterior draws of a randomly selected existing group.</p>
+<p>Below, we will simulate a new patient and predict their FVC measurements over time. First, we will copy clinical data from patient 39 and use it for patient 176 (the new, unseen, patient). Subsequently, we will construct another new patient, with different clinical data.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># copy patient 39 data to the new patient 176</span>
+</span></span><span style="display:flex;"><span>patient_39 <span style="color:#f92672">=</span> data[data[<span style="color:#e6db74">&#34;patient&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">39</span>]<span style="color:#f92672">.</span>reset_index(drop<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>new_data <span style="color:#f92672">=</span> patient_39<span style="color:#f92672">.</span>copy()
+</span></span><span style="display:flex;"><span>new_data[<span style="color:#e6db74">&#34;patient&#34;</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">176</span>
+</span></span><span style="display:flex;"><span>new_data <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>concat([new_data, patient_39])<span style="color:#f92672">.</span>reset_index(drop<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)[predictors]
+</span></span><span style="display:flex;"><span>new_data
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>preds <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>predict(
+</span></span><span style="display:flex;"><span>    idata, kind<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mean&#34;</span>,
+</span></span><span style="display:flex;"><span>    data<span style="color:#f92672">=</span>new_data,
+</span></span><span style="display:flex;"><span>    sample_new_groups<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    inplace<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># utility func for plotting</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">plot_new_patient</span>(idata, data, patient_ids):
+</span></span><span style="display:flex;"><span>    fvc_mean <span style="color:#f92672">=</span> az<span style="color:#f92672">.</span>extract(idata[<span style="color:#e6db74">&#34;posterior&#34;</span>])[<span style="color:#e6db74">&#34;fvc_mean&#34;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">3</span>), sharey<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i, p <span style="color:#f92672">in</span> enumerate(patient_ids):
+</span></span><span style="display:flex;"><span>        idx <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>index[data[<span style="color:#e6db74">&#34;patient&#34;</span>] <span style="color:#f92672">==</span> p]<span style="color:#f92672">.</span>tolist()
+</span></span><span style="display:flex;"><span>        weeks <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>loc[idx, <span style="color:#e6db74">&#34;weeks&#34;</span>]<span style="color:#f92672">.</span>values
+</span></span><span style="display:flex;"><span>        fvc <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>loc[idx, <span style="color:#e6db74">&#34;fvc&#34;</span>]<span style="color:#f92672">.</span>values
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> p <span style="color:#f92672">==</span> patient_ids[<span style="color:#ae81ff">0</span>]:
+</span></span><span style="display:flex;"><span>            ax[i]<span style="color:#f92672">.</span>scatter(weeks, fvc)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        az<span style="color:#f92672">.</span>plot_hdi(weeks, fvc_mean[idx]<span style="color:#f92672">.</span>T, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;C0&#34;</span>, ax<span style="color:#f92672">=</span>ax[i])
+</span></span><span style="display:flex;"><span>        ax[i]<span style="color:#f92672">.</span>plot(weeks, fvc_mean[idx]<span style="color:#f92672">.</span>mean(axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>), color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;C0&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        ax[i]<span style="color:#f92672">.</span>set_xlabel(<span style="color:#e6db74">&#34;weeks&#34;</span>)
+</span></span><span style="display:flex;"><span>        ax[i]<span style="color:#f92672">.</span>set_ylabel(<span style="color:#e6db74">&#34;fvc&#34;</span>)
+</span></span><span style="display:flex;"><span>        ax[i]<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;patient </span><span style="color:#e6db74">{</span>p<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>plot_new_patient(preds, new_data, [<span style="color:#ae81ff">39</span>, <span style="color:#ae81ff">176</span>])
+</span></span></code></pre></div><p><img loading="lazy" src="2023-10-10-predict-groups-bambi_files/2023-10-10-predict-groups-bambi_28_0.png" alt="png"  />
+</p>
+<p>Although identical data was used for both patients, the variability increased consideribly for patient 176. However, the mean predictions for both patients appear to be almost identical. Now, lets construct a new patient with different clinical data and see how the predictions change. We will select 10 time of follow up visits at random, and set the <code>smoking_status = &quot;Currently smokes&quot;</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>new_data<span style="color:#f92672">.</span>loc[new_data[<span style="color:#e6db74">&#34;patient&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">176</span>, <span style="color:#e6db74">&#34;smoking_status&#34;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Currently smokes&#34;</span>
+</span></span><span style="display:flex;"><span>weeks <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>choice(sorted(model<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>weeks<span style="color:#f92672">.</span>unique()), size<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>)
+</span></span><span style="display:flex;"><span>new_data<span style="color:#f92672">.</span>loc[new_data[<span style="color:#e6db74">&#34;patient&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">176</span>, <span style="color:#e6db74">&#34;weeks&#34;</span>] <span style="color:#f92672">=</span> weeks
+</span></span><span style="display:flex;"><span>new_data
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>If we were to keep the default value of <code>sample_new_groups=False</code>, the following error would be raised: <code>ValueError: There are new groups for the factors ('patient',) and 'sample_new_groups' is False</code>. Thus, we set <code>sample_new_groups=True</code> and obtain predictions for the new patient.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>preds <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>predict(
+</span></span><span style="display:flex;"><span>    idata, kind<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mean&#34;</span>,
+</span></span><span style="display:flex;"><span>    data<span style="color:#f92672">=</span>new_data,
+</span></span><span style="display:flex;"><span>    sample_new_groups<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    inplace<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>plot_new_patient(preds, new_data, [<span style="color:#ae81ff">39</span>, <span style="color:#ae81ff">176</span>])
+</span></span></code></pre></div><p><img loading="lazy" src="2023-10-10-predict-groups-bambi_files/2023-10-10-predict-groups-bambi_33_0.png" alt="png"  />
+</p>
+<p>With <code>smoking_status = &quot;Currently smokes&quot;</code>, and the time of follow up visit randomly selected, we can see that the intercept is slightly higher, and it appears that the slope is steeper for this new patient. Again, the variability is much higher for patient 176, and in particular, where there are fewer <code>fvc</code> measurements.</p>
+<h4 id="predict-new-patients-with-interpret">Predict new patients with <code>interpret</code><a hidden class="anchor" aria-hidden="true" href="#predict-new-patients-with-interpret">#</a></h4>
+<p>The <code>interpret</code> sub-package in Bambi allows us to easily interpret the predictions for new patients. In particular, using <code>bmb.interpret.comparisons</code>, we can compare the predictions made for a new patient and an existing similar patient. Below, we will compare the predictions made for patient 176 and patient 39. We will use the same clinical data for both patients as we did in the first exampe above.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>time_of_follow_up <span style="color:#f92672">=</span> list(new_data<span style="color:#f92672">.</span>query(<span style="color:#e6db74">&#34;patient == 39&#34;</span>)[<span style="color:#e6db74">&#34;weeks&#34;</span>]<span style="color:#f92672">.</span>values)
+</span></span><span style="display:flex;"><span>time_of_follow_up
+</span></span></code></pre></div><pre><code>[0.35507246376811596,
+ 0.37681159420289856,
+ 0.391304347826087,
+ 0.4057971014492754,
+ 0.42028985507246375,
+ 0.45652173913043476,
+ 0.5434782608695652,
+ 0.6376811594202898,
+ 0.7463768115942029,
+ 0.7753623188405797]
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>plot_comparisons(
+</span></span><span style="display:flex;"><span>    model,
+</span></span><span style="display:flex;"><span>    idata,
+</span></span><span style="display:flex;"><span>    contrast<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;patient&#34;</span>: [<span style="color:#ae81ff">39</span>, <span style="color:#ae81ff">176</span>]},
+</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;weeks&#34;</span>: time_of_follow_up, <span style="color:#e6db74">&#34;smoking_status&#34;</span>: <span style="color:#e6db74">&#34;Ex-smoker&#34;</span>},
+</span></span><span style="display:flex;"><span>    sample_new_groups<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    fig_kwargs<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;figsize&#34;</span>: (<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>)}
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#34;Difference in predictions for patient 176 vs 39&#34;</span>);
+</span></span></code></pre></div><p><img loading="lazy" src="2023-10-10-predict-groups-bambi_files/2023-10-10-predict-groups-bambi_37_0.png" alt="png"  />
+</p>
+<p>Referring to the plots where patient 39 and 176 use identical data, the mean <code>fvc</code> predictions &ldquo;look&rdquo; about the same. When this comparison is made quantitatively using the comparisons function, we can see that mean <code>fvc</code> measurements are slightly below 0.0, and have a constant slope across <code>weeks</code> indicating there is a slight difference in mean <code>fvc</code> measurements between the two patients.</p>
+<h2 id="summary">Summary<a hidden class="anchor" aria-hidden="true" href="#summary">#</a></h2>
+<p>In this notebook, it was shown how predictions at multiple levels and for unseen groups are possible with hierarchical models. To utilize this feature of hierarchical models, Bambi first updates the design matrix to include the new group. Then, predictions are made for the new group by sampling from the posterior draws of a randomly selected existing group.</p>
+<p>To predict new groups in Bambi, you can either: (1) create a dataset with new groups and pass it to the <code>model.predict()</code> method while specifying <code>sample_new_groups=True</code>, or (2) use the functions <code>comparisons</code> or <code>slopes</code> in the <code>interpret</code> sub-package with <code>sample_new_groups=True</code> to compare predictions or slopes for new groups and existing groups.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">%</span>load_ext watermark
+</span></span><span style="display:flex;"><span><span style="color:#f92672">%</span>watermark <span style="color:#f92672">-</span>n <span style="color:#f92672">-</span>u <span style="color:#f92672">-</span>v <span style="color:#f92672">-</span>iv <span style="color:#f92672">-</span>w
+</span></span></code></pre></div><pre><code>Last updated: Tue Oct 10 2023
+
+Python implementation: CPython
+Python version       : 3.11.0
+IPython version      : 8.13.2
+
+matplotlib: 3.7.1
+arviz     : 0.16.1
+pandas    : 2.1.0
+numpy     : 1.24.2
+bambi     : 0.13.0.dev0
+
+Watermark: 2.3.1
+</code></pre>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="http://localhost:1313/">The Log</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
