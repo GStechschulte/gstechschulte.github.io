@@ -10,7 +10,7 @@
 <meta name="description" content="Posts - The Log">
 <meta name="author" content="">
 <link rel="canonical" href="http://localhost:1313/posts/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.e06e296717ca1485b42270445b6064e38739a541df87459ef5f957e51cd74e72.css" integrity="sha256-4G4pZxfKFIW0InBEW2Bk44c5pUHfh0We9flX5RzXTnI=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
@@ -57,6 +57,38 @@
 
     </style>
 </noscript>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+    integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
+    crossorigin="anonymous"
+/>
+<script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"
+    integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8"
+    crossorigin="anonymous"
+></script>
+<script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+    crossorigin="anonymous"
+></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true },
+            ],
+            throwOnError: false,
+        });
+    });
+</script>
+
 
 </head>
 
@@ -130,7 +162,7 @@
 In Bambi, the sampler used is automatically selected given the type of variables used in the model. For inference, Bambi supports both MCMC and variational inference. By default, Bambi uses PyMC’s implementation of the adaptive Hamiltonian Monte Carlo (HMC) algorithm for sampling. Also known as the No-U-Turn Sampler (NUTS). This sampler is a good choice for many models. However, it is not the only sampling method, nor is PyMC the only library implementing NUTS.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2024-03-29 00:00:00 +0000 UTC'>March 29, 2024</span>&nbsp;·&nbsp;79 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <footer class="entry-footer"><span title='2024-03-29 00:00:00 +0000 UTC'>March 29, 2024</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
   <a class="entry-link" aria-label="post link to Alternative Samplers to NUTS in Bambi" href="http://localhost:1313/posts/bambi-alternative-samplers/"></a>
 </article>
 
@@ -144,7 +176,7 @@ In Bambi, the sampler used is automatically selected given the type of variables
 These helper functions are data_grid and select_draws. The data_grid can be used to create a pairwise grid of data points for the user to pass to model.predict. Subsequently, select_draws is used to select the draws from the posterior (or posterior predictive) group of the InferenceData object returned by the predict method that correspond to the data points that “produced” that draw.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2023-12-09 00:00:00 +0000 UTC'>December 9, 2023</span>&nbsp;·&nbsp;30 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <footer class="entry-footer"><span title='2023-12-09 00:00:00 +0000 UTC'>December 9, 2023</span>&nbsp;·&nbsp;9 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
   <a class="entry-link" aria-label="post link to Advanced Interpret Usage in Bambi" href="http://localhost:1313/posts/bambi-advanced-marginal-effects/"></a>
 </article>
 
@@ -199,7 +231,7 @@ This blog post is a copy of the zero inflated models documentation I wrote for B
 In some scenarios, the response variable is discrete, like a count, and ordered. Common examples of such data come from questionnaires where the respondent is asked to rate a product, service, or experience on a scale. This scale is often referred to as a Likert scale. For example, a five-level Likert scale could be:
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2023-09-29 00:00:00 +0000 UTC'>September 29, 2023</span>&nbsp;·&nbsp;18 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <footer class="entry-footer"><span title='2023-09-29 00:00:00 +0000 UTC'>September 29, 2023</span>&nbsp;·&nbsp;17 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
   <a class="entry-link" aria-label="post link to Ordinal Models in Bambi" href="http://localhost:1313/posts/bambi-ordinal-models/"></a>
 </article>
 
@@ -239,7 +271,7 @@ In some scenarios, the response variable is discrete, like a count, and ordered.
 However, at the beginning of week ten, I have a PR open with the majority of the functionality that marginaleffects has for slopes. In addition, I also exposed the slopes function, added tests, and have a PR open for the documentation.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2023-08-01 00:00:00 +0000 UTC'>August 1, 2023</span>&nbsp;·&nbsp;19 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <footer class="entry-footer"><span title='2023-08-01 00:00:00 +0000 UTC'>August 1, 2023</span>&nbsp;·&nbsp;18 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
   <a class="entry-link" aria-label="post link to Google Summer of Code - Average Predictive Slopes" href="http://localhost:1313/posts/bambi-slopes/"></a>
 </article>
 

@@ -26,7 +26,7 @@ This blog post is a copy of the ordinal models documentation I wrote for Bambi. 
 In some scenarios, the response variable is discrete, like a count, and ordered. Common examples of such data come from questionnaires where the respondent is asked to rate a product, service, or experience on a scale. This scale is often referred to as a Likert scale. For example, a five-level Likert scale could be:">
 <meta name="author" content="Gabriel Stechschulte">
 <link rel="canonical" href="http://localhost:1313/posts/bambi-ordinal-models/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.e06e296717ca1485b42270445b6064e38739a541df87459ef5f957e51cd74e72.css" integrity="sha256-4G4pZxfKFIW0InBEW2Bk44c5pUHfh0We9flX5RzXTnI=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
@@ -75,18 +75,20 @@ In some scenarios, the response variable is discrete, like a count, and ordered.
 <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+    integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
     crossorigin="anonymous"
 />
 <script
     defer
     src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"
+    integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8"
     crossorigin="anonymous"
 ></script>
 <script
     defer
     src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
     crossorigin="anonymous"
-    onload="renderMathInElement(document.body);"
 ></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -166,7 +168,7 @@ In some scenarios, the response variable is discrete, like a count, and ordered.
     <h1 class="post-title entry-hint-parent">
       Ordinal Models in Bambi
     </h1>
-    <div class="post-meta"><span title='2023-09-29 00:00:00 +0000 UTC'>September 29, 2023</span>&nbsp;·&nbsp;18 min&nbsp;·&nbsp;Gabriel Stechschulte
+    <div class="post-meta"><span title='2023-09-29 00:00:00 +0000 UTC'>September 29, 2023</span>&nbsp;·&nbsp;17 min&nbsp;·&nbsp;Gabriel Stechschulte
 
 </div>
   </header> 
@@ -262,7 +264,7 @@ array([-1.91609116, -1.26660559, -0.718634  ,  0.24778573,  0.88986365,
         Family: cumulative
           Link: p = logit
   Observations: 9930
-        Priors:
+        Priors: 
     target = p
         Common-level effects
             action ~ Normal(mu: 0.0, sigma: 5.045)
@@ -270,7 +272,7 @@ array([-1.91609116, -1.26660559, -0.718634  ,  0.24778573,  0.88986365,
             contact ~ Normal(mu: 0.0, sigma: 6.25)
             action:intention ~ Normal(mu: 0.0, sigma: 6.7082)
             contact:intention ~ Normal(mu: 0.0, sigma: 8.3333)
-
+        
         Auxiliary parameters
             threshold ~ Normal(mu: [-2.  -1.2 -0.4  0.4  1.2  2. ], sigma: 1.0, transform: ordered)
 ------
@@ -335,16 +337,16 @@ array([-1.91609116, -1.26660559, -0.718634  ,  0.24778573,  0.88986365,
 <p>The same predictor term $\eta$ is subtracted from each threshold because if we decrease the log-cumulative-odds of every outcome value $k$ below the maximum, this shifts probability mass upwards towards higher outcome values. Thus, positive $\beta$ values correspond to increasing $x$, which is associated with an increase in the mean response $Y$. The parameters to be estimated from the model are the thresholds $\tau$ and the predictor terms $\eta$ coefficients.</p>
 <p>To add predictors for ordinal models in Bambi, we continue to use the formula interface.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>model <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>Model(
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;response ~ 0 + action + intention + contact + action:intention + contact:intention&#34;</span>,
-</span></span><span style="display:flex;"><span>    data<span style="color:#f92672">=</span>trolly,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;response ~ 0 + action + intention + contact + action:intention + contact:intention&#34;</span>, 
+</span></span><span style="display:flex;"><span>    data<span style="color:#f92672">=</span>trolly, 
 </span></span><span style="display:flex;"><span>    family<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;cumulative&#34;</span>
 </span></span><span style="display:flex;"><span>)
 </span></span><span style="display:flex;"><span>idata <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>fit(random_seed<span style="color:#f92672">=</span><span style="color:#ae81ff">1234</span>)
 </span></span></code></pre></div><p>In the summary dataframe below, we only select the predictor variables as the thresholds are not of interest at the moment.</p>
 <p>In the summary dataframe below, we only select the predictor variables as the cutpoints are not of interest at the moment.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>az<span style="color:#f92672">.</span>summary(
-</span></span><span style="display:flex;"><span>    idata,
-</span></span><span style="display:flex;"><span>    var_names<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;action&#34;</span>, <span style="color:#e6db74">&#34;intention&#34;</span>, <span style="color:#e6db74">&#34;contact&#34;</span>,
+</span></span><span style="display:flex;"><span>    idata, 
+</span></span><span style="display:flex;"><span>    var_names<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;action&#34;</span>, <span style="color:#e6db74">&#34;intention&#34;</span>, <span style="color:#e6db74">&#34;contact&#34;</span>, 
 </span></span><span style="display:flex;"><span>               <span style="color:#e6db74">&#34;action:intention&#34;</span>, <span style="color:#e6db74">&#34;contact:intention&#34;</span>]
 </span></span><span style="display:flex;"><span>)
 </span></span></code></pre></div><!-- raw HTML omitted -->
@@ -362,7 +364,7 @@ array([-1.91609116, -1.26660559, -0.718634  ,  0.24778573,  0.88986365,
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>az<span style="color:#f92672">.</span>plot_forest(
 </span></span><span style="display:flex;"><span>    idata,
 </span></span><span style="display:flex;"><span>    combined<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
-</span></span><span style="display:flex;"><span>    var_names<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;action&#34;</span>, <span style="color:#e6db74">&#34;intention&#34;</span>, <span style="color:#e6db74">&#34;contact&#34;</span>,
+</span></span><span style="display:flex;"><span>    var_names<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;action&#34;</span>, <span style="color:#e6db74">&#34;intention&#34;</span>, <span style="color:#e6db74">&#34;contact&#34;</span>, 
 </span></span><span style="display:flex;"><span>               <span style="color:#e6db74">&#34;action:intention&#34;</span>, <span style="color:#e6db74">&#34;contact:intention&#34;</span>],
 </span></span><span style="display:flex;"><span>    figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>),
 </span></span><span style="display:flex;"><span>    textsize<span style="color:#f92672">=</span><span style="color:#ae81ff">11</span>
@@ -393,7 +395,7 @@ array([-1.91609116, -1.26660559, -0.718634  ,  0.24778573,  0.88986365,
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> colorsys<span style="color:#f92672">.</span>hls_to_rgb(c[<span style="color:#ae81ff">0</span>], c[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">*</span> amount, c[<span style="color:#ae81ff">2</span>])
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">plot_ppc_discrete</span>(idata, bins, ax):
-</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add_discrete_bands</span>(x, lower, upper, ax, <span style="color:#f92672">**</span>kwargs):
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> i, (l, u) <span style="color:#f92672">in</span> enumerate(zip(lower, upper)):
 </span></span><span style="display:flex;"><span>            s <span style="color:#f92672">=</span> slice(i, i <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>)
@@ -401,7 +403,7 @@ array([-1.91609116, -1.26660559, -0.718634  ,  0.24778573,  0.88986365,
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    var_name <span style="color:#f92672">=</span> list(idata<span style="color:#f92672">.</span>observed_data<span style="color:#f92672">.</span>data_vars)[<span style="color:#ae81ff">0</span>]
 </span></span><span style="display:flex;"><span>    y_obs <span style="color:#f92672">=</span> idata<span style="color:#f92672">.</span>observed_data[var_name]<span style="color:#f92672">.</span>to_numpy()
-</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    
 </span></span><span style="display:flex;"><span>    counts_list <span style="color:#f92672">=</span> []
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> draw_values <span style="color:#f92672">in</span> az<span style="color:#f92672">.</span>extract(idata, <span style="color:#e6db74">&#34;posterior_predictive&#34;</span>)[var_name]<span style="color:#f92672">.</span>to_numpy()<span style="color:#f92672">.</span>T:
 </span></span><span style="display:flex;"><span>        counts, _ <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>histogram(draw_values, bins<span style="color:#f92672">=</span>bins)
@@ -421,7 +423,7 @@ array([-1.91609116, -1.26660559, -0.718634  ,  0.24778573,  0.88986365,
 </span></span><span style="display:flex;"><span>    add_discrete_bands(bins, qts_50[<span style="color:#ae81ff">0</span>], qts_50[<span style="color:#ae81ff">1</span>], ax<span style="color:#f92672">=</span>ax, color<span style="color:#f92672">=</span>colors[<span style="color:#ae81ff">2</span>])
 </span></span><span style="display:flex;"><span>    add_discrete_bands(bins, qts_30[<span style="color:#ae81ff">0</span>], qts_30[<span style="color:#ae81ff">1</span>], ax<span style="color:#f92672">=</span>ax, color<span style="color:#f92672">=</span>colors[<span style="color:#ae81ff">3</span>])
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    
 </span></span><span style="display:flex;"><span>    ax<span style="color:#f92672">.</span>step(bins[:<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>], median, color<span style="color:#f92672">=</span>colors[<span style="color:#ae81ff">4</span>], lw<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, where<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span>)
 </span></span><span style="display:flex;"><span>    ax<span style="color:#f92672">.</span>hist(y_obs, bins<span style="color:#f92672">=</span>bins, histtype<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;step&#34;</span>, lw<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;black&#34;</span>, align<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mid&#34;</span>)
 </span></span><span style="display:flex;"><span>    handles <span style="color:#f92672">=</span> [
@@ -481,33 +483,21 @@ array([-1.91609116, -1.26660559, -0.718634  ,  0.24778573,  0.88986365,
 <p>Before we fit the sequential model, it&rsquo;s worth mentioning that the default priors for the thresholds in a sequential model are different than the cumulative model. In the cumulative model, the default prior for the thresholds is a Normal distribution with a grid of evenly spaced $\mu$ where an ordered transformation is applied to ensure the ordering of the values. However, in the sequential model, the ordering of the thresholds does not matter. Thus, the default prior for the thresholds is a Normal distribution with a zero $\mu$ vector of length $k - 1$ where $k$ is the number of response levels. Refer to the <a href="https://bambinos.github.io/bambi/notebooks/getting_started.html#specifying-priors">getting started</a> docs if you need a refresher on priors in Bambi.</p>
 <p>Subsequently, fitting a sequential model is similar to fitting a cumulative model. The only difference is that we pass <code>family=&quot;sratio&quot;</code> to the <code>bambi.Model</code> constructor.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>sequence_model <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>Model(
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;YearsAtCompany ~ 0 + TotalWorkingYears&#34;</span>,
-</span></span><span style="display:flex;"><span>    data<span style="color:#f92672">=</span>attrition,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;YearsAtCompany ~ 0 + TotalWorkingYears&#34;</span>, 
+</span></span><span style="display:flex;"><span>    data<span style="color:#f92672">=</span>attrition, 
 </span></span><span style="display:flex;"><span>    family<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sratio&#34;</span>
 </span></span><span style="display:flex;"><span>)
 </span></span><span style="display:flex;"><span>sequence_idata <span style="color:#f92672">=</span> sequence_model<span style="color:#f92672">.</span>fit(random_seed<span style="color:#f92672">=</span><span style="color:#ae81ff">1234</span>)
-</span></span></code></pre></div><pre><code>Only 250 samples in chain.
-Auto-assigning NUTS sampler...
-Initializing NUTS using jitter+adapt_diag...
-Multiprocess sampling (4 chains in 4 jobs)
-NUTS: [YearsAtCompany_threshold, TotalWorkingYears]
-</code></pre>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<pre><code>Sampling 4 chains for 250 tune and 250 draw iterations (1_000 + 1_000 draws total) took 148 seconds.
-The rhat statistic is larger than 1.01 for some parameters. This indicates problems during sampling. See https://arxiv.org/abs/1903.08008 for details
-</code></pre>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>sequence_model
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>sequence_model
 </span></span></code></pre></div><pre><code>       Formula: YearsAtCompany ~ 0 + TotalWorkingYears
         Family: sratio
           Link: p = logit
   Observations: 1233
-        Priors:
+        Priors: 
     target = p
         Common-level effects
             TotalWorkingYears ~ Normal(mu: 0.0, sigma: 0.3223)
-
+        
         Auxiliary parameters
             threshold ~ Normal(mu: [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
              0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.], sigma: 1.0)
