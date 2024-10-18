@@ -3,15 +3,12 @@ title: 'Google Summer of Code - Average Predictive Comparisons'
 date: 2023-06-30
 author: 'Gabriel Stechschulte'
 draft: false
-math: true
 categories: ['probabilistic-programming', 'gsoc']
 ---
 
 <!--eofm-->
 
 It is currently the end of week five of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the core functionality of the `plot_comparisons`. Subsequently, week six and seven were to be spent further developing the `plot_comparisons` function, and writing tests and a demo notebook for the documentation, respectively. However, at the end of week five, I have a PR open with the majority of the functionality that [marginaleffects](https://vincentarelbundock.github.io/marginaleffects/) has. In addition, I also exposed the `comparisons` function, added tests (which can and will be improved), and have started on documentation.
-
-This is a test $x + y = z$
 
 # Plot Comparisons
 
@@ -22,7 +19,7 @@ Due to the link function in a GLM, there are typically three quantities of inter
 1. the linear predictor $\eta = X\beta$ where $X$ is an $n$ x $p$ matrix of explanatory variables.
 2. the mean $\mu = g^{-1}(\eta)$ where the link function $g(\cdot)$ relates the linear predictor to the mean of the outcome variable $\mu = g^{-1}(\eta) = g^{-1}(X\beta)$
 3. the response variable $Y \sim \mathcal{D}(\mu, \theta)$ where $\mu$ is the mean parameter and $\theta$ is (possibly) a vector that contains all the other "auxillary" parameters of the distribution.
-
+ 
 Often, with GLMs, $\eta$ is linear in the parameters, but nonlinear in relation of inputs to the outcome $Y$ due to the link function $g$. Thus, as modelers, we are usually more interested in interpreting (2) and (3). For example, in logistic regression, the linear predictor is on the log-odds scale, but the quantity of interest is on the probability scale. In Poisson regression, the linear predictor is on the log-scale, but the response variable is on the count scale. Referring back to logistic regression, a specified difference in one of the $x$ variables does _not_ correspond to a constant difference in the the probability of the outcome.
 
 It is often helpful with GLMs, for the modeler and audience, to have a summary that gives the expected difference in the outcome corresponding to a unit difference in each of the input variables. Thus, the goal of `comparisons` and `plot_comparisons` is to provide the modeler with a summary and visualization of the average predicted difference.
@@ -47,9 +44,9 @@ The objective of `comparisons` and `plot_comparisons` is to compute the expected
 
 1. user provided values for $c$.
 2. a grid of equally spaced and central values for $c$.
-3. empirical distribution (original data used to fit the model) for $c$.
+3. empirical distribution (original data used to fit the model) for $c$. 
 
-In the case of (1) and (2) above, Bambi assembles all pairwise combinations (transitions) of $w$ and $c$ into a new "hypothetical" dataset. In (3), Bambi uses the original $c$, but replaces $w$ with the user provided value or the default value computed by Bambi. In each scenario, predictions are made on the data using the fitted model. Once the predictions are made, comparisons are computed using the posterior samples by taking the difference in the predicted outcome for each pair of transitions. The average of these differences is the average predictive difference.
+In the case of (1) and (2) above, Bambi assembles all pairwise combinations (transitions) of $w$ and $c$ into a new "hypothetical" dataset. In (3), Bambi uses the original $c$, but replaces $w$ with the user provided value or the default value computed by Bambi. In each scenario, predictions are made on the data using the fitted model. Once the predictions are made, comparisons are computed using the posterior samples by taking the difference in the predicted outcome for each pair of transitions. The average of these differences is the average predictive difference. 
 
 Thus, the goal of `comparisons` and `plot_comparisons` is to provide the modeler with a summary and visualization of the average predictive difference. Below, we demonstrate how to compute and plot average predictive differences with `comparisons` and `plot_comparions` using several examples.
 
@@ -78,56 +75,18 @@ fish_data["camper"] = pd.Categorical(fish_data["camper"])
 
 ```python
 fish_model = bmb.Model(
-    "count ~ livebait + camper + persons + child",
-    fish_data,
+    "count ~ livebait + camper + persons + child", 
+    fish_data, 
     family='zero_inflated_poisson'
 )
 
 fish_idata = fish_model.fit(
-    draws=1000,
-    target_accept=0.95,
-    random_seed=1234,
+    draws=1000, 
+    target_accept=0.95, 
+    random_seed=1234, 
     chains=4
 )
 ```
-
-    Auto-assigning NUTS sampler...
-    Initializing NUTS using jitter+adapt_diag...
-    Multiprocess sampling (4 chains in 4 jobs)
-    NUTS: [count_psi, Intercept, livebait, camper, persons, child]
-
-
-
-
-<style>
-    /* Turns off some styling */
-    progress {
-        /* gets rid of default border in Firefox and Opera. */
-        border: none;
-        /* Needs to be in here for Safari polyfill so background images work as expected. */
-        background-size: auto;
-    }
-    progress:not([value]), progress:not([value])::-webkit-progress-bar {
-        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
-    }
-    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
-        background: #F44336;
-    }
-</style>
-
-
-
-
-
-<div>
-  <progress value='8000' class='' max='8000' style='width:300px; height:20px; vertical-align: middle;'></progress>
-  100.00% [8000/8000 00:03&lt;00:00 Sampling 4 chains, 0 divergences]
-</div>
-
-
-
-    Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 4 seconds.
-
 
 ### User Provided Values
 
@@ -140,19 +99,19 @@ fig, ax = bmb.interpret.plot_comparisons(
     idata=fish_idata,
     contrast={"persons": [1, 4]},
     conditional={"child": [0, 1, 2], "livebait": [0, 1]},
-)
+) 
 fig.set_size_inches(7, 3)
 ```
 
 
-
+    
 ![png](2023-06-30-gsoc-update-comparisons_files/2023-06-30-gsoc-update-comparisons_11_0.png)
+    
 
 
+The plot above shows that, comparing $4$ to $1$ persons given $0$ children and using livebait, the expected difference is about $26$ fish. When not using livebait, the expected difference decreases substantially to about $5$ fish. Using livebait with a group of people is associated with a much larger expected difference in the number of fish caught. 
 
-The plot above shows that, comparing $4$ to $1$ persons given $0$ children and using livebait, the expected difference is about $26$ fish. When not using livebait, the expected difference decreases substantially to about $5$ fish. Using livebait with a group of people is associated with a much larger expected difference in the number of fish caught.
-
-`comparisons` can be called to view a summary dataframe that includes the term $w$ and its contrast, the specified `conditional` covariate, and the expected difference in the outcome with the uncertainty interval (by default the 94% highest density interval is computed).
+`comparisons` can be called to view a summary dataframe that includes the term $w$ and its contrast, the specified `conditional` covariate, and the expected difference in the outcome with the uncertainty interval (by default the 94% highest density interval is computed). 
 
 
 ```python
@@ -161,7 +120,7 @@ bmb.interpret.comparisons(
     idata=fish_idata,
     contrast={"persons": [1, 4]},
     conditional={"child": [0, 1, 2], "livebait": [0, 1]},
-)
+) 
 ```
 
 
@@ -560,21 +519,21 @@ The default values for `conditional` are more involved. Currently, by default, i
 
 ```python
 if v == "main":
-
+    
     if v == numeric:
         return np.linspace(v.min(), v.max(), 50)
     elif v == categorical:
         return np.unique(v)
 
 elif v == "group":
-
+    
     if v == numeric:
         return np.quantile(v, np.linspace(0, 1, 5))
     elif v == categorical:
         return np.unique(v)
 
 elif v == "panel":
-
+    
     if v == numeric:
         return np.quantile(v, np.linspace(0, 1, 5))
     elif v == categorical:
@@ -763,14 +722,14 @@ fig, ax = bmb.interpret.plot_comparisons(
     idata=fish_idata,
     contrast="livebait",
     conditional=["persons", "child"],
-)
+) 
 fig.set_size_inches(7, 3)
 ```
 
 
-
+    
 ![png](2023-06-30-gsoc-update-comparisons_files/2023-06-30-gsoc-update-comparisons_21_0.png)
-
+    
 
 
 The plot shows us that the expected differences in fish caught comparing a group of people who use livebait and no livebait is not only conditional on the number of persons, but also children. However, the plotted comparisons for `child` = $3$ is difficult to interpret on a single plot. Thus, it can be useful to pass specific `group` and `panel` arguments to aid in the interpretation of the plot. Therefore, `subplot_kwargs` allows the user to manipulate the plotting by passing a dictionary where the keys are `{"main": ..., "group": ..., "panel": ...}` and the values are the names of the covariates to be plotted. Below, we plot the same comparisons as above, but this time we specify `group` and `panel` to both be `child`.
@@ -785,13 +744,13 @@ fig, ax = bmb.interpret.plot_comparisons(
     subplot_kwargs={"main": "persons", "group": "child", "panel": "child"},
     fig_kwargs={"figsize":(12, 3), "sharey": True},
     legend=False
-)
+) 
 ```
 
 
-
+    
 ![png](2023-06-30-gsoc-update-comparisons_files/2023-06-30-gsoc-update-comparisons_23_0.png)
-
+    
 
 
 ### Unit level contrasts
@@ -1428,14 +1387,14 @@ fig.set_size_inches(7, 3)
 ```
 
 
-
+    
 ![png](2023-06-30-gsoc-update-comparisons_files/2023-06-30-gsoc-update-comparisons_37_0.png)
-
+    
 
 
 ## Logistic Regression
 
-To showcase an additional functionality of `comparisons` and `plot_comparisons`, we fit a logistic regression model to the [titanic dataset](https://vincentarelbundock.github.io/Rdatasets/csv/Stat2Data/Titanic.csv) with interaction terms to model the probability of survival. The titanic dataset gives the values of four categorical attributes for each of the 2201 people on board the Titanic when it struck an iceberg and sank. The attributes are social class (first class, second class, third class, crewmember), age, sex (0 = female, 1 = male), and whether or not the person survived (0 = deceased, 1 = survived).
+To showcase an additional functionality of `comparisons` and `plot_comparisons`, we fit a logistic regression model to the [titanic dataset](https://vincentarelbundock.github.io/Rdatasets/csv/Stat2Data/Titanic.csv) with interaction terms to model the probability of survival. The titanic dataset gives the values of four categorical attributes for each of the 2201 people on board the Titanic when it struck an iceberg and sank. The attributes are social class (first class, second class, third class, crewmember), age, sex (0 = female, 1 = male), and whether or not the person survived (0 = deceased, 1 = survived). 
 
 
 ```python
@@ -1453,51 +1412,12 @@ dat = dat.dropna(axis=0, how="any")
 
 ```python
 titanic_model = bmb.Model(
-    "Survived ~ PClass * SexCode * Age",
-    data=dat,
+    "Survived ~ PClass * SexCode * Age", 
+    data=dat, 
     family="bernoulli"
 )
 titanic_idata = titanic_model.fit(draws=1000, target_accept=0.95, random_seed=1234)
 ```
-
-    Modeling the probability that Survived==1
-    Auto-assigning NUTS sampler...
-    Initializing NUTS using jitter+adapt_diag...
-    Multiprocess sampling (4 chains in 4 jobs)
-    NUTS: [Intercept, PClass, SexCode, PClass:SexCode, Age, PClass:Age, SexCode:Age, PClass:SexCode:Age]
-
-
-
-
-<style>
-    /* Turns off some styling */
-    progress {
-        /* gets rid of default border in Firefox and Opera. */
-        border: none;
-        /* Needs to be in here for Safari polyfill so background images work as expected. */
-        background-size: auto;
-    }
-    progress:not([value]), progress:not([value])::-webkit-progress-bar {
-        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
-    }
-    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
-        background: #F44336;
-    }
-</style>
-
-
-
-
-
-<div>
-  <progress value='8000' class='' max='8000' style='width:300px; height:20px; vertical-align: middle;'></progress>
-  100.00% [8000/8000 00:15&lt;00:00 Sampling 4 chains, 0 divergences]
-</div>
-
-
-
-    Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 16 seconds.
-
 
 ### Comparison types
 
@@ -1519,12 +1439,12 @@ fig, ax = bmb.interpret.plot_comparisons(
 ```
 
 
-
+    
 ![png](2023-06-30-gsoc-update-comparisons_files/2023-06-30-gsoc-update-comparisons_42_0.png)
+    
 
 
-
-The left panel shows that the ratio of the probability of survival comparing `PClass` $3$ to $1$ conditional on `Age` is non-constant. Whereas the right panel shows an approximately constant ratio in the probability of survival comparing `PClass` $3$ to $1$ conditional on `Age`.
+The left panel shows that the ratio of the probability of survival comparing `PClass` $3$ to $1$ conditional on `Age` is non-constant. Whereas the right panel shows an approximately constant ratio in the probability of survival comparing `PClass` $3$ to $1$ conditional on `Age`. 
 
 ### Conclusion
 

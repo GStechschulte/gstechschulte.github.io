@@ -3,7 +3,6 @@ title: 'Predict New Groups with Hierarchical Models in Bambi'
 date: 2023-10-10
 author: 'Gabriel Stechschulte'
 draft: false
-math: true
 categories: ['probabilistic-programming']
 ---
 
@@ -11,7 +10,7 @@ categories: ['probabilistic-programming']
 
 # Predict New Groups
 
-In Bambi, it is possible to perform predictions on new, unseen, groups of data that were not in the observed data used to fit the model with the argument `sample_new_groups` in the `model.predict()` method. This is useful in the context of hierarchical modeling, where groups are assumed to be a sample from a larger group.
+In Bambi, it is possible to perform predictions on new, unseen, groups of data that were not in the observed data used to fit the model with the argument `sample_new_groups` in the `model.predict()` method. This is useful in the context of hierarchical modeling, where groups are assumed to be a sample from a larger group. 
 
 This blog post is a copy of the zero inflated models documentation I wrote for [Bambi](https://bambinos.github.io/bambi/). The original post can be found [here](https://bambinos.github.io/bambi/notebooks/predict_new_groups.html).
 
@@ -34,7 +33,7 @@ The parameters $\beta_{\mu h}, \beta_{\sigma h}$ of the group-specific effect pr
 
 ## Sampling new groups in Bambi
 
-If data with unseen groups are passed to the `new_data` argument of the `model.predict()` method, Bambi first needs to identify if that group exists, and if not, to evaluate the new group with the respective group-specific term. This evaluation updates the [design matrix](https://bambinos.github.io/bambi/notebooks/how_bambi_works.html#design-matrix) initially used to fit the model with the new group(s). This is achieved with the `.evaluate_new_data` method in the [formulae](https://github.com/bambinos/formulae) package.
+If data with unseen groups are passed to the `new_data` argument of the `model.predict()` method, Bambi first needs to identify if that group exists, and if not, to evaluate the new group with the respective group-specific term. This evaluation updates the [design matrix](https://bambinos.github.io/bambi/notebooks/how_bambi_works.html#design-matrix) initially used to fit the model with the new group(s). This is achieved with the `.evaluate_new_data` method in the [formulae](https://github.com/bambinos/formulae) package. 
 
 Once the design matrix has been updated, Bambi can perform predictions on the new, unseen, groups by specifying `sample_new_groups=True` in `model.predict()`. Each posterior sample for the new groups is drawn from the posterior draws of a randomly selected existing group. Since different groups may be selected at each draw, the end result represents the variation across existing groups.
 
@@ -276,16 +275,16 @@ plt.tight_layout()
 ```
 
 
-
+    
 ![png](2023-10-10-predict-groups-bambi_files/2023-10-10-predict-groups-bambi_10_0.png)
-
+    
 
 
 The plots show variability in FVC measurements, unequal time intervals between follow up visits, and different number of visits per patient. This is a good scenario to use a hierarchical model, where we can model the FVC measurements for each patient as a function of time, and also model the variability in the FVC measurements across patients.
 
 ### Partial pooling model
 
-The hierarchical model we will develop is a partially pooled model using the predictors `weeks`, `smoking_status`, and `patient` to predict the response `fvc`. We will estimate the following model with common and group-effects:
+The hierarchical model we will develop is a partially pooled model using the predictors `weeks`, `smoking_status`, and `patient` to predict the response `fvc`. We will estimate the following model with common and group-effects: 
 
 - common-effects: `weeks` and `smoking_status`
 - group-effects: the slope of `weeks` will vary by `patient`
@@ -302,22 +301,13 @@ priors = {
 
 model = bmb.Model(
     "fvc ~ 0 + weeks + smoking_status + (0 + weeks | patient)",
-    data,
+    data, 
     priors=priors,
     categorical=["patient", "smoking_status"],
 )
 model.build()
 model.graph()
 ```
-
-
-
-
-
-![svg](2023-10-10-predict-groups-bambi_files/2023-10-10-predict-groups-bambi_13_0.svg)
-
-
-
 
 
 ```python
@@ -331,44 +321,6 @@ idata = model.fit(
 )
 ```
 
-    Auto-assigning NUTS sampler...
-    Initializing NUTS using jitter+adapt_diag...
-    Multiprocess sampling (4 chains in 10 jobs)
-    NUTS: [fvc_sigma, weeks, smoking_status, weeks|patient_sigma, weeks|patient_offset]
-
-
-
-
-<style>
-    /* Turns off some styling */
-    progress {
-        /* gets rid of default border in Firefox and Opera. */
-        border: none;
-        /* Needs to be in here for Safari polyfill so background images work as expected. */
-        background-size: auto;
-    }
-    progress:not([value]), progress:not([value])::-webkit-progress-bar {
-        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
-    }
-    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
-        background: #F44336;
-    }
-</style>
-
-
-
-
-
-<div>
-  <progress value='10000' class='' max='10000' style='width:300px; height:20px; vertical-align: middle;'></progress>
-  100.00% [10000/10000 00:10&lt;00:00 Sampling 4 chains, 0 divergences]
-</div>
-
-
-
-    Sampling 4 chains for 1_000 tune and 1_500 draw iterations (4_000 + 6_000 draws total) took 10 seconds.
-
-
 ### Model criticism
 
 Hierarchical models can induce difficult posterior geometries to sample from. Below, we quickly analyze the traces to ensure sampling went well.
@@ -380,9 +332,9 @@ plt.tight_layout();
 ```
 
 
-
+    
 ![png](2023-10-10-predict-groups-bambi_files/2023-10-10-predict-groups-bambi_16_0.png)
-
+    
 
 
 Analyzing the marginal posteriors of `weeks` and `weeks|patient`, we see that the slope can be very different for some individuals. `weeks` indicates that as a population, the slope is negative. However, `weeks|patients` indicates some patients are negative, some are positive, and some are close to zero. Moreover, there are varying levels of uncertainty observed in the coefficients for the three different values of the `smoking_status` variable.
@@ -536,9 +488,9 @@ plt.tight_layout()
 ```
 
 
-
+    
 ![png](2023-10-10-predict-groups-bambi_files/2023-10-10-predict-groups-bambi_22_0.png)
-
+    
 
 
 The plots show that the posterior estimates seem to fit the three patients well. Where there are more observations, the credible interval is smaller, and where there are fewer observations, the credible interval is larger. Next, we will predict new, unseen, patients.
@@ -737,7 +689,7 @@ new_data
 ```python
 preds = model.predict(
     idata, kind="mean",
-    data=new_data,
+    data=new_data, 
     sample_new_groups=True,
     inplace=False
 )
@@ -772,9 +724,9 @@ plot_new_patient(preds, new_data, [39, 176])
 ```
 
 
-
+    
 ![png](2023-10-10-predict-groups-bambi_files/2023-10-10-predict-groups-bambi_28_0.png)
-
+    
 
 
 Although identical data was used for both patients, the variability increased consideribly for patient 176. However, the mean predictions for both patients appear to be almost identical. Now, lets construct a new patient with different clinical data and see how the predictions change. We will select 10 time of follow up visits at random, and set the `smoking_status = "Currently smokes"`.
@@ -783,7 +735,7 @@ Although identical data was used for both patients, the variability increased co
 ```python
 new_data.loc[new_data["patient"] == 176, "smoking_status"] = "Currently smokes"
 weeks = np.random.choice(sorted(model.data.weeks.unique()), size=10)
-new_data.loc[new_data["patient"] == 176, "weeks"] = weeks
+new_data.loc[new_data["patient"] == 176, "weeks"] = weeks 
 new_data
 ```
 
@@ -967,7 +919,7 @@ If we were to keep the default value of `sample_new_groups=False`, the following
 ```python
 preds = model.predict(
     idata, kind="mean",
-    data=new_data,
+    data=new_data, 
     sample_new_groups=True,
     inplace=False
 )
@@ -979,9 +931,9 @@ plot_new_patient(preds, new_data, [39, 176])
 ```
 
 
-
+    
 ![png](2023-10-10-predict-groups-bambi_files/2023-10-10-predict-groups-bambi_33_0.png)
-
+    
 
 
 With `smoking_status = "Currently smokes"`, and the time of follow up visit randomly selected, we can see that the intercept is slightly higher, and it appears that the slope is steeper for this new patient. Again, the variability is much higher for patient 176, and in particular, where there are fewer `fvc` measurements.
@@ -1026,9 +978,9 @@ plt.title("Difference in predictions for patient 176 vs 39");
 ```
 
 
-
+    
 ![png](2023-10-10-predict-groups-bambi_files/2023-10-10-predict-groups-bambi_37_0.png)
-
+    
 
 
 Referring to the plots where patient 39 and 176 use identical data, the mean `fvc` predictions "look" about the same. When this comparison is made quantitatively using the comparisons function, we can see that mean `fvc` measurements are slightly below 0.0, and have a constant slope across `weeks` indicating there is a slight difference in mean `fvc` measurements between the two patients.
@@ -1046,15 +998,17 @@ To predict new groups in Bambi, you can either: (1) create a dataset with new gr
 ```
 
     Last updated: Tue Oct 10 2023
-
+    
     Python implementation: CPython
     Python version       : 3.11.0
     IPython version      : 8.13.2
-
+    
     matplotlib: 3.7.1
     arviz     : 0.16.1
     pandas    : 2.1.0
     numpy     : 1.24.2
     bambi     : 0.13.0.dev0
-
+    
     Watermark: 2.3.1
+    
+

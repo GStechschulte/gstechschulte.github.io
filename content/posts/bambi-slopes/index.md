@@ -3,13 +3,12 @@ title: 'Google Summer of Code - Average Predictive Slopes'
 date: 2023-08-01
 author: 'Gabriel Stechschulte'
 draft: false
-math: true
 categories: ['probabilistic-programming']
 ---
 
 <!--eofm-->
 
-It is currently the beginning of week ten of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the basic functionality of the `plot_slopes`. Subsequently, week 11 was reserved to further develop the `plot_slopes` function, and to write tests and a notebook for the documentation, respectively.
+It is currently the beginning of week ten of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the basic functionality of the `plot_slopes`. Subsequently, week 11 was reserved to further develop the `plot_slopes` function, and to write tests and a notebook for the documentation, respectively. 
 
 However, at the beginning of week ten, I have a [PR](https://github.com/bambinos/bambi/pull/699) open with the majority of the functionality that [marginaleffects](https://vincentarelbundock.github.io/marginaleffects/) has for `slopes`. In addition, I also exposed the `slopes` function, added tests, and have a [PR](https://github.com/bambinos/bambi/pull/701) open for the documentation.
 
@@ -29,7 +28,7 @@ $$y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \dots + \beta_k x_k + \epsilon$$
 
 the "safest" interpretation of the regression coefficients $\beta$ is as a comparison between two groups of items that differ by $1$ in the relevant predictor variable $x_i$ while being identical in all the other predictors. Formally, the predicted difference between two items $i$ and $j$ that differ by an amount $n$ on predictor $k$, but are identical on all other predictors, the predicted difference is $y_i - y_j$ is $\beta_kx$, on average.
 
-However, once we move away from a regression model with a Gaussian response, the identity function, and no interaction terms, the interpretation of the coefficients are not as straightforward. For example, in a logistic regression model, the coefficients are on a different scale and are measured in logits (log odds), not probabilities or percentage points. Thus, you cannot interpret the coefficents as a "one unit increase in $x_k$ is associated with an $n$ percentage point decrease in $y$". First, the logits must be converted to the probability scale. Secondly, a one unit change in $x_k$ may produce a larger or smaller change in the outcome, depending upon how far away from zero the logits are.
+However, once we move away from a regression model with a Gaussian response, the identity function, and no interaction terms, the interpretation of the coefficients are not as straightforward. For example, in a logistic regression model, the coefficients are on a different scale and are measured in logits (log odds), not probabilities or percentage points. Thus, you cannot interpret the coefficents as a "one unit increase in $x_k$ is associated with an $n$ percentage point decrease in $y$". First, the logits must be converted to the probability scale. Secondly, a one unit change in $x_k$ may produce a larger or smaller change in the outcome, depending upon how far away from zero the logits are. 
 
 `slopes` and `plot_slopes`, by default, computes quantities of interest on the response scale for GLMs. For example, for a logistic regression model, this is the probability scale, and for a Poisson regression model, this is the count scale.
 
@@ -73,7 +72,7 @@ $$\text{average predictive slope} = \frac{\mathbb{E}(y|w^{\text{value}}, c, \the
 
 The objective of `slopes` and `plot_slopes` is to compute the rate of change (slope) in the mean of the response $y$ with respect to a small change $\epsilon$ in the predictor $x$ conditional on other covariates $c$ specified in the model. $w$ is specified by the user and the original value is either provided by the user, else a default value (the mean) is computed by Bambi. The values for the other covariates $c$ specified in the model can be determined under the following three scenarios:
 
-1. user provided values
+1. user provided values 
 2. a grid of equally spaced and central values
 3. empirical distribution (original data used to fit the model)
 
@@ -208,57 +207,18 @@ well_model = bmb.Model(
 )
 
 well_idata = well_model.fit(
-    draws=1000,
-    target_accept=0.95,
-    random_seed=1234,
+    draws=1000, 
+    target_accept=0.95, 
+    random_seed=1234, 
     chains=4
 )
 ```
-
-    Modeling the probability that switch==0
-    Auto-assigning NUTS sampler...
-    Initializing NUTS using jitter+adapt_diag...
-    Multiprocess sampling (4 chains in 4 jobs)
-    NUTS: [Intercept, dist100, arsenic, educ4]
-
-
-
-
-<style>
-    /* Turns off some styling */
-    progress {
-        /* gets rid of default border in Firefox and Opera. */
-        border: none;
-        /* Needs to be in here for Safari polyfill so background images work as expected. */
-        background-size: auto;
-    }
-    progress:not([value]), progress:not([value])::-webkit-progress-bar {
-        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
-    }
-    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
-        background: #F44336;
-    }
-</style>
-
-
-
-
-
-<div>
-  <progress value='8000' class='' max='8000' style='width:300px; height:20px; vertical-align: middle;'></progress>
-  100.00% [8000/8000 00:02&lt;00:00 Sampling 4 chains, 0 divergences]
-</div>
-
-
-
-    Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 3 seconds.
-
 
 ### User provided values
 
 First, an example of scenario 1 (user provided values) is given below. In both `plot_slopes` and `slopes`, $w$ and $c$ are represented by `wrt` (with respect to) and `conditional`, respectively. The modeler has the ability to pass their own values for `wrt` and `conditional` by using a dictionary where the key-value pairs are the covariate and value(s) of interest.
 
-For example, if we wanted to compute the slope of the probability of switching wells for a typical `arsenic` value of $1.3$ conditional on a range of `dist` and `educ` values, we would pass the following dictionary in the code block below. By default, for $w$, Bambi compares $w^\text{value}$ to $w^{\text{value} + \epsilon}$ where $\epsilon =$ `1e-4`. However, the value for $\epsilon$ can be changed by passing a value to the argument `eps`.
+For example, if we wanted to compute the slope of the probability of switching wells for a typical `arsenic` value of $1.3$ conditional on a range of `dist` and `educ` values, we would pass the following dictionary in the code block below. By default, for $w$, Bambi compares $w^\text{value}$ to $w^{\text{value} + \epsilon}$ where $\epsilon =$ `1e-4`. However, the value for $\epsilon$ can be changed by passing a value to the argument `eps`. 
 
 Thus, in this example, $w^\text{value} = 1.3$ and $w^{\text{value} + \epsilon} = 1.3001$. The user is not limited to passing a list for the values. A `np.array` can also be used. Furthermore, Bambi by default, maps the order of the dict keys to the main, group, and panel of the matplotlib figure. Below, since `dist100` is the first key, this is used for the x-axis, and `educ4` is used for the group (color). If a third key was passed, it would be used for the panel (facet).
 
@@ -275,9 +235,9 @@ fig.axes[0].set_ylabel("Slope of Well Switching Probability");
 ```
 
 
-
+    
 ![png](2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_12_0.png)
-
+    
 
 
 The plot above shows that, for example, conditional on `dist100` $= 0.2$ and `educ4` $= 1.0$ a unit increase in `arsenic` is associated with households being $11$% less likely to switch wells. Notice that even though we fit a logistic regression model where the coefficients are on the log-odds scale, the `slopes` function returns the slope on the probability scale. Thus, we can interpret the y-axis (slope) as the expected change in the probability of switching wells for a unit increase in `arsenic` conditional on the specified covariates.
@@ -291,7 +251,7 @@ bmb.interpret.slopes(
     well_idata,
     wrt={"arsenic": 1.5},
     conditional={
-        "dist100": [0.20, 0.50, 0.80],
+        "dist100": [0.20, 0.50, 0.80], 
         "educ4": [1.00, 1.20, 2.00]
         }
 )
@@ -447,7 +407,7 @@ multiple_values = bmb.interpret.slopes(
     well_idata,
     wrt={"arsenic": [1.5, 2.0, 2.5]},
     conditional={
-        "dist100": [0.20, 0.50, 0.80],
+        "dist100": [0.20, 0.50, 0.80], 
         "educ4": [1.00, 1.20, 2.00]
         }
 )
@@ -574,53 +534,12 @@ well_model_interact = bmb.Model(
 )
 
 well_idata_interact = well_model_interact.fit(
-    draws=1000,
-    target_accept=0.95,
-    random_seed=1234,
+    draws=1000, 
+    target_accept=0.95, 
+    random_seed=1234, 
     chains=4
 )
 ```
-
-    Modeling the probability that switch==0
-
-
-    Auto-assigning NUTS sampler...
-    Initializing NUTS using jitter+adapt_diag...
-    Multiprocess sampling (4 chains in 4 jobs)
-    NUTS: [Intercept, dist100, arsenic, educ4, dist100:educ4, arsenic:educ4]
-
-
-
-
-<style>
-    /* Turns off some styling */
-    progress {
-        /* gets rid of default border in Firefox and Opera. */
-        border: none;
-        /* Needs to be in here for Safari polyfill so background images work as expected. */
-        background-size: auto;
-    }
-    progress:not([value]), progress:not([value])::-webkit-progress-bar {
-        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
-    }
-    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
-        background: #F44336;
-    }
-</style>
-
-
-
-
-
-<div>
-  <progress value='8000' class='' max='8000' style='width:300px; height:20px; vertical-align: middle;'></progress>
-  100.00% [8000/8000 00:15&lt;00:00 Sampling 4 chains, 0 divergences]
-</div>
-
-
-
-    Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 15 seconds.
-
 
 
 ```python
@@ -741,7 +660,7 @@ az.summary(well_idata_interact)
 
 The coefficients of the linear model are shown in the table above. The interaction coefficents indicate the slope varies in a continuous fashion with the continuous variable.
 
-A negative value for `arsenic:dist100` indicates that the "effect" of arsenic on the outcome is less negative as distance from the well increases. Similarly, a negative value for `arsenic:educ4` indicates that the "effect" of arsenic on the outcome is more negative as education increases. Remember, these coefficients are still on the logit scale. Furthermore, as more variables and interaction terms are added to the model, interpreting these coefficients becomes more difficult.
+A negative value for `arsenic:dist100` indicates that the "effect" of arsenic on the outcome is less negative as distance from the well increases. Similarly, a negative value for `arsenic:educ4` indicates that the "effect" of arsenic on the outcome is more negative as education increases. Remember, these coefficients are still on the logit scale. Furthermore, as more variables and interaction terms are added to the model, interpreting these coefficients becomes more difficult. 
 
 Thus, lets use `plot_slopes` to visually see how the slope changes with respect to `arsenic` conditional on `dist100` and `educ4` changing. Notice in the code block below how parameters are passed to the `subplot_kwargs` and `fig_kwargs` arguments. At times, it can be useful to pass specific `group` and `panel` arguments to aid in the interpretation of the plot. Therefore, `subplot_kwargs` allows the user to manipulate the plotting by passing a dictionary where the keys are `{"main": ..., "group": ..., "panel": ...}` and the values are the names of the covariates to be plotted. `fig_kwargs` are figure level key word arguments such as `figsize` and `sharey`.
 
@@ -759,9 +678,9 @@ fig, ax = bmb.interpret.plot_slopes(
 ```
 
 
-
+    
 ![png](2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_23_0.png)
-
+    
 
 
 With interaction terms now defined, it can be seen how the slope of the outcome with respect to `arsenic` differ depending on the value of `educ4`. Especially in the case of `educ4` $= 4.25$, the slope is more "constant", but with greater uncertainty. Lets compare this with the model that does not include any interaction terms.
@@ -780,9 +699,9 @@ fig, ax = bmb.interpret.plot_slopes(
 ```
 
 
-
+    
 ![png](2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_25_0.png)
-
+    
 
 
 For the non-interaction model, conditional on a range of values for `educ4` and `dist100`, the slopes of the outcome are nearly identical.
@@ -1564,9 +1483,9 @@ fig.set_size_inches(7, 3)
 ```
 
 
-
+    
 ![png](2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_39_0.png)
-
+    
 
 
 ### Interpreting coefficients as an elasticity
@@ -1769,9 +1688,9 @@ fig, ax = bmb.interpret.plot_slopes(
 ```
 
 
-
+    
 ![png](2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_45_0.png)
-
+    
 
 
 ### Categorical covariates
@@ -1795,51 +1714,12 @@ well_model_interact = bmb.Model(
 )
 
 well_idata_interact = well_model_interact.fit(
-    draws=1000,
-    target_accept=0.95,
-    random_seed=1234,
+    draws=1000, 
+    target_accept=0.95, 
+    random_seed=1234, 
     chains=4
 )
 ```
-
-    Modeling the probability that switch==0
-    Auto-assigning NUTS sampler...
-    Initializing NUTS using jitter+adapt_diag...
-    Multiprocess sampling (4 chains in 4 jobs)
-    NUTS: [Intercept, dist100, arsenic, educ4, dist100:educ4, arsenic:educ4]
-
-
-
-
-<style>
-    /* Turns off some styling */
-    progress {
-        /* gets rid of default border in Firefox and Opera. */
-        border: none;
-        /* Needs to be in here for Safari polyfill so background images work as expected. */
-        background-size: auto;
-    }
-    progress:not([value]), progress:not([value])::-webkit-progress-bar {
-        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
-    }
-    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
-        background: #F44336;
-    }
-</style>
-
-
-
-
-
-<div>
-  <progress value='8000' class='' max='8000' style='width:300px; height:20px; vertical-align: middle;'></progress>
-  100.00% [8000/8000 05:18&lt;00:00 Sampling 4 chains, 0 divergences]
-</div>
-
-
-
-    Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 319 seconds.
-
 
 
 ```python
@@ -1854,9 +1734,9 @@ fig.set_size_inches(7, 3)
 ```
 
 
-
+    
 ![png](2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_49_0.png)
-
+    
 
 
 As the model was fit with `educ4` as a categorical data type, Bambi recognized this, and calls `comparisons` to compute the differences between each level of `educ4`. As `educ4` contains many category levels, a covariate must be passed to `average_by` in order to perform plotting. Below, we can see this plot is equivalent to `plot_comparisons`.
@@ -1874,9 +1754,9 @@ fig.set_size_inches(7, 3)
 ```
 
 
-
+    
 ![png](2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_51_0.png)
-
+    
 
 
 However, computing the predictive difference between each `educ4` level may not be desired. Thus, in `plot_slopes`, as in `plot_comparisons`, if `wrt` is a categorical or string data type, it is possible to specify the `wrt` values. For example, if we wanted to compute the expected difference in probability of switching wells for when `educ4` is $4$ versus $1$ conditional on a range of `dist100` and `arsenic` values, we would pass the following dictionary in the code block below. Please refer to the [comparisons](https://bambinos.github.io/bambi/notebooks/plot_comparisons.html) documentation for more details.
@@ -1894,9 +1774,9 @@ fig.set_size_inches(7, 3)
 ```
 
 
-
+    
 ![png](2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_53_0.png)
-
+    
 
 
 
@@ -1906,13 +1786,15 @@ fig.set_size_inches(7, 3)
 ```
 
     Last updated: Wed Aug 16 2023
-
+    
     Python implementation: CPython
     Python version       : 3.11.0
     IPython version      : 8.13.2
-
+    
     pandas: 2.0.1
     arviz : 0.15.1
     bambi : 0.10.0.dev0
-
+    
     Watermark: 2.3.1
+    
+

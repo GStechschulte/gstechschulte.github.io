@@ -3,7 +3,6 @@ title: 'Ordinal Models in Bambi'
 date: 2023-09-29
 author: 'Gabriel Stechschulte'
 draft: false
-math: true
 categories: ['probabilistic-programming']
 ---
 
@@ -43,9 +42,9 @@ The result is a set of **ordered categories** where each category has an associa
 
 Ordinal data presents three challenges when modelling:
 
-1. Unlike a count, the differences in the values are not necessarily equidistant or meaningful. For example, computing the difference between "Strongly disagree" and "Disagree". Or, in the case of the restaurant rating, it may be much harder for a restuarant to go from 4 to 5 stars than from 2 to 3 stars.
+1. Unlike a count, the differences in the values are not necessarily equidistant or meaningful. For example, computing the difference between "Strongly disagree" and "Disagree". Or, in the case of the restaurant rating, it may be much harder for a restuarant to go from 4 to 5 stars than from 2 to 3 stars. 
 2. The distribution of ordinal responses may be nonnormal as the response is not continuous; particularly if larger response levels are infrequently chosen compared to lower ones.
-3. The variances of the unobserved variables that underlie the observed ordered category may differ between the category, time points, etc.
+3. The variances of the unobserved variables that underlie the observed ordered category may differ between the category, time points, etc. 
 
 Thus, treating ordered categories as continuous is not appropriate. To this extent, Bambi supports two classes of ordinal regression models: (1) cumulative, and (2) sequential. Below, it is demonstrated how to fit these two models using Bambi to overcome the challenges of ordered category response data.
 
@@ -70,7 +69,7 @@ Lastly, as each $F(\tau)$ implies a cumulative probability for each category, th
 
 ### The moral intuition dataset
 
-To illustrate an cumulative ordinal model, we will model data from a series of experiments conducted by philsophers (this example comes from Richard McElreath's [Statistical Rethinking](https://xcelab.net/rm/statistical-rethinking/)). The experiments aim to collect empirical evidence relevant to debates about moral intuition, the forms of reasoning through which people develop judgments about the moral goodness and badness of actions.
+To illustrate an cumulative ordinal model, we will model data from a series of experiments conducted by philsophers (this example comes from Richard McElreath's [Statistical Rethinking](https://xcelab.net/rm/statistical-rethinking/)). The experiments aim to collect empirical evidence relevant to debates about moral intuition, the forms of reasoning through which people develop judgments about the moral goodness and badness of actions. 
 
 In the dataset there are 12 columns and 9930 rows, comprising data for 331 unique individuals. The response we are interested in `response`, is an integer from 1 to 7 indicating how morally permissible the participant found the action to be taken (or not) in the story. The predictors are as follows:
 
@@ -137,9 +136,9 @@ plt.title("Empirical probability of each response category");
 ```
 
 
-
+    
 ![png](2023-09-29-ordinal-models-bambi_files/2023-09-29-ordinal-models-bambi_9_0.png)
-
+    
 
 
 
@@ -148,7 +147,7 @@ model = bmb.Model("response ~ 0", data=trolly, family="cumulative")
 idata = model.fit(random_seed=1234)
 ```
 
-Below, the components of the model are outputed. Notice how the thresholds are a grid of six values ranging from -2 to 2.
+Below, the components of the model are outputed. Notice how the thresholds are a grid of six values ranging from -2 to 2. 
 
 
 ```python
@@ -162,7 +161,7 @@ model
             Family: cumulative
               Link: p = logit
       Observations: 9930
-            Priors:
+            Priors: 
         target = p
             Common-level effects
                 action ~ Normal(mu: 0.0, sigma: 5.045)
@@ -170,7 +169,7 @@ model
                 contact ~ Normal(mu: 0.0, sigma: 6.25)
                 action:intention ~ Normal(mu: 0.0, sigma: 6.7082)
                 contact:intention ~ Normal(mu: 0.0, sigma: 8.3333)
-
+            
             Auxiliary parameters
                 threshold ~ Normal(mu: [-2.  -1.2 -0.4  0.4  1.2  2. ], sigma: 1.0, transform: ordered)
     ------
@@ -297,7 +296,7 @@ az.summary(idata)
 
 Viewing the summary dataframe, we see a total of six  `response_threshold` coefficients. Why six? Remember, we get the last parameter for free. Since there are seven categories, we only need six cutpoints. The index (using zero based indexing) of the `response_threshold` indicates the category that the threshold is associated with. Comparing to the empirical log-cumulative-odds computation above, the mean of the posterior distribution for each category is close to the empirical value.
 
-As the the log cumulative link is used, we need to apply the inverse of the logit function to transform back to cumulative probabilities. Below, we plot the cumulative probabilities for each category.
+As the the log cumulative link is used, we need to apply the inverse of the logit function to transform back to cumulative probabilities. Below, we plot the cumulative probabilities for each category. 
 
 
 ```python
@@ -313,9 +312,9 @@ plt.title("Cumulative probabilities of response categories");
 ```
 
 
-
+    
 ![png](2023-09-29-ordinal-models-bambi_files/2023-09-29-ordinal-models-bambi_15_0.png)
-
+    
 
 
 
@@ -331,9 +330,9 @@ ax.legend(bbox_to_anchor=(1.04, 1), loc="upper left");
 ```
 
 
-
+    
 ![png](2023-09-29-ordinal-models-bambi_files/2023-09-29-ordinal-models-bambi_16_0.png)
-
+    
 
 
 We can take the derivative of the cumulative probabilities to get the posterior probabilities for each category. Notice how the posterior probabilities in the barplot below are close to the empirical probabilities in barplot above.
@@ -352,12 +351,12 @@ plt.title("Posterior Probability of each response category");
 ```
 
 
-
+    
 ![png](2023-09-29-ordinal-models-bambi_files/2023-09-29-ordinal-models-bambi_18_0.png)
+    
 
 
-
-Notice in the plots above, the jump in probability from category 3 to 4. Additionally, the estimates of the coefficients is precise for each category. Now that we have an understanding how the cumulative link function is applied to produce ordered cumulative outcomes, we will add predictors to the model.
+Notice in the plots above, the jump in probability from category 3 to 4. Additionally, the estimates of the coefficients is precise for each category. Now that we have an understanding how the cumulative link function is applied to produce ordered cumulative outcomes, we will add predictors to the model. 
 
 ### Adding predictors
 
@@ -367,21 +366,21 @@ $$\eta = \beta_1 x_1 + \beta_2 x_2 +, . . ., \beta_n x_n$$
 
 Notice how similar this looks to an ordinary linear model. However, there is no intercept or error term. This is because the intercept is replaced by the threshold $\tau$ and the error term $\epsilon$ is added seperately to obtain
 
-$$Z = \eta + \epsilon$$
+$$Z = \eta + \epsilon$$ 
 
 Putting the predictor term together with the thresholds and cumulative distribution function, we obtain the probability of $Y$ being equal to a category $k$ as
 
 $$Pr(Y = k | \eta) = F(\tau_k - \eta) - F(\tau_{k-1} - \eta)$$
 
-The same predictor term $\eta$ is subtracted from each threshold because if we decrease the log-cumulative-odds of every outcome value $k$ below the maximum, this shifts probability mass upwards towards higher outcome values. Thus, positive $\beta$ values correspond to increasing $x$, which is associated with an increase in the mean response $Y$. The parameters to be estimated from the model are the thresholds $\tau$ and the predictor terms $\eta$ coefficients.
+The same predictor term $\eta$ is subtracted from each threshold because if we decrease the log-cumulative-odds of every outcome value $k$ below the maximum, this shifts probability mass upwards towards higher outcome values. Thus, positive $\beta$ values correspond to increasing $x$, which is associated with an increase in the mean response $Y$. The parameters to be estimated from the model are the thresholds $\tau$ and the predictor terms $\eta$ coefficients.  
 
 To add predictors for ordinal models in Bambi, we continue to use the formula interface.
 
 
 ```python
 model = bmb.Model(
-    "response ~ 0 + action + intention + contact + action:intention + contact:intention",
-    data=trolly,
+    "response ~ 0 + action + intention + contact + action:intention + contact:intention", 
+    data=trolly, 
     family="cumulative"
 )
 idata = model.fit(random_seed=1234)
@@ -394,8 +393,8 @@ In the summary dataframe below, we only select the predictor variables as the cu
 
 ```python
 az.summary(
-    idata,
-    var_names=["action", "intention", "contact",
+    idata, 
+    var_names=["action", "intention", "contact", 
                "action:intention", "contact:intention"]
 )
 ```
@@ -506,7 +505,7 @@ The posterior distribution of the slopes are all negative indicating that each o
 az.plot_forest(
     idata,
     combined=True,
-    var_names=["action", "intention", "contact",
+    var_names=["action", "intention", "contact", 
                "action:intention", "contact:intention"],
     figsize=(7, 3),
     textsize=11
@@ -514,9 +513,9 @@ az.plot_forest(
 ```
 
 
-
+    
 ![png](2023-09-29-ordinal-models-bambi_files/2023-09-29-ordinal-models-bambi_26_0.png)
-
+    
 
 
 Again, we can plot the cumulative probability of each category. Compared to the same plot above, notice how most of the category probabilities have been shifted to the left. Additionally, there is more uncertainty for category 3, 4, and 5.
@@ -534,9 +533,9 @@ ax.legend(bbox_to_anchor=(1.04, 1), loc="upper left");
 ```
 
 
-
+    
 ![png](2023-09-29-ordinal-models-bambi_files/2023-09-29-ordinal-models-bambi_28_0.png)
-
+    
 
 
 ### Posterior predictive distribution
@@ -556,7 +555,7 @@ def adjust_lightness(color, amount=0.5):
     return colorsys.hls_to_rgb(c[0], c[1] * amount, c[2])
 
 def plot_ppc_discrete(idata, bins, ax):
-
+    
     def add_discrete_bands(x, lower, upper, ax, **kwargs):
         for i, (l, u) in enumerate(zip(lower, upper)):
             s = slice(i, i + 2)
@@ -564,7 +563,7 @@ def plot_ppc_discrete(idata, bins, ax):
 
     var_name = list(idata.observed_data.data_vars)[0]
     y_obs = idata.observed_data[var_name].to_numpy()
-
+    
     counts_list = []
     for draw_values in az.extract(idata, "posterior_predictive")[var_name].to_numpy().T:
         counts, _ = np.histogram(draw_values, bins=bins)
@@ -584,7 +583,7 @@ def plot_ppc_discrete(idata, bins, ax):
     add_discrete_bands(bins, qts_50[0], qts_50[1], ax=ax, color=colors[2])
     add_discrete_bands(bins, qts_30[0], qts_30[1], ax=ax, color=colors[3])
 
-
+    
     ax.step(bins[:-1], median, color=colors[4], lw=2, where="post")
     ax.hist(y_obs, bins=bins, histtype="step", lw=2, color="black", align="mid")
     handles = [
@@ -608,9 +607,9 @@ ax.set_title("Cumulative model - Posterior Predictive Distribution");
 ```
 
 
-
+    
 ![png](2023-09-29-ordinal-models-bambi_files/2023-09-29-ordinal-models-bambi_31_0.png)
-
+    
 
 
 ## Sequential Model
@@ -619,7 +618,7 @@ For some ordinal variables, the assumption of a **single** underlying continuous
 
 Sequential models assume that for **every** category $k$ there is a latent continuous variable $Z$ that determines the transition between categories $k$ and $k+1$. Now, a threshold $\tau$ belongs to each latent process. If there are 3 categories, then there are 3 latent processes. If $Z_k$ is greater than the threshold $\tau_k$, the sequential process continues, otherwise it stops at category $k$. As with the cumulative model, we assume a distribution for $Z_k$ with a cumulative distribution function $F$.
 
-As an example, lets suppose we are interested in modeling the probability a boxer makes it to round 3. This implies that the particular boxer in question survived round 1 $Z_1 > \tau_1$ , 2 $Z_2 > \tau_2$, and 3 $Z_3 > \tau_3$. This can be written as
+As an example, lets suppose we are interested in modeling the probability a boxer makes it to round 3. This implies that the particular boxer in question survived round 1 $Z_1 > \tau_1$ , 2 $Z_2 > \tau_2$, and 3 $Z_3 > \tau_3$. This can be written as 
 
 $$Pr(Y = 3) = (1 - P(Z_1 \leq \tau_1)) * (1 - P(Z_2 \leq \tau_2)) * P(Z_3 \leq \tau_3)$$
 
@@ -716,66 +715,26 @@ plt.title("Empirical probability of each response category");
 ```
 
 
-
+    
 ![png](2023-09-29-ordinal-models-bambi_files/2023-09-29-ordinal-models-bambi_36_0.png)
-
+    
 
 
 ### Default prior of thresholds
 
-Before we fit the sequential model, it's worth mentioning that the default priors for the thresholds in a sequential model are different than the cumulative model. In the cumulative model, the default prior for the thresholds is a Normal distribution with a grid of evenly spaced $\mu$ where an ordered transformation is applied to ensure the ordering of the values. However, in the sequential model, the ordering of the thresholds does not matter. Thus, the default prior for the thresholds is a Normal distribution with a zero $\mu$ vector of length $k - 1$ where $k$ is the number of response levels. Refer to the [getting started](https://bambinos.github.io/bambi/notebooks/getting_started.html#specifying-priors) docs if you need a refresher on priors in Bambi.
+Before we fit the sequential model, it's worth mentioning that the default priors for the thresholds in a sequential model are different than the cumulative model. In the cumulative model, the default prior for the thresholds is a Normal distribution with a grid of evenly spaced $\mu$ where an ordered transformation is applied to ensure the ordering of the values. However, in the sequential model, the ordering of the thresholds does not matter. Thus, the default prior for the thresholds is a Normal distribution with a zero $\mu$ vector of length $k - 1$ where $k$ is the number of response levels. Refer to the [getting started](https://bambinos.github.io/bambi/notebooks/getting_started.html#specifying-priors) docs if you need a refresher on priors in Bambi. 
 
-Subsequently, fitting a sequential model is similar to fitting a cumulative model. The only difference is that we pass `family="sratio"` to the `bambi.Model` constructor.
+Subsequently, fitting a sequential model is similar to fitting a cumulative model. The only difference is that we pass `family="sratio"` to the `bambi.Model` constructor. 
 
 
 ```python
 sequence_model = bmb.Model(
-    "YearsAtCompany ~ 0 + TotalWorkingYears",
-    data=attrition,
+    "YearsAtCompany ~ 0 + TotalWorkingYears", 
+    data=attrition, 
     family="sratio"
 )
 sequence_idata = sequence_model.fit(random_seed=1234)
 ```
-
-    Only 250 samples in chain.
-    Auto-assigning NUTS sampler...
-    Initializing NUTS using jitter+adapt_diag...
-    Multiprocess sampling (4 chains in 4 jobs)
-    NUTS: [YearsAtCompany_threshold, TotalWorkingYears]
-
-
-
-
-<style>
-    /* Turns off some styling */
-    progress {
-        /* gets rid of default border in Firefox and Opera. */
-        border: none;
-        /* Needs to be in here for Safari polyfill so background images work as expected. */
-        background-size: auto;
-    }
-    progress:not([value]), progress:not([value])::-webkit-progress-bar {
-        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
-    }
-    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
-        background: #F44336;
-    }
-</style>
-
-
-
-
-
-<div>
-  <progress value='2000' class='' max='2000' style='width:300px; height:20px; vertical-align: middle;'></progress>
-  100.00% [2000/2000 02:28&lt;00:00 Sampling 4 chains, 0 divergences]
-</div>
-
-
-
-    Sampling 4 chains for 250 tune and 250 draw iterations (1_000 + 1_000 draws total) took 148 seconds.
-    The rhat statistic is larger than 1.01 for some parameters. This indicates problems during sampling. See https://arxiv.org/abs/1903.08008 for details
-
 
 
 ```python
@@ -789,11 +748,11 @@ sequence_model
             Family: sratio
               Link: p = logit
       Observations: 1233
-            Priors:
+            Priors: 
         target = p
             Common-level effects
                 TotalWorkingYears ~ Normal(mu: 0.0, sigma: 0.3223)
-
+            
             Auxiliary parameters
                 threshold ~ Normal(mu: [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
                  0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.], sigma: 1.0)
@@ -1290,12 +1249,12 @@ plt.xlabel("Response category");
 ```
 
 
-
+    
 ![png](2023-09-29-ordinal-models-bambi_files/2023-09-29-ordinal-models-bambi_42_0.png)
+    
 
 
-
-This plot can seem confusing at first. Remember, the sequential model is a product of probabilities, i.e., the probability that $Y$ is equal to category $k$ is equal to the probability that it did not fall in one of the former categories $1: k-1$ multiplied by the probability that the sequential process stopped at $k$. Thus, the probability of category 5 is the probability that the sequential process did not fall in 0, 1, 2, 3, or 4 multiplied by the probability that the sequential process stopped at 5. This makes sense why the probability of category 36 is 1. There is no category after 36, so once you multiply all of the previous probabilities with the current category, you get 1. This is the reason for the "cumulative-like" shape of the plot. But if the coefficients were truly cumulative, the probability could not decreases as $k$ increases.
+This plot can seem confusing at first. Remember, the sequential model is a product of probabilities, i.e., the probability that $Y$ is equal to category $k$ is equal to the probability that it did not fall in one of the former categories $1: k-1$ multiplied by the probability that the sequential process stopped at $k$. Thus, the probability of category 5 is the probability that the sequential process did not fall in 0, 1, 2, 3, or 4 multiplied by the probability that the sequential process stopped at 5. This makes sense why the probability of category 36 is 1. There is no category after 36, so once you multiply all of the previous probabilities with the current category, you get 1. This is the reason for the "cumulative-like" shape of the plot. But if the coefficients were truly cumulative, the probability could not decreases as $k$ increases. 
 
 ### Posterior predictive samples
 
@@ -1314,9 +1273,9 @@ ax.set_title("Sequential model - Posterior Predictive Distribution");
 ```
 
 
-
+    
 ![png](2023-09-29-ordinal-models-bambi_files/2023-09-29-ordinal-models-bambi_45_0.png)
-
+    
 
 
 ## Summary
@@ -1332,15 +1291,17 @@ Cumulative models can be used in situations where the outcome variable is on the
 ```
 
     Last updated: Fri Sep 15 2023
-
+    
     Python implementation: CPython
     Python version       : 3.11.0
     IPython version      : 8.13.2
-
+    
     bambi     : 0.13.0.dev0
     arviz     : 0.15.1
     numpy     : 1.24.2
     pandas    : 2.0.1
     matplotlib: 3.7.1
-
+    
     Watermark: 2.3.1
+    
+
