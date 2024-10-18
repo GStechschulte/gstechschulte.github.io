@@ -74,17 +74,17 @@ In some scenarios, the response variable is discrete, like a count, and ordered.
 </noscript>
 <link
     rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+    href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
     crossorigin="anonymous"
 />
 <script
     defer
-    src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"
     crossorigin="anonymous"
 ></script>
 <script
     defer
-    src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
     crossorigin="anonymous"
     onload="renderMathInElement(document.body);"
 ></script>
@@ -94,7 +94,10 @@ In some scenarios, the response variable is discrete, like a count, and ordered.
             delimiters: [
                 { left: "$$", right: "$$", display: true },
                 { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true },
             ],
+            throwOnError: false,
         });
     });
 </script>

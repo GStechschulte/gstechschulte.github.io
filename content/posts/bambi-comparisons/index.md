@@ -11,6 +11,8 @@ categories: ['probabilistic-programming', 'gsoc']
 
 It is currently the end of week five of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the core functionality of the `plot_comparisons`. Subsequently, week six and seven were to be spent further developing the `plot_comparisons` function, and writing tests and a demo notebook for the documentation, respectively. However, at the end of week five, I have a PR open with the majority of the functionality that [marginaleffects](https://vincentarelbundock.github.io/marginaleffects/) has. In addition, I also exposed the `comparisons` function, added tests (which can and will be improved), and have started on documentation.
 
+This is a test $x + y = z$
+
 # Plot Comparisons
 
 `comparisons` and `plot_comparisons` are a part of Bambi's sub-package `interpret` that feature a set of functions used to interpret complex regression models. This sub-package is inspired by the R package [marginaleffects](https://vincentarelbundock.github.io/marginaleffects/articles/predictions.html#conditional-adjusted-predictions-plot). These two functions allow the modeler to **compare** the predictions made by a model for different contrast and covariate values. Below, it is described why comparing predictions is useful in interpreting generalized linear models (GLMs), how this methodology is implemented in Bambi, and how to use `comparisons` and `plot_comparisons`. It is assumed that the reader is familiar with the basics of GLMs. If not, refer to the Bambi [Basic Building Blocks](https://bambinos.github.io/bambi/notebooks/how_bambi_works.html#Link-functions) example.
