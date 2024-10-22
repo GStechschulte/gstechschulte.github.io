@@ -8,7 +8,7 @@ params:
   enableEmoji: true
   homeInfoParams:
     Title: Hi there.
-    Content: My name is Gabriel Stechschulte, a software engineer interested in probabilistic programming and database systems.
+    Content: My name is Gabriel Stechschulte, a software engineer interested in probabilistic programming, database systems, and optimization.
     socialIcons: # optional
       - name: GitHub
         url: https://github.com/GStechschulte

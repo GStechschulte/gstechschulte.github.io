@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Gibbs Sampler From Scratch | The Log</title>
+<meta name="keywords" content="">
+<meta name="description" content="
+A variant of the Metropolis-Hastings (MH) algorithm that uses clever proposals and is therefore more efficient (you can get a good approximate of the posterior with far fewer samples) is Gibbs sampling. A problem with MH is the need to choose the proposal distribution, and the fact that the acceptance rate may be low.
+The improvement arises from adaptive proposals in which the distribution of proposed parameter values adjusts itself intelligently, depending upon the parameter values at the moment. This dependence upon the parameters at that moment is an exploitation of conditional independence properties of a graphical model to automatically create a good proposal, with acceptance probability equal to one.">
+<meta name="author" content="Gabriel Stechschulte">
+<link rel="canonical" href="http://localhost:1313/posts/gibbs-sampler/2022-10-12-inference-gibbs/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/gibbs-sampler/2022-10-12-inference-gibbs/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+    integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
+    crossorigin="anonymous"
+/>
+<script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"
+    integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8"
+    crossorigin="anonymous"
+></script>
+<script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+    crossorigin="anonymous"
+></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true },
+            ],
+            throwOnError: false,
+        });
+    });
+</script>
+
+
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="The Log (Alt + H)">The Log</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/categories/" title="categories">
+                    <span>categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="tags">
+                    <span>tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Gibbs Sampler From Scratch
+    </h1>
+    <div class="post-meta"><span title='2022-10-12 00:00:00 +0000 UTC'>October 12, 2022</span>&nbsp;·&nbsp;5 min&nbsp;·&nbsp;Gabriel Stechschulte
+
+</div>
+  </header> 
+  <div class="post-content"><!-- raw HTML omitted -->
+<p>A variant of the Metropolis-Hastings (MH) algorithm that uses clever proposals and is therefore more efficient (you can get a good approximate of the posterior with far fewer samples) is Gibbs sampling. A problem with MH is the need to choose the proposal distribution, and the fact that the acceptance rate may be low.</p>
+<p>The improvement arises from adaptive proposals in which the distribution of proposed parameter values adjusts itself intelligently, <strong>depending upon the parameter values at the moment</strong>. This dependence upon the parameters at that moment is an exploitation of conditional independence properties of a graphical model to automatically create a good proposal, with acceptance probability equal to one.</p>
+<h3 id="main-idea">Main Idea<a hidden class="anchor" aria-hidden="true" href="#main-idea">#</a></h3>
+<p>Suppose we have a 3-dimensional joint distribution. Estimating this joint distribution is much harder than a 1-dimensional distribution. Subsequently, sampling is also harder in $\mathbb{R}^3$. In Gibbs sampling, you condition each variable on the values of all the other variables in the distribution. For example, if we have $D=3$ variables:</p>
+<p>$$x_{1}^{s+1} \sim p(x_1 | x_2^s,x_3^s)$$</p>
+<p>$$x_{2}^{s+1} \sim p(x_2 | x_1^{s+1},x_3^s)$$</p>
+<p>$$x_{3}^{s+1} \sim p(x_3 | x_1^{s+1},x_2^{s+1})$$</p>
+<p>where $x_1, x_2,&hellip;,x_n$ are variable $1, 2,&hellip;,n$, respectively. By conditioning on the values of the other variables, sampling from the conditional distribution is much easier than the joint. Because of the exploitation of conditional independence properties of graphical models, the Gibbs algorithm can readily generalize to $D$ variables.</p>
+<h3 id="gibbs-sampling---bayesian-gaussian-mixture-model">Gibbs Sampling - Bayesian Gaussian Mixture Model<a hidden class="anchor" aria-hidden="true" href="#gibbs-sampling---bayesian-gaussian-mixture-model">#</a></h3>
+<p>Here, the Gibbs sampling algorithm is implemented in PyTorch for a 2-dimensional Bayesian Gaussian Mixture Model (GMM). The Bayesian GMM is given by:</p>
+<p>$$p(z = k, x | \theta) = \pi_k \mathcal{N}(x|\mu_k, \sum_k)$$</p>
+<p>where the parameters $\theta$ are known and implemented using PyTorch&rsquo;s <code>MixtureSameFamily</code> distribution class. This class implements a batch of mixture distributions where all components are from different parameterizations of the same distribution type (Normal distributions in this example). It is then parameterized by a <code>Categorical</code> distribution over $k$ components.</p>
+<p>For a GMM, the full conditional distributions are:</p>
+<p>$$p(x|z = k, \theta) = \mathcal{N}(x|\mu_k, \sum_k)$$</p>
+<p>This conditional distribution reads; &ldquo;the probability of data $x$ given component $k$ parameterized by $\theta$ is distributed according to a Normal distribution with a mean vector $\mu$ and covariance $\sum$ according to component $k$&rdquo;.</p>
+<p>$$p(z = k | x) = \frac{\pi_k \mathcal{N}(x|\mu_k, \sum_k)}{\sum_{k&rsquo;} \mathcal{N}(x|\mu_{k&rsquo;}, \sum_{k&rsquo;})}$$</p>
+<p>This conditional distribution is given by Bayes rule and reads; &ldquo;the probability of component $k$ given we observe some data $x$ is equal to the prior probability $\pi$ of component $k$ times the likelihood of data $x$ being distributed according to a Normal distribution with a mean vector $\mu$ and covariance $\sum$ according to component $k$&rdquo; over the total probability of components $k$.</p>
+<p>With the conditional distributions defined, the Gibbs sampling algorithm can be implemented. Below is the full code to reproduce the results and each main step is outlined below the code block.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#| echo: false</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> torch <span style="color:#f92672">import</span> distributions <span style="color:#66d9ef">as</span> dist
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> argparse
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> warnings
+</span></span><span style="display:flex;"><span>warnings<span style="color:#f92672">.</span>filterwarnings(<span style="color:#e6db74">&#34;ignore&#34;</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#| code-fold: true</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">plot_gibbs</span>(trace_hist, probs, scales, mus, n_iters, n_eval<span style="color:#f92672">=</span><span style="color:#ae81ff">500</span>):
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    mix <span style="color:#f92672">=</span> dist<span style="color:#f92672">.</span>Categorical(probs<span style="color:#f92672">=</span>probs)
+</span></span><span style="display:flex;"><span>    comp <span style="color:#f92672">=</span> dist<span style="color:#f92672">.</span>Independent(dist<span style="color:#f92672">.</span>Normal(loc<span style="color:#f92672">=</span>mus, scale<span style="color:#f92672">=</span>scales), <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    norm_mixture <span style="color:#f92672">=</span> dist<span style="color:#f92672">.</span>MixtureSameFamily(mix, comp)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    x <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>arange(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">0.01</span>)
+</span></span><span style="display:flex;"><span>    y <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>arange(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">0.01</span>) 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    X, Y <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>meshgrid(x, y)
+</span></span><span style="display:flex;"><span>    Z <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>dstack((X, Y))
+</span></span><span style="display:flex;"><span>    probs_z <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>exp(norm_mixture<span style="color:#f92672">.</span>log_prob(Z))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    fig <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">5</span>))
+</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>contourf(X, Y, probs_z, levels<span style="color:#f92672">=</span><span style="color:#ae81ff">15</span>)
+</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>scatter(trace_hist[:, <span style="color:#ae81ff">0</span>], trace_hist[:, <span style="color:#ae81ff">1</span>], alpha<span style="color:#f92672">=</span><span style="color:#ae81ff">0.25</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;red&#39;</span>)
+</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>xlim(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>ylim(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>colorbar()
+</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>xlabel(xlabel<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;$X$&#39;</span>)
+</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>ylabel(ylabel<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;$Y$&#39;</span>)
+</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#39;Gibbs Sampling for a Mixture of 2d Gaussians&#39;</span>)
+</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>show()
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">gibbs_sampler</span>(x0, z0, kv, probs, mu, scale, n_iterations, rng_key<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    implements the gibbs sampling algorithm for known params. of
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    a 2d GMM
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    x_current <span style="color:#f92672">=</span> x0
+</span></span><span style="display:flex;"><span>    z_current <span style="color:#f92672">=</span> z0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    x_samples <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>zeros(n_iterations, <span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>    z_samples <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>zeros(n_iterations)
+</span></span><span style="display:flex;"><span>     
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> n <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, n_iterations):
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># p(Z = k | X = x)</span>
+</span></span><span style="display:flex;"><span>        probs_z <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>exp(
+</span></span><span style="display:flex;"><span>            dist<span style="color:#f92672">.</span>Independent(
+</span></span><span style="display:flex;"><span>                dist<span style="color:#f92672">.</span>Normal(loc<span style="color:#f92672">=</span>mu, scale<span style="color:#f92672">=</span>scale), <span style="color:#ae81ff">1</span>)<span style="color:#f92672">.</span>log_prob(x_current))
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># p(Z = k) * p(Z = k | X = x)</span>
+</span></span><span style="display:flex;"><span>        probs_z <span style="color:#f92672">*=</span> probs
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># denom. of Bayes</span>
+</span></span><span style="display:flex;"><span>        probs_z <span style="color:#f92672">=</span> probs_z <span style="color:#f92672">/</span> torch<span style="color:#f92672">.</span>sum(probs_z)
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># indexing component Z = k</span>
+</span></span><span style="display:flex;"><span>        z_current <span style="color:#f92672">=</span> kv[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>] <span style="color:#66d9ef">if</span> probs_z[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">&gt;</span> probs[<span style="color:#ae81ff">0</span>] <span style="color:#66d9ef">else</span> kv[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># draw new sample X conditioned on Z = k</span>
+</span></span><span style="display:flex;"><span>        x_current <span style="color:#f92672">=</span> dist<span style="color:#f92672">.</span>Normal(loc<span style="color:#f92672">=</span>mu[z_current], scale<span style="color:#f92672">=</span>scale[z_current])<span style="color:#f92672">.</span>sample()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        x_samples[n] <span style="color:#f92672">=</span> x_current
+</span></span><span style="display:flex;"><span>        z_samples[n] <span style="color:#f92672">=</span> z_current
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> x_samples, z_samples
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>(args):
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># initial sample values</span>
+</span></span><span style="display:flex;"><span>    x0 <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>randn((<span style="color:#ae81ff">2</span>,))
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># initial component values</span>
+</span></span><span style="display:flex;"><span>    z0 <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>randint(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">2</span>, (<span style="color:#ae81ff">2</span>,))
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># for indexing</span>
+</span></span><span style="display:flex;"><span>    kv <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># defining prior mixture probability p(Z = k)</span>
+</span></span><span style="display:flex;"><span>    mixture_probs <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor([<span style="color:#ae81ff">0.4</span>, <span style="color:#ae81ff">0.6</span>])
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># defining mu vector and covariance matrix</span>
+</span></span><span style="display:flex;"><span>    mus <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>randn(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>    scales <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>rand(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    x_samples, z_samples <span style="color:#f92672">=</span> gibbs_sampler(
+</span></span><span style="display:flex;"><span>        x0, z0, kv, mixture_probs, mus, scales, args<span style="color:#f92672">.</span>iters
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    plot_gibbs(x_samples, mixture_probs, scales, mus, args<span style="color:#f92672">.</span>iters)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>parser <span style="color:#f92672">=</span> argparse<span style="color:#f92672">.</span>ArgumentParser(description<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;rw-mh&#39;</span>)
+</span></span><span style="display:flex;"><span>parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74">&#39;--iters&#39;</span>, type<span style="color:#f92672">=</span>int, default<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>)
+</span></span><span style="display:flex;"><span>args <span style="color:#f92672">=</span> parser<span style="color:#f92672">.</span>parse_args(<span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>main(args)
+</span></span></code></pre></div><p><img loading="lazy" src="2022-10-12-inference-gibbs_files/2022-10-12-inference-gibbs_8_0.png" alt="png"  />
+</p>
+<h3 id="explanation-of-code">Explanation of Code<a hidden class="anchor" aria-hidden="true" href="#explanation-of-code">#</a></h3>
+<p>The main steps to implement the Gibbs sampling algorithm:</p>
+<ol>
+<li>
+<p>The <code>main()</code> function defines the initial values for the sample, component, and mixture distribution.</p>
+</li>
+<li>
+<p>The <code>gibbs_sampler()</code> function first sets the values of <code>x_current</code> and <code>z_current</code> for current data point $x$ and component $z$, respectively. To analyze the trace history of the sampler, <code>x_samples</code> and <code>z_samples</code> are empty lists.</p>
+</li>
+<li>
+<p>In the for loop, the conditional $p(z = k \vert x)$ is computed using <code>x_current</code>, i.e., given we have observed datum $x$, what is the log probability of component $Z = k$.</p>
+</li>
+<li>
+<p><code>probs_z</code> is then multiplied by the prior probability of the mixture components.</p>
+</li>
+<li>
+<p>Then, the denominator for the conditional $p(z = k \vert x)$ is computed by dividing <code>probs_z</code> by the total probability.</p>
+</li>
+<li>
+<p>Since there are only two components in this GMM, we use logic to determine which component is <em>most likely</em> with the <code>x_current</code>. As zero-based indexing is used, the components are $k = 0, 1$. Therefore, if the probability of $k=1 &gt; k=0$, then use index$=1$, else index$=0$.</p>
+</li>
+<li>
+<p><code>z_current</code> defines the component using zero-based indexing. Thus, indexing <code>mu</code> and <code>scale</code> by the current, most likely component, new samples are drawn according to the conditional Normal distribution.</p>
+</li>
+<li>
+<p>Data and component samples are appended for analyzing the trace history.</p>
+</li>
+</ol>
+<h3 id="limitations">Limitations<a hidden class="anchor" aria-hidden="true" href="#limitations">#</a></h3>
+<p>Although Gibbs sampling can generalize to $D$ variables, the algorithm becomes inefficient as it tends to get stuck in small regions of the posterior for, potentially, a long number of iterations. This isn&rsquo;t because of the large number of variables, but rather, because models with many parameters tend to have regions of high correlation in the posterior. High correlation between parameters means a narrow ridge of probability combinations, resulting in the sampler getting &ldquo;stuck&rdquo;.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="http://localhost:1313/">The Log</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

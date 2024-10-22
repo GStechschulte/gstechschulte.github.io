@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Hierarchical Regression With Missing Data | The Log</title>
+<meta name="keywords" content="">
+<meta name="description" content="
+Hierarchical regression, also known as multilevel modeling, is a powerful statistical technique that allows us to analyze data with a nested structure. This approach is particularly useful when dealing with data that has natural groupings, such as students within schools, patients within hospitals, or in our case, product configurations within manufacturing processes. One of the key advantages of hierarchical regression is its ability to effectively handle missing data in groups, making it an invaluable tool for real-world applications where data incompleteness is often the norm rather than the exception.">
+<meta name="author" content="Gabriel Stechschulte">
+<link rel="canonical" href="http://localhost:1313/posts/hierarchical-regression-missing-data/2024-09-10-hierarchical-regression-missing-data/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/hierarchical-regression-missing-data/2024-09-10-hierarchical-regression-missing-data/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+    integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
+    crossorigin="anonymous"
+/>
+<script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"
+    integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8"
+    crossorigin="anonymous"
+></script>
+<script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+    crossorigin="anonymous"
+></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true },
+            ],
+            throwOnError: false,
+        });
+    });
+</script>
+
+
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="The Log (Alt + H)">The Log</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/categories/" title="categories">
+                    <span>categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="tags">
+                    <span>tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Hierarchical Regression With Missing Data
+    </h1>
+    <div class="post-meta"><span title='2024-09-10 00:00:00 +0000 UTC'>September 10, 2024</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Gabriel Stechschulte
+
+</div>
+  </header> 
+  <div class="post-content"><!-- raw HTML omitted -->
+<p>Hierarchical regression, also known as multilevel modeling, is a powerful statistical technique that allows us to analyze data with a nested structure. This approach is particularly useful when dealing with data that has natural groupings, such as students within schools, patients within hospitals, or in our case, product configurations within manufacturing processes. One of the key advantages of hierarchical regression is its ability to effectively handle missing data in groups, making it an invaluable tool for real-world applications where data incompleteness is often the norm rather than the exception.</p>
+<h2 id="benefits-in-real-world-use-cases">Benefits in Real-World Use Cases<a hidden class="anchor" aria-hidden="true" href="#benefits-in-real-world-use-cases">#</a></h2>
+<p>In many real-world scenarios, hierarchical regression offers several benefits:</p>
+<ol>
+<li>
+<p><strong>Handling Unbalanced Data</strong>. It can effectively deal with situations where some groups have more observations than others.</p>
+</li>
+<li>
+<p><strong>Partial Pooling</strong>. It strikes a balance between completely pooled and unpooled analyses, allowing information to be shared across groups while still accounting for group-specific variations.</p>
+</li>
+<li>
+<p><strong>Missing Data</strong>. It can handle missing data at various levels of the hierarchy without requiring complete case analysis or imputation.</p>
+</li>
+<li>
+<p><strong>Improved Estimation</strong>. By borrowing strength across groups, it can provide more accurate and stable estimates, especially for groups with limited data.</p>
+</li>
+<li>
+<p><strong>Flexibility</strong>. It allows for the inclusion of both group-level and individual-level predictors, enabling a more comprehensive analysis.</p>
+</li>
+</ol>
+<h2 id="simulated-example-manufacturing-process-analysis">Simulated Example: Manufacturing Process Analysis<a hidden class="anchor" aria-hidden="true" href="#simulated-example-manufacturing-process-analysis">#</a></h2>
+<p>To illustrate the power of hierarchical regression in handling missing data, let&rsquo;s consider a simulated example from a manufacturing context. We&rsquo;ll analyze how different machine process parameters affect production speed across two product groups.</p>
+<p>In this simulation, we generate data for two product groups with different dependencies on machine process parameters:</p>
+<ul>
+<li>Product Group 1 depends on feed speed and pull acceleration.</li>
+<li>Product Group 2 depends on feed speed, pull acceleration, and cutting wait time.</li>
+</ul>
+<p>Crucially, the cutting wait time for Product Group 1 is set to NaN, simulating a scenario where this parameter is not applicable or not measured for this group.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpyro
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> seaborn <span style="color:#66d9ef">as</span> sns
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> jax.numpy <span style="color:#66d9ef">as</span> jnp
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpyro.distributions <span style="color:#66d9ef">as</span> dist
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> jax <span style="color:#f92672">import</span> random
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> numpyro.infer <span style="color:#f92672">import</span> Predictive
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>n_samples <span style="color:#f92672">=</span> <span style="color:#ae81ff">500</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Generate machine process parameters for both groups</span>
+</span></span><span style="display:flex;"><span>feed_speed <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>uniform(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">10</span>, n_samples)
+</span></span><span style="display:flex;"><span>pull_acceleration <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>uniform(<span style="color:#ae81ff">0.5</span>, <span style="color:#ae81ff">5</span>, n_samples)
+</span></span><span style="display:flex;"><span>cutting_wait_time <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>uniform(<span style="color:#ae81ff">0.1</span>, <span style="color:#ae81ff">2</span>, n_samples)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Create product groups</span>
+</span></span><span style="display:flex;"><span>product_group <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([<span style="color:#e6db74">&#39;Product_Group_1&#39;</span>] <span style="color:#f92672">*</span> (n_samples <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span>) <span style="color:#f92672">+</span> [<span style="color:#e6db74">&#39;Product_Group_2&#39;</span>] <span style="color:#f92672">*</span> (n_samples <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Calculate production speed</span>
+</span></span><span style="display:flex;"><span>production_speed <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros(n_samples)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Product Group 1: depends on feed speed and pull acceleration (Cutting Wait Time is NaN)</span>
+</span></span><span style="display:flex;"><span>mask_pg1 <span style="color:#f92672">=</span> product_group <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;Product_Group_1&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Increased coefficients for Product Group 1 to ensure higher production speed</span>
+</span></span><span style="display:flex;"><span>production_speed[mask_pg1] <span style="color:#f92672">=</span> (feed_speed[mask_pg1] <span style="color:#f92672">*</span> <span style="color:#ae81ff">2.5</span> <span style="color:#f92672">+</span> 
+</span></span><span style="display:flex;"><span>                              pull_acceleration[mask_pg1] <span style="color:#f92672">*</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">+</span> 
+</span></span><span style="display:flex;"><span>                              np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.5</span>, sum(mask_pg1)))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Product Group 2: depends on all three parameters</span>
+</span></span><span style="display:flex;"><span>mask_pg2 <span style="color:#f92672">=</span> product_group <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;Product_Group_2&#39;</span>
+</span></span><span style="display:flex;"><span>production_speed[mask_pg2] <span style="color:#f92672">=</span> (feed_speed[mask_pg2] <span style="color:#f92672">*</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">+</span> 
+</span></span><span style="display:flex;"><span>                              pull_acceleration[mask_pg2] <span style="color:#f92672">*</span> <span style="color:#ae81ff">0.5</span> <span style="color:#f92672">+</span> 
+</span></span><span style="display:flex;"><span>                              cutting_wait_time[mask_pg2] <span style="color:#f92672">*</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">+</span> 
+</span></span><span style="display:flex;"><span>                              np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.5</span>, sum(mask_pg2)))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Create DataFrame with NaN for Cutting Wait Time in Product Group 1</span>
+</span></span><span style="display:flex;"><span>simulated_dataset <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame({
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Product_Group&#39;</span>: product_group,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Feed_Speed&#39;</span>: feed_speed,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Pull_Acceleration&#39;</span>: pull_acceleration,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Cutting_Wait_Time&#39;</span>: [np<span style="color:#f92672">.</span>nan <span style="color:#66d9ef">if</span> x <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;Product_Group_1&#39;</span> <span style="color:#66d9ef">else</span> cutting_wait_time[i] <span style="color:#66d9ef">for</span> i,x <span style="color:#f92672">in</span> enumerate(product_group)],
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Production_Speed&#39;</span>: production_speed
+</span></span><span style="display:flex;"><span>})
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>))
+</span></span><span style="display:flex;"><span>sns<span style="color:#f92672">.</span>histplot(
+</span></span><span style="display:flex;"><span>    data<span style="color:#f92672">=</span>simulated_dataset, 
+</span></span><span style="display:flex;"><span>    x<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Production_Speed&#34;</span>, 
+</span></span><span style="display:flex;"><span>    hue<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Product_Group&#34;</span>,
+</span></span><span style="display:flex;"><span>    binwidth<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#34;Production Speed&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#34;Simulated Data Distribution&#34;</span>);
+</span></span></code></pre></div><p><img loading="lazy" src="2024-09-10-hierarchical-regression-missing-data_files/2024-09-10-hierarchical-regression-missing-data_5_0.png" alt="png"  />
+</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># sns.pairplot(simulated_dataset.iloc[:, 0:], hue=&#34;Product_Group&#34;, corner=True);</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>simulated_dataset[<span style="color:#e6db74">&#34;Product_Group&#34;</span>] <span style="color:#f92672">=</span> (simulated_dataset[<span style="color:#e6db74">&#34;Product_Group&#34;</span>]
+</span></span><span style="display:flex;"><span>                                      <span style="color:#f92672">.</span>map({
+</span></span><span style="display:flex;"><span>                                          <span style="color:#e6db74">&#34;Product_Group_1&#34;</span>: <span style="color:#ae81ff">0</span>, 
+</span></span><span style="display:flex;"><span>                                          <span style="color:#e6db74">&#34;Product_Group_2&#34;</span>: <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>                                          })
+</span></span><span style="display:flex;"><span>                                    )
+</span></span></code></pre></div><h2 id="parameter-masking-for-missing-data">Parameter Masking for Missing Data<a hidden class="anchor" aria-hidden="true" href="#parameter-masking-for-missing-data">#</a></h2>
+<p>To handle the missing data in our hierarchical model, we employ a technique called parameter masking. This approach allows us to effectively &ldquo;turn off&rdquo; certain parameters for specific groups where they are not applicable. Here&rsquo;s how it works in our model:</p>
+<p>Key aspects of this approach:</p>
+<ol>
+<li>We use an <code>indicators</code> tensor to specify which parameters are relevant for each product group.</li>
+<li>The input data <code>X</code> is masked to replace NaNs with zeros, and then multiplied by the indicators.</li>
+<li>The weights <code>w</code> are also masked using the indicators, ensuring that irrelevant parameters don&rsquo;t contribute to the predictions.</li>
+</ol>
+<p>This approach allows the model to learn parameters even when data is missing for some groups, by effectively ignoring those parameters in the relevant calculations.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>parameter_mask <span style="color:#f92672">=</span> jnp<span style="color:#f92672">.</span>array([
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>],
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>])
+</span></span><span style="display:flex;"><span>config_idx <span style="color:#f92672">=</span> jnp<span style="color:#f92672">.</span>array(simulated_dataset[<span style="color:#e6db74">&#34;Product_Group&#34;</span>]<span style="color:#f92672">.</span>values)
+</span></span><span style="display:flex;"><span>X <span style="color:#f92672">=</span> jnp<span style="color:#f92672">.</span>array(simulated_dataset<span style="color:#f92672">.</span>iloc[:, <span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4</span>]<span style="color:#f92672">.</span>values)
+</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> jnp<span style="color:#f92672">.</span>array(simulated_dataset[<span style="color:#e6db74">&#34;Production_Speed&#34;</span>]<span style="color:#f92672">.</span>values)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">model</span>(indicators, config_idx, X, y<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>):
+</span></span><span style="display:flex;"><span>    n_configs, n_params <span style="color:#f92672">=</span> indicators<span style="color:#f92672">.</span>shape
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Create a masked version of X where NaNs are treated as zeros based on the indicators</span>
+</span></span><span style="display:flex;"><span>    X_masked <span style="color:#f92672">=</span> jnp<span style="color:#f92672">.</span>where(jnp<span style="color:#f92672">.</span>isnan(X), <span style="color:#ae81ff">0.0</span>, X) <span style="color:#f92672">*</span> indicators[config_idx]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Group-specific effects</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> numpyro<span style="color:#f92672">.</span>plate(<span style="color:#e6db74">&#34;config_i&#34;</span>, n_configs):
+</span></span><span style="display:flex;"><span>        alpha <span style="color:#f92672">=</span> numpyro<span style="color:#f92672">.</span>sample(<span style="color:#e6db74">&#34;alpha&#34;</span>, dist<span style="color:#f92672">.</span>Normal(<span style="color:#ae81ff">0.</span>, <span style="color:#ae81ff">5.</span>))
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">with</span> numpyro<span style="color:#f92672">.</span>plate(<span style="color:#e6db74">&#34;param_i&#34;</span>, n_params):
+</span></span><span style="display:flex;"><span>            w <span style="color:#f92672">=</span> numpyro<span style="color:#f92672">.</span>sample(<span style="color:#e6db74">&#34;w&#34;</span>, dist<span style="color:#f92672">.</span>Normal(<span style="color:#ae81ff">0.</span>, <span style="color:#ae81ff">5.</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Compute the weighted sum of features using indicators to zero-out unused parameters</span>
+</span></span><span style="display:flex;"><span>    w_masked <span style="color:#f92672">=</span> jnp<span style="color:#f92672">.</span>multiply(w<span style="color:#f92672">.</span>T, indicators)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    eq <span style="color:#f92672">=</span> alpha[config_idx] <span style="color:#f92672">+</span> jnp<span style="color:#f92672">.</span>sum(jnp<span style="color:#f92672">.</span>multiply(X_masked, w_masked[config_idx]), axis<span style="color:#f92672">=-</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    mu <span style="color:#f92672">=</span> numpyro<span style="color:#f92672">.</span>deterministic(<span style="color:#e6db74">&#34;mu&#34;</span>, eq)
+</span></span><span style="display:flex;"><span>    scale <span style="color:#f92672">=</span> numpyro<span style="color:#f92672">.</span>sample(<span style="color:#e6db74">&#34;scale&#34;</span>, dist<span style="color:#f92672">.</span>HalfNormal(<span style="color:#ae81ff">5.</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> numpyro<span style="color:#f92672">.</span>plate(<span style="color:#e6db74">&#34;data&#34;</span>, X<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>]):
+</span></span><span style="display:flex;"><span>        numpyro<span style="color:#f92672">.</span>sample(<span style="color:#e6db74">&#34;obs&#34;</span>, dist<span style="color:#f92672">.</span>Normal(mu, scale), obs<span style="color:#f92672">=</span>y)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>numpyro<span style="color:#f92672">.</span>render_model(
+</span></span><span style="display:flex;"><span>    model, 
+</span></span><span style="display:flex;"><span>    model_args<span style="color:#f92672">=</span>(
+</span></span><span style="display:flex;"><span>        parameter_mask,
+</span></span><span style="display:flex;"><span>        config_idx,
+</span></span><span style="display:flex;"><span>        X,
+</span></span><span style="display:flex;"><span>        y
+</span></span><span style="display:flex;"><span>    ),
+</span></span><span style="display:flex;"><span>    render_params<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p><img loading="lazy" src="2024-09-10-hierarchical-regression-missing-data_files/2024-09-10-hierarchical-regression-missing-data_11_0.svg" alt="svg"  />
+</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>rng_key <span style="color:#f92672">=</span> random<span style="color:#f92672">.</span>PRNGKey(seed<span style="color:#f92672">=</span><span style="color:#ae81ff">42</span>)
+</span></span><span style="display:flex;"><span>rng_key, rng_subkey <span style="color:#f92672">=</span> random<span style="color:#f92672">.</span>split(key<span style="color:#f92672">=</span>rng_key)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>kernel <span style="color:#f92672">=</span> numpyro<span style="color:#f92672">.</span>infer<span style="color:#f92672">.</span>NUTS(model)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>mcmc <span style="color:#f92672">=</span> numpyro<span style="color:#f92672">.</span>infer<span style="color:#f92672">.</span>MCMC(
+</span></span><span style="display:flex;"><span>    kernel, 
+</span></span><span style="display:flex;"><span>    num_warmup<span style="color:#f92672">=</span><span style="color:#ae81ff">200</span>, 
+</span></span><span style="display:flex;"><span>    num_samples<span style="color:#f92672">=</span><span style="color:#ae81ff">300</span>, 
+</span></span><span style="display:flex;"><span>    num_chains<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>, 
+</span></span><span style="display:flex;"><span>    chain_method<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;vectorized&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>mcmc<span style="color:#f92672">.</span>run(
+</span></span><span style="display:flex;"><span>    rng_subkey,
+</span></span><span style="display:flex;"><span>    parameter_mask,
+</span></span><span style="display:flex;"><span>    config_idx,
+</span></span><span style="display:flex;"><span>    X,
+</span></span><span style="display:flex;"><span>    y
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><pre><code>sample: 100%|██████████| 500/500 [00:03&lt;00:00, 148.27it/s]
+</code></pre>
+<h2 id="model-inference-and-results">Model Inference and Results<a hidden class="anchor" aria-hidden="true" href="#model-inference-and-results">#</a></h2>
+<p>After running MCMC inference on our model, we can examine the parameter estimates and make predictions.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Parameter estimates for w[2, 0] are actually 0.0 once data is passed </span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># through the program</span>
+</span></span><span style="display:flex;"><span>mcmc<span style="color:#f92672">.</span>print_summary()
+</span></span></code></pre></div><pre><code>                mean       std    median      5.0%     95.0%     n_eff     r_hat
+  alpha[0]     -0.03      0.11     -0.04     -0.20      0.15    598.37      1.00
+  alpha[1]      0.05      0.12      0.05     -0.18      0.22    797.79      1.01
+     scale      0.52      0.02      0.52      0.50      0.55   1058.94      1.00
+    w[0,0]      2.51      0.01      2.51      2.49      2.53    837.47      1.00
+    w[0,1]      1.00      0.01      1.00      0.98      1.02   1350.56      1.00
+    w[1,0]      2.98      0.02      2.98      2.94      3.02    740.98      1.00
+    w[1,1]      0.49      0.03      0.49      0.45      0.53   1002.80      1.00
+    w[2,0]      0.11      5.30     -0.03     -7.42      9.98    893.63      1.00
+    w[2,1]      3.05      0.07      3.05      2.93      3.15    891.06      1.01
+
+Number of divergences: 0
+</code></pre>
+<p>This summary shows us the estimated parameters, including group-specific intercepts (alpha) and weights for each parameter. Importantly, we&rsquo;ll see that the weight for the third parameter (cutting wait time) in Product Group 1 is effectively zero, as expected. We can now use the model to make predictions.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>rng_key, rng_subkey <span style="color:#f92672">=</span> random<span style="color:#f92672">.</span>split(key<span style="color:#f92672">=</span>rng_key)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>samples <span style="color:#f92672">=</span> mcmc<span style="color:#f92672">.</span>get_samples()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>predictive <span style="color:#f92672">=</span> Predictive(model, posterior_samples<span style="color:#f92672">=</span>samples)
+</span></span><span style="display:flex;"><span>pps <span style="color:#f92672">=</span> predictive(
+</span></span><span style="display:flex;"><span>    rng_subkey,
+</span></span><span style="display:flex;"><span>    parameter_mask,
+</span></span><span style="display:flex;"><span>    config_idx,
+</span></span><span style="display:flex;"><span>    X,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>simulated_dataset[<span style="color:#e6db74">&#34;preds&#34;</span>] <span style="color:#f92672">=</span> pps[<span style="color:#e6db74">&#34;obs&#34;</span>]<span style="color:#f92672">.</span>mean(axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>))
+</span></span><span style="display:flex;"><span>sns<span style="color:#f92672">.</span>histplot(data<span style="color:#f92672">=</span>simulated_dataset, x<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Production_Speed&#34;</span>, binwidth<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;obs&#34;</span>)
+</span></span><span style="display:flex;"><span>sns<span style="color:#f92672">.</span>histplot(data<span style="color:#f92672">=</span>simulated_dataset, x<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;preds&#34;</span>, binwidth<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pps&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#34;Production Speed&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#34;Posterior Predictive Distribution&#34;</span>);
+</span></span></code></pre></div><p><img loading="lazy" src="2024-09-10-hierarchical-regression-missing-data_files/2024-09-10-hierarchical-regression-missing-data_17_0.png" alt="png"  />
+</p>
+<p>This plot compares the observed production speeds with the model&rsquo;s predictions, allowing us to assess how well our model captures the underlying patterns in the data.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>config_idx_new <span style="color:#f92672">=</span> jnp<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>], dtype<span style="color:#f92672">=</span>jnp<span style="color:#f92672">.</span>int32)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>X_test <span style="color:#f92672">=</span> jnp<span style="color:#f92672">.</span>array([
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">3.0</span>, <span style="color:#ae81ff">2.0</span>, <span style="color:#ae81ff">0.0</span>],
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">3.0</span>, <span style="color:#ae81ff">2.0</span>, <span style="color:#ae81ff">2.0</span>]
+</span></span><span style="display:flex;"><span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>rng_key, rng_subkey <span style="color:#f92672">=</span> random<span style="color:#f92672">.</span>split(key<span style="color:#f92672">=</span>rng_key)
+</span></span><span style="display:flex;"><span>pps_new <span style="color:#f92672">=</span> predictive(
+</span></span><span style="display:flex;"><span>    rng_subkey,
+</span></span><span style="display:flex;"><span>    parameter_mask,
+</span></span><span style="display:flex;"><span>    config_idx_new,
+</span></span><span style="display:flex;"><span>    X_test,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pps_new[<span style="color:#e6db74">&#34;obs&#34;</span>]<span style="color:#f92672">.</span>mean(axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span></code></pre></div><pre><code>Array([13.455311, 10.143251], dtype=float32)
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>config_idx_new <span style="color:#f92672">=</span> jnp<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>], dtype<span style="color:#f92672">=</span>jnp<span style="color:#f92672">.</span>int32)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>X_test <span style="color:#f92672">=</span> jnp<span style="color:#f92672">.</span>array([
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">6.0</span>, <span style="color:#ae81ff">2.0</span>, <span style="color:#ae81ff">2.0</span>],
+</span></span><span style="display:flex;"><span>    [<span style="color:#ae81ff">6.0</span>, <span style="color:#ae81ff">2.0</span>, <span style="color:#ae81ff">2.0</span>]
+</span></span><span style="display:flex;"><span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>rng_key, rng_subkey <span style="color:#f92672">=</span> random<span style="color:#f92672">.</span>split(key<span style="color:#f92672">=</span>rng_key)
+</span></span><span style="display:flex;"><span>pps_new <span style="color:#f92672">=</span> predictive(
+</span></span><span style="display:flex;"><span>    rng_subkey,
+</span></span><span style="display:flex;"><span>    parameter_mask,
+</span></span><span style="display:flex;"><span>    config_idx_new,
+</span></span><span style="display:flex;"><span>    X_test,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pps_new[<span style="color:#e6db74">&#34;obs&#34;</span>]<span style="color:#f92672">.</span>mean(axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span></code></pre></div><pre><code>Array([20.98238 , 13.135274], dtype=float32)
+</code></pre>
+<h2 id="conclusion">Conclusion<a hidden class="anchor" aria-hidden="true" href="#conclusion">#</a></h2>
+<p>Hierarchical regression, combined with parameter masking, provides a powerful framework for analyzing grouped data with missing values. This approach allows us to:</p>
+<ol>
+<li>Account for group-specific variations in the relationships between predictors and outcomes.</li>
+<li>Handle missing data without requiring imputation or discarding incomplete cases.</li>
+<li>Make predictions for new data, even when some predictors are not applicable to certain groups.</li>
+</ol>
+<p>In real-world applications, such as manufacturing process modeling, this methodology enables more accurate modeling and prediction, leading to better decision-making and process improvements. By effectively leveraging all available data, including partial information from groups with missing predictors, we can gain deeper insights into complex processes.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="http://localhost:1313/">The Log</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
