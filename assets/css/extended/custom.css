@@ -9,7 +9,7 @@ main {
 
 @font-face {
     font-family: "ComicMono";
-    src: url("/static/fonts/comic-mono/ComicMono.ttf") format("truetype");
+    src: url("/fonts/comic-mono/ComicMono.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
 }
