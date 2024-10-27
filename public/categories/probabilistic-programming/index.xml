@@ -10,9 +10,9 @@
     <atom:link href="http://localhost:1313/categories/probabilistic-programming/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Hierarchical Regression With Missing Data</title>
-      <link>http://localhost:1313/posts/hierarchical-regression-missing-data/2024-09-10-hierarchical-regression-missing-data/</link>
+      <link>http://localhost:1313/posts/hierarchical-regression-missing-data/</link>
       <pubDate>Tue, 10 Sep 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/hierarchical-regression-missing-data/2024-09-10-hierarchical-regression-missing-data/</guid>
+      <guid>http://localhost:1313/posts/hierarchical-regression-missing-data/</guid>
       <description>&lt;!-- raw HTML omitted --&gt;
 &lt;p&gt;Hierarchical regression, also known as multilevel modeling, is a powerful statistical technique that allows us to analyze data with a nested structure. This approach is particularly useful when dealing with data that has natural groupings, such as students within schools, patients within hospitals, or in our case, product configurations within manufacturing processes. One of the key advantages of hierarchical regression is its ability to effectively handle missing data in groups, making it an invaluable tool for real-world applications where data incompleteness is often the norm rather than the exception.&lt;/p&gt;</description>
     </item>
@@ -144,18 +144,18 @@
     </item>
     <item>
       <title>Gibbs Sampler From Scratch</title>
-      <link>http://localhost:1313/posts/gibbs-sampler/2022-10-12-inference-gibbs/</link>
+      <link>http://localhost:1313/posts/gibbs-sampler/</link>
       <pubDate>Wed, 12 Oct 2022 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/gibbs-sampler/2022-10-12-inference-gibbs/</guid>
+      <guid>http://localhost:1313/posts/gibbs-sampler/</guid>
       <description>&lt;!-- raw HTML omitted --&gt;
 &lt;p&gt;A variant of the Metropolis-Hastings (MH) algorithm that uses clever proposals and is therefore more efficient (you can get a good approximate of the posterior with far fewer samples) is Gibbs sampling. A problem with MH is the need to choose the proposal distribution, and the fact that the acceptance rate may be low.&lt;/p&gt;
 &lt;p&gt;The improvement arises from adaptive proposals in which the distribution of proposed parameter values adjusts itself intelligently, &lt;strong&gt;depending upon the parameter values at the moment&lt;/strong&gt;. This dependence upon the parameters at that moment is an exploitation of conditional independence properties of a graphical model to automatically create a good proposal, with acceptance probability equal to one.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Metropolis Hastings Sampler From Scratch</title>
-      <link>http://localhost:1313/posts/metropolis-hastings-sampler/2022-10-08-inference-mh/</link>
+      <link>http://localhost:1313/posts/metropolis-hastings-sampler/</link>
       <pubDate>Sat, 08 Oct 2022 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/metropolis-hastings-sampler/2022-10-08-inference-mh/</guid>
+      <guid>http://localhost:1313/posts/metropolis-hastings-sampler/</guid>
       <description>&lt;!-- raw HTML omitted --&gt;
 &lt;h3 id=&#34;main-idea&#34;&gt;Main Idea&lt;/h3&gt;
 &lt;p&gt;Metropolis-Hastings (MH) is one of the simplest kinds of MCMC algorithms. The idea with MH is that at each step, we propose to move from the current state $x$ to a new state $x&amp;rsquo;$ with probability $q(x&amp;rsquo;|x)$, where $q$ is the &lt;strong&gt;proposal distribution&lt;/strong&gt;. The user is free to choose the proposal distribution and the choice of the proposal is dependent on the form of the target distribution. Once a proposal has been made to move to $x&amp;rsquo;$, we then decide whether to &lt;strong&gt;accept&lt;/strong&gt; or &lt;strong&gt;reject&lt;/strong&gt; the proposal according to some rule. If the proposal is accepted, the new state is $x&amp;rsquo;$, else the new state is the same as the current state $x$.&lt;/p&gt;</description>
