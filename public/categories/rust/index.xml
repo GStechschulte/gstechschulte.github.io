@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Rust on The Log</title>
+    <link>http://localhost:1313/categories/rust/</link>
+    <description>Recent content in Rust on The Log</description>
+    <generator>Hugo -- 0.135.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 08 Nov 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/rust/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Creating C Callbacks with Numba and Calling Them From Rust</title>
+      <link>http://localhost:1313/posts/2024-11-08-c-callbacks/</link>
+      <pubDate>Fri, 08 Nov 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2024-11-08-c-callbacks/</guid>
+      <description>&lt;p&gt;When interfacing with libraries written in C/C++ from Rust, it may require writing native callbacks to provide functionality or logic to the library. A C Callback is a function pointer that is passed as an argument to another function, allowing that function to &amp;ldquo;call back&amp;rdquo; and execute the passed function at runtime.&lt;/p&gt;
+&lt;p&gt;When writing Rust code with Python bindings, there may be scenarios where the Rust code also needs to be able to call a Python function. &lt;code&gt;pyo3&lt;/code&gt; in fact lets you do this. However, when calling Python from Rust, you take a performance hit as you invoke the Python interpretor. What if you do not want to invoke the Python interpretor? Enter Numba. You can use Numba to create a C callback, pass this function pointer to Rust to call the callback, all while not incurring the overhead of Python.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Daily Rust - Using Trait Objects That Allow for Different Types</title>
+      <link>http://localhost:1313/posts/2024-11-01-daily-rust/</link>
+      <pubDate>Fri, 01 Nov 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2024-11-01-daily-rust/</guid>
+      <description>&lt;p&gt;Trait objects&amp;hellip;&lt;/p&gt;
+&lt;p&gt;Associated types..&lt;/p&gt;
+&lt;p&gt;You cannot use associated types with trait objects &lt;code&gt;dyn Trait&lt;/code&gt; because:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;The compiler needs to know the exact signatures of methods at compile time to create the &lt;code&gt;vtable&lt;/code&gt; for dynamic dispatch.
+Different implementations may have different function signatures involving the associated types.&lt;/li&gt;
+&lt;li&gt;When using &lt;code&gt;dyn Trait&lt;/code&gt;, you must specify the associated types because the vtables for different associated type implementations
+are not compatible. For example, &lt;code&gt;dyn Y&amp;lt;Y1 = String&amp;gt;&lt;/code&gt; and &lt;code&gt;dyn Y&amp;lt;Y1 = u32&amp;gt;&lt;/code&gt; have different vtables and cannot be used interchangeably.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-Rust&#34; data-lang=&#34;Rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;trait&lt;/span&gt; Iterator {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Item&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;next&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;mut&lt;/span&gt; self) -&amp;gt; Option&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Self::Item&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;type Item;&lt;/code&gt; is an &lt;em&gt;associated type&lt;/em&gt;. Each type that implements &lt;code&gt;Iterator&lt;/code&gt; must specify what type of item it produces. Here&amp;rsquo;s what it looks like to implement &lt;code&gt;Iterator&lt;/code&gt; for a type&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

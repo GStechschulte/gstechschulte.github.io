@@ -14,7 +14,7 @@
       <pubDate>Tue, 10 Sep 2024 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/hierarchical-regression-missing-data/</guid>
       <description>&lt;!-- raw HTML omitted --&gt;
-&lt;p&gt;Hierarchical regression, also known as multilevel modeling, is a powerful statistical technique that allows us to analyze data with a nested structure. This approach is particularly useful when dealing with data that has natural groupings, such as students within schools, patients within hospitals, or in our case, product configurations within manufacturing processes. One of the key advantages of hierarchical regression is its ability to effectively handle missing data in groups, making it an invaluable tool for real-world applications where data incompleteness is often the norm rather than the exception.&lt;/p&gt;</description>
+&lt;p&gt;Hierarchical regression, also known as multilevel modeling, is a powerful modeling technique that allows one to analyze data with a nested structure. This approach is particularly useful when dealing with data that has natural groupings, such as students within schools, patients within hospitals, or in the example below, product configurations within manufacturing processes. One of the key advantages of hierarchical regression lies in its ability to handle missing data in groups, i.e., when one group may not share the same covariates as another group or some groups may contain missong observations.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Alternative Samplers to NUTS in Bambi</title>

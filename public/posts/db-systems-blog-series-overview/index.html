@@ -7,14 +7,19 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Database Systems - Series Overview | The Log</title>
 <meta name="keywords" content="">
-<meta name="description" content="A blog series consisting of my notes on the Carnegie Mellon University (CMU) Advanced and Introduction
-to Database Systems Lectures by Andy Pavlo and Jignesh Patel.
-The goal of this series is to
+<meta name="description" content="A blog series consisting of my notes on the Carnegie Mellon University (CMU) Introduction and Advanced Database Systems Lectures by Andy Pavlo and Jignesh Patel. The primary goal of this series is to: (1) consolidate my notes, and (2) act as a reference guide for my future self. Perhaps some readers may extract some value, but I would highly recommend watching the lectures for yourself.
+The series will cover:
 
-Bring together and cleanup my notes into a more consistent state.
-Understand the &hellip;
+Database storage
+Indexes
+Join algorithms
+Query execution and processing
+Query optimization
+Query scheduling and coordination
+Concurrency control
 
-TODO: DBMS diagram here&hellip;">
+OLAP database management system components
+The series will primarily focus on the components of OLAP database management systems (DBMS). A recent trend of the last decade is the breakout of OLAP DBMS components into standalone services and libraries for:">
 <meta name="author" content="Gabriel Stechschulte">
 <link rel="canonical" href="http://localhost:1313/posts/db-systems-blog-series-overview/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
@@ -96,13 +101,6 @@ TODO: DBMS diagram here&hellip;">
 </script>
 
 
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
-    rel="stylesheet"
-/>
-
 </head>
 
 <body class="" id="top">
@@ -165,25 +163,43 @@ TODO: DBMS diagram here&hellip;">
     
     <h1 class="post-title entry-hint-parent">
       Database Systems - Series Overview
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
     </h1>
-    <div class="post-meta"><span title='2024-10-22 00:00:00 +0000 UTC'>October 22, 2024</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;Gabriel Stechschulte
+    <div class="post-meta"><span title='2024-10-22 00:00:00 +0000 UTC'>October 22, 2024</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte
 
 </div>
   </header> 
-  <div class="post-content"><p>A blog series consisting of my notes on the Carnegie Mellon University (CMU) Advanced and Introduction
-to Database Systems Lectures by Andy Pavlo and Jignesh Patel.</p>
-<p>The goal of this series is to</p>
-<ol>
-<li>Bring together and cleanup my notes into a more consistent state.</li>
-<li>Understand the &hellip;</li>
-</ol>
-<p>TODO: DBMS diagram here&hellip;</p>
+  <div class="post-content"><p>A blog series consisting of my notes on the Carnegie Mellon University (CMU) Introduction and Advanced Database Systems Lectures by Andy Pavlo and Jignesh Patel. The primary goal of this series is to: (1) consolidate my notes, and (2) act as a reference guide for my future self. Perhaps some readers may extract some value, but I would highly recommend watching the lectures for yourself.</p>
+<p>The series will cover:</p>
+<ul>
+<li>Database storage</li>
+<li>Indexes</li>
+<li>Join algorithms</li>
+<li>Query execution and processing</li>
+<li>Query optimization</li>
+<li>Query scheduling and coordination</li>
+<li>Concurrency control</li>
+</ul>
+<h2 id="olap-database-management-system-components">OLAP database management system components<a hidden class="anchor" aria-hidden="true" href="#olap-database-management-system-components">#</a></h2>
+<p>The series will primarily focus on the components of OLAP database management systems (DBMS). A recent trend of the last decade is the breakout of OLAP DBMS components into standalone services and libraries for:</p>
+<ul>
+<li>System catalogs</li>
+<li>Intermediate representations</li>
+<li>Query optimizers</li>
+<li>File format</li>
+<li>Execution engines</li>
+</ul>
+<p>Given these components, the general architecture of an OLAP system is the following:</p>
+<p><img loading="lazy" src="db-system-architecture.png" alt="alt"  />
+</p>
+<p>Where the components perform the following functions (generally speaking):</p>
+<ul>
+<li><strong>Front end</strong>. Takes in the user query and parses it into an intermediate representation using a language parser.</li>
+<li><strong>Planner</strong>. Takes in the intermediate representation from the front-end uses the binder, rewriter, and optimizer to generate a query plan.</li>
+<li><strong>Scheduler</strong>. Takes in the query plan, organizes worker nodes, and schedules the execution by breaking the plan up into fragments.</li>
+<li><strong>Execution engine</strong>. Takes in plan fragments and executes them.</li>
+<li><strong>I/O service</strong>. Takes in block requests from the execution engine and returns the data after retrieving it from the object store.</li>
+<li><strong>Catalog</strong>. Keeps track of data locations and metadata of the data for the DBMS and communicates with all components of the DBMS except the front-end.</li>
+</ul>
 
 
   </div>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>Database Systems - Query Processing | The Log</title>
+<title>Database Systems - Query Execution | The Log</title>
 <meta name="keywords" content="">
 <meta name="description" content="Query plan
 The DBMS converts a SQL statement into a query plan. Operators in the query plan
@@ -100,13 +100,6 @@ TODO: Add query plan diagram here..">
 </script>
 
 
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
-    rel="stylesheet"
-/>
-
 </head>
 
 <body class="" id="top">
@@ -168,7 +161,7 @@ TODO: Add query plan diagram here..">
   <header class="post-header">
     
     <h1 class="post-title entry-hint-parent">
-      Database Systems - Query Processing
+      Database Systems - Query Execution
       <span class="entry-hint" title="Draft">
         <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" fill="currentColor">
           <path
@@ -182,8 +175,8 @@ TODO: Add query plan diagram here..">
   </header> 
   <div class="post-content"><h2 id="query-plan">Query plan<a hidden class="anchor" aria-hidden="true" href="#query-plan">#</a></h2>
 <p>The DBMS converts a SQL statement into a query plan. Operators in the query plan
-are arranged in a tree. Data flows from the leaves of this tree towards the root node.
-The output of the root node in the tree is the result of the query. The same query
+are arranged in a tree. Data flows from the leaves of this tree towards the root node.</p>
+<p>The output of the root node in the tree is the result of the query. The same query
 plan can be executed in multiple ways.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> A.id, B.value
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> A

@@ -1,5 +1,5 @@
 +++
-title = 'Database Systems - Query Processing'
+title = 'Database Systems - Query Execution'
 date = 2024-10-23
 author = 'Gabriel Stechschulte'
 categories = ['database-systems']
@@ -11,6 +11,7 @@ math = true
 
 The DBMS converts a SQL statement into a query plan. Operators in the query plan
 are arranged in a tree. Data flows from the leaves of this tree towards the root node.
+
 The output of the root node in the tree is the result of the query. The same query
 plan can be executed in multiple ways.
 

@@ -90,13 +90,6 @@
 </script>
 
 
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
-    rel="stylesheet"
-/>
-
 </head>
 
 <body class="list" id="top">
@@ -161,42 +154,16 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Database Systems - Query Processing
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
+    <h2 class="entry-hint-parent">Database Systems - Series Overview
     </h2>
   </header>
   <div class="entry-content">
-    <p>Query plan The DBMS converts a SQL statement into a query plan. Operators in the query plan are arranged in a tree. Data flows from the leaves of this tree towards the root node. The output of the root node in the tree is the result of the query. The same query plan can be executed in multiple ways.
-SELECT A.id, B.value FROM A JOIN B USING (id) WHERE A.value &lt; 99 AND B.value &gt; 100; TODO: Add query plan diagram here..
+    <p>A blog series consisting of my notes on the Carnegie Mellon University (CMU) Introduction and Advanced Database Systems Lectures by Andy Pavlo and Jignesh Patel. The primary goal of this series is to: (1) consolidate my notes, and (2) act as a reference guide for my future self. Perhaps some readers may extract some value, but I would highly recommend watching the lectures for yourself.
+The series will cover:
+Database storage Indexes Join algorithms Query execution and processing Query optimization Query scheduling and coordination Concurrency control OLAP database management system components The series will primarily focus on the components of OLAP database management systems (DBMS). A recent trend of the last decade is the breakout of OLAP DBMS components into standalone services and libraries for:
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2024-10-23 00:00:00 +0000 UTC'>October 23, 2024</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Database Systems - Query Processing" href="http://localhost:1313/posts/db-systems-query-processing/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Database Systems - Series Overview
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>A blog series consisting of my notes on the Carnegie Mellon University (CMU) Advanced and Introduction to Database Systems Lectures by Andy Pavlo and Jignesh Patel.
-The goal of this series is to
-Bring together and cleanup my notes into a more consistent state. Understand the … TODO: DBMS diagram here…
-</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-10-22 00:00:00 +0000 UTC'>October 22, 2024</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <footer class="entry-footer"><span title='2024-10-22 00:00:00 +0000 UTC'>October 22, 2024</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
   <a class="entry-link" aria-label="post link to Database Systems - Series Overview" href="http://localhost:1313/posts/db-systems-blog-series-overview/"></a>
 </article>
     </main>

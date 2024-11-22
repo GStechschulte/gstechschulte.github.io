@@ -1,8 +1,54 @@
+/* Default */
 .post-content {
-    font-size: 12pt; /* Adjust this value as needed */
+    font-size: 12pt;
 }
 
 /* For the main content area */
 main {
-    font-size: 13pt; /* Adjust this value as needed */
+    font-size: 13pt;
 }
+
+/* New below here */
+/* body {
+    font-family: "Anonymous Pro", monospace;
+} */
+
+/* Font face declaration */
+/* @font-face {
+    font-display: swap;
+    font-family: "Anonymous Pro";
+    font-style: normal;
+    font-weight: 400;
+    src: url("/fonts/AnonymousPro-Regular.ttf") format("truetype");
+} */
+
+/* Main content area */
+/* main {
+    font-size: 13pt;
+} */
+
+/* Post content */
+/* .post-content {
+    font-size: 12pt;
+} */
+
+/* Code blocks styling */
+/* pre,
+code {
+    font-family: "Anonymous Pro", monospace;
+    font-size: 11pt;
+}
+
+.highlight pre {
+    font-family: "Anonymous Pro", monospace;
+    font-size: 11pt;
+    padding: 1em;
+    line-height: 1.4;
+} */
+
+/* Inline code */
+/* :not(pre) > code {
+    font-family: "Anonymous Pro", monospace;
+    font-size: 0.9em;
+    padding: 0.2em 0.4em;
+} */

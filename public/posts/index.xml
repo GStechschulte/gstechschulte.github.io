@@ -6,39 +6,26 @@
     <description>Recent content in Posts on The Log</description>
     <generator>Hugo -- 0.135.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 23 Oct 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 22 Oct 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Database Systems - Query Processing</title>
-      <link>http://localhost:1313/posts/db-systems-query-processing/</link>
-      <pubDate>Wed, 23 Oct 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/db-systems-query-processing/</guid>
-      <description>&lt;h2 id=&#34;query-plan&#34;&gt;Query plan&lt;/h2&gt;
-&lt;p&gt;The DBMS converts a SQL statement into a query plan. Operators in the query plan
-are arranged in a tree. Data flows from the leaves of this tree towards the root node.
-The output of the root node in the tree is the result of the query. The same query
-plan can be executed in multiple ways.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-SQL&#34; data-lang=&#34;SQL&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;SELECT&lt;/span&gt; A.id, B.value
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;FROM&lt;/span&gt; A
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;JOIN&lt;/span&gt; B
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;USING&lt;/span&gt; (id)
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;WHERE&lt;/span&gt; A.value &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;99&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;AND&lt;/span&gt; B.value &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt;;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;TODO: Add query plan diagram here..&lt;/p&gt;</description>
-    </item>
     <item>
       <title>Database Systems - Series Overview</title>
       <link>http://localhost:1313/posts/db-systems-blog-series-overview/</link>
       <pubDate>Tue, 22 Oct 2024 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/db-systems-blog-series-overview/</guid>
-      <description>&lt;p&gt;A blog series consisting of my notes on the Carnegie Mellon University (CMU) Advanced and Introduction
-to Database Systems Lectures by Andy Pavlo and Jignesh Patel.&lt;/p&gt;
-&lt;p&gt;The goal of this series is to&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Bring together and cleanup my notes into a more consistent state.&lt;/li&gt;
-&lt;li&gt;Understand the &amp;hellip;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;TODO: DBMS diagram here&amp;hellip;&lt;/p&gt;</description>
+      <description>&lt;p&gt;A blog series consisting of my notes on the Carnegie Mellon University (CMU) Introduction and Advanced Database Systems Lectures by Andy Pavlo and Jignesh Patel. The primary goal of this series is to: (1) consolidate my notes, and (2) act as a reference guide for my future self. Perhaps some readers may extract some value, but I would highly recommend watching the lectures for yourself.&lt;/p&gt;
+&lt;p&gt;The series will cover:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Database storage&lt;/li&gt;
+&lt;li&gt;Indexes&lt;/li&gt;
+&lt;li&gt;Join algorithms&lt;/li&gt;
+&lt;li&gt;Query execution and processing&lt;/li&gt;
+&lt;li&gt;Query optimization&lt;/li&gt;
+&lt;li&gt;Query scheduling and coordination&lt;/li&gt;
+&lt;li&gt;Concurrency control&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;olap-database-management-system-components&#34;&gt;OLAP database management system components&lt;/h2&gt;
+&lt;p&gt;The series will primarily focus on the components of OLAP database management systems (DBMS). A recent trend of the last decade is the breakout of OLAP DBMS components into standalone services and libraries for:&lt;/p&gt;</description>
     </item>
     <item>
       <title>Hierarchical Regression With Missing Data</title>
@@ -46,7 +33,7 @@ to Database Systems Lectures by Andy Pavlo and Jignesh Patel.&lt;/p&gt;
       <pubDate>Tue, 10 Sep 2024 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/hierarchical-regression-missing-data/</guid>
       <description>&lt;!-- raw HTML omitted --&gt;
-&lt;p&gt;Hierarchical regression, also known as multilevel modeling, is a powerful statistical technique that allows us to analyze data with a nested structure. This approach is particularly useful when dealing with data that has natural groupings, such as students within schools, patients within hospitals, or in our case, product configurations within manufacturing processes. One of the key advantages of hierarchical regression is its ability to effectively handle missing data in groups, making it an invaluable tool for real-world applications where data incompleteness is often the norm rather than the exception.&lt;/p&gt;</description>
+&lt;p&gt;Hierarchical regression, also known as multilevel modeling, is a powerful modeling technique that allows one to analyze data with a nested structure. This approach is particularly useful when dealing with data that has natural groupings, such as students within schools, patients within hospitals, or in the example below, product configurations within manufacturing processes. One of the key advantages of hierarchical regression lies in its ability to handle missing data in groups, i.e., when one group may not share the same covariates as another group or some groups may contain missong observations.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Stateful Joins in SQL</title>
