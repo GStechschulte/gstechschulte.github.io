@@ -1,0 +1,14 @@
+/Users/gabestechschulte/Documents/repos/callback/target/debug/deps/libpyo3_build_config-1bd2adbf85791ef0.rmeta: /Users/gabestechschulte/.cargo/registry/src/index.crates.io-6f17d22bba15001f/pyo3-build-config-0.22.6/src/lib.rs /Users/gabestechschulte/.cargo/registry/src/index.crates.io-6f17d22bba15001f/pyo3-build-config-0.22.6/src/errors.rs /Users/gabestechschulte/.cargo/registry/src/index.crates.io-6f17d22bba15001f/pyo3-build-config-0.22.6/src/impl_.rs /Users/gabestechschulte/Documents/repos/callback/target/debug/build/pyo3-build-config-feda3498f8adc9bf/out/pyo3-build-config-file.txt /Users/gabestechschulte/Documents/repos/callback/target/debug/build/pyo3-build-config-feda3498f8adc9bf/out/pyo3-build-config.txt
+
+/Users/gabestechschulte/Documents/repos/callback/target/debug/deps/libpyo3_build_config-1bd2adbf85791ef0.rlib: /Users/gabestechschulte/.cargo/registry/src/index.crates.io-6f17d22bba15001f/pyo3-build-config-0.22.6/src/lib.rs /Users/gabestechschulte/.cargo/registry/src/index.crates.io-6f17d22bba15001f/pyo3-build-config-0.22.6/src/errors.rs /Users/gabestechschulte/.cargo/registry/src/index.crates.io-6f17d22bba15001f/pyo3-build-config-0.22.6/src/impl_.rs /Users/gabestechschulte/Documents/repos/callback/target/debug/build/pyo3-build-config-feda3498f8adc9bf/out/pyo3-build-config-file.txt /Users/gabestechschulte/Documents/repos/callback/target/debug/build/pyo3-build-config-feda3498f8adc9bf/out/pyo3-build-config.txt
+
+/Users/gabestechschulte/Documents/repos/callback/target/debug/deps/pyo3_build_config-1bd2adbf85791ef0.d: /Users/gabestechschulte/.cargo/registry/src/index.crates.io-6f17d22bba15001f/pyo3-build-config-0.22.6/src/lib.rs /Users/gabestechschulte/.cargo/registry/src/index.crates.io-6f17d22bba15001f/pyo3-build-config-0.22.6/src/errors.rs /Users/gabestechschulte/.cargo/registry/src/index.crates.io-6f17d22bba15001f/pyo3-build-config-0.22.6/src/impl_.rs /Users/gabestechschulte/Documents/repos/callback/target/debug/build/pyo3-build-config-feda3498f8adc9bf/out/pyo3-build-config-file.txt /Users/gabestechschulte/Documents/repos/callback/target/debug/build/pyo3-build-config-feda3498f8adc9bf/out/pyo3-build-config.txt
+
+/Users/gabestechschulte/.cargo/registry/src/index.crates.io-6f17d22bba15001f/pyo3-build-config-0.22.6/src/lib.rs:
+/Users/gabestechschulte/.cargo/registry/src/index.crates.io-6f17d22bba15001f/pyo3-build-config-0.22.6/src/errors.rs:
+/Users/gabestechschulte/.cargo/registry/src/index.crates.io-6f17d22bba15001f/pyo3-build-config-0.22.6/src/impl_.rs:
+/Users/gabestechschulte/Documents/repos/callback/target/debug/build/pyo3-build-config-feda3498f8adc9bf/out/pyo3-build-config-file.txt:
+/Users/gabestechschulte/Documents/repos/callback/target/debug/build/pyo3-build-config-feda3498f8adc9bf/out/pyo3-build-config.txt:
+
+# env-dep:CARGO_PKG_VERSION=0.22.6
+# env-dep:OUT_DIR=/Users/gabestechschulte/Documents/repos/callback/target/debug/build/pyo3-build-config-feda3498f8adc9bf/out

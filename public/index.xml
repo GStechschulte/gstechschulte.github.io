@@ -6,8 +6,63 @@
     <description>Recent content on The Log</description>
     <generator>Hugo -- 0.135.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 22 Oct 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 30 Nov 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Creating C Callbacks with Numba and Calling Them From Rust</title>
+      <link>http://localhost:1313/posts/2024-11-30-c-callbacks/</link>
+      <pubDate>Sat, 30 Nov 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2024-11-30-c-callbacks/</guid>
+      <description>&lt;p&gt;When interfacing with libraries written in C/C++ from Rust, it may require writing native callbacks to provide functionality or logic to the library. A C Callback is a function pointer that is passed as an argument to another function, allowing that function to &amp;ldquo;call back&amp;rdquo; and execute the passed function at runtime.&lt;/p&gt;
+&lt;p&gt;When writing Rust code with Python bindings, there may be scenarios where the Rust code also needs to be able to call a Python function. Rust&amp;rsquo;s foreign function interface (FFI) and &lt;code&gt;pyo3&lt;/code&gt; crate in fact lets you do this. However, when calling Python from Rust, you take a performance hit as you invoke the Python interpreter. What if you do not want to invoke the Python interpreter? Enter Numba. You can use Numba to create a C callback, pass this function pointer to Rust to perform the callback, all while not incurring the overhead of Python.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Daily Rust - Memory Layout of Different Types</title>
+      <link>http://localhost:1313/posts/2024-11-28-daily-rust-types/</link>
+      <pubDate>Thu, 28 Nov 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2024-11-28-daily-rust-types/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Daily Rust - Using Trait Objects That Allow for Different Types</title>
+      <link>http://localhost:1313/posts/2024-11-01-daily-rust-trait-objects/</link>
+      <pubDate>Fri, 01 Nov 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2024-11-01-daily-rust-trait-objects/</guid>
+      <description>&lt;p&gt;Trait objects&amp;hellip;&lt;/p&gt;
+&lt;p&gt;Associated types..&lt;/p&gt;
+&lt;p&gt;You cannot use associated types with trait objects &lt;code&gt;dyn Trait&lt;/code&gt; because:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;The compiler needs to know the exact signatures of methods at compile time to create the &lt;code&gt;vtable&lt;/code&gt; for dynamic dispatch.
+Different implementations may have different function signatures involving the associated types.&lt;/li&gt;
+&lt;li&gt;When using &lt;code&gt;dyn Trait&lt;/code&gt;, you must specify the associated types because the vtables for different associated type implementations
+are not compatible. For example, &lt;code&gt;dyn Y&amp;lt;Y1 = String&amp;gt;&lt;/code&gt; and &lt;code&gt;dyn Y&amp;lt;Y1 = u32&amp;gt;&lt;/code&gt; have different vtables and cannot be used interchangeably.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-Rust&#34; data-lang=&#34;Rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;trait&lt;/span&gt; Iterator {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Item&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;next&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;mut&lt;/span&gt; self) -&amp;gt; Option&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Self::Item&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;type Item;&lt;/code&gt; is an &lt;em&gt;associated type&lt;/em&gt;. Each type that implements &lt;code&gt;Iterator&lt;/code&gt; must specify what type of item it produces. Here&amp;rsquo;s what it looks like to implement &lt;code&gt;Iterator&lt;/code&gt; for a type&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Database Systems - Query Execution</title>
+      <link>http://localhost:1313/posts/db-systems-query-processing/</link>
+      <pubDate>Wed, 23 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/db-systems-query-processing/</guid>
+      <description>&lt;h2 id=&#34;query-plan&#34;&gt;Query plan&lt;/h2&gt;
+&lt;p&gt;The DBMS converts a SQL statement into a query plan. Operators in the query plan
+are arranged in a tree. Data flows from the leaves of this tree towards the root node.&lt;/p&gt;
+&lt;p&gt;The output of the root node in the tree is the result of the query. The same query
+plan can be executed in multiple ways.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-SQL&#34; data-lang=&#34;SQL&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;SELECT&lt;/span&gt; A.id, B.value
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;FROM&lt;/span&gt; A
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;JOIN&lt;/span&gt; B
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;USING&lt;/span&gt; (id)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;WHERE&lt;/span&gt; A.value &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;99&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;AND&lt;/span&gt; B.value &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;TODO: Add query plan diagram here..&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Database Systems - Series Overview</title>
       <link>http://localhost:1313/posts/db-systems-blog-series-overview/</link>

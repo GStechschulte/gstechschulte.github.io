@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Creating C Callbacks with Numba and Calling Them From Rust | The Log</title>
+<meta name="keywords" content="">
+<meta name="description" content="When interfacing with libraries written in C/C&#43;&#43; from Rust, it may require writing native callbacks to provide functionality or logic to the library. A C Callback is a function pointer that is passed as an argument to another function, allowing that function to &ldquo;call back&rdquo; and execute the passed function at runtime.
+When writing Rust code with Python bindings, there may be scenarios where the Rust code also needs to be able to call a Python function. Rust&rsquo;s foreign function interface (FFI) and pyo3 crate in fact lets you do this. However, when calling Python from Rust, you take a performance hit as you invoke the Python interpreter. What if you do not want to invoke the Python interpreter? Enter Numba. You can use Numba to create a C callback, pass this function pointer to Rust to perform the callback, all while not incurring the overhead of Python.">
+<meta name="author" content="Gabriel Stechschulte">
+<link rel="canonical" href="http://localhost:1313/posts/2024-11-30-c-callbacks/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/2024-11-30-c-callbacks/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+    integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
+    crossorigin="anonymous"
+/>
+<script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"
+    integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8"
+    crossorigin="anonymous"
+></script>
+<script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+    crossorigin="anonymous"
+></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true },
+            ],
+            throwOnError: false,
+        });
+    });
+</script>
+
+
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="The Log (Alt + H)">The Log</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/categories/" title="categories">
+                    <span>categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="tags">
+                    <span>tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Creating C Callbacks with Numba and Calling Them From Rust
+      <span class="entry-hint" title="Draft">
+        <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" fill="currentColor">
+          <path
+            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+        </svg>
+      </span>
+    </h1>
+    <div class="post-meta"><span title='2024-11-30 00:00:00 +0000 UTC'>November 30, 2024</span>&nbsp;·&nbsp;5 min&nbsp;·&nbsp;Gabriel Stechschulte
+
+</div>
+  </header> 
+  <div class="post-content"><p>When interfacing with libraries written in C/C++ from Rust, it may require writing native callbacks to provide functionality or logic to the library. A C Callback is a function pointer that is passed as an argument to another function, allowing that function to &ldquo;call back&rdquo; and execute the passed function at runtime.</p>
+<p>When writing Rust code with Python bindings, there may be scenarios where the Rust code also needs to be able to call a Python function. Rust&rsquo;s foreign function interface (FFI) and <code>pyo3</code> crate in fact lets you do this. However, when calling Python from Rust, you take a performance hit as you invoke the Python interpreter. What if you do not want to invoke the Python interpreter? Enter Numba. You can use Numba to create a C callback, pass this function pointer to Rust to perform the callback, all while not incurring the overhead of Python.</p>
+<p>This post will briefly explain how to create C callbacks using Numba, and how to pass and call them from within Rust.</p>
+<h2 id="creating-c-callbacks-with-numba">Creating C Callbacks with Numba<a hidden class="anchor" aria-hidden="true" href="#creating-c-callbacks-with-numba">#</a></h2>
+<p>To create a C callback of a Python function using Numba, the <code>cfunc</code> function is used. Alternatively, one could use the <code>@cfunc</code> decorator. Regardless of the technique, passing a signature of the Python function is required as it determines the visible signature of the C callback. The C function object exposes the address of the compiled C callback as the address attribute, so that you can pass it to a foreign library. The object is also callable from Python.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> ctypes
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> numba <span style="color:#f92672">import</span> cfunc, carray, types
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> callback <span style="color:#f92672">import</span> initialize
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Define the C signature</span>
+</span></span><span style="display:flex;"><span>c_sig <span style="color:#f92672">=</span> types<span style="color:#f92672">.</span>void(types<span style="color:#f92672">.</span>CPointer(types<span style="color:#f92672">.</span>double),
+</span></span><span style="display:flex;"><span>                   types<span style="color:#f92672">.</span>CPointer(types<span style="color:#f92672">.</span>double),
+</span></span><span style="display:flex;"><span>                   types<span style="color:#f92672">.</span>intc,
+</span></span><span style="display:flex;"><span>                   types<span style="color:#f92672">.</span>intc)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@cfunc</span>(c_sig)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">my_callback</span>(in_, out, m, n):
+</span></span><span style="display:flex;"><span>    in_array <span style="color:#f92672">=</span> carray(in_, (m, n))
+</span></span><span style="display:flex;"><span>    out_array <span style="color:#f92672">=</span> carray(out, (m, n))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(m):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(n):
+</span></span><span style="display:flex;"><span>            out_array[i, j] <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> in_array[i, j]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Prepare input data</span>
+</span></span><span style="display:flex;"><span>m, n <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>input_array <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">1.</span>, <span style="color:#ae81ff">2.</span>, <span style="color:#ae81ff">3.</span>, <span style="color:#ae81ff">4.</span>, <span style="color:#ae81ff">5.</span>, <span style="color:#ae81ff">6.</span>])
+</span></span><span style="display:flex;"><span>output_array <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros(m <span style="color:#f92672">*</span> n, dtype<span style="color:#f92672">=</span>np<span style="color:#f92672">.</span>float64)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Get pointers to the data</span>
+</span></span><span style="display:flex;"><span>input_ptr <span style="color:#f92672">=</span> input_array<span style="color:#f92672">.</span>ctypes<span style="color:#f92672">.</span>data_as(ctypes<span style="color:#f92672">.</span>POINTER(ctypes<span style="color:#f92672">.</span>c_double))
+</span></span><span style="display:flex;"><span>output_ptr <span style="color:#f92672">=</span> output_array<span style="color:#f92672">.</span>ctypes<span style="color:#f92672">.</span>data_as(ctypes<span style="color:#f92672">.</span>POINTER(ctypes<span style="color:#f92672">.</span>c_double))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Call the function using ctypes</span>
+</span></span><span style="display:flex;"><span>my_callback<span style="color:#f92672">.</span>ctypes(input_ptr, output_ptr, ctypes<span style="color:#f92672">.</span>c_int(m), ctypes<span style="color:#f92672">.</span>c_int(n))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Input array : </span><span style="color:#e6db74">{</span>input_array<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Output array: </span><span style="color:#e6db74">{</span>output_array<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><pre tabindex="0"><code>Input array : [1. 2. 3. 4. 5. 6.]
+Output array: [2. 4. 6. 8. 10. 12.]
+</code></pre><p>Even though the code is being executed within Python, the <code>my_callback</code> does not invoke the Python interpreter each time it evaluates <code>my_callback</code>—making the code much faster.</p>
+<h2 id="call-back-from-rust">&ldquo;Call back&rdquo; from Rust<a hidden class="anchor" aria-hidden="true" href="#call-back-from-rust">#</a></h2>
+<p>What if part of our library is written in Rust and needs to be able to call a Python function? Imagine performance is critical so Numba is used to create a C callback from the original Python function. This function pointer will then be passed to Rust where the &ldquo;callback&rdquo; is performed, i.e., <code>my_callback</code> is called from within Rust without ever invoking the Python interpreter!</p>
+<p>The boundary between Rust and the C callback can be crossed using Rust&rsquo;s FFI. FFI lets Rust code call functions written in other programming languages (typically C/C++), and is ultimately all about accessing bytes that originate somewhere outside the Rust code. For that, Rust provides two primary building blocks:</p>
+<ol>
+<li><strong>Symbols</strong>. Names assigned to particular addresses in a given segment of your binary that allow you to share memory between the external origin and your Rust code.</li>
+<li><strong>Calling convention</strong>. Provides a common understanding of how to call functions stored in such shared memory.</li>
+</ol>
+<p>Rust&rsquo;s <code>extern</code> keyword is used to link with external functions and variables defined outside of the Rust environment libraries. This is achieved by declaring external blocks where these functions and variables are specified. In our example, we need to define an external block with the function signature (calling convention) of <code>my_callback</code>. The call to this function is then wrapped in an <code>unsafe</code> block due to the potential risks associated with calling code that originates outside of Rust.</p>
+<p>Below, the function signature of <code>my_callback</code> is defined in Rust as the type alias <code>Callback</code>. The alias represents a function pointer type that can be used to call C functions from Rust. The <code>ffi</code> and <code>os::raw</code> modules provide type definitions required for C-compatible data types.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Rust" data-lang="Rust"><span style="display:flex;"><span><span style="color:#66d9ef">use</span> std::{
+</span></span><span style="display:flex;"><span>    ffi::{c_double, c_void},
+</span></span><span style="display:flex;"><span>    os::raw::c_int,
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Declare calling convention of `my_callback` using C types from the `ffi` module
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Callback</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">unsafe</span> <span style="color:#66d9ef">extern</span> <span style="color:#e6db74">&#34;C&#34;</span> <span style="color:#66d9ef">fn</span>(in_: <span style="color:#f92672">*</span><span style="color:#66d9ef">const</span> c_double, out: <span style="color:#f92672">*</span><span style="color:#66d9ef">mut</span> c_double, m: <span style="color:#a6e22e">c_int</span>, n: <span style="color:#a6e22e">c_int</span>);
+</span></span></code></pre></div><p>Notice how the function signature of <code>Callback</code> matches that of <code>my_callback</code>. Now, we need a way of passing the pointer of <code>my_callback</code> to Rust. To enable this interface, we will use <code>pyo3</code> to create a Python extension module. Details of how to use <code>pyo3</code> will not be given here. Rather, we will focus on the declaration of <code>my_python_fn</code>. Here, the <code>fn_ptr</code> parameter is cast to the <code>Callback</code> type using <code>std::mem::transmute</code>. This casting is an unsafe operation that converts <code>fn_ptr</code> from a <code>usize</code> type to the function pointer<code>Callback</code> type enabling the callback.</p>
+<p>Now, we can perform the callback by passing the appropriate data to <code>my_python_fn</code>. The callback also happens in an unsafe block as it involves dereferencing raw pointers. Lastly, the output vector is returned as a Python object.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Rust" data-lang="Rust"><span style="display:flex;"><span><span style="color:#75715e">#[pyfunction]</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">compute_from_rust</span>(fn_ptr: <span style="color:#66d9ef">usize</span>) -&gt; <span style="color:#a6e22e">PyResult</span><span style="color:#f92672">&lt;</span>(PyObject)<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Cast `fn_ptr` from usize to the `Callback` type (aka the function pointer)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">let</span> my_python_fn: <span style="color:#a6e22e">Callback</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">unsafe</span> { std::mem::transmute(fn_ptr <span style="color:#66d9ef">as</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">const</span> c_void) };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Create data to be passed to `my_python_fn`
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">let</span> m: <span style="color:#a6e22e">c_int</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> n: <span style="color:#a6e22e">c_int</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> in_ <span style="color:#f92672">=</span> vec![<span style="color:#ae81ff">1.</span>, <span style="color:#ae81ff">2.</span>, <span style="color:#ae81ff">3.</span>, <span style="color:#ae81ff">4.</span>, <span style="color:#ae81ff">5.</span>, <span style="color:#ae81ff">6.</span>];
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> out <span style="color:#f92672">=</span> vec![<span style="color:#ae81ff">0.0</span>; (m <span style="color:#f92672">*</span> n) <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">usize</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Perform callback within an unsafe block
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">unsafe</span> {
+</span></span><span style="display:flex;"><span>        (my_python_fn)(in_.as_ptr(), out.as_mut_ptr(), m, n);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Return the data to Python
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Python::with_gil(<span style="color:#f92672">|</span>py<span style="color:#f92672">|</span> Ok(PyList::new_bound(py, <span style="color:#f92672">&amp;</span>out).into()))
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#[pymodule]</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">callback</span>(m: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">Bound</span><span style="color:#f92672">&lt;</span>&#39;_, PyModule<span style="color:#f92672">&gt;</span>) -&gt; <span style="color:#a6e22e">PyResult</span><span style="color:#f92672">&lt;</span>()<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>    m.add_function(wrap_pyfunction!(compute_from_rust, m)<span style="color:#f92672">?</span>)<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>    Ok(())
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>We can now compile the Rust code, and import and call the extension module in Python.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span><span style="color:#f92672">import</span> ctypes
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> numba <span style="color:#f92672">import</span> cfunc, carray, types
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> callback <span style="color:#f92672">import</span> compute_from_rust
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>c_sig <span style="color:#f92672">=</span> types<span style="color:#f92672">.</span>void(types<span style="color:#f92672">.</span>CPointer(types<span style="color:#f92672">.</span>double),
+</span></span><span style="display:flex;"><span>                   types<span style="color:#f92672">.</span>CPointer(types<span style="color:#f92672">.</span>double),
+</span></span><span style="display:flex;"><span>                   types<span style="color:#f92672">.</span>intc,
+</span></span><span style="display:flex;"><span>                   types<span style="color:#f92672">.</span>intc)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@cfunc</span>(c_sig)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">my_callback</span>(in_, out, m, n):
+</span></span><span style="display:flex;"><span>    in_array <span style="color:#f92672">=</span> carray(in_, (m, n))
+</span></span><span style="display:flex;"><span>    out_array <span style="color:#f92672">=</span> carray(out, (m, n))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(m):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(n):
+</span></span><span style="display:flex;"><span>            out_array[i, j] <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> in_array[i, j]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Call `my_callback` within Rust using FFI</span>
+</span></span><span style="display:flex;"><span>result <span style="color:#f92672">=</span> compute_from_rust(my_callback<span style="color:#f92672">.</span>address)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Rust output: </span><span style="color:#e6db74">{</span>result<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><pre tabindex="0"><code>Rust output: [2.0, 4.0, 6.0, 8.0, 10.0, 12.0]
+</code></pre><p>Voilà, the result is the same as above. The code in this blog post can be found <a href="https://github.com/GStechschulte/gstechschulte.github.io/tree/main/content/posts/2024-11-30-c-callbacks/callback/">here</a>.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="http://localhost:1313/">The Log</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
