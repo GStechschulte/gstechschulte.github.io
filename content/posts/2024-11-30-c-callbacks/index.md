@@ -8,7 +8,7 @@ draft = false
 
 When interfacing with libraries written in C/C++ from Rust, it may require writing native callbacks to provide functionality or logic to the library. A C Callback is a function pointer that is passed as an argument to another function, allowing that function to "call back" and execute the passed function at runtime.
 
-When writing Rust code with Python bindings, there may be scenarios where the Rust code also needs to be able to call a Python function. Rust's foreign function interface (FFI) and `pyo3` crate in fact lets you do this. However, when calling Python from Rust, you take a performance hit as you invoke the Python interpreter. What if you do not want to invoke the Python interpreter? Enter Numba. You can use Numba to create a C callback, pass this function pointer to Rust to perform the callback, all while not incurring the overhead of Python.
+When interfacing with Python from Rust, there may be scenarios where the Rust code also needs to be able to call a Python function. Rust's foreign function interface (FFI) and `pyo3` crate in fact lets you do this. However, calling Python from Rust involves invoking the Python interpreter, which can reduce performance. If one of the goals for using Rust is to improve the performance of your application or library, this overhead might be undesirable. To avoid invoking the Python interpreter, you can use Numba. Numba allows you to create a C callback, pass this function pointer to Rust, and perform the callback without incurring the overhead associated with Python.
 
 This post will briefly explain how to create C callbacks using Numba, and how to pass and call them from within Rust.
 
@@ -57,11 +57,11 @@ Input array : [1. 2. 3. 4. 5. 6.]
 Output array: [2. 4. 6. 8. 10. 12.]
 ```
 
-Even though the code is being executed within Python, the `my_callback` does not invoke the Python interpreter each time it evaluates `my_callback`—making the code much faster.
+Even though the code is being executed within Python, `my_callback` does not invoke the Python interpreter each time the function is called—making the code much faster.
 
 ## "Call back" from Rust
 
-What if part of our library is written in Rust and needs to be able to call a Python function? Imagine performance is critical so Numba is used to create a C callback from the original Python function. This function pointer will then be passed to Rust where the "callback" is performed, i.e., `my_callback` is called from within Rust without ever invoking the Python interpreter!
+What if part of our library is written in Rust and needs to be able to call this Python function? Performance is critical so Numba is used to create a C callback from the original Python function. This function pointer will then be passed to Rust where the "callback" is performed, i.e., `my_callback` is called from within Rust without ever invoking the Python interpreter.
 
 The boundary between Rust and the C callback can be crossed using Rust's FFI. FFI lets Rust code call functions written in other programming languages (typically C/C++), and is ultimately all about accessing bytes that originate somewhere outside the Rust code. For that, Rust provides two primary building blocks:
 1. **Symbols**. Names assigned to particular addresses in a given segment of your binary that allow you to share memory between the external origin and your Rust code.
