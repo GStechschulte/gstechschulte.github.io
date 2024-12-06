@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>Rust | The Log</title>
+<title>Book-Review | The Log</title>
 <meta name="keywords" content="">
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="http://localhost:1313/categories/rust/">
+<link rel="canonical" href="http://localhost:1313/categories/book-review/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
@@ -18,8 +18,8 @@
 <link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/categories/rust/index.xml">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/categories/rust/">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/categories/book-review/index.xml">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/categories/book-review/">
 <noscript>
     <style>
         #theme-toggle,
@@ -148,27 +148,13 @@
 <main class="main"> 
 <header class="page-header">
   <h1>
-    Rust
+    Book-Review
   </h1>
 </header>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Creating C Callbacks with Numba and Calling Them From Rust
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>When interfacing with libraries written in C/C&#43;&#43; from Rust, it may require writing native callbacks to provide functionality or logic to the library. A C Callback is a function pointer that is passed as an argument to another function, allowing that function to “call back” and execute the passed function at runtime.
-When interfacing with Python from Rust, there may be scenarios where the Rust code also needs to be able to call a Python function. Rust’s foreign function interface (FFI) and pyo3 crate in fact lets you do this. However, calling Python from Rust involves invoking the Python interpreter, which can reduce performance. If one of the goals for using Rust is to improve the performance of your application or library, this overhead might be undesirable. To avoid invoking the Python interpreter, you can use Numba. Numba allows you to create a C callback, pass this function pointer to Rust, and perform the callback without incurring the overhead associated with Python.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-11-30 00:00:00 +0000 UTC'>November 30, 2024</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Creating C Callbacks with Numba and Calling Them From Rust" href="http://localhost:1313/posts/2024-11-30-c-callbacks/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Daily Rust - Memory Layout of Different Types
+    <h2 class="entry-hint-parent">By What Right?
       <span class="entry-hint" title="Draft">
         <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
           <path
@@ -180,30 +166,8 @@ When interfacing with Python from Rust, there may be scenarios where the Rust co
   <div class="entry-content">
     <p></p>
   </div>
-  <footer class="entry-footer"><span title='2024-11-28 00:00:00 +0000 UTC'>November 28, 2024</span>&nbsp;·&nbsp;0 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Daily Rust - Memory Layout of Different Types" href="http://localhost:1313/posts/2024-11-28-daily-rust-types/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Daily Rust - Using Trait Objects That Allow for Different Types
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Trait objects…
-Associated types..
-You cannot use associated types with trait objects dyn Trait because:
-The compiler needs to know the exact signatures of methods at compile time to create the vtable for dynamic dispatch. Different implementations may have different function signatures involving the associated types. When using dyn Trait, you must specify the associated types because the vtables for different associated type implementations are not compatible. For example, dyn Y&lt;Y1 = String&gt; and dyn Y&lt;Y1 = u32&gt; have different vtables and cannot be used interchangeably. pub trait Iterator { type Item; fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;; ... } type Item; is an associated type. Each type that implements Iterator must specify what type of item it produces. Here’s what it looks like to implement Iterator for a type
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-11-01 00:00:00 +0000 UTC'>November 1, 2024</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Daily Rust - Using Trait Objects That Allow for Different Types" href="http://localhost:1313/posts/2024-11-01-daily-rust-trait-objects/"></a>
+  <footer class="entry-footer"><span title='2024-12-03 00:00:00 +0000 UTC'>December 3, 2024</span>&nbsp;·&nbsp;0 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to By What Right?" href="http://localhost:1313/posts/2024-12-03-by-what-right/"></a>
 </article>
     </main>
     

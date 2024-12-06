@@ -154,6 +154,41 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Database Systems - Storage
+      <span class="entry-hint" title="Draft">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
+          <path
+            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+        </svg>
+      </span>
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Outline:
+Introduction on the different workloads (OLAP vs. OLTP). Why these workloads result in different storage models (and what these storage models are) File formats for OLTP File formats for OLAP Introduction As the business landscape embraces data-driven approaches for analysis and decision-making, there is a rapid surge in the volume of data requiring storage and processing. This surge has led to the growing popularity of OLAP database systems.
+An OLAP system workload is characterized by complex queries that require scanning over large portions of the database. In OLAP workloads, the database system is often analyzing and deriving new data from existing data collected on the OLTP side. In contrast, OLTP workloads are characterized by fast, relatively simple and repetitive queries that operate on a single entity at a time (usually involving an update or insert).
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-12-01 00:00:00 +0000 UTC'>December 1, 2024</span>&nbsp;·&nbsp;5 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Database Systems - Storage" href="http://localhost:1313/posts/db-systems-file-formats/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Creating C Callbacks with Numba and Calling Them From Rust
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>When interfacing with libraries written in C/C&#43;&#43; from Rust, it may require writing native callbacks to provide functionality or logic to the library. A C Callback is a function pointer that is passed as an argument to another function, allowing that function to “call back” and execute the passed function at runtime.
+When interfacing with Python from Rust, there may be scenarios where the Rust code also needs to be able to call a Python function. Rust’s foreign function interface (FFI) and pyo3 crate in fact lets you do this. However, calling Python from Rust involves invoking the Python interpreter, which can reduce performance. If one of the goals for using Rust is to improve the performance of your application or library, this overhead might be undesirable. To avoid invoking the Python interpreter, you can use Numba. Numba allows you to create a C callback, pass this function pointer to Rust, and perform the callback without incurring the overhead associated with Python.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-11-30 00:00:00 +0000 UTC'>November 30, 2024</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Creating C Callbacks with Numba and Calling Them From Rust" href="http://localhost:1313/posts/2024-11-30-c-callbacks/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Daily Rust - Memory Layout of Different Types
       <span class="entry-hint" title="Draft">
         <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
@@ -168,26 +203,6 @@
   </div>
   <footer class="entry-footer"><span title='2024-11-28 00:00:00 +0000 UTC'>November 28, 2024</span>&nbsp;·&nbsp;0 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
   <a class="entry-link" aria-label="post link to Daily Rust - Memory Layout of Different Types" href="http://localhost:1313/posts/2024-11-28-daily-rust-types/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Creating C Callbacks with Numba and Calling Them From Rust
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>When interfacing with libraries written in C/C&#43;&#43; from Rust, it may require writing native callbacks to provide functionality or logic to the library. A C Callback is a function pointer that is passed as an argument to another function, allowing that function to “call back” and execute the passed function at runtime.
-When writing Rust code with Python bindings, there may be scenarios where the Rust code also needs to be able to call a Python function. Rust’s foreign function interface (FFI) and pyo3 crate in fact lets you do this. However, when calling Python from Rust, you take a performance hit as you invoke the Python interpreter. What if you do not want to invoke the Python interpreter? Enter Numba. You can use Numba to create a C callback, pass this function pointer to Rust to perform the callback, all while not incurring the overhead of Python.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-11-08 00:00:00 +0000 UTC'>November 8, 2024</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Creating C Callbacks with Numba and Calling Them From Rust" href="http://localhost:1313/posts/2024-11-08-c-callbacks/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -301,19 +316,6 @@ These helper functions are data_grid and select_draws. The data_grid can be used
   </div>
   <footer class="entry-footer"><span title='2023-12-09 00:00:00 +0000 UTC'>December 9, 2023</span>&nbsp;·&nbsp;9 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
   <a class="entry-link" aria-label="post link to Advanced Interpret Usage in Bambi" href="http://localhost:1313/posts/bambi-advanced-marginal-effects/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Outcome Constraints in Bayesian Optimization
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p> #| code-fold: true import matplotlib.pyplot as plt import torch import numpy as np from botorch.acquisition import qLogExpectedImprovement from botorch.fit import fit_gpytorch_model from botorch.models import SingleTaskGP from botorch.optim import optimize_acqf from gpytorch.mlls import ExactMarginalLogLikelihood from torch.distributions import Normal plt.style.use(&#34;https://raw.githubusercontent.com/GStechschulte/filterjax/main/docs/styles.mplstyle&#34;) Outcome constraints In optimization, it is often the goal that we need to optimize an objective function while satisfying some constraints. For example, we may want to minimize the scrap rate by finding the optimal process parameters of an manufacturing machine. However, we know the scrap rate cannot be below 0. In another setting, we may want to maximize the throughput of a machine, but we know that the throughput cannot exceed the maximum belt speed of the machine. Thus, we need to find regions in the search space that both yield high objective values and satisfy these constraints. In this blog, we will focus on inequality outcome constraints. That is, the domain of the objective function is
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-11-28 00:00:00 +0000 UTC'>November 28, 2023</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Outcome Constraints in Bayesian Optimization" href="http://localhost:1313/posts/constrained-bayesian-optimization/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

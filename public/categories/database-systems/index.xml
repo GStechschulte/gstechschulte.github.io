@@ -6,8 +6,17 @@
     <description>Recent content in Database-Systems on The Log</description>
     <generator>Hugo -- 0.135.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 23 Oct 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 01 Dec 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/categories/database-systems/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Database Systems - Storage</title>
+      <link>http://localhost:1313/posts/db-systems-file-formats/</link>
+      <pubDate>Sun, 01 Dec 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/db-systems-file-formats/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;As the business landscape embraces data-driven approaches for analysis and decision-making, there is a rapid surge in the volume of data requiring storage and processing. This surge has led to the growing popularity of OLAP database systems.&lt;/p&gt;
+&lt;p&gt;An OLAP system workload is characterized by complex queries that require scanning over large portions of the database. In OLAP workloads, the database system is often analyzing and deriving new data from existing data collected on the OLTP side. In contrast, OLTP workloads are characterized by fast, relatively simple and repetitive queries that operate on a single entity at a time (usually involving an update or insert).&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Database Systems - Query Execution</title>
       <link>http://localhost:1313/posts/db-systems-query-processing/</link>

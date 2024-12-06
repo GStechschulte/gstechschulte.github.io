@@ -6,22 +6,39 @@
     <description>Recent content in Posts on The Log</description>
     <generator>Hugo -- 0.135.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 28 Nov 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 01 Dec 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Database Systems - Storage</title>
+      <link>http://localhost:1313/posts/db-systems-file-formats/</link>
+      <pubDate>Sun, 01 Dec 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/db-systems-file-formats/</guid>
+      <description>&lt;p&gt;Outline:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Introduction on the different workloads (OLAP vs. OLTP).&lt;/li&gt;
+&lt;li&gt;Why these workloads result in different storage models (and what these storage models are)&lt;/li&gt;
+&lt;li&gt;File formats for OLTP&lt;/li&gt;
+&lt;li&gt;File formats for OLAP&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;As the business landscape embraces data-driven approaches for analysis and decision-making, there is a rapid surge in the volume of data requiring storage and processing. This surge has led to the growing popularity of OLAP database systems.&lt;/p&gt;
+&lt;p&gt;An OLAP system workload is characterized by complex queries that require scanning over large portions of the database. In OLAP workloads, the database system is often analyzing and deriving new data from existing data collected on the OLTP side. In contrast, OLTP workloads are characterized by fast, relatively simple and repetitive queries that operate on a single entity at a time (usually involving an update or insert).&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Creating C Callbacks with Numba and Calling Them From Rust</title>
+      <link>http://localhost:1313/posts/2024-11-30-c-callbacks/</link>
+      <pubDate>Sat, 30 Nov 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2024-11-30-c-callbacks/</guid>
+      <description>&lt;p&gt;When interfacing with libraries written in C/C++ from Rust, it may require writing native callbacks to provide functionality or logic to the library. A C Callback is a function pointer that is passed as an argument to another function, allowing that function to &amp;ldquo;call back&amp;rdquo; and execute the passed function at runtime.&lt;/p&gt;
+&lt;p&gt;When interfacing with Python from Rust, there may be scenarios where the Rust code also needs to be able to call a Python function. Rust&amp;rsquo;s foreign function interface (FFI) and &lt;code&gt;pyo3&lt;/code&gt; crate in fact lets you do this. However, calling Python from Rust involves invoking the Python interpreter, which can reduce performance. If one of the goals for using Rust is to improve the performance of your application or library, this overhead might be undesirable. To avoid invoking the Python interpreter, you can use Numba. Numba allows you to create a C callback, pass this function pointer to Rust, and perform the callback without incurring the overhead associated with Python.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Daily Rust - Memory Layout of Different Types</title>
       <link>http://localhost:1313/posts/2024-11-28-daily-rust-types/</link>
       <pubDate>Thu, 28 Nov 2024 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/2024-11-28-daily-rust-types/</guid>
       <description></description>
-    </item>
-    <item>
-      <title>Creating C Callbacks with Numba and Calling Them From Rust</title>
-      <link>http://localhost:1313/posts/2024-11-08-c-callbacks/</link>
-      <pubDate>Fri, 08 Nov 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/2024-11-08-c-callbacks/</guid>
-      <description>&lt;p&gt;When interfacing with libraries written in C/C++ from Rust, it may require writing native callbacks to provide functionality or logic to the library. A C Callback is a function pointer that is passed as an argument to another function, allowing that function to &amp;ldquo;call back&amp;rdquo; and execute the passed function at runtime.&lt;/p&gt;
-&lt;p&gt;When writing Rust code with Python bindings, there may be scenarios where the Rust code also needs to be able to call a Python function. Rust&amp;rsquo;s foreign function interface (FFI) and &lt;code&gt;pyo3&lt;/code&gt; crate in fact lets you do this. However, when calling Python from Rust, you take a performance hit as you invoke the Python interpreter. What if you do not want to invoke the Python interpreter? Enter Numba. You can use Numba to create a C callback, pass this function pointer to Rust to perform the callback, all while not incurring the overhead of Python.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Daily Rust - Using Trait Objects That Allow for Different Types</title>

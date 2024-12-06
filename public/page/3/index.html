@@ -150,6 +150,32 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Metropolis Hastings Sampler From Scratch
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> Main Idea Metropolis-Hastings (MH) is one of the simplest kinds of MCMC algorithms. The idea with MH is that at each step, we propose to move from the current state $x$ to a new state $x’$ with probability $q(x’|x)$, where $q$ is the proposal distribution. The user is free to choose the proposal distribution and the choice of the proposal is dependent on the form of the target distribution. Once a proposal has been made to move to $x’$, we then decide whether to accept or reject the proposal according to some rule. If the proposal is accepted, the new state is $x’$, else the new state is the same as the current state $x$.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2022-10-08 00:00:00 +0000 UTC'>October 8, 2022</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Metropolis Hastings Sampler From Scratch" href="http://localhost:1313/posts/metropolis-hastings-sampler/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Monte Carlo Approximation
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> Inference In the probabilistic approach to machine learning, all unknown quantities—predictions about the future, hidden states of a system, or parameters of a model—are treated as random variables, and endowed with probability distributions. The process of inference corresponds to computing the posterior distribution over these quantities, conditioning on whatever data is available. Given that the posterior is a probability distribution, we can draw samples from it. The samples in this case are parameter values. The Bayesian formalism treats parameter distributions as the degrees of relative plausibility, i.e., if this parameter is chosen, how likely is the data to have arisen? We use Bayes’ rule for this process of inference. Let $h$ represent the uknown variables and $D$ the known variables, i.e., the data. Given a likelihood $p(D|h)$ and a prior $p(h)$, we can compute the posterior $p(h|D)$ using Bayes’ rule:
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2022-10-07 00:00:00 +0000 UTC'>October 7, 2022</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Monte Carlo Approximation" href="http://localhost:1313/posts/monte-carlo-approximation/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Variational Inference - Evidence Lower Bound
     </h2>
   </header>
