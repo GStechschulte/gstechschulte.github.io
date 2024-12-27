@@ -16,7 +16,13 @@ This blog aims to provide an overview of the popular data storage representation
 
 ## Storage models
 
-The difference in access patterns between OLTP and OLAP means that each system can optimize for their respective data access patterns, e.g. OLAP systems can optimize for techniques like sequential scans where the system can scan through large chunks of data at a time. Due to the different access patterns, OLTP and OLAP systems have different storage models. A DBMS's storage model specifies how it physically organizes tuples on disk and in memory. There are three primary storage models: (1) N-ary (or row-oriented), (2) decomposition (or columnar), and (3) hybrid. Each of these storage models is discussed below.
+The difference in access patterns between OLTP and OLAP means that each system can optimize for their respective data access patterns, e.g. OLAP systems can optimize for techniques like sequential scans where the system can scan through large chunks of data at a time. Due to the different access patterns, OLTP and OLAP systems have different storage models. A DBMS's storage model specifies how it physically organizes tuples on disk and in memory. There are three primary storage models: (1) N-ary (row-oriented), (2) decomposition (columnar), and (3) hybrid. Each of these storage models is discussed below.
+
+### Storage manager
+
+Assuming the DB is not in-memory, a DBMS stores a DB as files on disk. The DBMS _storage manager_ is responsible for managing the DB's files, e.g. keeping track of what has been read and written to pages as well as how much free space is in these pages. It represents these files as a collection of pages
+
+
 
 ### Row-oriented
 
