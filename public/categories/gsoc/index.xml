@@ -1,38 +1,33 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Gsoc on The Log</title>
-    <link>http://localhost:1313/categories/gsoc/</link>
+    <link>https://gstechschulte.github.io/categories/gsoc/</link>
     <description>Recent content in Gsoc on The Log</description>
-    <generator>Hugo -- 0.135.0</generator>
+    <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 10 Aug 2023 18:43:46 +0200</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/gsoc/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://gstechschulte.github.io/categories/gsoc/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Google Summer of Code - Final Report</title>
-      <link>http://localhost:1313/posts/gsoc-final-report/</link>
+      <link>https://gstechschulte.github.io/posts/gsoc-final-report/</link>
       <pubDate>Thu, 10 Aug 2023 18:43:46 +0200</pubDate>
-      <guid>http://localhost:1313/posts/gsoc-final-report/</guid>
-      <description>&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;bambi-logo.png&#34; alt=&#34;alt&#34;  /&gt;
-&lt;/p&gt;
-&lt;p&gt;My project &amp;ldquo;Better tools to interpret complex Bambi regression models&amp;rdquo; was completed under the organization of NumFOCUS, and mentors Tomás Capretto and Osvaldo Martin. Before I describe the project, objectives, and work completed, I would like to thank my mentors Tomás and Osvaldo for their precious time and support throughout the summer. They were always available and timely in communicating over Slack and GitHub, and provided valuable feedback during code reviews. Additionally, I would like to thank NumFOCUS and the Google Summer of Code (GSoC) program for providing the opportunity to work on such an open source project over the summer. It has been an invaluable experience, and I look forward to contributing to open source projects in the future.&lt;/p&gt;</description>
+      <guid>https://gstechschulte.github.io/posts/gsoc-final-report/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;bambi-logo.png&#34; alt=&#34;alt&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;My project &amp;ldquo;Better tools to interpret complex Bambi regression models&amp;rdquo; was completed under the organization of NumFOCUS, and mentors Tomás Capretto and Osvaldo Martin. Before I describe the project, objectives, and work completed, I would like to thank my mentors Tomás and Osvaldo for their precious time and support throughout the summer. They were always available and timely in communicating over Slack and GitHub, and provided valuable feedback during code reviews. Additionally, I would like to thank NumFOCUS and the Google Summer of Code (GSoC) program for providing the opportunity to work on such an open source project over the summer. It has been an invaluable experience, and I look forward to contributing to open source projects in the future.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Google Summer of Code - Average Predictive Slopes</title>
-      <link>http://localhost:1313/posts/bambi-slopes/</link>
+      <link>https://gstechschulte.github.io/posts/bambi-slopes/</link>
       <pubDate>Tue, 01 Aug 2023 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/bambi-slopes/</guid>
-      <description>&lt;!-- raw HTML omitted --&gt;
-&lt;p&gt;It is currently the beginning of week ten of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the basic functionality of the &lt;code&gt;plot_slopes&lt;/code&gt;. Subsequently, week 11 was reserved to further develop the &lt;code&gt;plot_slopes&lt;/code&gt; function, and to write tests and a notebook for the documentation, respectively.&lt;/p&gt;
-&lt;p&gt;However, at the beginning of week ten, I have a &lt;a href=&#34;https://github.com/bambinos/bambi/pull/699&#34;&gt;PR&lt;/a&gt; open with the majority of the functionality that &lt;a href=&#34;https://vincentarelbundock.github.io/marginaleffects/&#34;&gt;marginaleffects&lt;/a&gt; has for &lt;code&gt;slopes&lt;/code&gt;. In addition, I also exposed the &lt;code&gt;slopes&lt;/code&gt; function, added tests, and have a &lt;a href=&#34;https://github.com/bambinos/bambi/pull/701&#34;&gt;PR&lt;/a&gt; open for the documentation.&lt;/p&gt;</description>
+      <guid>https://gstechschulte.github.io/posts/bambi-slopes/</guid>
+      <description>&lt;!-- raw HTML omitted --&gt;&#xA;&lt;p&gt;It is currently the beginning of week ten of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the basic functionality of the &lt;code&gt;plot_slopes&lt;/code&gt;. Subsequently, week 11 was reserved to further develop the &lt;code&gt;plot_slopes&lt;/code&gt; function, and to write tests and a notebook for the documentation, respectively.&lt;/p&gt;&#xA;&lt;p&gt;However, at the beginning of week ten, I have a &lt;a href=&#34;https://github.com/bambinos/bambi/pull/699&#34;&gt;PR&lt;/a&gt; open with the majority of the functionality that &lt;a href=&#34;https://vincentarelbundock.github.io/marginaleffects/&#34;&gt;marginaleffects&lt;/a&gt; has for &lt;code&gt;slopes&lt;/code&gt;. In addition, I also exposed the &lt;code&gt;slopes&lt;/code&gt; function, added tests, and have a &lt;a href=&#34;https://github.com/bambinos/bambi/pull/701&#34;&gt;PR&lt;/a&gt; open for the documentation.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Google Summer of Code - Average Predictive Comparisons</title>
-      <link>http://localhost:1313/posts/bambi-comparisons/</link>
+      <link>https://gstechschulte.github.io/posts/bambi-comparisons/</link>
       <pubDate>Fri, 30 Jun 2023 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/bambi-comparisons/</guid>
-      <description>&lt;!-- raw HTML omitted --&gt;
-&lt;p&gt;It is currently the end of week five of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the core functionality of the &lt;code&gt;plot_comparisons&lt;/code&gt;. Subsequently, week six and seven were to be spent further developing the &lt;code&gt;plot_comparisons&lt;/code&gt; function, and writing tests and a demo notebook for the documentation, respectively. However, at the end of week five, I have a PR open with the majority of the functionality that &lt;a href=&#34;https://vincentarelbundock.github.io/marginaleffects/&#34;&gt;marginaleffects&lt;/a&gt; has. In addition, I also exposed the &lt;code&gt;comparisons&lt;/code&gt; function, added tests (which can and will be improved), and have started on documentation.&lt;/p&gt;</description>
+      <guid>https://gstechschulte.github.io/posts/bambi-comparisons/</guid>
+      <description>&lt;!-- raw HTML omitted --&gt;&#xA;&lt;p&gt;It is currently the end of week five of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the core functionality of the &lt;code&gt;plot_comparisons&lt;/code&gt;. Subsequently, week six and seven were to be spent further developing the &lt;code&gt;plot_comparisons&lt;/code&gt; function, and writing tests and a demo notebook for the documentation, respectively. However, at the end of week five, I have a PR open with the majority of the functionality that &lt;a href=&#34;https://vincentarelbundock.github.io/marginaleffects/&#34;&gt;marginaleffects&lt;/a&gt; has. In addition, I also exposed the &lt;code&gt;comparisons&lt;/code&gt; function, added tests (which can and will be improved), and have started on documentation.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

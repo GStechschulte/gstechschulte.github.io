@@ -22,8 +22,6 @@ The difference in access patterns between OLTP and OLAP means that each system c
 
 Assuming the DB is not in-memory, a DBMS stores a DB as files on disk. The DBMS _storage manager_ is responsible for managing the DB's files, e.g. keeping track of what has been read and written to pages as well as how much free space is in these pages. It represents these files as a collection of pages
 
-
-
 ### Row-oriented
 
 Assuming the DB is not in-memory, a DBMS stores a DB as files on disk. The DBMS _storage manager_ is responsible for managing the DB's files, e.g. keeping track of what has been read and written to pages as well as how much free space is in these pages. It represents these files as a collection of pages and in row-oriented storage, the DBMS stores (almost) all the attributes for a single tuple (row) contiguously in a single page in a file. This is ideal for OLTP workloads because transactions usually access individual entities and are insert-heavy.
@@ -40,7 +38,19 @@ Each page is given a unique identifier, and most DBMSs have an indirection layer
 
 #### Page storage architecture
 
-**TODO: content**
+When accessing data from the DB, there needs to be a way to find the location of the page where the data resides. *Heap file organization* is a method to achieve this. A heap file is an unordered collection of pages where tuples are stored in random order.
+
+It is easy to locate the desired page if there is only one file. Where there are multiple files, there needs to be metadata to keep track of what pages exist in multiple files and which ones have free space. The DBMS can locate a page on disk given a page id by using a linked list of pages or a page directory.
+
+- **Linked list**. Header page holds pointers to a list of free pages and a list of data pages. However, if the DBMS is looking fo a specific page, it has to do a sequential scan on the data page list until it finds the page it is looking for.
+- **Page directory**. The DBMS maintains special pages that tracks the location of data pages in the database files.
+
+**TODO: insert diagram here**
+
+Other methods for managing files on disk include:
+- Tree file organization
+- Sequential/sorted organization (ISAM)
+- Hash organization
 
 #### Page layout
 
@@ -106,7 +116,7 @@ Thus, a columnar scheme that still stores attributes separately but keeps the da
 
 ### Hybrid (PAX)
 
-Partition across attributes (PAX) is a hybrid storage model that horizontally partitions data into _row groups_. Then, vertically partitions thir attributes into _column chunks_. All within a DB page. This is what Parquet and Orc use. The goal with PAX is to get the benefit of faster processing on columnar storage while retaining the spatial locality benefits of row storage.
+Partition across attributes (PAX) is a hybrid storage model that horizontally partitions data into _row groups_, and then vertically partitions their attributes into _column chunks_—All within a DB page. This is what Parquet and Orc use. The goal with PAX is to get the benefit of faster processing on columnar storage while retaining the spatial locality benefits of row storage.
 
 **TODO: insert diagram here**
 
@@ -176,7 +186,7 @@ Compression made more sense in the 2000s and 2010s because the main bottleneck w
 
 #### Filters
 
-First, the difference between a filter and an index. An index tells you were data is, whereas a filter tells you if something does exist. There are several types of filters in DB systems to boost search performance.
+First, the difference between a filter and an index. An index tells you were data is, whereas a filter tells you if something exists. There are several types of filters in DB systems to boost search performance.
 
 **Zone maps**. Maintain min/max values per column at the file and row group level. Parquet and Orc store zone maps in the header of each row group.
 
