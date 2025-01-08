@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>Stateful Joins in SQL | The Log</title>
+<title>Stateful Joins in SQL | Gabe&#39;s Gulch</title>
 <meta name="keywords" content="">
 <meta name="description" content="Introduction
 In some scenarios, one needs to enrich an event stream with data from another source that holds &ldquo;state&rdquo;. This state provides additional context to the event stream.
@@ -108,7 +108,7 @@ For example, in manufacturing, a machine may use a set of machine process parame
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="The Log (Alt + H)">The Log</a>
+            <a href="http://localhost:1313/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -272,72 +272,72 @@ For example, in manufacturing, a machine may use a set of machine process parame
 </span></span></code></pre></div><table>
   <thead>
       <tr>
-          <th style="text-align: left">time</th>
-          <th style="text-align: left">product_id</th>
-          <th style="text-align: left">change_time</th>
-          <th style="text-align: left">speed</th>
+          <th>time</th>
+          <th>product_id</th>
+          <th>change_time</th>
+          <th>speed</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td style="text-align: left">2024-01-01 05:00:00.000000 +00:00</td>
-          <td style="text-align: left">1</td>
-          <td style="text-align: left">2024-01-01 02:00:00.000000 +00:00</td>
-          <td style="text-align: left">40</td>
+          <td>2024-01-01 05:00:00.000000 +00:00</td>
+          <td>1</td>
+          <td>2024-01-01 02:00:00.000000 +00:00</td>
+          <td>40</td>
       </tr>
       <tr>
-          <td style="text-align: left">2024-01-01 05:01:00.000000 +00:00</td>
-          <td style="text-align: left">1</td>
-          <td style="text-align: left">2024-01-01 02:00:00.000000 +00:00</td>
-          <td style="text-align: left">40</td>
+          <td>2024-01-01 05:01:00.000000 +00:00</td>
+          <td>1</td>
+          <td>2024-01-01 02:00:00.000000 +00:00</td>
+          <td>40</td>
       </tr>
       <tr>
-          <td style="text-align: left">2024-01-01 05:02:00.000000 +00:00</td>
-          <td style="text-align: left">1</td>
-          <td style="text-align: left">2024-01-01 02:00:00.000000 +00:00</td>
-          <td style="text-align: left">40</td>
+          <td>2024-01-01 05:02:00.000000 +00:00</td>
+          <td>1</td>
+          <td>2024-01-01 02:00:00.000000 +00:00</td>
+          <td>40</td>
       </tr>
       <tr>
-          <td style="text-align: left">2024-01-01 05:03:00.000000 +00:00</td>
-          <td style="text-align: left">1</td>
-          <td style="text-align: left">2024-01-01 02:00:00.000000 +00:00</td>
-          <td style="text-align: left">40</td>
+          <td>2024-01-01 05:03:00.000000 +00:00</td>
+          <td>1</td>
+          <td>2024-01-01 02:00:00.000000 +00:00</td>
+          <td>40</td>
       </tr>
       <tr>
-          <td style="text-align: left">2024-01-01 05:04:00.000000 +00:00</td>
-          <td style="text-align: left">1</td>
-          <td style="text-align: left">2024-01-01 02:00:00.000000 +00:00</td>
-          <td style="text-align: left">40</td>
+          <td>2024-01-01 05:04:00.000000 +00:00</td>
+          <td>1</td>
+          <td>2024-01-01 02:00:00.000000 +00:00</td>
+          <td>40</td>
       </tr>
       <tr>
-          <td style="text-align: left">2024-01-01 05:05:00.000000 +00:00</td>
-          <td style="text-align: left">1</td>
-          <td style="text-align: left">2024-01-01 02:00:00.000000 +00:00</td>
-          <td style="text-align: left">40</td>
+          <td>2024-01-01 05:05:00.000000 +00:00</td>
+          <td>1</td>
+          <td>2024-01-01 02:00:00.000000 +00:00</td>
+          <td>40</td>
       </tr>
       <tr>
-          <td style="text-align: left">2024-01-01 05:10:00.000000 +00:00</td>
-          <td style="text-align: left">2</td>
-          <td style="text-align: left">2024-01-01 05:07:00.000000 +00:00</td>
-          <td style="text-align: left">60</td>
+          <td>2024-01-01 05:10:00.000000 +00:00</td>
+          <td>2</td>
+          <td>2024-01-01 05:07:00.000000 +00:00</td>
+          <td>60</td>
       </tr>
       <tr>
-          <td style="text-align: left">2024-01-01 05:11:00.000000 +00:00</td>
-          <td style="text-align: left">2</td>
-          <td style="text-align: left">2024-01-01 05:07:00.000000 +00:00</td>
-          <td style="text-align: left">60</td>
+          <td>2024-01-01 05:11:00.000000 +00:00</td>
+          <td>2</td>
+          <td>2024-01-01 05:07:00.000000 +00:00</td>
+          <td>60</td>
       </tr>
       <tr>
-          <td style="text-align: left">2024-01-01 05:12:00.000000 +00:00</td>
-          <td style="text-align: left">2</td>
-          <td style="text-align: left">2024-01-01 05:07:00.000000 +00:00</td>
-          <td style="text-align: left">60</td>
+          <td>2024-01-01 05:12:00.000000 +00:00</td>
+          <td>2</td>
+          <td>2024-01-01 05:07:00.000000 +00:00</td>
+          <td>60</td>
       </tr>
       <tr>
-          <td style="text-align: left">2024-01-01 05:13:00.000000 +00:00</td>
-          <td style="text-align: left">2</td>
-          <td style="text-align: left">2024-01-01 05:07:00.000000 +00:00</td>
-          <td style="text-align: left">60</td>
+          <td>2024-01-01 05:13:00.000000 +00:00</td>
+          <td>2</td>
+          <td>2024-01-01 05:07:00.000000 +00:00</td>
+          <td>60</td>
       </tr>
   </tbody>
 </table>
@@ -354,7 +354,7 @@ For example, in manufacturing, a machine may use a set of machine process parame
     </main>
     
 <footer class="footer">
-        <span>&copy; 2024 <a href="http://localhost:1313/">The Log</a></span> · 
+        <span>&copy; 2025 <a href="http://localhost:1313/">Gabe&#39;s Gulch</a></span> · 
 
     <span>
         Powered by

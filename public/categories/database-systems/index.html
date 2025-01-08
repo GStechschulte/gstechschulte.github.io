@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>Database-Systems | The Log</title>
+<title>Database-Systems | Gabe&#39;s Gulch</title>
 <meta name="keywords" content="">
 <meta name="description" content="">
 <meta name="author" content="">
@@ -107,7 +107,7 @@
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="The Log (Alt + H)">The Log</a>
+            <a href="http://localhost:1313/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -154,13 +154,22 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Database Systems - Storage
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
+    <h2 class="entry-hint-parent">[WIP] Database Systems - Query Execution and Processing
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Operator execution In OLAP systems, sequential scans are the primary method for query execution. The goal is two-fold: (1) minimize the amount of data fetched from the disk or a remote object store, and (2) maximize the use of hardware resources for efficient query execution.
+Andy’s (unscientific) top three execution optimization techniques:
+Data parallelization (vectorization). Breaking down a query into smaller tasks and running them in parallel on different cores, threads, or nodes. Task parallelization (multi-threading). Breaking down a query into smaller independent tasks and executing them concurrently. This allows the DBMS to take full advantage of hardware capabilities and or multiple machines to improve query execution time. Code specialization (pre-compiled / JIT). Code generation for specific queries, e.g. JIT or pre-compiled parameters. which fall into three primary ways for speeding up queries:
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-01-01 00:00:00 +0000 UTC'>January 1, 2025</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to [WIP] Database Systems - Query Execution and Processing" href="http://localhost:1313/posts/db-systems-query-processing/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">[WIP] Database Systems - Storage
     </h2>
   </header>
   <div class="entry-content">
@@ -168,29 +177,8 @@
 An OLAP system workload is characterized by complex queries that require scanning over large portions of the database. In OLAP workloads, the database system is often analyzing and deriving new data from existing data collected on the OLTP side. In contrast, OLTP workloads are characterized by fast, relatively simple and repetitive queries that operate on a single entity at a time (usually involving an update or insert).
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2024-12-01 00:00:00 +0000 UTC'>December 1, 2024</span>&nbsp;·&nbsp;10 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Database Systems - Storage" href="http://localhost:1313/posts/db-systems-file-formats/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Database Systems - Query Execution
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Query plan The DBMS converts a SQL statement into a query plan. Operators in the query plan are arranged in a tree. Data flows from the leaves of this tree towards the root node.
-The output of the root node in the tree is the result of the query. The same query plan can be executed in multiple ways.
-SELECT A.id, B.value FROM A JOIN B USING (id) WHERE A.value &lt; 99 AND B.value &gt; 100; TODO: Add query plan diagram here..
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-10-23 00:00:00 +0000 UTC'>October 23, 2024</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Database Systems - Query Execution" href="http://localhost:1313/posts/db-systems-query-processing/"></a>
+  <footer class="entry-footer"><span title='2024-12-01 00:00:00 +0000 UTC'>December 1, 2024</span>&nbsp;·&nbsp;12 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to [WIP] Database Systems - Storage" href="http://localhost:1313/posts/db-systems-file-formats/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
@@ -210,7 +198,7 @@ Database storage Indexes Join algorithms Query execution and processing Query op
     </main>
     
 <footer class="footer">
-        <span>&copy; 2024 <a href="http://localhost:1313/">The Log</a></span> · 
+        <span>&copy; 2025 <a href="http://localhost:1313/">Gabe&#39;s Gulch</a></span> · 
 
     <span>
         Powered by

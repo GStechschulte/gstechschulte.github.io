@@ -1,9 +1,9 @@
 +++
-title = 'Database Systems - Storage'
+title = '[WIP] Database Systems - Storage'
 date = 2024-12-01
 author = 'Gabriel Stechschulte'
 categories = ['database-systems']
-draft = true
+draft = false
 +++
 
 ## Introduction

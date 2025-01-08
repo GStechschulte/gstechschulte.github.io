@@ -1,19 +1,55 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Database-Systems on The Log</title>
-    <link>https://gstechschulte.github.io/categories/database-systems/</link>
-    <description>Recent content in Database-Systems on The Log</description>
-    <generator>Hugo</generator>
+    <title>Database-Systems on Gabe&#39;s Gulch</title>
+    <link>http://localhost:1313/categories/database-systems/</link>
+    <description>Recent content in Database-Systems on Gabe&#39;s Gulch</description>
+    <generator>Hugo -- 0.140.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 22 Oct 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://gstechschulte.github.io/categories/database-systems/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 01 Jan 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/database-systems/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[WIP] Database Systems - Query Execution and Processing</title>
+      <link>http://localhost:1313/posts/db-systems-query-processing/</link>
+      <pubDate>Wed, 01 Jan 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/db-systems-query-processing/</guid>
+      <description>&lt;h2 id=&#34;operator-execution&#34;&gt;Operator execution&lt;/h2&gt;
+&lt;p&gt;In OLAP systems, sequential scans are the primary method for query execution. The goal is two-fold: (1) minimize the amount of data fetched from the disk or a remote object store, and (2) maximize the use of hardware resources for efficient query execution.&lt;/p&gt;
+&lt;p&gt;Andy’s (unscientific) top three execution optimization techniques:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Data parallelization (vectorization)&lt;/strong&gt;. Breaking down a query into smaller tasks and running them in parallel on different cores, threads, or nodes.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Task parallelization (multi-threading)&lt;/strong&gt;. Breaking down a query into smaller independent tasks and executing them concurrently. This allows the DBMS to take full advantage of hardware capabilities and or multiple machines to improve query execution time.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Code specialization (pre-compiled / JIT)&lt;/strong&gt;. Code generation for specific queries, e.g. JIT or pre-compiled parameters.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;which fall into three primary ways for speeding up queries:&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>[WIP] Database Systems - Storage</title>
+      <link>http://localhost:1313/posts/db-systems-file-formats/</link>
+      <pubDate>Sun, 01 Dec 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/db-systems-file-formats/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;As the business landscape embraces data-driven approaches for analysis and decision-making, there is a rapid surge in the volume of data requiring storage and processing. This surge has led to the growing popularity of OLAP database systems.&lt;/p&gt;
+&lt;p&gt;An OLAP system workload is characterized by complex queries that require scanning over large portions of the database. In OLAP workloads, the database system is often analyzing and deriving new data from existing data collected on the OLTP side. In contrast, OLTP workloads are characterized by fast, relatively simple and repetitive queries that operate on a single entity at a time (usually involving an update or insert).&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Database Systems - Series Overview</title>
-      <link>https://gstechschulte.github.io/posts/db-systems-blog-series-overview/</link>
+      <link>http://localhost:1313/posts/db-systems-blog-series-overview/</link>
       <pubDate>Tue, 22 Oct 2024 00:00:00 +0000</pubDate>
-      <guid>https://gstechschulte.github.io/posts/db-systems-blog-series-overview/</guid>
-      <description>&lt;p&gt;A blog series consisting of my notes on the Carnegie Mellon University (CMU) Introduction and Advanced Database Systems Lectures by Andy Pavlo and Jignesh Patel. The primary goal of this series is to: (1) consolidate my notes, and (2) act as a reference guide for my future self. Perhaps some readers may extract some value, but I would highly recommend watching the lectures for yourself.&lt;/p&gt;&#xA;&lt;p&gt;The series will cover:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Database storage&lt;/li&gt;&#xA;&lt;li&gt;Indexes&lt;/li&gt;&#xA;&lt;li&gt;Join algorithms&lt;/li&gt;&#xA;&lt;li&gt;Query execution and processing&lt;/li&gt;&#xA;&lt;li&gt;Query optimization&lt;/li&gt;&#xA;&lt;li&gt;Query scheduling and coordination&lt;/li&gt;&#xA;&lt;li&gt;Concurrency control&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;olap-database-management-system-components&#34;&gt;OLAP database management system components&lt;/h2&gt;&#xA;&lt;p&gt;The series will primarily focus on the components of OLAP database management systems (DBMS). A recent trend of the last decade is the breakout of OLAP DBMS components into standalone services and libraries for:&lt;/p&gt;</description>
+      <guid>http://localhost:1313/posts/db-systems-blog-series-overview/</guid>
+      <description>&lt;p&gt;A blog series consisting of my notes on the Carnegie Mellon University (CMU) Introduction and Advanced Database Systems Lectures by Andy Pavlo and Jignesh Patel. The primary goal of this series is to: (1) consolidate my notes, and (2) act as a reference guide for my future self. Perhaps some readers may extract some value, but I would highly recommend watching the lectures for yourself.&lt;/p&gt;
+&lt;p&gt;The series will cover:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Database storage&lt;/li&gt;
+&lt;li&gt;Indexes&lt;/li&gt;
+&lt;li&gt;Join algorithms&lt;/li&gt;
+&lt;li&gt;Query execution and processing&lt;/li&gt;
+&lt;li&gt;Query optimization&lt;/li&gt;
+&lt;li&gt;Query scheduling and coordination&lt;/li&gt;
+&lt;li&gt;Concurrency control&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;olap-database-management-system-components&#34;&gt;OLAP database management system components&lt;/h2&gt;
+&lt;p&gt;The series will primarily focus on the components of OLAP database management systems (DBMS). A recent trend of the last decade is the breakout of OLAP DBMS components into standalone services and libraries for:&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

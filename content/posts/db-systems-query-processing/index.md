@@ -1,9 +1,9 @@
 +++
-title = 'Database Systems - Query Execution and Processing'
-date = 2024-10-23
+title = '[WIP] Database Systems - Query Execution and Processing'
+date = 2025-01-01
 author = 'Gabriel Stechschulte'
 categories = ['database-systems']
-draft = true
+draft = false
 math = true
 +++
 

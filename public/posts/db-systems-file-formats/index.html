@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>Database Systems - Storage | The Log</title>
+<title>[WIP] Database Systems - Storage | Gabe&#39;s Gulch</title>
 <meta name="keywords" content="">
 <meta name="description" content="Introduction
 As the business landscape embraces data-driven approaches for analysis and decision-making, there is a rapid surge in the volume of data requiring storage and processing. This surge has led to the growing popularity of OLAP database systems.
@@ -108,7 +108,7 @@ An OLAP system workload is characterized by complex queries that require scannin
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="The Log (Alt + H)">The Log</a>
+            <a href="http://localhost:1313/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -152,15 +152,9 @@ An OLAP system workload is characterized by complex queries that require scannin
   <header class="post-header">
     
     <h1 class="post-title entry-hint-parent">
-      Database Systems - Storage
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
+      [WIP] Database Systems - Storage
     </h1>
-    <div class="post-meta"><span title='2024-12-01 00:00:00 +0000 UTC'>December 1, 2024</span>&nbsp;·&nbsp;10 min&nbsp;·&nbsp;Gabriel Stechschulte
+    <div class="post-meta"><span title='2024-12-01 00:00:00 +0000 UTC'>December 1, 2024</span>&nbsp;·&nbsp;12 min&nbsp;·&nbsp;Gabriel Stechschulte
 
 </div>
   </header> 
@@ -169,7 +163,9 @@ An OLAP system workload is characterized by complex queries that require scannin
 <p>An OLAP system workload is characterized by complex queries that require scanning over large portions of the database. In OLAP workloads, the database system is often analyzing and deriving new data from existing data collected on the OLTP side. In contrast, OLTP workloads are characterized by fast, relatively simple and repetitive queries that operate on a single entity at a time (usually involving an update or insert).</p>
 <p>This blog aims to provide an overview of the popular data storage representations and encoding within OLTP and OLAP database systems. First, OLTP data storage is discussed followed by OLAP systems.</p>
 <h2 id="storage-models">Storage models<a hidden class="anchor" aria-hidden="true" href="#storage-models">#</a></h2>
-<p>The difference in access patterns between OLTP and OLAP means that each system can optimize for their respective data access patterns, e.g. OLAP systems can optimize for techniques like sequential scans where the system can scan through large chunks of data at a time. Due to the different access patterns, OLTP and OLAP systems have different storage models. A DBMS&rsquo;s storage model specifies how it physically organizes tuples on disk and in memory. There are three primary storage models: (1) N-ary (or row-oriented), (2) decomposition (or columnar), and (3) hybrid. Each of these storage models is discussed below.</p>
+<p>The difference in access patterns between OLTP and OLAP means that each system can optimize for their respective data access patterns, e.g. OLAP systems can optimize for techniques like sequential scans where the system can scan through large chunks of data at a time. Due to the different access patterns, OLTP and OLAP systems have different storage models. A DBMS&rsquo;s storage model specifies how it physically organizes tuples on disk and in memory. There are three primary storage models: (1) N-ary (row-oriented), (2) decomposition (columnar), and (3) hybrid. Each of these storage models is discussed below.</p>
+<h3 id="storage-manager">Storage manager<a hidden class="anchor" aria-hidden="true" href="#storage-manager">#</a></h3>
+<p>Assuming the DB is not in-memory, a DBMS stores a DB as files on disk. The DBMS <em>storage manager</em> is responsible for managing the DB&rsquo;s files, e.g. keeping track of what has been read and written to pages as well as how much free space is in these pages. It represents these files as a collection of pages</p>
 <h3 id="row-oriented">Row-oriented<a hidden class="anchor" aria-hidden="true" href="#row-oriented">#</a></h3>
 <p>Assuming the DB is not in-memory, a DBMS stores a DB as files on disk. The DBMS <em>storage manager</em> is responsible for managing the DB&rsquo;s files, e.g. keeping track of what has been read and written to pages as well as how much free space is in these pages. It represents these files as a collection of pages and in row-oriented storage, the DBMS stores (almost) all the attributes for a single tuple (row) contiguously in a single page in a file. This is ideal for OLTP workloads because transactions usually access individual entities and are insert-heavy.</p>
 <p>At a high level, the DBMS is managing a bunch of files. Within these files there are pages to break up the data into different chunks. Then, within this page, theere are tuples, i.e. the data (rows/records) of the tables.</p>
@@ -178,7 +174,19 @@ An OLAP system workload is characterized by complex queries that require scannin
 <p>Each page is given a unique identifier, and most DBMSs have an indirection layer that maps a page id to a file path and offset. The upper levels of the system will ask for a specific page number. Then, the storage manager will have to turn that page number into a file and an offset to find the page.</p>
 <p><strong>TODO: insert diagram here</strong></p>
 <h4 id="page-storage-architecture">Page storage architecture<a hidden class="anchor" aria-hidden="true" href="#page-storage-architecture">#</a></h4>
-<p><strong>TODO: content</strong></p>
+<p>When accessing data from the DB, there needs to be a way to find the location of the page where the data resides. <em>Heap file organization</em> is a method to achieve this. A heap file is an unordered collection of pages where tuples are stored in random order.</p>
+<p>It is easy to locate the desired page if there is only one file. Where there are multiple files, there needs to be metadata to keep track of what pages exist in multiple files and which ones have free space. The DBMS can locate a page on disk given a page id by using a linked list of pages or a page directory.</p>
+<ul>
+<li><strong>Linked list</strong>. Header page holds pointers to a list of free pages and a list of data pages. However, if the DBMS is looking fo a specific page, it has to do a sequential scan on the data page list until it finds the page it is looking for.</li>
+<li><strong>Page directory</strong>. The DBMS maintains special pages that tracks the location of data pages in the database files.</li>
+</ul>
+<p><strong>TODO: insert diagram here</strong></p>
+<p>Other methods for managing files on disk include:</p>
+<ul>
+<li>Tree file organization</li>
+<li>Sequential/sorted organization (ISAM)</li>
+<li>Hash organization</li>
+</ul>
 <h4 id="page-layout">Page layout<a hidden class="anchor" aria-hidden="true" href="#page-layout">#</a></h4>
 <p>Every page contains a header of metadata about the pages&rsquo;s:</p>
 <ul>
@@ -224,7 +232,7 @@ An OLAP system workload is characterized by complex queries that require scannin
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> product_id;
 </span></span></code></pre></div><p>Thus, a columnar scheme that still stores attributes separately but keeps the data for each tuple physically close to each other is desired.</p>
 <h3 id="hybrid-pax">Hybrid (PAX)<a hidden class="anchor" aria-hidden="true" href="#hybrid-pax">#</a></h3>
-<p>Partition across attributes (PAX) is a hybrid storage model that horizontally partitions data into <em>row groups</em>. Then, vertically partitions thir attributes into <em>column chunks</em>. All within a DB page. This is what Parquet and Orc use. The goal with PAX is to get the benefit of faster processing on columnar storage while retaining the spatial locality benefits of row storage.</p>
+<p>Partition across attributes (PAX) is a hybrid storage model that horizontally partitions data into <em>row groups</em>, and then vertically partitions their attributes into <em>column chunks</em>—All within a DB page. This is what Parquet and Orc use. The goal with PAX is to get the benefit of faster processing on columnar storage while retaining the spatial locality benefits of row storage.</p>
 <p><strong>TODO: insert diagram here</strong></p>
 <p>In most PAX model implementations such as Apache Parquet and Orc, the global metadata is the footer of the file. This is because most distributed file systems and OLAP workloads are very append-friendly and may not support in-place updates efficiently.</p>
 <h4 id="summary-1">Summary<a hidden class="anchor" aria-hidden="true" href="#summary-1">#</a></h4>
@@ -273,7 +281,7 @@ An OLAP system workload is characterized by complex queries that require scannin
 <p>Compression compresses data using a general-purpose algorithm (e.g. LZO, LZ4, Snappy, Zstd) and saves storage space, but can introduce computational overhead (compress versus decompress) and data opacity for the execution engine. Data opacity means if you run data through Snappy or Zstd, the DB system does not know what those bytes mean and you cannot go and jump to arbitrary offsets to find the data you are looking for. You need to decompress the whole block to interpret the data.</p>
 <p>Compression made more sense in the 2000s and 2010s because the main bottleneck was disk and network, so we were willing to pay CPU costs. But now, the CPU is actually one of the slower components and we have cheap object stores.</p>
 <h4 id="filters">Filters<a hidden class="anchor" aria-hidden="true" href="#filters">#</a></h4>
-<p>First, the difference between a filter and an index. An index tells you were data is, whereas a filter tells you if something does exist. There are several types of filters in DB systems to boost search performance.</p>
+<p>First, the difference between a filter and an index. An index tells you were data is, whereas a filter tells you if something exists. There are several types of filters in DB systems to boost search performance.</p>
 <p><strong>Zone maps</strong>. Maintain min/max values per column at the file and row group level. Parquet and Orc store zone maps in the header of each row group.</p>
 <p><strong>Bloom filters</strong>. A probabilistic data structure (can get false positives but never false negatives) that tracks the existence of values for each column in a row group.</p>
 <h4 id="nested-data">Nested data<a hidden class="anchor" aria-hidden="true" href="#nested-data">#</a></h4>
@@ -299,7 +307,7 @@ An OLAP system workload is characterized by complex queries that require scannin
     </main>
     
 <footer class="footer">
-        <span>&copy; 2024 <a href="http://localhost:1313/">The Log</a></span> · 
+        <span>&copy; 2025 <a href="http://localhost:1313/">Gabe&#39;s Gulch</a></span> · 
 
     <span>
         Powered by

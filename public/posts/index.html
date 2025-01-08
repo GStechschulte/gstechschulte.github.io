@@ -5,9 +5,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>Posts | The Log</title>
+<title>Posts | Gabe&#39;s Gulch</title>
 <meta name="keywords" content="">
-<meta name="description" content="Posts - The Log">
+<meta name="description" content="Posts - Gabe&#39;s Gulch">
 <meta name="author" content="">
 <link rel="canonical" href="http://localhost:1313/posts/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
@@ -107,7 +107,7 @@
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="The Log (Alt + H)">The Log</a>
+            <a href="http://localhost:1313/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -154,23 +154,31 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Database Systems - Storage
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
+    <h2 class="entry-hint-parent">[WIP] Database Systems - Query Execution and Processing
     </h2>
   </header>
   <div class="entry-content">
-    <p>Outline:
-Introduction on the different workloads (OLAP vs. OLTP). Why these workloads result in different storage models (and what these storage models are) File formats for OLTP File formats for OLAP Introduction As the business landscape embraces data-driven approaches for analysis and decision-making, there is a rapid surge in the volume of data requiring storage and processing. This surge has led to the growing popularity of OLAP database systems.
+    <p>Operator execution In OLAP systems, sequential scans are the primary method for query execution. The goal is two-fold: (1) minimize the amount of data fetched from the disk or a remote object store, and (2) maximize the use of hardware resources for efficient query execution.
+Andy’s (unscientific) top three execution optimization techniques:
+Data parallelization (vectorization). Breaking down a query into smaller tasks and running them in parallel on different cores, threads, or nodes. Task parallelization (multi-threading). Breaking down a query into smaller independent tasks and executing them concurrently. This allows the DBMS to take full advantage of hardware capabilities and or multiple machines to improve query execution time. Code specialization (pre-compiled / JIT). Code generation for specific queries, e.g. JIT or pre-compiled parameters. which fall into three primary ways for speeding up queries:
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-01-01 00:00:00 +0000 UTC'>January 1, 2025</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to [WIP] Database Systems - Query Execution and Processing" href="http://localhost:1313/posts/db-systems-query-processing/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">[WIP] Database Systems - Storage
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Introduction As the business landscape embraces data-driven approaches for analysis and decision-making, there is a rapid surge in the volume of data requiring storage and processing. This surge has led to the growing popularity of OLAP database systems.
 An OLAP system workload is characterized by complex queries that require scanning over large portions of the database. In OLAP workloads, the database system is often analyzing and deriving new data from existing data collected on the OLTP side. In contrast, OLTP workloads are characterized by fast, relatively simple and repetitive queries that operate on a single entity at a time (usually involving an update or insert).
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2024-12-01 00:00:00 +0000 UTC'>December 1, 2024</span>&nbsp;·&nbsp;5 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Database Systems - Storage" href="http://localhost:1313/posts/db-systems-file-formats/"></a>
+  <footer class="entry-footer"><span title='2024-12-01 00:00:00 +0000 UTC'>December 1, 2024</span>&nbsp;·&nbsp;12 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to [WIP] Database Systems - Storage" href="http://localhost:1313/posts/db-systems-file-formats/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -185,67 +193,6 @@ When interfacing with Python from Rust, there may be scenarios where the Rust co
   </div>
   <footer class="entry-footer"><span title='2024-11-30 00:00:00 +0000 UTC'>November 30, 2024</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
   <a class="entry-link" aria-label="post link to Creating C Callbacks with Numba and Calling Them From Rust" href="http://localhost:1313/posts/2024-11-30-c-callbacks/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Daily Rust - Memory Layout of Different Types
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p></p>
-  </div>
-  <footer class="entry-footer"><span title='2024-11-28 00:00:00 +0000 UTC'>November 28, 2024</span>&nbsp;·&nbsp;0 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Daily Rust - Memory Layout of Different Types" href="http://localhost:1313/posts/2024-11-28-daily-rust-types/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Daily Rust - Using Trait Objects That Allow for Different Types
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Trait objects…
-Associated types..
-You cannot use associated types with trait objects dyn Trait because:
-The compiler needs to know the exact signatures of methods at compile time to create the vtable for dynamic dispatch. Different implementations may have different function signatures involving the associated types. When using dyn Trait, you must specify the associated types because the vtables for different associated type implementations are not compatible. For example, dyn Y&lt;Y1 = String&gt; and dyn Y&lt;Y1 = u32&gt; have different vtables and cannot be used interchangeably. pub trait Iterator { type Item; fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;; ... } type Item; is an associated type. Each type that implements Iterator must specify what type of item it produces. Here’s what it looks like to implement Iterator for a type
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-11-01 00:00:00 +0000 UTC'>November 1, 2024</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Daily Rust - Using Trait Objects That Allow for Different Types" href="http://localhost:1313/posts/2024-11-01-daily-rust-trait-objects/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Database Systems - Query Execution
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Query plan The DBMS converts a SQL statement into a query plan. Operators in the query plan are arranged in a tree. Data flows from the leaves of this tree towards the root node.
-The output of the root node in the tree is the result of the query. The same query plan can be executed in multiple ways.
-SELECT A.id, B.value FROM A JOIN B USING (id) WHERE A.value &lt; 99 AND B.value &gt; 100; TODO: Add query plan diagram here..
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-10-23 00:00:00 +0000 UTC'>October 23, 2024</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Database Systems - Query Execution" href="http://localhost:1313/posts/db-systems-query-processing/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -317,6 +264,33 @@ These helper functions are data_grid and select_draws. The data_grid can be used
   <footer class="entry-footer"><span title='2023-12-09 00:00:00 +0000 UTC'>December 9, 2023</span>&nbsp;·&nbsp;9 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
   <a class="entry-link" aria-label="post link to Advanced Interpret Usage in Bambi" href="http://localhost:1313/posts/bambi-advanced-marginal-effects/"></a>
 </article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Outcome Constraints in Bayesian Optimization
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> #| code-fold: true import matplotlib.pyplot as plt import torch import numpy as np from botorch.acquisition import qLogExpectedImprovement from botorch.fit import fit_gpytorch_model from botorch.models import SingleTaskGP from botorch.optim import optimize_acqf from gpytorch.mlls import ExactMarginalLogLikelihood from torch.distributions import Normal plt.style.use(&#34;https://raw.githubusercontent.com/GStechschulte/filterjax/main/docs/styles.mplstyle&#34;) Outcome constraints In optimization, it is often the goal that we need to optimize an objective function while satisfying some constraints. For example, we may want to minimize the scrap rate by finding the optimal process parameters of an manufacturing machine. However, we know the scrap rate cannot be below 0. In another setting, we may want to maximize the throughput of a machine, but we know that the throughput cannot exceed the maximum belt speed of the machine. Thus, we need to find regions in the search space that both yield high objective values and satisfy these constraints. In this blog, we will focus on inequality outcome constraints. That is, the domain of the objective function is
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-11-28 00:00:00 +0000 UTC'>November 28, 2023</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Outcome Constraints in Bayesian Optimization" href="http://localhost:1313/posts/constrained-bayesian-optimization/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Survival Models in Bambi
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> Survival Models Survival models, also known as time-to-event models, are specialized statistical methods designed to analyze the time until the occurrence of an event of interest. In this notebook, a review of survival analysis (using non-parametric and parametric methods) and censored data is provided, followed by a survival model implementation in Bambi.
+This blog post is a copy of the survival models documentation I wrote for Bambi. The original post can be found here.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-10-25 00:00:00 +0000 UTC'>October 25, 2023</span>&nbsp;·&nbsp;20 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Survival Models in Bambi" href="http://localhost:1313/posts/bambi-survival-models/"></a>
+</article>
 <footer class="page-footer">
   <nav class="pagination">
     <a class="next" href="http://localhost:1313/posts/page/2/">Next&nbsp;&nbsp;»
@@ -326,7 +300,7 @@ These helper functions are data_grid and select_draws. The data_grid can be used
     </main>
     
 <footer class="footer">
-        <span>&copy; 2024 <a href="http://localhost:1313/">The Log</a></span> · 
+        <span>&copy; 2025 <a href="http://localhost:1313/">Gabe&#39;s Gulch</a></span> · 
 
     <span>
         Powered by

@@ -1,5 +1,5 @@
 +++
-title = 'By What Right?'
+title = 'Reflection - Atlas Shrugged'
 date = 2024-12-03
 author = 'Gabriel Stechschulte'
 categories = ['book-review']

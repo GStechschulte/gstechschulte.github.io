@@ -5,20 +5,17 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>Database Systems - Query Execution | The Log</title>
+<title>[WIP] Database Systems - Query Execution and Processing | Gabe&#39;s Gulch</title>
 <meta name="keywords" content="">
-<meta name="description" content="Query plan
-The DBMS converts a SQL statement into a query plan. Operators in the query plan
-are arranged in a tree. Data flows from the leaves of this tree towards the root node.
-The output of the root node in the tree is the result of the query. The same query
-plan can be executed in multiple ways.
-SELECT A.id, B.value
-FROM A
-JOIN B
-USING (id)
-WHERE A.value &lt; 99
-	AND B.value &gt; 100;
-TODO: Add query plan diagram here..">
+<meta name="description" content="Operator execution
+In OLAP systems, sequential scans are the primary method for query execution. The goal is two-fold: (1) minimize the amount of data fetched from the disk or a remote object store, and (2) maximize the use of hardware resources for efficient query execution.
+Andy’s (unscientific) top three execution optimization techniques:
+
+Data parallelization (vectorization). Breaking down a query into smaller tasks and running them in parallel on different cores, threads, or nodes.
+Task parallelization (multi-threading). Breaking down a query into smaller independent tasks and executing them concurrently. This allows the DBMS to take full advantage of hardware capabilities and or multiple machines to improve query execution time.
+Code specialization (pre-compiled / JIT). Code generation for specific queries, e.g. JIT or pre-compiled parameters.
+
+which fall into three primary ways for speeding up queries:">
 <meta name="author" content="Gabriel Stechschulte">
 <link rel="canonical" href="http://localhost:1313/posts/db-systems-query-processing/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
@@ -117,7 +114,7 @@ TODO: Add query plan diagram here..">
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="The Log (Alt + H)">The Log</a>
+            <a href="http://localhost:1313/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -161,23 +158,28 @@ TODO: Add query plan diagram here..">
   <header class="post-header">
     
     <h1 class="post-title entry-hint-parent">
-      Database Systems - Query Execution
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
+      [WIP] Database Systems - Query Execution and Processing
     </h1>
-    <div class="post-meta"><span title='2024-10-23 00:00:00 +0000 UTC'>October 23, 2024</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte
+    <div class="post-meta"><span title='2025-01-01 00:00:00 +0000 UTC'>January 1, 2025</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Gabriel Stechschulte
 
 </div>
   </header> 
-  <div class="post-content"><h2 id="query-plan">Query plan<a hidden class="anchor" aria-hidden="true" href="#query-plan">#</a></h2>
-<p>The DBMS converts a SQL statement into a query plan. Operators in the query plan
-are arranged in a tree. Data flows from the leaves of this tree towards the root node.</p>
-<p>The output of the root node in the tree is the result of the query. The same query
-plan can be executed in multiple ways.</p>
+  <div class="post-content"><h2 id="operator-execution">Operator execution<a hidden class="anchor" aria-hidden="true" href="#operator-execution">#</a></h2>
+<p>In OLAP systems, sequential scans are the primary method for query execution. The goal is two-fold: (1) minimize the amount of data fetched from the disk or a remote object store, and (2) maximize the use of hardware resources for efficient query execution.</p>
+<p>Andy’s (unscientific) top three execution optimization techniques:</p>
+<ul>
+<li><strong>Data parallelization (vectorization)</strong>. Breaking down a query into smaller tasks and running them in parallel on different cores, threads, or nodes.</li>
+<li><strong>Task parallelization (multi-threading)</strong>. Breaking down a query into smaller independent tasks and executing them concurrently. This allows the DBMS to take full advantage of hardware capabilities and or multiple machines to improve query execution time.</li>
+<li><strong>Code specialization (pre-compiled / JIT)</strong>. Code generation for specific queries, e.g. JIT or pre-compiled parameters.</li>
+</ul>
+<p>which fall into three primary ways for speeding up queries:</p>
+<ol>
+<li><strong>Reduce instruction count</strong>. Use fewer instructions to do the same amount of work.</li>
+<li><strong>Reduce cycles per instruction</strong>. Execute more CPU instructions in fewer cycles, i.e. data that we need is in L1/L2/L3 cache to maximize data locaclity.</li>
+<li><strong>Parallelize execution</strong>. Use multiple threads to compute each query in parallel.</li>
+</ol>
+<h2 id="query-execution">Query execution<a hidden class="anchor" aria-hidden="true" href="#query-execution">#</a></h2>
+<p>The DBMS converts a SQL statement into a <em>query plan</em>. This plan is a DAG of operators where each <em>operator instance</em> is an invocation of an operator on a unique segment of data. A task is a sequence of one or more operator instances. A <em>task set</em> is the collection of executable tasks for a logical pipeline.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> A.id, B.value
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> A
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">JOIN</span> B
@@ -185,27 +187,51 @@ plan can be executed in multiple ways.</p>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> A.value <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">99</span>
 </span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">AND</span> B.value <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">100</span>;
 </span></span></code></pre></div><p>TODO: Add query plan diagram here..</p>
-<h2 id="query-execution">Query execution<a hidden class="anchor" aria-hidden="true" href="#query-execution">#</a></h2>
-<p>A query plan is a DAG of operators where each <em>operator instance</em> is an invocation of an operator
-on a unique segment of data. A task is a sequence of one or more operator instances. A <em>task set</em>
-is the collection of executable tasks for a logical pipeline.</p>
+<p>The distinction between operators and operator instances is made because we can have multiple operators run in parallel, e.g. if table <code>A</code> is a billion rows, we can divide up the scan operator into 10 instances where each instance scans different files or row-groups in an object store.</p>
 <h2 id="processing-models">Processing models<a hidden class="anchor" aria-hidden="true" href="#processing-models">#</a></h2>
-<p>A DBMS <em>processing model</em> defines how the system executes a query plan and moves data from
-one operator to the next. It specifies how things like the direction in which the query plan is evaluated and what kind of data
-is passed between the operators along the way. There are different processing models with
-various tradeoffs for different workloads, e.g OLTP and OLAP. The three main execution models to consider are</p>
-<ul>
-<li>Iterator</li>
-<li>Materialization</li>
-<li>Vectorization</li>
-</ul>
-<p>Each processing model is comprised of two types of execution paths:</p>
+<p>A DBMS <em>processing model</em> defines how the system executes a query plan and moves data from one operator to the next. It specifies how things like the direction in which the query plan is evaluated and what kind of data is passed between the operators along the way. There are different processing models with various tradeoffs for different workloads, e.g OLTP and OLAP. The two different plan processing directions are:</p>
+<ol>
+<li><strong>Top-to-Bottom</strong>. Starts with the root node and &ldquo;pulls data up&rdquo; from the children. This approach always passes tuples with function calls.</li>
+<li><strong>Bottom-to-Top</strong>. Starts with leaf nodes and &ldquo;pushes data up&rdquo; to its parents.</li>
+</ol>
+<p>The three main processing models to consider are <strong>Iterator</strong>, <strong>Materialization</strong>, and <strong>Vectorization</strong> where each model is comprised of two types of execution paths:</p>
 <ol>
 <li><strong>Control flow</strong>. How the DBMS invokes an operator.</li>
 <li><strong>Data flow</strong>. How an operator sends its results.</li>
 </ol>
-<p>The output of an operator can be either whole tuples as in the N-ary storage model (row-oriented
-storage) or subsets of columns as in the decomposition storage model (column-oriented storage).</p>
+<p>The output of an operator can be either whole tuples as in the N-ary storage model (row-oriented storage) or subsets of columns as in the decomposition storage model (column-oriented storage).</p>
+<h3 id="iterator-model">Iterator model<a hidden class="anchor" aria-hidden="true" href="#iterator-model">#</a></h3>
+<p>Also known as the Volcano or Pipeline model, is a model where each query plan operator implements a <code>Next</code> function. On each invocation, the operator returns either a single tuple or an end of file (EOF) marker if there are no more tuples. The operator implements a loop that calls next on its children to retrieve their tuples and then process them. Each tuple is then processed up the plan as far as possible before
+the next tuple is retrieved.</p>
+<p>Query plan operators in an iterator model are highly composible because each operator can be implemented indepedent from its parent or child so long as it implements the <code>Next</code> function.</p>
+<p>The iterator model also allows for <em>pipelining</em> where the DBMS can process a tuple through as many operators as possible before having to retrieve the next tuple. The series of tasks performed for a given tuple in the query plan is called a <em>pipeline</em>. However, some operators may be blocked until their children emit all of their tuples, e.g. with joins, subqueries, and order bys.</p>
+<p><strong>TODO: insert diagram</strong></p>
+<p>The downside with the iterator model is that we are basically calling <code>Next</code> for every single tuple. If there are a billion tuples, then there will be one billion <code>Next</code> calls.</p>
+<h3 id="materialization-model">Materialization model<a hidden class="anchor" aria-hidden="true" href="#materialization-model">#</a></h3>
+<p>The materialization model is a specialization of the iterator model where instead of having a <code>Next</code> function that returns a single output, each operator processes all of its input and then emits its output all at once. The operator &ldquo;materializes&rdquo; its output as a single result. To avoid scanning too much input, the DBMS can push down hints, e.g. limits. The output can be either a whole tuple as in row-oriented storage or a subset of columns as in columnar storage.</p>
+<p><strong>TODO: insert diagram</strong></p>
+<p>Every query plan operator implements the <code>Output</code> function. The operator proceesses all of the tuples from its children at once. The return result of this function is all of the tuples that operator will ever emit.</p>
+<p>This approach is better for OLTP workloads because queries typically only access a small number of tuples at a time. Thus, there are fewer function calls to retrieve tuples. The materialization model is not suited for OLAP queries with large intermediate results because the DBMS may have to spill those results to disk between operators.</p>
+<h3 id="vectorization-model">Vectorization model<a hidden class="anchor" aria-hidden="true" href="#vectorization-model">#</a></h3>
+<p>The vectorization model is a hybrid approach of the iterator and materialization model. Like the iterator model where each operator implements a <code>Next</code> function, but each operator emits a batch of tuples instead of a single tuple. The operators internal loop processes multiples tuples at a time. The size of the batch can very based on hardware or query properties. Each batch will contain one or more colums with each having their own null bitmaps.</p>
+<p><strong>TODO: insert diagram</strong></p>
+<p>The vectorized model is considered ideal for OLAP queries because it greatly reduces the number of invocations per operator, removes tuple-navigation overhead, and allows operators to use vectorized (SIMD) instructions to process batches of tuples.</p>
+<h2 id="plan-processing-direction">Plan processing direction<a hidden class="anchor" aria-hidden="true" href="#plan-processing-direction">#</a></h2>
+<p>In the previous sections, the DBMS starts executing a query by invoking a <code>Next</code> at the root of the query plan and pulls data up from leaf operators. This <em>pull based</em> is how most DBMSs implement their execution engine. However, there is also <em>push based</em>.</p>
+<h3 id="top-to-bottom-pull">Top-to-bottom (pull)<a hidden class="anchor" aria-hidden="true" href="#top-to-bottom-pull">#</a></h3>
+<p>Starts with the root and pulls data up from its children. Tuples are always passed between operators using function calls (unless it&rsquo;s a pipeline breaker).</p>
+<p><strong>TODO: insert diagram</strong></p>
+<h3 id="bottom-to-top-push">Bottom-to-top (push)<a hidden class="anchor" aria-hidden="true" href="#bottom-to-top-push">#</a></h3>
+<p>Start with leaf nodes and push data to the parents. With push-based, you can fuse operators together within a for loop to minimize intermediate result staging.</p>
+<p><strong>TODO: insert diagram</strong></p>
+<h2 id="filter-representation">Filter representation<a hidden class="anchor" aria-hidden="true" href="#filter-representation">#</a></h2>
+<p>With the iterator model, if a tuple does not satisfy a filter, then the DBMS just invokes <code>Next</code> again on the child operator to get another tuple. In the vectorized model, however, a vector/batch may contain some tuples that do not satisfy filters. Therefore, we need some logical representation to identify tuples that are valid and need to be processed to include in the materialized results. There are two primary approaches to do this: <strong>selection vectors</strong>, and <strong>bitmaps</strong>.</p>
+<h3 id="selection-filters">Selection filters<a hidden class="anchor" aria-hidden="true" href="#selection-filters">#</a></h3>
+<p>Selection filters are used to store the indices or identifiers of tuples that are valid and should be considered for further processing. These filters are typically a dense sorted list of tuple identifiers that indicate which tuples in a batch are valid.</p>
+<p><strong>TODO: insert diagram</strong></p>
+<h3 id="bitmaps">Bitmaps<a hidden class="anchor" aria-hidden="true" href="#bitmaps">#</a></h3>
+<p>A bitmap is created to indicate whether a tuple is valid and can be used as an input mask for further processing. The bitmap is positionally-asligned that indicates whether a tuple is valid at an offset. Some SIMD instructions natively use these bitmaps as input masks.</p>
+<p><strong>TODO: insert diagram</strong></p>
 
 
   </div>
@@ -218,7 +244,7 @@ storage) or subsets of columns as in the decomposition storage model (column-ori
     </main>
     
 <footer class="footer">
-        <span>&copy; 2024 <a href="http://localhost:1313/">The Log</a></span> · 
+        <span>&copy; 2025 <a href="http://localhost:1313/">Gabe&#39;s Gulch</a></span> · 
 
     <span>
         Powered by

@@ -5,9 +5,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>Posts | The Log</title>
+<title>Posts | Gabe&#39;s Gulch</title>
 <meta name="keywords" content="">
-<meta name="description" content="Posts - The Log">
+<meta name="description" content="Posts - Gabe&#39;s Gulch">
 <meta name="author" content="">
 <link rel="canonical" href="http://localhost:1313/posts/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
@@ -107,7 +107,7 @@
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="The Log (Alt + H)">The Log</a>
+            <a href="http://localhost:1313/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -151,33 +151,6 @@
     Posts
   </h1>
 </header>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Outcome Constraints in Bayesian Optimization
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p> #| code-fold: true import matplotlib.pyplot as plt import torch import numpy as np from botorch.acquisition import qLogExpectedImprovement from botorch.fit import fit_gpytorch_model from botorch.models import SingleTaskGP from botorch.optim import optimize_acqf from gpytorch.mlls import ExactMarginalLogLikelihood from torch.distributions import Normal plt.style.use(&#34;https://raw.githubusercontent.com/GStechschulte/filterjax/main/docs/styles.mplstyle&#34;) Outcome constraints In optimization, it is often the goal that we need to optimize an objective function while satisfying some constraints. For example, we may want to minimize the scrap rate by finding the optimal process parameters of an manufacturing machine. However, we know the scrap rate cannot be below 0. In another setting, we may want to maximize the throughput of a machine, but we know that the throughput cannot exceed the maximum belt speed of the machine. Thus, we need to find regions in the search space that both yield high objective values and satisfy these constraints. In this blog, we will focus on inequality outcome constraints. That is, the domain of the objective function is
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-11-28 00:00:00 +0000 UTC'>November 28, 2023</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Outcome Constraints in Bayesian Optimization" href="http://localhost:1313/posts/constrained-bayesian-optimization/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Survival Models in Bambi
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p> Survival Models Survival models, also known as time-to-event models, are specialized statistical methods designed to analyze the time until the occurrence of an event of interest. In this notebook, a review of survival analysis (using non-parametric and parametric methods) and censored data is provided, followed by a survival model implementation in Bambi.
-This blog post is a copy of the survival models documentation I wrote for Bambi. The original post can be found here.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-10-25 00:00:00 +0000 UTC'>October 25, 2023</span>&nbsp;·&nbsp;20 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Survival Models in Bambi" href="http://localhost:1313/posts/bambi-survival-models/"></a>
-</article>
 
 <article class="post-entry"> 
   <header class="entry-header">
@@ -286,6 +259,32 @@ The improvement arises from adaptive proposals in which the distribution of prop
   <footer class="entry-footer"><span title='2022-10-08 00:00:00 +0000 UTC'>October 8, 2022</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
   <a class="entry-link" aria-label="post link to Metropolis Hastings Sampler From Scratch" href="http://localhost:1313/posts/metropolis-hastings-sampler/"></a>
 </article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Monte Carlo Approximation
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> Inference In the probabilistic approach to machine learning, all unknown quantities—predictions about the future, hidden states of a system, or parameters of a model—are treated as random variables, and endowed with probability distributions. The process of inference corresponds to computing the posterior distribution over these quantities, conditioning on whatever data is available. Given that the posterior is a probability distribution, we can draw samples from it. The samples in this case are parameter values. The Bayesian formalism treats parameter distributions as the degrees of relative plausibility, i.e., if this parameter is chosen, how likely is the data to have arisen? We use Bayes’ rule for this process of inference. Let $h$ represent the uknown variables and $D$ the known variables, i.e., the data. Given a likelihood $p(D|h)$ and a prior $p(h)$, we can compute the posterior $p(h|D)$ using Bayes’ rule:
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2022-10-07 00:00:00 +0000 UTC'>October 7, 2022</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Monte Carlo Approximation" href="http://localhost:1313/posts/monte-carlo-approximation/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Variational Inference - Evidence Lower Bound
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>We don’t know the real posterior so we are going to choose a distribution $Q(\theta)$ from a family of distributions $Q^*$ that are easy to work with and parameterized by $\theta$. The approximate distribution should be as close as possible to the true posterior. This closeness is measured using KL-Divergence. If we have the joint $p(x, z)$ where $x$ is some observed data, the goal is to perform inference: given what we have observed, what can we infer about the latent states?, i.e , we want the posterior.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2022-06-03 18:43:46 +0200 CEST'>June 3, 2022</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Variational Inference - Evidence Lower Bound" href="http://localhost:1313/posts/variational-inference/"></a>
+</article>
 <footer class="page-footer">
   <nav class="pagination">
     <a class="prev" href="http://localhost:1313/posts/">
@@ -298,7 +297,7 @@ The improvement arises from adaptive proposals in which the distribution of prop
     </main>
     
 <footer class="footer">
-        <span>&copy; 2024 <a href="http://localhost:1313/">The Log</a></span> · 
+        <span>&copy; 2025 <a href="http://localhost:1313/">Gabe&#39;s Gulch</a></span> · 
 
     <span>
         Powered by
