@@ -24,6 +24,13 @@
 &lt;p&gt;which fall into three primary ways for speeding up queries:&lt;/p&gt;</description>
     </item>
     <item>
+      <title>Data Oriented Deisgn - Columnar Data Structures</title>
+      <link>http://localhost:1313/posts/2024-12-10-dod-columnar-storage/</link>
+      <pubDate>Tue, 10 Dec 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2024-12-10-dod-columnar-storage/</guid>
+      <description>&lt;p&gt;Test. Test.&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>[WIP] Database Systems - Storage</title>
       <link>http://localhost:1313/posts/db-systems-file-formats/</link>
       <pubDate>Sun, 01 Dec 2024 00:00:00 +0000</pubDate>

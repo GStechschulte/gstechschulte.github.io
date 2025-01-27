@@ -17,14 +17,29 @@
     <loc>http://localhost:1313/posts/</loc>
     <lastmod>2025-01-01T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>http://localhost:1313/posts/2024-12-10-dod-columnar-storage/</loc>
+    <lastmod>2024-12-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/rust/</loc>
+    <lastmod>2024-12-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/book-review/</loc>
+    <lastmod>2024-12-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/2024-12-03-by-what-right/</loc>
+    <lastmod>2024-12-03T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/posts/db-systems-file-formats/</loc>
     <lastmod>2024-12-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/posts/2024-11-30-c-callbacks/</loc>
     <lastmod>2024-11-30T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/rust/</loc>
-    <lastmod>2024-11-30T00:00:00+00:00</lastmod>
+    <loc>http://localhost:1313/posts/2024-11-28-daily-rust-types/</loc>
+    <lastmod>2024-11-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/2024-11-01-daily-rust-trait-objects/</loc>
+    <lastmod>2024-11-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/posts/db-systems-blog-series-overview/</loc>
     <lastmod>2024-10-22T00:00:00+00:00</lastmod>

@@ -163,7 +163,50 @@ which fall into three primary ways for speeding up queries:">
     <div class="post-meta"><span title='2025-01-01 00:00:00 +0000 UTC'>January 1, 2025</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Gabriel Stechschulte
 
 </div>
-  </header> 
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#operator-execution" aria-label="Operator execution">Operator execution</a></li>
+                <li>
+                    <a href="#query-execution" aria-label="Query execution">Query execution</a></li>
+                <li>
+                    <a href="#processing-models" aria-label="Processing models">Processing models</a><ul>
+                        
+                <li>
+                    <a href="#iterator-model" aria-label="Iterator model">Iterator model</a></li>
+                <li>
+                    <a href="#materialization-model" aria-label="Materialization model">Materialization model</a></li>
+                <li>
+                    <a href="#vectorization-model" aria-label="Vectorization model">Vectorization model</a></li></ul>
+                </li>
+                <li>
+                    <a href="#plan-processing-direction" aria-label="Plan processing direction">Plan processing direction</a><ul>
+                        
+                <li>
+                    <a href="#top-to-bottom-pull" aria-label="Top-to-bottom (pull)">Top-to-bottom (pull)</a></li>
+                <li>
+                    <a href="#bottom-to-top-push" aria-label="Bottom-to-top (push)">Bottom-to-top (push)</a></li></ul>
+                </li>
+                <li>
+                    <a href="#filter-representation" aria-label="Filter representation">Filter representation</a><ul>
+                        
+                <li>
+                    <a href="#selection-filters" aria-label="Selection filters">Selection filters</a></li>
+                <li>
+                    <a href="#bitmaps" aria-label="Bitmaps">Bitmaps</a>
+                </li>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
   <div class="post-content"><h2 id="operator-execution">Operator execution<a hidden class="anchor" aria-hidden="true" href="#operator-execution">#</a></h2>
 <p>In OLAP systems, sequential scans are the primary method for query execution. The goal is two-fold: (1) minimize the amount of data fetched from the disk or a remote object store, and (2) maximize the use of hardware resources for efficient query execution.</p>
 <p>Andy’s (unscientific) top three execution optimization techniques:</p>

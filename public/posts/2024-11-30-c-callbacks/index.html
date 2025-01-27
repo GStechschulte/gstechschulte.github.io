@@ -156,7 +156,23 @@ When interfacing with Python from Rust, there may be scenarios where the Rust co
     <div class="post-meta"><span title='2024-11-30 00:00:00 +0000 UTC'>November 30, 2024</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Gabriel Stechschulte
 
 </div>
-  </header> 
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#creating-c-callbacks-with-numba" aria-label="Creating C Callbacks with Numba">Creating C Callbacks with Numba</a></li>
+                <li>
+                    <a href="#call-back-from-rust" aria-label="&ldquo;Call back&rdquo; from Rust">&ldquo;Call back&rdquo; from Rust</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
   <div class="post-content"><p>When interfacing with libraries written in C/C++ from Rust, it may require writing native callbacks to provide functionality or logic to the library. A C Callback is a function pointer that is passed as an argument to another function, allowing that function to &ldquo;call back&rdquo; and execute the passed function at runtime.</p>
 <p>When interfacing with Python from Rust, there may be scenarios where the Rust code also needs to be able to call a Python function. Rust&rsquo;s foreign function interface (FFI) and <code>pyo3</code> crate in fact lets you do this. However, calling Python from Rust involves invoking the Python interpreter, which can reduce performance. If one of the goals for using Rust is to improve the performance of your application or library, this overhead might be undesirable. To avoid invoking the Python interpreter, you can use Numba. Numba allows you to create a C callback, pass this function pointer to Rust, and perform the callback without incurring the overhead associated with Python.</p>
 <p>This post will briefly explain how to create C callbacks using Numba, and how to pass and call them from within Rust.</p>

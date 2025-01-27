@@ -5,11 +5,26 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>Database-Systems | Gabe&#39;s Gulch</title>
+<title>Daily Rust - Using Trait Objects That Allow for Different Types | Gabe&#39;s Gulch</title>
 <meta name="keywords" content="">
-<meta name="description" content="">
-<meta name="author" content="">
-<link rel="canonical" href="http://localhost:1313/categories/database-systems/">
+<meta name="description" content="Trait objects&hellip;
+Associated types..
+You cannot use associated types with trait objects dyn Trait because:
+
+The compiler needs to know the exact signatures of methods at compile time to create the vtable for dynamic dispatch.
+Different implementations may have different function signatures involving the associated types.
+When using dyn Trait, you must specify the associated types because the vtables for different associated type implementations
+are not compatible. For example, dyn Y&lt;Y1 = String&gt; and dyn Y&lt;Y1 = u32&gt; have different vtables and cannot be used interchangeably.
+
+pub trait Iterator {
+    type Item;
+
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;;
+    ...
+}
+type Item; is an associated type. Each type that implements Iterator must specify what type of item it produces. Here&rsquo;s what it looks like to implement Iterator for a type">
+<meta name="author" content="Gabriel Stechschulte">
+<link rel="canonical" href="http://localhost:1313/posts/2024-11-01-daily-rust-trait-objects/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
@@ -18,8 +33,7 @@
 <link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/categories/database-systems/index.xml">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/categories/database-systems/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/2024-11-01-daily-rust-trait-objects/">
 <noscript>
     <style>
         #theme-toggle,
@@ -92,7 +106,7 @@
 
 </head>
 
-<body class="list" id="top">
+<body class="" id="top">
 <script>
     if (localStorage.getItem("pref-theme") === "dark") {
         document.body.classList.add('dark');
@@ -145,74 +159,64 @@
         </ul>
     </nav>
 </header>
-<main class="main"> 
-<header class="page-header">
-  <h1>
-    Database-Systems
-  </h1>
-</header>
+<main class="main">
 
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">[WIP] Database Systems - Query Execution and Processing
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Operator execution In OLAP systems, sequential scans are the primary method for query execution. The goal is two-fold: (1) minimize the amount of data fetched from the disk or a remote object store, and (2) maximize the use of hardware resources for efficient query execution.
-Andy’s (unscientific) top three execution optimization techniques:
-Data parallelization (vectorization). Breaking down a query into smaller tasks and running them in parallel on different cores, threads, or nodes. Task parallelization (multi-threading). Breaking down a query into smaller independent tasks and executing them concurrently. This allows the DBMS to take full advantage of hardware capabilities and or multiple machines to improve query execution time. Code specialization (pre-compiled / JIT). Code generation for specific queries, e.g. JIT or pre-compiled parameters. which fall into three primary ways for speeding up queries:
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-01-01 00:00:00 +0000 UTC'>January 1, 2025</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to [WIP] Database Systems - Query Execution and Processing" href="http://localhost:1313/posts/db-systems-query-processing/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Data Oriented Deisgn - Columnar Data Structures
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Daily Rust - Using Trait Objects That Allow for Different Types
       <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" fill="currentColor">
           <path
             d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
         </svg>
       </span>
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Test. Test.
-</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-12-10 00:00:00 +0000 UTC'>December 10, 2024</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Data Oriented Deisgn - Columnar Data Structures" href="http://localhost:1313/posts/2024-12-10-dod-columnar-storage/"></a>
-</article>
+    </h1>
+    <div class="post-meta"><span title='2024-11-01 00:00:00 +0000 UTC'>November 1, 2024</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte
 
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">[WIP] Database Systems - Storage
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Introduction As the business landscape embraces data-driven approaches for analysis and decision-making, there is a rapid surge in the volume of data requiring storage and processing. This surge has led to the growing popularity of OLAP database systems.
-An OLAP system workload is characterized by complex queries that require scanning over large portions of the database. In OLAP workloads, the database system is often analyzing and deriving new data from existing data collected on the OLTP side. In contrast, OLTP workloads are characterized by fast, relatively simple and repetitive queries that operate on a single entity at a time (usually involving an update or insert).
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-12-01 00:00:00 +0000 UTC'>December 1, 2024</span>&nbsp;·&nbsp;12 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to [WIP] Database Systems - Storage" href="http://localhost:1313/posts/db-systems-file-formats/"></a>
-</article>
+</div>
+  </header> 
+  <div class="post-content"><p>Trait objects&hellip;</p>
+<p>Associated types..</p>
+<p>You cannot use associated types with trait objects <code>dyn Trait</code> because:</p>
+<ol>
+<li>The compiler needs to know the exact signatures of methods at compile time to create the <code>vtable</code> for dynamic dispatch.
+Different implementations may have different function signatures involving the associated types.</li>
+<li>When using <code>dyn Trait</code>, you must specify the associated types because the vtables for different associated type implementations
+are not compatible. For example, <code>dyn Y&lt;Y1 = String&gt;</code> and <code>dyn Y&lt;Y1 = u32&gt;</code> have different vtables and cannot be used interchangeably.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Rust" data-lang="Rust"><span style="display:flex;"><span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">trait</span> Iterator {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Item</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">next</span>(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> self) -&gt; Option<span style="color:#f92672">&lt;</span>Self::Item<span style="color:#f92672">&gt;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>type Item;</code> is an <em>associated type</em>. Each type that implements <code>Iterator</code> must specify what type of item it produces. Here&rsquo;s what it looks like to implement <code>Iterator</code> for a type</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Rust" data-lang="Rust"><span style="display:flex;"><span><span style="color:#75715e">// (code from the std::env standard library module)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">impl</span> Iterator <span style="color:#66d9ef">for</span> Args {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Item</span> <span style="color:#f92672">=</span> String;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">next</span>(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> self) -&gt; Option<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>Args</code> returns <code>String</code> values, so the <code>impl</code> declares <code>type Item = String;</code>. However, what if we wanted&hellip;</p>
+<p>Performance implications of <code>Box&lt;Trait&gt;</code> vs <code>enum</code> delegation&hellip;</p>
+<h2 id="options">Options<a hidden class="anchor" aria-hidden="true" href="#options">#</a></h2>
+<p>Associated type where the associated type is an <code>enum</code>?</p>
+<h2 id="tradeoffs-between-trait-objects-and-generics">Tradeoffs between trait objects and generics<a hidden class="anchor" aria-hidden="true" href="#tradeoffs-between-trait-objects-and-generics">#</a></h2>
+<p>Use a trait object if your library is designed to be extensible. If not, an <code>enum</code> may be sufficient.</p>
+<p>There are primarily two ways to make use of traits: as trait bounds for generics or trait objects.</p>
 
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Database Systems - Series Overview
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>A blog series consisting of my notes on the Carnegie Mellon University (CMU) Introduction and Advanced Database Systems Lectures by Andy Pavlo and Jignesh Patel. The primary goal of this series is to: (1) consolidate my notes, and (2) act as a reference guide for my future self. Perhaps some readers may extract some value, but I would highly recommend watching the lectures for yourself.
-The series will cover:
-Database storage Indexes Join algorithms Query execution and processing Query optimization Query scheduling and coordination Concurrency control OLAP database management system components The series will primarily focus on the components of OLAP database management systems (DBMS). A recent trend of the last decade is the breakout of OLAP DBMS components into standalone services and libraries for:
-...</p>
+
   </div>
-  <footer class="entry-footer"><span title='2024-10-22 00:00:00 +0000 UTC'>October 22, 2024</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Database Systems - Series Overview" href="http://localhost:1313/posts/db-systems-blog-series-overview/"></a>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
 </article>
     </main>
     
@@ -284,6 +288,53 @@ Database storage Indexes Join algorithms Query execution and processing Query op
         }
     })
 
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
 </script>
 </body>
 

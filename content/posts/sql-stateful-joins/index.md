@@ -3,6 +3,8 @@ title = 'Stateful Joins in SQL'
 date = 2024-08-22
 author = 'Gabriel Stechschulte'
 categories = ['data-engineering']
+ShowToc = true
+TocOpen = false  # Optional - keeps TOC open by default
 draft = false
 math = true
 +++

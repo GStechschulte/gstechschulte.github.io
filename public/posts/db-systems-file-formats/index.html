@@ -157,7 +157,75 @@ An OLAP system workload is characterized by complex queries that require scannin
     <div class="post-meta"><span title='2024-12-01 00:00:00 +0000 UTC'>December 1, 2024</span>&nbsp;·&nbsp;12 min&nbsp;·&nbsp;Gabriel Stechschulte
 
 </div>
-  </header> 
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#introduction" aria-label="Introduction">Introduction</a></li>
+                <li>
+                    <a href="#storage-models" aria-label="Storage models">Storage models</a><ul>
+                        
+                <li>
+                    <a href="#storage-manager" aria-label="Storage manager">Storage manager</a></li>
+                <li>
+                    <a href="#row-oriented" aria-label="Row-oriented">Row-oriented</a><ul>
+                        
+                <li>
+                    <a href="#pages" aria-label="Pages">Pages</a></li>
+                <li>
+                    <a href="#page-storage-architecture" aria-label="Page storage architecture">Page storage architecture</a></li>
+                <li>
+                    <a href="#page-layout" aria-label="Page layout">Page layout</a><ul>
+                        
+                <li>
+                    <a href="#slotted-pages" aria-label="Slotted pages">Slotted pages</a></li>
+                <li>
+                    <a href="#tuple-layout" aria-label="Tuple layout">Tuple layout</a></li></ul>
+                </li>
+                <li>
+                    <a href="#summary" aria-label="Summary">Summary</a></li></ul>
+                </li>
+                <li>
+                    <a href="#column-oriented" aria-label="Column-oriented">Column-oriented</a></li>
+                <li>
+                    <a href="#hybrid-pax" aria-label="Hybrid (PAX)">Hybrid (PAX)</a><ul>
+                        
+                <li>
+                    <a href="#summary-1" aria-label="Summary">Summary</a></li></ul>
+                </li>
+                <li>
+                    <a href="#format-design-decisions" aria-label="Format design decisions">Format design decisions</a><ul>
+                        
+                <li>
+                    <a href="#file-metadata" aria-label="File metadata">File metadata</a></li>
+                <li>
+                    <a href="#format-layout" aria-label="Format layout">Format layout</a></li>
+                <li>
+                    <a href="#type-system" aria-label="Type system">Type system</a></li>
+                <li>
+                    <a href="#encoding-schemes" aria-label="Encoding schemes">Encoding schemes</a></li>
+                <li>
+                    <a href="#compression" aria-label="Compression">Compression</a></li>
+                <li>
+                    <a href="#filters" aria-label="Filters">Filters</a></li>
+                <li>
+                    <a href="#nested-data" aria-label="Nested data">Nested data</a></li>
+                <li>
+                    <a href="#summary-2" aria-label="Summary">Summary</a>
+                </li>
+            </ul>
+            </li>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
   <div class="post-content"><h2 id="introduction">Introduction<a hidden class="anchor" aria-hidden="true" href="#introduction">#</a></h2>
 <p>As the business landscape embraces data-driven approaches for analysis and decision-making, there is a rapid surge in the volume of data requiring storage and processing. This surge has led to the growing popularity of OLAP database systems.</p>
 <p>An OLAP system workload is characterized by complex queries that require scanning over large portions of the database. In OLAP workloads, the database system is often analyzing and deriving new data from existing data collected on the OLTP side. In contrast, OLTP workloads are characterized by fast, relatively simple and repetitive queries that operate on a single entity at a time (usually involving an update or insert).</p>

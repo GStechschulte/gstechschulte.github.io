@@ -3,6 +3,8 @@ title = 'Creating C Callbacks with Numba and Calling Them From Rust'
 date = 2024-11-30
 author = 'Gabriel Stechschulte'
 categories = ['rust']
+ShowToc = true
+TocOpen = false  # Optional - keeps TOC open by default
 draft = false
 +++
 

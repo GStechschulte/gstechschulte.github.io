@@ -157,7 +157,25 @@ For example, in manufacturing, a machine may use a set of machine process parame
     <div class="post-meta"><span title='2024-08-22 00:00:00 +0000 UTC'>August 22, 2024</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;Gabriel Stechschulte
 
 </div>
-  </header> 
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#introduction" aria-label="Introduction">Introduction</a></li>
+                <li>
+                    <a href="#data-simulation" aria-label="Data simulation">Data simulation</a></li>
+                <li>
+                    <a href="#postgres-stateful-join" aria-label="Postgres stateful join">Postgres stateful join</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
   <div class="post-content"><h2 id="introduction">Introduction<a hidden class="anchor" aria-hidden="true" href="#introduction">#</a></h2>
 <p>In some scenarios, one needs to enrich an event stream with data from another source that holds &ldquo;state&rdquo;. This state provides additional context to the event stream.</p>
 <p>For example, in manufacturing, a machine may use a set of machine process parameters (pressure, speed, force, etc.) when producing an item. The process parameters represent the &ldquo;state&rdquo; of the machine at production time $t$. However, the software services that publishes messages on what is being produced and the machine process parameters currently used are separate. Furthermore, to avoid the duplication of data, the service that publishes process parameters only publishes a message when there is a change in state, e.g when an operator changes one of process parameters.</p>

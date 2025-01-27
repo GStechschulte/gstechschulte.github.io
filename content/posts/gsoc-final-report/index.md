@@ -3,6 +3,8 @@ title = 'Google Summer of Code - Final Report'
 date = 2023-08-10T18:43:46+02:00
 author = 'Gabriel Stechschulte'
 categories = ['open-source', 'gsoc']
+ShowToc = true
+TocOpen = false  # Optional - keeps TOC open by default
 draft = false
 +++
 

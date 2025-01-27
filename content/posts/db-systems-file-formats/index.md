@@ -3,6 +3,8 @@ title = '[WIP] Database Systems - Storage'
 date = 2024-12-01
 author = 'Gabriel Stechschulte'
 categories = ['database-systems']
+ShowToc = true
+TocOpen = false  # Optional - keeps TOC open by default
 draft = false
 +++
 
