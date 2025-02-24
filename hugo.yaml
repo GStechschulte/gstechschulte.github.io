@@ -19,14 +19,15 @@ params:
 
 menu:
   main:
-    - identifier: archive
-      url: archives
+    - identifier: archives
+      name: archives
+      url: /archives/
       weight: 10
     - identifier: categories
       name: categories
       url: /categories/
-      weight: 10
+      weight: 15
     - identifier: tags
       name: tags
       url: /tags/
-      weight: 10
+      weight: 20
