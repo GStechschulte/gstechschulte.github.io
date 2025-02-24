@@ -2,25 +2,25 @@
 <html lang="en" dir="auto">
 
 <head>
-	<meta name="generator" content="Hugo 0.140.0"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+	<meta name="generator" content="Hugo 0.140.0"><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="index, follow">
 <title>Gabe&#39;s Gulch</title>
 
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="http://localhost:1313/">
+<link rel="canonical" href="https://gstechschulte.github.io/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<link rel="icon" href="https://gstechschulte.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://gstechschulte.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://gstechschulte.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://gstechschulte.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://gstechschulte.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/index.xml">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/">
+<link rel="alternate" type="application/rss+xml" href="https://gstechschulte.github.io/index.xml">
+<link rel="alternate" hreflang="en" href="https://gstechschulte.github.io/">
 <noscript>
     <style>
         #theme-toggle,
@@ -90,7 +90,28 @@
     });
 </script>
 
+<meta property="og:title" content="Gabe&#39;s Gulch" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://gstechschulte.github.io/" />
 
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Gabe&#39;s Gulch"/>
+<meta name="twitter:description" content=""/>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Gabe's Gulch",
+  "url": "https://gstechschulte.github.io/",
+  "description": "",
+  "thumbnailUrl": "https://gstechschulte.github.io/favicon.ico",
+  "sameAs": [
+      
+  ]
+}
+</script>
 </head>
 
 <body class="list" id="top">
@@ -108,7 +129,7 @@
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
+            <a href="https://gstechschulte.github.io/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -134,12 +155,12 @@
         </div>
         <ul id="menu">
             <li>
-                <a href="http://localhost:1313/categories/" title="categories">
+                <a href="https://gstechschulte.github.io/categories/" title="categories">
                     <span>categories</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/tags/" title="tags">
+                <a href="https://gstechschulte.github.io/tags/" title="tags">
                     <span>tags</span>
                 </a>
             </li>
@@ -147,61 +168,6 @@
     </nav>
 </header>
 <main class="main"> 
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Alternative Samplers to NUTS in Bambi
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p> Alternative sampling backends This blog post is a copy of the alternative samplers documentation I wrote for Bambi. The original post can be found here.
-In Bambi, the sampler used is automatically selected given the type of variables used in the model. For inference, Bambi supports both MCMC and variational inference. By default, Bambi uses PyMC’s implementation of the adaptive Hamiltonian Monte Carlo (HMC) algorithm for sampling. Also known as the No-U-Turn Sampler (NUTS). This sampler is a good choice for many models. However, it is not the only sampling method, nor is PyMC the only library implementing NUTS.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-03-29 00:00:00 +0000 UTC'>March 29, 2024</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Alternative Samplers to NUTS in Bambi" href="http://localhost:1313/posts/bambi-alternative-samplers/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Advanced Interpret Usage in Bambi
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p> Interpret Advanced Usage The interpret module is inspired by the R package marginaleffects and ports the core functionality of {marginaleffects} to Bambi. To close the gap of non-supported functionality in Bambi, interpret now provides a set of helper functions to aid the user in more advanced and complex analysis not covered within the comparisons, predictions, and slopes functions.
-These helper functions are data_grid and select_draws. The data_grid can be used to create a pairwise grid of data points for the user to pass to model.predict. Subsequently, select_draws is used to select the draws from the posterior (or posterior predictive) group of the InferenceData object returned by the predict method that correspond to the data points that “produced” that draw.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-12-09 00:00:00 +0000 UTC'>December 9, 2023</span>&nbsp;·&nbsp;9 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Advanced Interpret Usage in Bambi" href="http://localhost:1313/posts/bambi-advanced-marginal-effects/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Outcome Constraints in Bayesian Optimization
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p> #| code-fold: true import matplotlib.pyplot as plt import torch import numpy as np from botorch.acquisition import qLogExpectedImprovement from botorch.fit import fit_gpytorch_model from botorch.models import SingleTaskGP from botorch.optim import optimize_acqf from gpytorch.mlls import ExactMarginalLogLikelihood from torch.distributions import Normal plt.style.use(&#34;https://raw.githubusercontent.com/GStechschulte/filterjax/main/docs/styles.mplstyle&#34;) Outcome constraints In optimization, it is often the goal that we need to optimize an objective function while satisfying some constraints. For example, we may want to minimize the scrap rate by finding the optimal process parameters of an manufacturing machine. However, we know the scrap rate cannot be below 0. In another setting, we may want to maximize the throughput of a machine, but we know that the throughput cannot exceed the maximum belt speed of the machine. Thus, we need to find regions in the search space that both yield high objective values and satisfy these constraints. In this blog, we will focus on inequality outcome constraints. That is, the domain of the objective function is
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-11-28 00:00:00 +0000 UTC'>November 28, 2023</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Outcome Constraints in Bayesian Optimization" href="http://localhost:1313/posts/constrained-bayesian-optimization/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Survival Models in Bambi
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p> Survival Models Survival models, also known as time-to-event models, are specialized statistical methods designed to analyze the time until the occurrence of an event of interest. In this notebook, a review of survival analysis (using non-parametric and parametric methods) and censored data is provided, followed by a survival model implementation in Bambi.
-This blog post is a copy of the survival models documentation I wrote for Bambi. The original post can be found here.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-10-25 00:00:00 +0000 UTC'>October 25, 2023</span>&nbsp;·&nbsp;20 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Survival Models in Bambi" href="http://localhost:1313/posts/bambi-survival-models/"></a>
-</article>
 
 <article class="post-entry"> 
   <header class="entry-header">
@@ -214,7 +180,7 @@ This blog post is a copy of the zero inflated models documentation I wrote for B
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2023-10-10 00:00:00 +0000 UTC'>October 10, 2023</span>&nbsp;·&nbsp;11 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Predict New Groups with Hierarchical Models in Bambi" href="http://localhost:1313/posts/bambi-predict-new-groups/"></a>
+  <a class="entry-link" aria-label="post link to Predict New Groups with Hierarchical Models in Bambi" href="https://gstechschulte.github.io/posts/bambi-predict-new-groups/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -228,7 +194,7 @@ In some scenarios, the response variable is discrete, like a count, and ordered.
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2023-09-29 00:00:00 +0000 UTC'>September 29, 2023</span>&nbsp;·&nbsp;17 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Ordinal Models in Bambi" href="http://localhost:1313/posts/bambi-ordinal-models/"></a>
+  <a class="entry-link" aria-label="post link to Ordinal Models in Bambi" href="https://gstechschulte.github.io/posts/bambi-ordinal-models/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -241,7 +207,7 @@ In some scenarios, the response variable is discrete, like a count, and ordered.
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2023-09-29 00:00:00 +0000 UTC'>September 29, 2023</span>&nbsp;·&nbsp;15 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Zero Inflated Models in Bambi" href="http://localhost:1313/posts/bambi-zip-models/"></a>
+  <a class="entry-link" aria-label="post link to Zero Inflated Models in Bambi" href="https://gstechschulte.github.io/posts/bambi-zip-models/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -254,7 +220,7 @@ In some scenarios, the response variable is discrete, like a count, and ordered.
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2023-08-10 18:43:46 +0200 CEST'>August 10, 2023</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Google Summer of Code - Final Report" href="http://localhost:1313/posts/gsoc-final-report/"></a>
+  <a class="entry-link" aria-label="post link to Google Summer of Code - Final Report" href="https://gstechschulte.github.io/posts/gsoc-final-report/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -268,7 +234,7 @@ However, at the beginning of week ten, I have a PR open with the majority of the
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2023-08-01 00:00:00 +0000 UTC'>August 1, 2023</span>&nbsp;·&nbsp;18 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Google Summer of Code - Average Predictive Slopes" href="http://localhost:1313/posts/bambi-slopes/"></a>
+  <a class="entry-link" aria-label="post link to Google Summer of Code - Average Predictive Slopes" href="https://gstechschulte.github.io/posts/bambi-slopes/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -281,21 +247,74 @@ However, at the beginning of week ten, I have a PR open with the majority of the
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2023-06-30 00:00:00 +0000 UTC'>June 30, 2023</span>&nbsp;·&nbsp;16 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Google Summer of Code - Average Predictive Comparisons" href="http://localhost:1313/posts/bambi-comparisons/"></a>
+  <a class="entry-link" aria-label="post link to Google Summer of Code - Average Predictive Comparisons" href="https://gstechschulte.github.io/posts/bambi-comparisons/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Gibbs Sampler From Scratch
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> A variant of the Metropolis-Hastings (MH) algorithm that uses clever proposals and is therefore more efficient (you can get a good approximate of the posterior with far fewer samples) is Gibbs sampling. A problem with MH is the need to choose the proposal distribution, and the fact that the acceptance rate may be low.
+The improvement arises from adaptive proposals in which the distribution of proposed parameter values adjusts itself intelligently, depending upon the parameter values at the moment. This dependence upon the parameters at that moment is an exploitation of conditional independence properties of a graphical model to automatically create a good proposal, with acceptance probability equal to one.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2022-10-12 00:00:00 +0000 UTC'>October 12, 2022</span>&nbsp;·&nbsp;5 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Gibbs Sampler From Scratch" href="https://gstechschulte.github.io/posts/gibbs-sampler/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Metropolis Hastings Sampler From Scratch
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> Main Idea Metropolis-Hastings (MH) is one of the simplest kinds of MCMC algorithms. The idea with MH is that at each step, we propose to move from the current state $x$ to a new state $x’$ with probability $q(x’|x)$, where $q$ is the proposal distribution. The user is free to choose the proposal distribution and the choice of the proposal is dependent on the form of the target distribution. Once a proposal has been made to move to $x’$, we then decide whether to accept or reject the proposal according to some rule. If the proposal is accepted, the new state is $x’$, else the new state is the same as the current state $x$.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2022-10-08 00:00:00 +0000 UTC'>October 8, 2022</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Metropolis Hastings Sampler From Scratch" href="https://gstechschulte.github.io/posts/metropolis-hastings-sampler/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Monte Carlo Approximation
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> Inference In the probabilistic approach to machine learning, all unknown quantities—predictions about the future, hidden states of a system, or parameters of a model—are treated as random variables, and endowed with probability distributions. The process of inference corresponds to computing the posterior distribution over these quantities, conditioning on whatever data is available. Given that the posterior is a probability distribution, we can draw samples from it. The samples in this case are parameter values. The Bayesian formalism treats parameter distributions as the degrees of relative plausibility, i.e., if this parameter is chosen, how likely is the data to have arisen? We use Bayes’ rule for this process of inference. Let $h$ represent the uknown variables and $D$ the known variables, i.e., the data. Given a likelihood $p(D|h)$ and a prior $p(h)$, we can compute the posterior $p(h|D)$ using Bayes’ rule:
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2022-10-07 00:00:00 +0000 UTC'>October 7, 2022</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Monte Carlo Approximation" href="https://gstechschulte.github.io/posts/monte-carlo-approximation/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Variational Inference - Evidence Lower Bound
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>We don’t know the real posterior so we are going to choose a distribution $Q(\theta)$ from a family of distributions $Q^*$ that are easy to work with and parameterized by $\theta$. The approximate distribution should be as close as possible to the true posterior. This closeness is measured using KL-Divergence. If we have the joint $p(x, z)$ where $x$ is some observed data, the goal is to perform inference: given what we have observed, what can we infer about the latent states?, i.e , we want the posterior.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2022-06-03 18:43:46 +0200 CEST'>June 3, 2022</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Variational Inference - Evidence Lower Bound" href="https://gstechschulte.github.io/posts/variational-inference/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
-    <a class="prev" href="http://localhost:1313/">
+    <a class="prev" href="https://gstechschulte.github.io/">
       «&nbsp;Prev&nbsp;
     </a>
-    <a class="next" href="http://localhost:1313/page/3/">Next&nbsp;&nbsp;»
+    <a class="next" href="https://gstechschulte.github.io/page/3/">Next&nbsp;&nbsp;»
     </a>
   </nav>
 </footer>
     </main>
     
 <footer class="footer">
-        <span>&copy; 2025 <a href="http://localhost:1313/">Gabe&#39;s Gulch</a></span> · 
+        <span>&copy; 2025 <a href="https://gstechschulte.github.io/">Gabe&#39;s Gulch</a></span> · 
 
     <span>
         Powered by

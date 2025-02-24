@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="index, follow">
 <title>Stateful Joins in SQL | Gabe&#39;s Gulch</title>
 <meta name="keywords" content="">
 <meta name="description" content="Introduction
 In some scenarios, one needs to enrich an event stream with data from another source that holds &ldquo;state&rdquo;. This state provides additional context to the event stream.
 For example, in manufacturing, a machine may use a set of machine process parameters (pressure, speed, force, etc.) when producing an item. The process parameters represent the &ldquo;state&rdquo; of the machine at production time $t$. However, the software services that publishes messages on what is being produced and the machine process parameters currently used are separate. Furthermore, to avoid the duplication of data, the service that publishes process parameters only publishes a message when there is a change in state, e.g when an operator changes one of process parameters.">
 <meta name="author" content="Gabriel Stechschulte">
-<link rel="canonical" href="http://localhost:1313/posts/sql-stateful-joins/">
+<link rel="canonical" href="https://gstechschulte.github.io/posts/sql-stateful-joins/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<link rel="icon" href="https://gstechschulte.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://gstechschulte.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://gstechschulte.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://gstechschulte.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://gstechschulte.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/sql-stateful-joins/">
+<link rel="alternate" hreflang="en" href="https://gstechschulte.github.io/posts/sql-stateful-joins/">
 <noscript>
     <style>
         #theme-toggle,
@@ -90,7 +90,75 @@ For example, in manufacturing, a machine may use a set of machine process parame
     });
 </script>
 
+<meta property="og:title" content="Stateful Joins in SQL" />
+<meta property="og:description" content="Introduction
+In some scenarios, one needs to enrich an event stream with data from another source that holds &ldquo;state&rdquo;. This state provides additional context to the event stream.
+For example, in manufacturing, a machine may use a set of machine process parameters (pressure, speed, force, etc.) when producing an item. The process parameters represent the &ldquo;state&rdquo; of the machine at production time $t$. However, the software services that publishes messages on what is being produced and the machine process parameters currently used are separate. Furthermore, to avoid the duplication of data, the service that publishes process parameters only publishes a message when there is a change in state, e.g when an operator changes one of process parameters." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://gstechschulte.github.io/posts/sql-stateful-joins/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-08-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-08-22T00:00:00+00:00" />
 
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Stateful Joins in SQL"/>
+<meta name="twitter:description" content="Introduction
+In some scenarios, one needs to enrich an event stream with data from another source that holds &ldquo;state&rdquo;. This state provides additional context to the event stream.
+For example, in manufacturing, a machine may use a set of machine process parameters (pressure, speed, force, etc.) when producing an item. The process parameters represent the &ldquo;state&rdquo; of the machine at production time $t$. However, the software services that publishes messages on what is being produced and the machine process parameters currently used are separate. Furthermore, to avoid the duplication of data, the service that publishes process parameters only publishes a message when there is a change in state, e.g when an operator changes one of process parameters."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://gstechschulte.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Stateful Joins in SQL",
+      "item": "https://gstechschulte.github.io/posts/sql-stateful-joins/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Stateful Joins in SQL",
+  "name": "Stateful Joins in SQL",
+  "description": "Introduction In some scenarios, one needs to enrich an event stream with data from another source that holds \u0026ldquo;state\u0026rdquo;. This state provides additional context to the event stream.\nFor example, in manufacturing, a machine may use a set of machine process parameters (pressure, speed, force, etc.) when producing an item. The process parameters represent the \u0026ldquo;state\u0026rdquo; of the machine at production time $t$. However, the software services that publishes messages on what is being produced and the machine process parameters currently used are separate. Furthermore, to avoid the duplication of data, the service that publishes process parameters only publishes a message when there is a change in state, e.g when an operator changes one of process parameters.\n",
+  "keywords": [
+    
+  ],
+  "articleBody": "Introduction In some scenarios, one needs to enrich an event stream with data from another source that holds “state”. This state provides additional context to the event stream.\nFor example, in manufacturing, a machine may use a set of machine process parameters (pressure, speed, force, etc.) when producing an item. The process parameters represent the “state” of the machine at production time $t$. However, the software services that publishes messages on what is being produced and the machine process parameters currently used are separate. Furthermore, to avoid the duplication of data, the service that publishes process parameters only publishes a message when there is a change in state, e.g when an operator changes one of process parameters.\nData simulation Lets simulate some data with TimescaleDB.\nCREATE TABLE production ( time timestamptz NOT NULL, product_id INT NOT NULL ); INSERT INTO production SELECT *, 1 as product_id FROM generate_series('2024-01-01 05:00:00', '2024-01-01 05:05:00', INTERVAL '1m') AS time UNION ALL SELECT *, 2 as product_id FROM generate_series('2024-01-01 05:10:00', '2024-01-01 05:13:00', INTERVAL '1m') AS time SELECT * FROM production; time product_id 2024-01-01 05:00:00+00 1 2024-01-01 05:01:00+00 1 2024-01-01 05:02:00+00 1 2024-01-01 05:03:00+00 1 2024-01-01 05:04:00+00 1 2024-01-01 05:05:00+00 1 2024-01-01 05:10:00+00 2 2024-01-01 05:11:00+00 2 2024-01-01 05:12:00+00 2 2024-01-01 05:13:00+00 2 CREATE TABLE machine ( time timestamptz NOT NULL, speed NUMERIC NOT NULL ); INSERT INTO machine (time, speed) VALUES ('2024-01-01 02:00:00'::timestamptz, 40.0), ('2024-01-01 05:07:00'::timestamptz, 60.0); SELECT * FROM machine; time speed 2024-01-01 02:00:00+00 40.0 2024-01-01 05:07:00+00 60.0 Postgres stateful join We would like to enrich the production data with the process parameters from machine. Thus, we need to join the most recent process parameter with a production event where a production event most occur greater than or equal to the change in machine state.\nThis enrichment can be achieved with a stateful join using PostgreSQL’s LATERAL JOIN expression. The LATERAL keyword allows a subquery or derived table to reference columns from tables listed before it in the FROM clause. A LATERAL join is like a for loop: for each row returned by the tables listed before LATERAL in the FROM clause, PostgreSQL will evaluate the LATERAL subquery using the current row’s values. The resulting rows from the LATERAL subquery are joined to the current row, typically using a JOIN condition of ON TRUE since the real join conditions are inside the LATERAL subquery. This process is then repeated for each row or set of rows from the tables preceding LATERAL.\nSELECT * FROM production prod LEFT JOIN LATERAL ( SELECT time as change_time, speed FROM machine WHERE time \u003c= prod.time ORDER BY time DESC LIMIT 1 ) ON TRUE; time product_id change_time speed 2024-01-01 05:00:00.000000 +00:00 1 2024-01-01 02:00:00.000000 +00:00 40 2024-01-01 05:01:00.000000 +00:00 1 2024-01-01 02:00:00.000000 +00:00 40 2024-01-01 05:02:00.000000 +00:00 1 2024-01-01 02:00:00.000000 +00:00 40 2024-01-01 05:03:00.000000 +00:00 1 2024-01-01 02:00:00.000000 +00:00 40 2024-01-01 05:04:00.000000 +00:00 1 2024-01-01 02:00:00.000000 +00:00 40 2024-01-01 05:05:00.000000 +00:00 1 2024-01-01 02:00:00.000000 +00:00 40 2024-01-01 05:10:00.000000 +00:00 2 2024-01-01 05:07:00.000000 +00:00 60 2024-01-01 05:11:00.000000 +00:00 2 2024-01-01 05:07:00.000000 +00:00 60 2024-01-01 05:12:00.000000 +00:00 2 2024-01-01 05:07:00.000000 +00:00 60 2024-01-01 05:13:00.000000 +00:00 2 2024-01-01 05:07:00.000000 +00:00 60 In our hypothetical manufacturing example, the machine process parameters changed when product 2 began producing. Before this enrichment process, it wouldn’t have been known why the time to produce product 2 was faster. However, the LATERAL JOIN allows us to see that the speed increased from 40 to 60.\n",
+  "wordCount" : "569",
+  "inLanguage": "en",
+  "datePublished": "2024-08-22T00:00:00Z",
+  "dateModified": "2024-08-22T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Gabriel Stechschulte"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://gstechschulte.github.io/posts/sql-stateful-joins/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Gabe's Gulch",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://gstechschulte.github.io/favicon.ico"
+    }
+  }
+}
+</script>
 </head>
 
 <body class="" id="top">
@@ -108,7 +176,7 @@ For example, in manufacturing, a machine may use a set of machine process parame
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
+            <a href="https://gstechschulte.github.io/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -134,12 +202,12 @@ For example, in manufacturing, a machine may use a set of machine process parame
         </div>
         <ul id="menu">
             <li>
-                <a href="http://localhost:1313/categories/" title="categories">
+                <a href="https://gstechschulte.github.io/categories/" title="categories">
                     <span>categories</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/tags/" title="tags">
+                <a href="https://gstechschulte.github.io/tags/" title="tags">
                     <span>tags</span>
                 </a>
             </li>
@@ -372,7 +440,7 @@ For example, in manufacturing, a machine may use a set of machine process parame
     </main>
     
 <footer class="footer">
-        <span>&copy; 2025 <a href="http://localhost:1313/">Gabe&#39;s Gulch</a></span> · 
+        <span>&copy; 2025 <a href="https://gstechschulte.github.io/">Gabe&#39;s Gulch</a></span> · 
 
     <span>
         Powered by

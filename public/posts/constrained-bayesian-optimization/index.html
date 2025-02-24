@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="index, follow">
 <title>Outcome Constraints in Bayesian Optimization | Gabe&#39;s Gulch</title>
 <meta name="keywords" content="">
 <meta name="description" content="
@@ -24,16 +24,16 @@ plt.style.use(&#34;https://raw.githubusercontent.com/GStechschulte/filterjax/mai
 Outcome constraints
 In optimization, it is often the goal that we need to optimize an objective function while satisfying some constraints. For example, we may want to minimize the scrap rate by finding the optimal process parameters of an manufacturing machine. However, we know the scrap rate cannot be below 0. In another setting, we may want to maximize the throughput of a machine, but we know that the throughput cannot exceed the maximum belt speed of the machine. Thus, we need to find regions in the search space that both yield high objective values and satisfy these constraints. In this blog, we will focus on inequality outcome constraints. That is, the domain of the objective function is">
 <meta name="author" content="Gabriel Stechschulte">
-<link rel="canonical" href="http://localhost:1313/posts/constrained-bayesian-optimization/">
+<link rel="canonical" href="https://gstechschulte.github.io/posts/constrained-bayesian-optimization/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<link rel="icon" href="https://gstechschulte.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://gstechschulte.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://gstechschulte.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://gstechschulte.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://gstechschulte.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/constrained-bayesian-optimization/">
+<link rel="alternate" hreflang="en" href="https://gstechschulte.github.io/posts/constrained-bayesian-optimization/">
 <noscript>
     <style>
         #theme-toggle,
@@ -103,7 +103,101 @@ In optimization, it is often the goal that we need to optimize an objective func
     });
 </script>
 
+<meta property="og:title" content="Outcome Constraints in Bayesian Optimization" />
+<meta property="og:description" content="
+#| code-fold: true
+import matplotlib.pyplot as plt
+import torch
+import numpy as np
 
+from botorch.acquisition import qLogExpectedImprovement
+from botorch.fit import fit_gpytorch_model
+from botorch.models import SingleTaskGP
+from botorch.optim import optimize_acqf
+from gpytorch.mlls import ExactMarginalLogLikelihood
+from torch.distributions import Normal
+
+plt.style.use(&#34;https://raw.githubusercontent.com/GStechschulte/filterjax/main/docs/styles.mplstyle&#34;)
+Outcome constraints
+In optimization, it is often the goal that we need to optimize an objective function while satisfying some constraints. For example, we may want to minimize the scrap rate by finding the optimal process parameters of an manufacturing machine. However, we know the scrap rate cannot be below 0. In another setting, we may want to maximize the throughput of a machine, but we know that the throughput cannot exceed the maximum belt speed of the machine. Thus, we need to find regions in the search space that both yield high objective values and satisfy these constraints. In this blog, we will focus on inequality outcome constraints. That is, the domain of the objective function is" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://gstechschulte.github.io/posts/constrained-bayesian-optimization/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-11-28T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-11-28T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Outcome Constraints in Bayesian Optimization"/>
+<meta name="twitter:description" content="
+#| code-fold: true
+import matplotlib.pyplot as plt
+import torch
+import numpy as np
+
+from botorch.acquisition import qLogExpectedImprovement
+from botorch.fit import fit_gpytorch_model
+from botorch.models import SingleTaskGP
+from botorch.optim import optimize_acqf
+from gpytorch.mlls import ExactMarginalLogLikelihood
+from torch.distributions import Normal
+
+plt.style.use(&#34;https://raw.githubusercontent.com/GStechschulte/filterjax/main/docs/styles.mplstyle&#34;)
+Outcome constraints
+In optimization, it is often the goal that we need to optimize an objective function while satisfying some constraints. For example, we may want to minimize the scrap rate by finding the optimal process parameters of an manufacturing machine. However, we know the scrap rate cannot be below 0. In another setting, we may want to maximize the throughput of a machine, but we know that the throughput cannot exceed the maximum belt speed of the machine. Thus, we need to find regions in the search space that both yield high objective values and satisfy these constraints. In this blog, we will focus on inequality outcome constraints. That is, the domain of the objective function is"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://gstechschulte.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Outcome Constraints in Bayesian Optimization",
+      "item": "https://gstechschulte.github.io/posts/constrained-bayesian-optimization/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Outcome Constraints in Bayesian Optimization",
+  "name": "Outcome Constraints in Bayesian Optimization",
+  "description": " #| code-fold: true import matplotlib.pyplot as plt import torch import numpy as np from botorch.acquisition import qLogExpectedImprovement from botorch.fit import fit_gpytorch_model from botorch.models import SingleTaskGP from botorch.optim import optimize_acqf from gpytorch.mlls import ExactMarginalLogLikelihood from torch.distributions import Normal plt.style.use(\u0026#34;https://raw.githubusercontent.com/GStechschulte/filterjax/main/docs/styles.mplstyle\u0026#34;) Outcome constraints In optimization, it is often the goal that we need to optimize an objective function while satisfying some constraints. For example, we may want to minimize the scrap rate by finding the optimal process parameters of an manufacturing machine. However, we know the scrap rate cannot be below 0. In another setting, we may want to maximize the throughput of a machine, but we know that the throughput cannot exceed the maximum belt speed of the machine. Thus, we need to find regions in the search space that both yield high objective values and satisfy these constraints. In this blog, we will focus on inequality outcome constraints. That is, the domain of the objective function is\n",
+  "keywords": [
+    
+  ],
+  "articleBody": " #| code-fold: true import matplotlib.pyplot as plt import torch import numpy as np from botorch.acquisition import qLogExpectedImprovement from botorch.fit import fit_gpytorch_model from botorch.models import SingleTaskGP from botorch.optim import optimize_acqf from gpytorch.mlls import ExactMarginalLogLikelihood from torch.distributions import Normal plt.style.use(\"https://raw.githubusercontent.com/GStechschulte/filterjax/main/docs/styles.mplstyle\") Outcome constraints In optimization, it is often the goal that we need to optimize an objective function while satisfying some constraints. For example, we may want to minimize the scrap rate by finding the optimal process parameters of an manufacturing machine. However, we know the scrap rate cannot be below 0. In another setting, we may want to maximize the throughput of a machine, but we know that the throughput cannot exceed the maximum belt speed of the machine. Thus, we need to find regions in the search space that both yield high objective values and satisfy these constraints. In this blog, we will focus on inequality outcome constraints. That is, the domain of the objective function is\n$$\\text{lower} \\le f(x) \\le \\text{upper}$$\nwhere $\\text{lower}$ and $\\text{upper}$ are the lower and upper bounds of the objective function. You need not both bounds, but rather one or the other. The set of points $x’$ that satisfy the constraint are called feasible points and the set of points that do not satisfy the constraint are called infeasible points. Often, in tutorials and or books teaching Bayesian optimization, it is assumed we know a cost function a priori that restricts the outcome space in some way, and then an additional model is used to model the constraint. However, in practice, we often only know a lower and or upper bound according to technical specifications. These bounds do not require an additional model.\nIn this blog, it will be shown how to use BoTorch to optimize a one-dimensional function with an outcome constraint without using an additional model for the cost (constraint) function. The remainder of the post assumes the reader is already familiar with Bayesian optimization.\nProbability of feasibility In BoTorch it is common to use a Gaussian Process (GP) to model the objective function. The output of the GP is a Gaussian distribution over the predicted values for a given set of input points. It provides not just a single point estimate but a probabilistic prediction that accounts for uncertainty in the predictions. Thus, for each point in the search space, we have a corresponding Gaussian distribution representing the belief of the objective value at that point.\nIntuitively, if we have defined an outcome constraint, we can compute the probability that $f(x)$ is feasible by taking the cumulative distribution function (CDF) of the predictive distribution and computing the area between the lower bound and the upper bound. For example, imagine a GP has made a prediction given an input $x$. This predictive distribution of the outcome $y$ is shown below. The prediction is normally distributed around $0.0$ with plausible predictions ranging from $-3$ to $3$. Additionally, there is an outcome constraint of the form\n$$0 \u003c f(x)$$\nThe probability that the prediction is feasible (above $0$) is computed using the CDF of the predictive distribution. In this example, the probability of feasibility is $0.5$. As will be shown below, this probability can then multiplied by the policy score to get the constrained policy score.\n#| code-fold: true xs = torch.linspace(-3, 3, 100) normal = Normal(torch.tensor([0.0]), torch.tensor([1.0])) xs_eval = torch.exp(normal.log_prob(xs)) / torch.exp(normal.log_prob(xs)).sum() cdf = normal.cdf(xs) above = torch.where(cdf \u003e 0.5) prob_feasibility = normal.cdf(torch.zeros(1)).item() plt.figure(figsize=(7, 3)) plt.plot(xs, xs_eval, label=\"Predictive distribution\") plt.fill_between(xs, xs_eval, where=xs \u003e 0, alpha=0.5, label=\"Feasible region\") plt.xlabel('Predicted outcome $y$') plt.ylabel('Probability') plt.title(f\"Area under the shaded curve: {prob_feasibility:.2f}\") plt.legend() plt.show() Constrained Policy With the probability of feasibility computed, we can scale the policy, e.g. expected improvement (EI), score of each unseen point in the search space by the probability the point is feasible.\nIf the data point is likely to satisfy the constraints, then its EI score will be multiplied by a large number (a high probability of feasibility), thus keeping the EI score high. If the data point is unlikely to satisfy the constraints, then its EI score will be multiplied by a small number (a small probability of feasibility), thus keeping the EI score small. To implement inequality outcome constraints, acquisition functions that utilize Monte-Carlo (MC) sampling are used as this allows us to directly pass a list of constraint callables. These are any acquisition functions that inherit from SampleReducingMCAcqquisitionFunction.\nImplementation To implement inequality outcome constraints, only a list of constraint callables which map a Tensor of posterior samples of dimension sample_shape x batch-shape x q x m-dim to a sample_shape x batch-shape x q-dim Tensor. The associated constraints are considered satisfied if the output is less than zero. In the example below, we aim to minimize the Forrester function subject to the following constraint that $$f(x) \u003c 0$$\nNote: Since we are minimizing, the objective function is inverted, and thus the inequality is also inverted.\ndef objective_fn(x): return -((x + 1) ** 2) * torch.sin(2 * x + 2) / 5 + 1 + x / 3 #| code-fold: true lb, ub = -5, 5 bounds = torch.tensor([[lb], [ub]], dtype=torch.float) xs = torch.linspace(lb, ub, 100).unsqueeze(1) ys = -objective_fn(xs) n = 5 train_x = bounds[0] + (bounds[1] - bounds[0]) * torch.rand(n, 1, dtype=torch.double) train_y = -objective_fn(train_x) plt.figure(figsize=(7, 3)) plt.plot(xs, ys, label=\"Objective\") plt.scatter(train_x, train_y, color=\"black\", label=\"Observations\") plt.axhline(y=0, color=\"k\", linestyle=\"--\", label=\"Upper Bound\") plt.legend(); The Bayesian optimization loop below uses the qLogExpectedImprovement policy. To impose the desired inequality outcome constraint $f(x) \u003c 0$, a list of callables [lambda Z: Z.squeeze(-1) - upper] is passed to constraints. This callable subtracts the posterior samples $Z$ by upper which is $0.0$. If the result of this is less than zero, then the constraint is satisfied.\nNote that $Z$ here would be passing in all outcomes if a multi-task GP had been defined, so you want to index into $Z$ appropriately and make separate callables for each outcome, e.g. constraints=[lambda Z: Z[..., constraint_outcome_idx]]. However, in this example, there is only one outcome, so we can just use Z.squeeze(-1) to select the correct (and only) outcome dimension.\nn_iterations = 20 upper = 0. for iteration in range(n_iterations): print(f\"iter: {iteration}\") model = SingleTaskGP(train_x, train_y, ) mll = ExactMarginalLogLikelihood(model.likelihood, model) fit_gpytorch_model(mll) logEI = qLogExpectedImprovement( model, best_f=train_y[train_y \u003c 0].max(), constraints=[ lambda Z: Z.squeeze(-1) - upper # if there was also a lower bound # lambda Z: lower - Z.squeeze(-1), ] ) new_x, _ = optimize_acqf( acq_function=logEI, bounds=bounds, q=1, num_restarts=5, raw_samples=20, ) new_y = -objective_fn(new_x) train_x = torch.cat([train_x, new_x]) train_y = torch.cat([train_y, new_y]) We can then evaluate the policy on unseen data and plot the proposed samples (queries).\nwith torch.no_grad(): acquisition_score = logEI(xs.unsqueeze(1)) fig, ax = plt.subplots( 2, 1, figsize=(8, 4), sharex=True, gridspec_kw={\"height_ratios\": [2, 1]} ) ax[0].scatter(train_x[:5], -train_y[:5], color=\"black\", label=\"observed samples\") ax[0].scatter(train_x[5:], -train_y[5:], color=\"red\", label=\"proposal samples\") ax[0].plot(xs, -ys, label=\"objective function\") ax[0].legend() ax[1].plot(xs, acquisition_score, label=\"acquisition score\") ax[1].legend(); The objective function has been flipped back to its original form to visually evaluate the optimization loop. Notice how the majority of the proposed points that minimize the objective function are near $0$. Points that are below $0$ happen due to the fact that we are using a probabilistic surrogate model to compute the probability of feasibility. The predictions of this model are not perfect, and thus, it is possible that the optimized policy score informs the next query to be a point below $0.0$. Nonetheless, the minimizing points are found near $-4.2$, $-2.5$, and $-1.5$.\n",
+  "wordCount" : "1226",
+  "inLanguage": "en",
+  "datePublished": "2023-11-28T00:00:00Z",
+  "dateModified": "2023-11-28T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Gabriel Stechschulte"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://gstechschulte.github.io/posts/constrained-bayesian-optimization/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Gabe's Gulch",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://gstechschulte.github.io/favicon.ico"
+    }
+  }
+}
+</script>
 </head>
 
 <body class="" id="top">
@@ -121,7 +215,7 @@ In optimization, it is often the goal that we need to optimize an objective func
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
+            <a href="https://gstechschulte.github.io/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -147,12 +241,12 @@ In optimization, it is often the goal that we need to optimize an objective func
         </div>
         <ul id="menu">
             <li>
-                <a href="http://localhost:1313/categories/" title="categories">
+                <a href="https://gstechschulte.github.io/categories/" title="categories">
                     <span>categories</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/tags/" title="tags">
+                <a href="https://gstechschulte.github.io/tags/" title="tags">
                     <span>tags</span>
                 </a>
             </li>
@@ -310,7 +404,7 @@ $$f(x) &lt; 0$$</p>
     </main>
     
 <footer class="footer">
-        <span>&copy; 2025 <a href="http://localhost:1313/">Gabe&#39;s Gulch</a></span> · 
+        <span>&copy; 2025 <a href="https://gstechschulte.github.io/">Gabe&#39;s Gulch</a></span> · 
 
     <span>
         Powered by

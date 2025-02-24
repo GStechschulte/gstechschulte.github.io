@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="index, follow">
 <title>Variational Inference - Evidence Lower Bound | Gabe&#39;s Gulch</title>
 <meta name="keywords" content="">
 <meta name="description" content="We don&rsquo;t know the real posterior so we are going to choose a distribution $Q(\theta)$ from a family of distributions $Q^*$ that are easy to work with and parameterized by $\theta$. The approximate distribution should be as close as possible to the true posterior. This closeness is measured using KL-Divergence. If we have the joint $p(x, z)$ where $x$ is some observed data, the goal is to perform inference: given what we have observed, what can we infer about the latent states?, i.e , we want the posterior.">
 <meta name="author" content="Gabriel Stechschulte">
-<link rel="canonical" href="http://localhost:1313/posts/variational-inference/">
+<link rel="canonical" href="https://gstechschulte.github.io/posts/variational-inference/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<link rel="icon" href="https://gstechschulte.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://gstechschulte.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://gstechschulte.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://gstechschulte.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://gstechschulte.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/variational-inference/">
+<link rel="alternate" hreflang="en" href="https://gstechschulte.github.io/posts/variational-inference/">
 <noscript>
     <style>
         #theme-toggle,
@@ -88,7 +88,71 @@
     });
 </script>
 
+<meta property="og:title" content="Variational Inference - Evidence Lower Bound" />
+<meta property="og:description" content="We don&rsquo;t know the real posterior so we are going to choose a distribution $Q(\theta)$ from a family of distributions $Q^*$ that are easy to work with and parameterized by $\theta$. The approximate distribution should be as close as possible to the true posterior. This closeness is measured using KL-Divergence. If we have the joint $p(x, z)$ where $x$ is some observed data, the goal is to perform inference: given what we have observed, what can we infer about the latent states?, i.e , we want the posterior." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://gstechschulte.github.io/posts/variational-inference/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-06-03T18:43:46+02:00" />
+<meta property="article:modified_time" content="2022-06-03T18:43:46+02:00" />
 
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Variational Inference - Evidence Lower Bound"/>
+<meta name="twitter:description" content="We don&rsquo;t know the real posterior so we are going to choose a distribution $Q(\theta)$ from a family of distributions $Q^*$ that are easy to work with and parameterized by $\theta$. The approximate distribution should be as close as possible to the true posterior. This closeness is measured using KL-Divergence. If we have the joint $p(x, z)$ where $x$ is some observed data, the goal is to perform inference: given what we have observed, what can we infer about the latent states?, i.e , we want the posterior."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://gstechschulte.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Variational Inference - Evidence Lower Bound",
+      "item": "https://gstechschulte.github.io/posts/variational-inference/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Variational Inference - Evidence Lower Bound",
+  "name": "Variational Inference - Evidence Lower Bound",
+  "description": "We don\u0026rsquo;t know the real posterior so we are going to choose a distribution $Q(\\theta)$ from a family of distributions $Q^*$ that are easy to work with and parameterized by $\\theta$. The approximate distribution should be as close as possible to the true posterior. This closeness is measured using KL-Divergence. If we have the joint $p(x, z)$ where $x$ is some observed data, the goal is to perform inference: given what we have observed, what can we infer about the latent states?, i.e , we want the posterior.\n",
+  "keywords": [
+    
+  ],
+  "articleBody": "We don’t know the real posterior so we are going to choose a distribution $Q(\\theta)$ from a family of distributions $Q^*$ that are easy to work with and parameterized by $\\theta$. The approximate distribution should be as close as possible to the true posterior. This closeness is measured using KL-Divergence. If we have the joint $p(x, z)$ where $x$ is some observed data, the goal is to perform inference: given what we have observed, what can we infer about the latent states?, i.e , we want the posterior.\nRecall Bayes theorem:\n$$p(z | x) = \\frac{p(x|z)p(z)}{p(x)}$$\nThe problem is the marginal $p(x = D)$ as this could require a hundred, thousand, . . .dimensional integral:\n$$p(x) = \\int_{z_0},…,\\int_{z_{D-1}}p(x, z)dz_0,…,d_{z_D{-1}}$$\nIf we want the full posterior and can’t compute the marginal, then what’s the solution? Surrogate posterior. We want to approximate the true posterior using some known distribution:\n$$q(z) \\approx p(z|X=D)$$\nwhere $\\approx$ can mean you want the approximated posterior to be “as good as possible”. Using variational inference, the objective is to minimize the distance between the surrogate $q(z)$ and the true posterior $p(x)$ using KL-Divergence:\n$$q^*(z) = argmin_{q(z) \\in Q} (KL(q(z) || p(z|x=D)))$$\nwhere $Q$ is a more “simple” distribution. We can restate the KL-divergence as the expectation:\n$$KL(q(z) || p(z|D)) = \\mathbb{E_{z \\sim q(z)}}[log \\frac{q(z)}{p(z|D)}]$$\nwhich, taking the expectation over $z$, is equivalent to integration:\n$$\\int_{z_0}, . . .,\\int_{z_{D-1}}q(z)log\\frac{q(z)}{p(z|D)}d_{z_0},…,d_{z_{D-1}}$$\nBut, sadly we don’t have $p(z \\vert D)$ as this is the posterior! We only have the joint. Solution? Recall our KL-divergence:\n$$KL(q(z) || p(z|D))$$\nWe can rearrange the terms inside the $log$ so that we can actually compute something:\n$$\\int_{z}q(z)log(\\frac{q(z)p(D)}{p(z, D)})dz$$\nWe only have the joint. Not the posterior; nor the marginal. We know from Bayes rule that we can express the posterior in terms of the joint $p(z, D)$ divided by the marginal $p(x=D)$:\n$$p(z|D) = \\frac{p(Z, D)}{p(D)}$$\nWe plug this inside of the $log$:\n$$\\int_{z}q(z)log(\\frac{q(z)p(D)}{p(z, D)})dz$$\nHowever, the problem now is that we have reformulated our problem into another quantity that we don’t have, i.e., the marginal $p(D)$. But we can put the quantity that we don’t have outside of the $log$ to form two separate integrals.\n$$\\int_z q(z)log(\\frac{q(z)}{p(z, D)})dz + \\int_zq(z)log(p(D)dz$$\nThis is a valid rearrangement because of the properties of logarithms. In this case, the numerator is a product, so this turns into a sum of the second integral. What do we see in these two terms? We see an expectation over the quantity $\\frac{q(z)}{p(z, D)}$ and another expectation over $p(D)$. Rewriting in terms of expectation:\n$$\\mathbb{E_{z{\\sim q(z)}}}[log(\\frac{q(z)}{p(z, D)})] + \\mathbb{E_{z \\sim q(z)}}[log(p(D))]$$\nThe right term contains information we know—the functional form of the surrogate $q(z)$ and the joint $p(z, D)$ (in the form of a directed graphical model). We still don’t have access to $p(D)$ on the right side, but this is a constant quantity. The expectation of a quantity that does not contain $z$ is just whatever the expectation was taken over. Because of this, we can again rearrange:\n$$-\\mathbb{E_{z \\sim q(z)}}[log \\frac{p(z, D)}{q(z)}]+log (p(D))$$\nThe minus sign is a result of the “swapping” of the numerator and denominator and is required to make it a valid change. Looking at this, the left side is a function dependent on $q$. In shorthand form, we can call this $\\mathcal{L(q)}$. Our KL-divergence is:\n$$KL = \\mathcal{-L(q)} + \\underbrace{log(p(D))}_\\textrm{evidence}$$\nwhere $p(D)$ is a value between $[0, 1]$ and this value is called the evidence which is the log probability of the data. If we apply the $log$ to something between $[0, 1]$ then this value will be negative. This value is also constant since we have observed the dataset and thus does not change.\n$KL$ is the distance (between the posterior and the surrogate) so it must be something positive. If the $KL$ is positive and the evidence is negative, then in order to fulfill this equation, $\\mathcal{L}$ must also be negative (negative times a negative is a positive). The $\\mathcal{L}$ should be smaller than the evidence, and thus it is called the lower bound of the evidence $\\rightarrow$ Evidence Lower Bound (ELBO).\nAgain, ELBO is defined as: $\\mathcal{L} = \\mathbb{E_{z \\sim q(z)}}[log(\\frac{p(z, D)}{q(z)})]$ and is important to note that the ELBO is equal to the evidence if and only if the KL-divergence between the surrogate and the true posterior is $0$:\n$$\\mathcal{L(q)} = log(p(D)) \\textrm{ i.f.f. } KL(q(z)||p(z|D))=0$$\n",
+  "wordCount" : "724",
+  "inLanguage": "en",
+  "datePublished": "2022-06-03T18:43:46+02:00",
+  "dateModified": "2022-06-03T18:43:46+02:00",
+  "author":{
+    "@type": "Person",
+    "name": "Gabriel Stechschulte"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://gstechschulte.github.io/posts/variational-inference/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Gabe's Gulch",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://gstechschulte.github.io/favicon.ico"
+    }
+  }
+}
+</script>
 </head>
 
 <body class="" id="top">
@@ -106,7 +170,7 @@
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
+            <a href="https://gstechschulte.github.io/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -132,12 +196,12 @@
         </div>
         <ul id="menu">
             <li>
-                <a href="http://localhost:1313/categories/" title="categories">
+                <a href="https://gstechschulte.github.io/categories/" title="categories">
                     <span>categories</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/tags/" title="tags">
+                <a href="https://gstechschulte.github.io/tags/" title="tags">
                     <span>tags</span>
                 </a>
             </li>
@@ -201,7 +265,7 @@
     </main>
     
 <footer class="footer">
-        <span>&copy; 2025 <a href="http://localhost:1313/">Gabe&#39;s Gulch</a></span> · 
+        <span>&copy; 2025 <a href="https://gstechschulte.github.io/">Gabe&#39;s Gulch</a></span> · 
 
     <span>
         Powered by

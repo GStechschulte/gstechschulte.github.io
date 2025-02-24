@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="index, follow">
 <title>Hierarchical Regression With Missing Data | Gabe&#39;s Gulch</title>
 <meta name="keywords" content="">
 <meta name="description" content="
 Hierarchical regression, also known as multilevel modeling, is a powerful modeling technique that allows one to analyze data with a nested structure. This approach is particularly useful when dealing with data that has natural groupings, such as students within schools, patients within hospitals, or in the example below, product configurations within manufacturing processes. One of the key advantages of hierarchical regression lies in its ability to handle missing data in groups, i.e., when one group may not share the same covariates as another group or some groups may contain missong observations.">
 <meta name="author" content="Gabriel Stechschulte">
-<link rel="canonical" href="http://localhost:1313/posts/hierarchical-regression-missing-data/">
+<link rel="canonical" href="https://gstechschulte.github.io/posts/hierarchical-regression-missing-data/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<link rel="icon" href="https://gstechschulte.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://gstechschulte.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://gstechschulte.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://gstechschulte.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://gstechschulte.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/hierarchical-regression-missing-data/">
+<link rel="alternate" hreflang="en" href="https://gstechschulte.github.io/posts/hierarchical-regression-missing-data/">
 <noscript>
     <style>
         #theme-toggle,
@@ -89,7 +89,73 @@ Hierarchical regression, also known as multilevel modeling, is a powerful modeli
     });
 </script>
 
+<meta property="og:title" content="Hierarchical Regression With Missing Data" />
+<meta property="og:description" content="
+Hierarchical regression, also known as multilevel modeling, is a powerful modeling technique that allows one to analyze data with a nested structure. This approach is particularly useful when dealing with data that has natural groupings, such as students within schools, patients within hospitals, or in the example below, product configurations within manufacturing processes. One of the key advantages of hierarchical regression lies in its ability to handle missing data in groups, i.e., when one group may not share the same covariates as another group or some groups may contain missong observations." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://gstechschulte.github.io/posts/hierarchical-regression-missing-data/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-09-10T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-09-10T00:00:00+00:00" />
 
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Hierarchical Regression With Missing Data"/>
+<meta name="twitter:description" content="
+Hierarchical regression, also known as multilevel modeling, is a powerful modeling technique that allows one to analyze data with a nested structure. This approach is particularly useful when dealing with data that has natural groupings, such as students within schools, patients within hospitals, or in the example below, product configurations within manufacturing processes. One of the key advantages of hierarchical regression lies in its ability to handle missing data in groups, i.e., when one group may not share the same covariates as another group or some groups may contain missong observations."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://gstechschulte.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Hierarchical Regression With Missing Data",
+      "item": "https://gstechschulte.github.io/posts/hierarchical-regression-missing-data/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Hierarchical Regression With Missing Data",
+  "name": "Hierarchical Regression With Missing Data",
+  "description": " Hierarchical regression, also known as multilevel modeling, is a powerful modeling technique that allows one to analyze data with a nested structure. This approach is particularly useful when dealing with data that has natural groupings, such as students within schools, patients within hospitals, or in the example below, product configurations within manufacturing processes. One of the key advantages of hierarchical regression lies in its ability to handle missing data in groups, i.e., when one group may not share the same covariates as another group or some groups may contain missong observations.\n",
+  "keywords": [
+    
+  ],
+  "articleBody": " Hierarchical regression, also known as multilevel modeling, is a powerful modeling technique that allows one to analyze data with a nested structure. This approach is particularly useful when dealing with data that has natural groupings, such as students within schools, patients within hospitals, or in the example below, product configurations within manufacturing processes. One of the key advantages of hierarchical regression lies in its ability to handle missing data in groups, i.e., when one group may not share the same covariates as another group or some groups may contain missong observations.\nSimulated Example: Manufacturing Process Analysis To illustrate the ability of hierarchical regression in handling missing data, let’s consider a simulated example from a manufacturing context. We’ll analyze how different machine process parameters impact production speed across two product groups. In this simulation, we generate data for two product groups with different dependencies on machine process parameters:\nProduct group 1 depends on feed speed and pull acceleration. Product group 2 depends on feed speed, pull acceleration, and cutting wait time. The cutting wait time for product group 1 is set to NaN, simulating a scenario where this parameter is not applicable or not measured for this group.\nimport matplotlib.pyplot as plt import numpy as np import numpyro import pandas as pd import seaborn as sns import jax.numpy as jnp import numpyro.distributions as dist from jax import random from numpyro.infer import Predictive n_samples = 500 # Generate machine process parameters for both groups feed_speed = np.random.uniform(1, 10, n_samples) pull_acceleration = np.random.uniform(0.5, 5, n_samples) cutting_wait_time = np.random.uniform(0.1, 2, n_samples) # Create product groups product_group = np.array(['Product_Group_1'] * (n_samples // 2) + ['Product_Group_2'] * (n_samples // 2)) # Calculate production speed production_speed = np.zeros(n_samples) # Product Group 1: depends on feed speed and pull acceleration (Cutting Wait Time is NaN) mask_pg1 = product_group == 'Product_Group_1' # Increased coefficients for Product Group 1 to ensure higher production speed production_speed[mask_pg1] = (feed_speed[mask_pg1] * 2.5 + pull_acceleration[mask_pg1] * 3 + np.random.normal(0, 0.5, sum(mask_pg1))) # Product Group 2: depends on all three parameters mask_pg2 = product_group == 'Product_Group_2' production_speed[mask_pg2] = (feed_speed[mask_pg2] * 1 + pull_acceleration[mask_pg2] * 0.5 + cutting_wait_time[mask_pg2] * 3 + np.random.normal(0, 0.5, sum(mask_pg2))) # Create DataFrame with NaN for Cutting Wait Time in Product Group 1 simulated_dataset = pd.DataFrame({ 'Product_Group': product_group, 'Feed_Speed': feed_speed, 'Pull_Acceleration': pull_acceleration, 'Cutting_Wait_Time': [np.nan if x == 'Product_Group_1' else cutting_wait_time[i] for i,x in enumerate(product_group)], 'Production_Speed': production_speed }) plt.figure(figsize=(7, 3)) sns.histplot( data=simulated_dataset, x=\"Production_Speed\", hue=\"Product_Group\", binwidth=1 ) plt.xlabel(\"Production Speed\") plt.title(\"Simulated Data Distribution\"); # sns.pairplot(simulated_dataset.iloc[:, 0:], hue=\"Product_Group\", corner=True); simulated_dataset[\"Product_Group\"] = (simulated_dataset[\"Product_Group\"] .map({ \"Product_Group_1\": 0, \"Product_Group_2\": 1 }) ) Parameter Masking for Missing Data To handle the missing data in our hierarchical model, I will use a technique called parameter masking. This approach allows us to effectively “turn off” certain parameters for specific groups where they are not applicable when data X is passed to the model. Key aspects of this approach:\nWe use an indicators array to specify which parameters are relevant for each product group. The input data X is masked to replace NaNs with zeros, and then multiplied by the indicators. The weights w are also masked using the indicators, ensuring that irrelevant parameters don’t contribute to the predictions. parameter_mask = jnp.array([ [1, 1, 0], [1, 1, 1] ]) config_idx = jnp.array(simulated_dataset[\"Product_Group\"].values) X = jnp.array(simulated_dataset.iloc[:, 1:4].values) y = jnp.array(simulated_dataset[\"Production_Speed\"].values) def model(indicators, config_idx, X, y=None): n_configs, n_params = indicators.shape # Create a masked version of X where NaNs are treated as zeros based on the indicators X_masked = jnp.where(jnp.isnan(X), 0.0, X) * indicators[config_idx] # Group-specific effects with numpyro.plate(\"config_i\", n_configs): alpha = numpyro.sample(\"alpha\", dist.Normal(0., 5.)) with numpyro.plate(\"param_i\", n_params): w = numpyro.sample(\"w\", dist.Normal(0., 5.)) # Compute the weighted sum of features using indicators to zero-out unused parameters w_masked = jnp.multiply(w.T, indicators) eq = alpha[config_idx] + jnp.sum(jnp.multiply(X_masked, w_masked[config_idx]), axis=-1) mu = numpyro.deterministic(\"mu\", eq) scale = numpyro.sample(\"scale\", dist.HalfNormal(5.)) with numpyro.plate(\"data\", X.shape[0]): numpyro.sample(\"obs\", dist.Normal(mu, scale), obs=y) numpyro.render_model( model, model_args=( parameter_mask, config_idx, X, y ), render_params=True ) rng_key = random.PRNGKey(seed=42) rng_key, rng_subkey = random.split(key=rng_key) kernel = numpyro.infer.NUTS(model) mcmc = numpyro.infer.MCMC( kernel, num_warmup=200, num_samples=300, num_chains=4, chain_method=\"vectorized\" ) mcmc.run( rng_subkey, parameter_mask, config_idx, X, y ) sample: 100%|██████████| 500/500 [00:03\u003c00:00, 148.27it/s] Model Inference and Results After running MCMC inference on our model, we can examine the parameter estimates and make predictions.\n# Parameter estimates for w[2, 0] are actually 0.0 once data is passed # through the program mcmc.print_summary() mean std median 5.0% 95.0% n_eff r_hat alpha[0] -0.03 0.11 -0.04 -0.20 0.15 598.37 1.00 alpha[1] 0.05 0.12 0.05 -0.18 0.22 797.79 1.01 scale 0.52 0.02 0.52 0.50 0.55 1058.94 1.00 w[0,0] 2.51 0.01 2.51 2.49 2.53 837.47 1.00 w[0,1] 1.00 0.01 1.00 0.98 1.02 1350.56 1.00 w[1,0] 2.98 0.02 2.98 2.94 3.02 740.98 1.00 w[1,1] 0.49 0.03 0.49 0.45 0.53 1002.80 1.00 w[2,0] 0.11 5.30 -0.03 -7.42 9.98 893.63 1.00 w[2,1] 3.05 0.07 3.05 2.93 3.15 891.06 1.01 Number of divergences: 0 This summary shows us the estimated parameters, including group-specific intercepts (alpha) and weights for each parameter. Importantly, we’ll see that the weight for the third parameter (cutting wait time) in Product group 1 is effectively zero as expected. We can now use the model to make predictions.\nrng_key, rng_subkey = random.split(key=rng_key) samples = mcmc.get_samples() predictive = Predictive(model, posterior_samples=samples) pps = predictive( rng_subkey, parameter_mask, config_idx, X, None ) simulated_dataset[\"preds\"] = pps[\"obs\"].mean(axis=0) plt.figure(figsize=(7, 3)) sns.histplot(data=simulated_dataset, x=\"Production_Speed\", binwidth=1, label=\"obs\") sns.histplot(data=simulated_dataset, x=\"preds\", binwidth=1, label=\"pps\") plt.xlabel(\"Production Speed\") plt.title(\"Posterior Predictive Distribution\"); This plot compares the observed production speeds with the model’s predictions, allowing us to assess how well our model captures the underlying patterns in the data.\nconfig_idx_new = jnp.array([0, 1], dtype=jnp.int32) X_test = jnp.array([ [3.0, 2.0, 0.0], [3.0, 2.0, 2.0] ]) rng_key, rng_subkey = random.split(key=rng_key) pps_new = predictive( rng_subkey, parameter_mask, config_idx_new, X_test, None ) pps_new[\"obs\"].mean(axis=0) Array([13.455311, 10.143251], dtype=float32) config_idx_new = jnp.array([0, 1], dtype=jnp.int32) X_test = jnp.array([ [6.0, 2.0, 2.0], [6.0, 2.0, 2.0] ]) rng_key, rng_subkey = random.split(key=rng_key) pps_new = predictive( rng_subkey, parameter_mask, config_idx_new, X_test, None ) pps_new[\"obs\"].mean(axis=0) Array([20.98238 , 13.135274], dtype=float32) Conclusion Hierarchical regression, combined with parameter masking, provides a powerful framework for analyzing grouped data with missing values. This approach allows us to:\nAccount for group-specific variations in the relationships between predictors and outcomes. Handle missing data without requiring imputation or discarding incomplete cases. Make predictions for new data, even when some predictors are not applicable to certain groups. ",
+  "wordCount" : "1034",
+  "inLanguage": "en",
+  "datePublished": "2024-09-10T00:00:00Z",
+  "dateModified": "2024-09-10T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Gabriel Stechschulte"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://gstechschulte.github.io/posts/hierarchical-regression-missing-data/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Gabe's Gulch",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://gstechschulte.github.io/favicon.ico"
+    }
+  }
+}
+</script>
 </head>
 
 <body class="" id="top">
@@ -107,7 +173,7 @@ Hierarchical regression, also known as multilevel modeling, is a powerful modeli
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
+            <a href="https://gstechschulte.github.io/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -133,12 +199,12 @@ Hierarchical regression, also known as multilevel modeling, is a powerful modeli
         </div>
         <ul id="menu">
             <li>
-                <a href="http://localhost:1313/categories/" title="categories">
+                <a href="https://gstechschulte.github.io/categories/" title="categories">
                     <span>categories</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/tags/" title="tags">
+                <a href="https://gstechschulte.github.io/tags/" title="tags">
                     <span>tags</span>
                 </a>
             </li>
@@ -397,7 +463,7 @@ Number of divergences: 0
     </main>
     
 <footer class="footer">
-        <span>&copy; 2025 <a href="http://localhost:1313/">Gabe&#39;s Gulch</a></span> · 
+        <span>&copy; 2025 <a href="https://gstechschulte.github.io/">Gabe&#39;s Gulch</a></span> · 
 
     <span>
         Powered by

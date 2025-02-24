@@ -9,29 +9,19 @@ main {
 }
 
 /* New below here */
-/* body { */
-/* font-family: "Anonymous Pro", monospace; */
-/* font-family: "Fredoka Condensed", monospace; */
-/* } */
+body {
+    font-family: "Tiempos", monospace;
+    /* font-family: "Fredoka Condensed", monospace; */
+}
 
 /* Font face declaration */
-/* @font-face {
+@font-face {
     font-display: swap;
-    font-family: "Anonymous Pro";
+    font-family: "Tiempos";
     font-style: normal;
     font-weight: 400;
-    src: url("/fonts/AnonymousPro-Regular.ttf") format("truetype");
-} */
-
-/* Main content area */
-/* main {
-    font-size: 13pt;
-} */
-
-/* Post content */
-/* .post-content {
-    font-size: 12pt;
-} */
+    src: url("/fonts/TiemposText-Regular.otf") format("truetype");
+}
 
 /* Code blocks styling */
 /* pre,

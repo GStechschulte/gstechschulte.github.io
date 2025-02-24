@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="index, follow">
 <title>Metropolis Hastings Sampler From Scratch | Gabe&#39;s Gulch</title>
 <meta name="keywords" content="">
 <meta name="description" content="
 Main Idea
 Metropolis-Hastings (MH) is one of the simplest kinds of MCMC algorithms. The idea with MH is that at each step, we propose to move from the current state $x$ to a new state $x&rsquo;$ with probability $q(x&rsquo;|x)$, where $q$ is the proposal distribution. The user is free to choose the proposal distribution and the choice of the proposal is dependent on the form of the target distribution. Once a proposal has been made to move to $x&rsquo;$, we then decide whether to accept or reject the proposal according to some rule. If the proposal is accepted, the new state is $x&rsquo;$, else the new state is the same as the current state $x$.">
 <meta name="author" content="Gabriel Stechschulte">
-<link rel="canonical" href="http://localhost:1313/posts/metropolis-hastings-sampler/">
+<link rel="canonical" href="https://gstechschulte.github.io/posts/metropolis-hastings-sampler/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<link rel="icon" href="https://gstechschulte.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://gstechschulte.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://gstechschulte.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://gstechschulte.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://gstechschulte.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/metropolis-hastings-sampler/">
+<link rel="alternate" hreflang="en" href="https://gstechschulte.github.io/posts/metropolis-hastings-sampler/">
 <noscript>
     <style>
         #theme-toggle,
@@ -90,7 +90,75 @@ Metropolis-Hastings (MH) is one of the simplest kinds of MCMC algorithms. The id
     });
 </script>
 
+<meta property="og:title" content="Metropolis Hastings Sampler From Scratch" />
+<meta property="og:description" content="
+Main Idea
+Metropolis-Hastings (MH) is one of the simplest kinds of MCMC algorithms. The idea with MH is that at each step, we propose to move from the current state $x$ to a new state $x&rsquo;$ with probability $q(x&rsquo;|x)$, where $q$ is the proposal distribution. The user is free to choose the proposal distribution and the choice of the proposal is dependent on the form of the target distribution. Once a proposal has been made to move to $x&rsquo;$, we then decide whether to accept or reject the proposal according to some rule. If the proposal is accepted, the new state is $x&rsquo;$, else the new state is the same as the current state $x$." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://gstechschulte.github.io/posts/metropolis-hastings-sampler/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-10-08T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-10-08T00:00:00+00:00" />
 
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Metropolis Hastings Sampler From Scratch"/>
+<meta name="twitter:description" content="
+Main Idea
+Metropolis-Hastings (MH) is one of the simplest kinds of MCMC algorithms. The idea with MH is that at each step, we propose to move from the current state $x$ to a new state $x&rsquo;$ with probability $q(x&rsquo;|x)$, where $q$ is the proposal distribution. The user is free to choose the proposal distribution and the choice of the proposal is dependent on the form of the target distribution. Once a proposal has been made to move to $x&rsquo;$, we then decide whether to accept or reject the proposal according to some rule. If the proposal is accepted, the new state is $x&rsquo;$, else the new state is the same as the current state $x$."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://gstechschulte.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Metropolis Hastings Sampler From Scratch",
+      "item": "https://gstechschulte.github.io/posts/metropolis-hastings-sampler/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Metropolis Hastings Sampler From Scratch",
+  "name": "Metropolis Hastings Sampler From Scratch",
+  "description": " Main Idea Metropolis-Hastings (MH) is one of the simplest kinds of MCMC algorithms. The idea with MH is that at each step, we propose to move from the current state $x$ to a new state $x\u0026rsquo;$ with probability $q(x\u0026rsquo;|x)$, where $q$ is the proposal distribution. The user is free to choose the proposal distribution and the choice of the proposal is dependent on the form of the target distribution. Once a proposal has been made to move to $x\u0026rsquo;$, we then decide whether to accept or reject the proposal according to some rule. If the proposal is accepted, the new state is $x\u0026rsquo;$, else the new state is the same as the current state $x$.\n",
+  "keywords": [
+    
+  ],
+  "articleBody": " Main Idea Metropolis-Hastings (MH) is one of the simplest kinds of MCMC algorithms. The idea with MH is that at each step, we propose to move from the current state $x$ to a new state $x’$ with probability $q(x’|x)$, where $q$ is the proposal distribution. The user is free to choose the proposal distribution and the choice of the proposal is dependent on the form of the target distribution. Once a proposal has been made to move to $x’$, we then decide whether to accept or reject the proposal according to some rule. If the proposal is accepted, the new state is $x’$, else the new state is the same as the current state $x$.\nProposals can be symmetric and asymmetric. In the case of symmetric proposals $q(x’|x) = q(x|x’)$, the acceptance probability is given by the rule:\n$$A = min(1, \\frac{p^(x’)}{p^(x)})$$\nThe fraction is a ratio between the probabilities of the proposed state $x’$ and current state $x$. If $x’$ is more probable than $x$, the ratio is $\u003e 1$, and we move to the proposed state. However, if $x’$ is less probable, we may still move there, depending on the relative probabilities. If the relative probabilities are similar, we may code exploration into the algorithm such that they go in the opposite direction. This helps with the greediness of the original algorithm—only moving to more probable states.\nThe Algorithm Initialize $x^0$\nfor $s = 0, 1, 2, 3, …$ do:\nDefine $x = x^s$ Sample $x’ \\sim q(x’|x)$ where $q$ is the user’s proposal distribution Compute the acceptance probability given by: $p_a(x_{t+1}|x_i) = min(1, \\frac{p(x_{i+1})q(x_i | x_{i+1})}{p(x_i)q(x_{i+1}|x_I)})$ Compute $A = min(1, \\alpha)$\nSample $u \\sim U(0, 1)$\nSet new sample to: $x^{s+1} = \\left{ \\begin{array}{ll} x’ \u0026 \\quad \\text{if} \\quad u \\leq A(\\text{accept}) \\ x \u0026 \\quad \\text{if} \\quad x \u003e A(\\text{reject}) \\ \\end{array} \\right.$\nRandom Walk Metropolis-Hastings The random walk metropolis-hastings (RWMH) corresponds to MH with a Gaussian propsal distribution of the form:\n$$q(x’|x) = \\mathcal{N}(x’|x, \\tau^2 I)$$\nBelow, I implement the RWMH for sampling from a 1-dimenensional mixture of Gaussians (implemented using the MixtureSameFamily PyTorch class) with the following parameters:\n$\\mu = -20, 20$ Mixture component probability $= 0.3, 0.7$ $\\sum = 10, 10$ #| echo: false import torch from torch import distributions as dist import matplotlib.pyplot as plt import argparse import warnings warnings.filterwarnings(\"ignore\") #| code-fold: true def plot(distribution, trace_history, xmin, xmax, n_iterations, n_evals=500): x_evals = torch.linspace(xmin, xmax, n_evals) evals = torch.exp(distribution.log_prob(x_evals)) fig = plt.figure(figsize=(12, 4)) ax = fig.add_subplot(1, 2, 1) ax.plot(torch.arange(n_iterations), trace_history) ax.set_xlabel('Iterations') ax.set_ylabel('Sampled Value') ax = fig.add_subplot(1, 2, 2, projection='3d') ax.plot(torch.arange(n_iterations), trace_history) ax.plot(torch.zeros(n_evals), x_evals, evals) ax.set_xlabel('Iterations') ax.set_ylabel('Sampled Value') fig.suptitle('Random Walk Metropolis-Hastings') plt.show() def true_distribution(mixture_probs, mus, scales): return dist.MixtureSameFamily( mixture_distribution=dist.Categorical(probs=mixture_probs), component_distribution=dist.Normal(loc=mus, scale=scales) ) def metropolis_hasting(x0, tau, mixture, n_iterations, rng_key=None): \"\"\" implements the random walk metropolis-hasting algorithm \"\"\" x_current = x0 x_samples = torch.zeros(n_iterations) x_samples[0] = x_current cnt_acceptance = 0 for n in range(1, n_iterations): # datum of proposed state x' x_candidate = x_current + tau * dist.Normal(loc=0, scale=1).sample() # probs. of proposed state x' p_candidate = torch.exp(mixture.log_prob(x_candidate)) # probs. of current state x p_current = torch.exp(mixture.log_prob(x_current)) # acceptance formula alpha = p_candidate / p_current probs_accept = min(1, alpha) # sample u ~ U(0, 1) u = dist.Uniform(0, 1).sample() if u \u003e= probs_accept: x_current = x_current else: x_current = x_candidate cnt_acceptance += 1 x_samples[n] = x_current acceptence_ratio = cnt_acceptance / n_iterations print('---- statistics ----') print(f'acceptance rate = {acceptence_ratio}') return x_samples def main(args): # initial parameter value x0 = torch.tensor(20.) # mixture dist. parameters mixture_probs = torch.tensor([0.3, 0.7]) mus = torch.tensor([-20., 20.]) scales = torch.tensor([10., 10.]) n_iters = args.iters tau = torch.tensor(args.tau) mixture_distribution = true_distribution(mixture_probs, mus, scales) x_samples = metropolis_hasting(x0, tau, mixture_distribution, n_iters) plot(mixture_distribution, x_samples, -100, 100, n_iters) parser = argparse.ArgumentParser(description='rw-mh') parser.add_argument('--iters', type=int, default=1000) parser.add_argument('--tau', type=float, default=8.) args = parser.parse_args(\"\") main(args) ---- statistics ---- acceptance rate = 0.803 Results The mixture distribution can be tricky to sample from as it is has more than one model, i.e., it is a bimodal distribution. However, we can see that the RWMH spends time sampling from both component distributions, albeit, the distribution with the higher probability more. Due to the random search based perturbations (random walk), the sampler seems to randomly jump from component to component, showing that the chain is not sticky. Additionally, the acceptance rate is $0.803$ indicating that about $80%$ of new proposals were accepted.\n",
+  "wordCount" : "718",
+  "inLanguage": "en",
+  "datePublished": "2022-10-08T00:00:00Z",
+  "dateModified": "2022-10-08T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Gabriel Stechschulte"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://gstechschulte.github.io/posts/metropolis-hastings-sampler/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Gabe's Gulch",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://gstechschulte.github.io/favicon.ico"
+    }
+  }
+}
+</script>
 </head>
 
 <body class="" id="top">
@@ -108,7 +176,7 @@ Metropolis-Hastings (MH) is one of the simplest kinds of MCMC algorithms. The id
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
+            <a href="https://gstechschulte.github.io/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -134,12 +202,12 @@ Metropolis-Hastings (MH) is one of the simplest kinds of MCMC algorithms. The id
         </div>
         <ul id="menu">
             <li>
-                <a href="http://localhost:1313/categories/" title="categories">
+                <a href="https://gstechschulte.github.io/categories/" title="categories">
                     <span>categories</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/tags/" title="tags">
+                <a href="https://gstechschulte.github.io/tags/" title="tags">
                     <span>tags</span>
                 </a>
             </li>
@@ -323,7 +391,7 @@ acceptance rate = 0.803
     </main>
     
 <footer class="footer">
-        <span>&copy; 2025 <a href="http://localhost:1313/">Gabe&#39;s Gulch</a></span> · 
+        <span>&copy; 2025 <a href="https://gstechschulte.github.io/">Gabe&#39;s Gulch</a></span> · 
 
     <span>
         Powered by

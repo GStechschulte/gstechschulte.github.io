@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Database-Systems on Gabe&#39;s Gulch</title>
-    <link>http://localhost:1313/categories/database-systems/</link>
+    <link>https://gstechschulte.github.io/categories/database-systems/</link>
     <description>Recent content in Database-Systems on Gabe&#39;s Gulch</description>
     <generator>Hugo -- 0.140.0</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 01 Jan 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/database-systems/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://gstechschulte.github.io/categories/database-systems/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[WIP] Database Systems - Query Execution and Processing</title>
-      <link>http://localhost:1313/posts/db-systems-query-processing/</link>
+      <link>https://gstechschulte.github.io/posts/db-systems-query-processing/</link>
       <pubDate>Wed, 01 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/db-systems-query-processing/</guid>
+      <guid>https://gstechschulte.github.io/posts/db-systems-query-processing/</guid>
       <description>&lt;h2 id=&#34;operator-execution&#34;&gt;Operator execution&lt;/h2&gt;
 &lt;p&gt;In OLAP systems, sequential scans are the primary method for query execution. The goal is two-fold: (1) minimize the amount of data fetched from the disk or a remote object store, and (2) maximize the use of hardware resources for efficient query execution.&lt;/p&gt;
 &lt;p&gt;Andy’s (unscientific) top three execution optimization techniques:&lt;/p&gt;
@@ -24,26 +24,19 @@
 &lt;p&gt;which fall into three primary ways for speeding up queries:&lt;/p&gt;</description>
     </item>
     <item>
-      <title>Data Oriented Deisgn - Columnar Data Structures</title>
-      <link>http://localhost:1313/posts/2024-12-10-dod-columnar-storage/</link>
-      <pubDate>Tue, 10 Dec 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/2024-12-10-dod-columnar-storage/</guid>
-      <description>&lt;p&gt;Test. Test.&lt;/p&gt;</description>
-    </item>
-    <item>
       <title>[WIP] Database Systems - Storage</title>
-      <link>http://localhost:1313/posts/db-systems-file-formats/</link>
+      <link>https://gstechschulte.github.io/posts/db-systems-file-formats/</link>
       <pubDate>Sun, 01 Dec 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/db-systems-file-formats/</guid>
+      <guid>https://gstechschulte.github.io/posts/db-systems-file-formats/</guid>
       <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;As the business landscape embraces data-driven approaches for analysis and decision-making, there is a rapid surge in the volume of data requiring storage and processing. This surge has led to the growing popularity of OLAP database systems.&lt;/p&gt;
 &lt;p&gt;An OLAP system workload is characterized by complex queries that require scanning over large portions of the database. In OLAP workloads, the database system is often analyzing and deriving new data from existing data collected on the OLTP side. In contrast, OLTP workloads are characterized by fast, relatively simple and repetitive queries that operate on a single entity at a time (usually involving an update or insert).&lt;/p&gt;</description>
     </item>
     <item>
       <title>Database Systems - Series Overview</title>
-      <link>http://localhost:1313/posts/db-systems-blog-series-overview/</link>
+      <link>https://gstechschulte.github.io/posts/db-systems-blog-series-overview/</link>
       <pubDate>Tue, 22 Oct 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/db-systems-blog-series-overview/</guid>
+      <guid>https://gstechschulte.github.io/posts/db-systems-blog-series-overview/</guid>
       <description>&lt;p&gt;A blog series consisting of my notes on the Carnegie Mellon University (CMU) Introduction and Advanced Database Systems Lectures by Andy Pavlo and Jignesh Patel. The primary goal of this series is to: (1) consolidate my notes, and (2) act as a reference guide for my future self. Perhaps some readers may extract some value, but I would highly recommend watching the lectures for yourself.&lt;/p&gt;
 &lt;p&gt;The series will cover:&lt;/p&gt;
 &lt;ul&gt;

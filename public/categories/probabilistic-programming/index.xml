@@ -2,25 +2,25 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Probabilistic-Programming on Gabe&#39;s Gulch</title>
-    <link>http://localhost:1313/categories/probabilistic-programming/</link>
+    <link>https://gstechschulte.github.io/categories/probabilistic-programming/</link>
     <description>Recent content in Probabilistic-Programming on Gabe&#39;s Gulch</description>
     <generator>Hugo -- 0.140.0</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 10 Sep 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/probabilistic-programming/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://gstechschulte.github.io/categories/probabilistic-programming/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Hierarchical Regression With Missing Data</title>
-      <link>http://localhost:1313/posts/hierarchical-regression-missing-data/</link>
+      <link>https://gstechschulte.github.io/posts/hierarchical-regression-missing-data/</link>
       <pubDate>Tue, 10 Sep 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/hierarchical-regression-missing-data/</guid>
+      <guid>https://gstechschulte.github.io/posts/hierarchical-regression-missing-data/</guid>
       <description>&lt;!-- raw HTML omitted --&gt;
 &lt;p&gt;Hierarchical regression, also known as multilevel modeling, is a powerful modeling technique that allows one to analyze data with a nested structure. This approach is particularly useful when dealing with data that has natural groupings, such as students within schools, patients within hospitals, or in the example below, product configurations within manufacturing processes. One of the key advantages of hierarchical regression lies in its ability to handle missing data in groups, i.e., when one group may not share the same covariates as another group or some groups may contain missong observations.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Alternative Samplers to NUTS in Bambi</title>
-      <link>http://localhost:1313/posts/bambi-alternative-samplers/</link>
+      <link>https://gstechschulte.github.io/posts/bambi-alternative-samplers/</link>
       <pubDate>Fri, 29 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/bambi-alternative-samplers/</guid>
+      <guid>https://gstechschulte.github.io/posts/bambi-alternative-samplers/</guid>
       <description>&lt;!-- raw HTML omitted --&gt;
 &lt;h1 id=&#34;alternative-sampling-backends&#34;&gt;Alternative sampling backends&lt;/h1&gt;
 &lt;p&gt;This blog post is a copy of the alternative samplers documentation I wrote for &lt;a href=&#34;https://bambinos.github.io/bambi/&#34;&gt;Bambi&lt;/a&gt;. The original post can be found &lt;a href=&#34;https://bambinos.github.io/bambi/notebooks/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
@@ -28,9 +28,9 @@
     </item>
     <item>
       <title>Advanced Interpret Usage in Bambi</title>
-      <link>http://localhost:1313/posts/bambi-advanced-marginal-effects/</link>
+      <link>https://gstechschulte.github.io/posts/bambi-advanced-marginal-effects/</link>
       <pubDate>Sat, 09 Dec 2023 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/bambi-advanced-marginal-effects/</guid>
+      <guid>https://gstechschulte.github.io/posts/bambi-advanced-marginal-effects/</guid>
       <description>&lt;!-- raw HTML omitted --&gt;
 &lt;h1 id=&#34;interpret-advanced-usage&#34;&gt;Interpret Advanced Usage&lt;/h1&gt;
 &lt;p&gt;The &lt;code&gt;interpret&lt;/code&gt; module is inspired by the R package &lt;a href=&#34;https://marginaleffects.com&#34;&gt;marginaleffects&lt;/a&gt; and ports the core functionality of {marginaleffects} to Bambi. To close the gap of non-supported functionality in Bambi, &lt;code&gt;interpret&lt;/code&gt; now provides a set of helper functions to aid the user in more advanced and complex analysis not covered within the &lt;code&gt;comparisons&lt;/code&gt;, &lt;code&gt;predictions&lt;/code&gt;, and &lt;code&gt;slopes&lt;/code&gt; functions.&lt;/p&gt;
@@ -38,9 +38,9 @@
     </item>
     <item>
       <title>Outcome Constraints in Bayesian Optimization</title>
-      <link>http://localhost:1313/posts/constrained-bayesian-optimization/</link>
+      <link>https://gstechschulte.github.io/posts/constrained-bayesian-optimization/</link>
       <pubDate>Tue, 28 Nov 2023 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/constrained-bayesian-optimization/</guid>
+      <guid>https://gstechschulte.github.io/posts/constrained-bayesian-optimization/</guid>
       <description>&lt;!-- raw HTML omitted --&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#| code-fold: true&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; matplotlib.pyplot &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; plt
@@ -60,9 +60,9 @@
     </item>
     <item>
       <title>Survival Models in Bambi</title>
-      <link>http://localhost:1313/posts/bambi-survival-models/</link>
+      <link>https://gstechschulte.github.io/posts/bambi-survival-models/</link>
       <pubDate>Wed, 25 Oct 2023 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/bambi-survival-models/</guid>
+      <guid>https://gstechschulte.github.io/posts/bambi-survival-models/</guid>
       <description>&lt;!-- raw HTML omitted --&gt;
 &lt;h1 id=&#34;survival-models&#34;&gt;Survival Models&lt;/h1&gt;
 &lt;p&gt;Survival models, also known as time-to-event models, are specialized statistical methods designed to analyze the time until the occurrence of an event of interest. In this notebook, a review of survival analysis (using non-parametric and parametric methods) and censored data is provided, followed by a survival model implementation in Bambi.&lt;/p&gt;
@@ -70,9 +70,9 @@
     </item>
     <item>
       <title>Predict New Groups with Hierarchical Models in Bambi</title>
-      <link>http://localhost:1313/posts/bambi-predict-new-groups/</link>
+      <link>https://gstechschulte.github.io/posts/bambi-predict-new-groups/</link>
       <pubDate>Tue, 10 Oct 2023 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/bambi-predict-new-groups/</guid>
+      <guid>https://gstechschulte.github.io/posts/bambi-predict-new-groups/</guid>
       <description>&lt;!-- raw HTML omitted --&gt;
 &lt;h1 id=&#34;predict-new-groups&#34;&gt;Predict New Groups&lt;/h1&gt;
 &lt;p&gt;In Bambi, it is possible to perform predictions on new, unseen, groups of data that were not in the observed data used to fit the model with the argument &lt;code&gt;sample_new_groups&lt;/code&gt; in the &lt;code&gt;model.predict()&lt;/code&gt; method. This is useful in the context of hierarchical modeling, where groups are assumed to be a sample from a larger group.&lt;/p&gt;
@@ -80,9 +80,9 @@
     </item>
     <item>
       <title>Ordinal Models in Bambi</title>
-      <link>http://localhost:1313/posts/bambi-ordinal-models/</link>
+      <link>https://gstechschulte.github.io/posts/bambi-ordinal-models/</link>
       <pubDate>Fri, 29 Sep 2023 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/bambi-ordinal-models/</guid>
+      <guid>https://gstechschulte.github.io/posts/bambi-ordinal-models/</guid>
       <description>&lt;!-- raw HTML omitted --&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#| code-fold: true&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; arviz &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; az
@@ -103,9 +103,9 @@
     </item>
     <item>
       <title>Zero Inflated Models in Bambi</title>
-      <link>http://localhost:1313/posts/bambi-zip-models/</link>
+      <link>https://gstechschulte.github.io/posts/bambi-zip-models/</link>
       <pubDate>Fri, 29 Sep 2023 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/bambi-zip-models/</guid>
+      <guid>https://gstechschulte.github.io/posts/bambi-zip-models/</guid>
       <description>&lt;!-- raw HTML omitted --&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#| code-fold: true&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; arviz &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; az
@@ -127,53 +127,53 @@
     </item>
     <item>
       <title>Google Summer of Code - Average Predictive Slopes</title>
-      <link>http://localhost:1313/posts/bambi-slopes/</link>
+      <link>https://gstechschulte.github.io/posts/bambi-slopes/</link>
       <pubDate>Tue, 01 Aug 2023 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/bambi-slopes/</guid>
+      <guid>https://gstechschulte.github.io/posts/bambi-slopes/</guid>
       <description>&lt;!-- raw HTML omitted --&gt;
 &lt;p&gt;It is currently the beginning of week ten of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the basic functionality of the &lt;code&gt;plot_slopes&lt;/code&gt;. Subsequently, week 11 was reserved to further develop the &lt;code&gt;plot_slopes&lt;/code&gt; function, and to write tests and a notebook for the documentation, respectively.&lt;/p&gt;
 &lt;p&gt;However, at the beginning of week ten, I have a &lt;a href=&#34;https://github.com/bambinos/bambi/pull/699&#34;&gt;PR&lt;/a&gt; open with the majority of the functionality that &lt;a href=&#34;https://vincentarelbundock.github.io/marginaleffects/&#34;&gt;marginaleffects&lt;/a&gt; has for &lt;code&gt;slopes&lt;/code&gt;. In addition, I also exposed the &lt;code&gt;slopes&lt;/code&gt; function, added tests, and have a &lt;a href=&#34;https://github.com/bambinos/bambi/pull/701&#34;&gt;PR&lt;/a&gt; open for the documentation.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Google Summer of Code - Average Predictive Comparisons</title>
-      <link>http://localhost:1313/posts/bambi-comparisons/</link>
+      <link>https://gstechschulte.github.io/posts/bambi-comparisons/</link>
       <pubDate>Fri, 30 Jun 2023 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/bambi-comparisons/</guid>
+      <guid>https://gstechschulte.github.io/posts/bambi-comparisons/</guid>
       <description>&lt;!-- raw HTML omitted --&gt;
 &lt;p&gt;It is currently the end of week five of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the core functionality of the &lt;code&gt;plot_comparisons&lt;/code&gt;. Subsequently, week six and seven were to be spent further developing the &lt;code&gt;plot_comparisons&lt;/code&gt; function, and writing tests and a demo notebook for the documentation, respectively. However, at the end of week five, I have a PR open with the majority of the functionality that &lt;a href=&#34;https://vincentarelbundock.github.io/marginaleffects/&#34;&gt;marginaleffects&lt;/a&gt; has. In addition, I also exposed the &lt;code&gt;comparisons&lt;/code&gt; function, added tests (which can and will be improved), and have started on documentation.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Gibbs Sampler From Scratch</title>
-      <link>http://localhost:1313/posts/gibbs-sampler/</link>
+      <link>https://gstechschulte.github.io/posts/gibbs-sampler/</link>
       <pubDate>Wed, 12 Oct 2022 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/gibbs-sampler/</guid>
+      <guid>https://gstechschulte.github.io/posts/gibbs-sampler/</guid>
       <description>&lt;!-- raw HTML omitted --&gt;
 &lt;p&gt;A variant of the Metropolis-Hastings (MH) algorithm that uses clever proposals and is therefore more efficient (you can get a good approximate of the posterior with far fewer samples) is Gibbs sampling. A problem with MH is the need to choose the proposal distribution, and the fact that the acceptance rate may be low.&lt;/p&gt;
 &lt;p&gt;The improvement arises from adaptive proposals in which the distribution of proposed parameter values adjusts itself intelligently, &lt;strong&gt;depending upon the parameter values at the moment&lt;/strong&gt;. This dependence upon the parameters at that moment is an exploitation of conditional independence properties of a graphical model to automatically create a good proposal, with acceptance probability equal to one.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Metropolis Hastings Sampler From Scratch</title>
-      <link>http://localhost:1313/posts/metropolis-hastings-sampler/</link>
+      <link>https://gstechschulte.github.io/posts/metropolis-hastings-sampler/</link>
       <pubDate>Sat, 08 Oct 2022 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/metropolis-hastings-sampler/</guid>
+      <guid>https://gstechschulte.github.io/posts/metropolis-hastings-sampler/</guid>
       <description>&lt;!-- raw HTML omitted --&gt;
 &lt;h3 id=&#34;main-idea&#34;&gt;Main Idea&lt;/h3&gt;
 &lt;p&gt;Metropolis-Hastings (MH) is one of the simplest kinds of MCMC algorithms. The idea with MH is that at each step, we propose to move from the current state $x$ to a new state $x&amp;rsquo;$ with probability $q(x&amp;rsquo;|x)$, where $q$ is the &lt;strong&gt;proposal distribution&lt;/strong&gt;. The user is free to choose the proposal distribution and the choice of the proposal is dependent on the form of the target distribution. Once a proposal has been made to move to $x&amp;rsquo;$, we then decide whether to &lt;strong&gt;accept&lt;/strong&gt; or &lt;strong&gt;reject&lt;/strong&gt; the proposal according to some rule. If the proposal is accepted, the new state is $x&amp;rsquo;$, else the new state is the same as the current state $x$.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Monte Carlo Approximation</title>
-      <link>http://localhost:1313/posts/monte-carlo-approximation/</link>
+      <link>https://gstechschulte.github.io/posts/monte-carlo-approximation/</link>
       <pubDate>Fri, 07 Oct 2022 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/monte-carlo-approximation/</guid>
+      <guid>https://gstechschulte.github.io/posts/monte-carlo-approximation/</guid>
       <description>&lt;!-- raw HTML omitted --&gt;
 &lt;h2 id=&#34;inference&#34;&gt;Inference&lt;/h2&gt;
 &lt;p&gt;In the probabilistic approach to machine learning, all unknown quantities—predictions about the future, hidden states of a system, or parameters of a model—are treated as random variables, and endowed with probability distributions. The process of inference corresponds to computing the posterior distribution over these quantities, conditioning on whatever data is available. Given that the posterior is a probability distribution, we can draw samples from it. The samples in this case are parameter values. The Bayesian formalism treats parameter distributions as the degrees of relative plausibility, i.e., if this parameter is chosen, how likely is the data to have arisen? We use Bayes&amp;rsquo; rule for this process of inference. Let $h$ represent the uknown variables and $D$ the known variables, i.e., the data. Given a likelihood $p(D|h)$ and a prior $p(h)$, we can compute the posterior $p(h|D)$ using Bayes&amp;rsquo; rule:&lt;/p&gt;</description>
     </item>
     <item>
       <title>Variational Inference - Evidence Lower Bound</title>
-      <link>http://localhost:1313/posts/variational-inference/</link>
+      <link>https://gstechschulte.github.io/posts/variational-inference/</link>
       <pubDate>Fri, 03 Jun 2022 18:43:46 +0200</pubDate>
-      <guid>http://localhost:1313/posts/variational-inference/</guid>
+      <guid>https://gstechschulte.github.io/posts/variational-inference/</guid>
       <description>&lt;p&gt;We don&amp;rsquo;t know the real posterior so we are going to choose a distribution $Q(\theta)$ from a family of distributions $Q^*$ that are &lt;strong&gt;easy to work with&lt;/strong&gt; and parameterized by $\theta$. The approximate distribution should be &lt;em&gt;as close as possible&lt;/em&gt; to the true posterior. This closeness is measured using KL-Divergence. If we have the joint $p(x, z)$ where $x$ is some observed data, the goal is to perform inference: given what we have observed, what can we infer about the latent states?, i.e , we want the posterior.&lt;/p&gt;</description>
     </item>
   </channel>
