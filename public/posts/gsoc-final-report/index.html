@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, nofollow">
 <title>Google Summer of Code - Final Report | Gabe&#39;s Gulch</title>
 <meta name="keywords" content="">
 <meta name="description" content="
 
 My project &ldquo;Better tools to interpret complex Bambi regression models&rdquo; was completed under the organization of NumFOCUS, and mentors Tomás Capretto and Osvaldo Martin. Before I describe the project, objectives, and work completed, I would like to thank my mentors Tomás and Osvaldo for their precious time and support throughout the summer. They were always available and timely in communicating over Slack and GitHub, and provided valuable feedback during code reviews. Additionally, I would like to thank NumFOCUS and the Google Summer of Code (GSoC) program for providing the opportunity to work on such an open source project over the summer. It has been an invaluable experience, and I look forward to contributing to open source projects in the future.">
 <meta name="author" content="Gabriel Stechschulte">
-<link rel="canonical" href="https://gstechschulte.github.io/posts/gsoc-final-report/">
+<link rel="canonical" href="http://localhost:1313/posts/gsoc-final-report/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://gstechschulte.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://gstechschulte.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://gstechschulte.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://gstechschulte.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://gstechschulte.github.io/safari-pinned-tab.svg">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://gstechschulte.github.io/posts/gsoc-final-report/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/gsoc-final-report/">
 <noscript>
     <style>
         #theme-toggle,
@@ -90,75 +90,7 @@ My project &ldquo;Better tools to interpret complex Bambi regression models&rdqu
     });
 </script>
 
-<meta property="og:title" content="Google Summer of Code - Final Report" />
-<meta property="og:description" content="
 
-My project &ldquo;Better tools to interpret complex Bambi regression models&rdquo; was completed under the organization of NumFOCUS, and mentors Tomás Capretto and Osvaldo Martin. Before I describe the project, objectives, and work completed, I would like to thank my mentors Tomás and Osvaldo for their precious time and support throughout the summer. They were always available and timely in communicating over Slack and GitHub, and provided valuable feedback during code reviews. Additionally, I would like to thank NumFOCUS and the Google Summer of Code (GSoC) program for providing the opportunity to work on such an open source project over the summer. It has been an invaluable experience, and I look forward to contributing to open source projects in the future." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://gstechschulte.github.io/posts/gsoc-final-report/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2023-08-10T18:43:46+02:00" />
-<meta property="article:modified_time" content="2023-08-10T18:43:46+02:00" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Google Summer of Code - Final Report"/>
-<meta name="twitter:description" content="
-
-My project &ldquo;Better tools to interpret complex Bambi regression models&rdquo; was completed under the organization of NumFOCUS, and mentors Tomás Capretto and Osvaldo Martin. Before I describe the project, objectives, and work completed, I would like to thank my mentors Tomás and Osvaldo for their precious time and support throughout the summer. They were always available and timely in communicating over Slack and GitHub, and provided valuable feedback during code reviews. Additionally, I would like to thank NumFOCUS and the Google Summer of Code (GSoC) program for providing the opportunity to work on such an open source project over the summer. It has been an invaluable experience, and I look forward to contributing to open source projects in the future."/>
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Posts",
-      "item": "https://gstechschulte.github.io/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Google Summer of Code - Final Report",
-      "item": "https://gstechschulte.github.io/posts/gsoc-final-report/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "Google Summer of Code - Final Report",
-  "name": "Google Summer of Code - Final Report",
-  "description": " My project \u0026ldquo;Better tools to interpret complex Bambi regression models\u0026rdquo; was completed under the organization of NumFOCUS, and mentors Tomás Capretto and Osvaldo Martin. Before I describe the project, objectives, and work completed, I would like to thank my mentors Tomás and Osvaldo for their precious time and support throughout the summer. They were always available and timely in communicating over Slack and GitHub, and provided valuable feedback during code reviews. Additionally, I would like to thank NumFOCUS and the Google Summer of Code (GSoC) program for providing the opportunity to work on such an open source project over the summer. It has been an invaluable experience, and I look forward to contributing to open source projects in the future.\n",
-  "keywords": [
-    
-  ],
-  "articleBody": " My project “Better tools to interpret complex Bambi regression models” was completed under the organization of NumFOCUS, and mentors Tomás Capretto and Osvaldo Martin. Before I describe the project, objectives, and work completed, I would like to thank my mentors Tomás and Osvaldo for their precious time and support throughout the summer. They were always available and timely in communicating over Slack and GitHub, and provided valuable feedback during code reviews. Additionally, I would like to thank NumFOCUS and the Google Summer of Code (GSoC) program for providing the opportunity to work on such an open source project over the summer. It has been an invaluable experience, and I look forward to contributing to open source projects in the future.\nProject Description Bayesian modeling has increased significantly in academia and industry over the past years thanks to the development of high quality and user friendly open source probabilistic programming languages (PPL) in Python and R. Of these is Bambi, a Python library built on top of the PyMC PPL, that makes it easy to specify complex generalized linear multilevel models using a formula notation similar to those found in R. However, as the model building portion of the Bayesian workflow becomes easier, the interpretation of these models has not.\nTo aid in model interpretability, Bambi (before this project) had a sub-package plots that supported conditional adjusted predictions plots. The original objective was to extend upon the existing plotting functionality of conditional adjusted predictions by supporting the plotting of posterior predictive samples, and to provide the additional plotting functions predictive comparisons and predictive slopes. However, after discussion with my mentors, and taking inspiration from marginaleffects, it was decided that in addition to the plotting functions, the plots sub-package should also have functions that allow the user to return the dataframe used for plotting. For example, calling plot_slopes() would plot the slopes, and calling slopes() would return the dataframe used to plot the slopes. To this extent, the plots sub-package was renamed to interpret to better reflect all of the supported functionality. These three features allow Bambi modelers to compute and interpret three different “quantities of interest” in a more automatic and effective manner.\nThus, the three main deliverables of this project were to add (or enhance) the following functions in the interpret sub-package. Additionally, for each feature, tests and documentation need to be added:\nSupport posterior predictive samples (pps) in plot_predictions() Write tests Add documentation Add comparisons() and plot_comparisons() Write tests Add documentation Add slopes() and plot_slopes() Write tests Add documentation Work Completed All three main deliverables (and their associated sub-deliverables) were completed (merged into the main branch of the Bambi repository) on time. In the table below, the name of the deliverable, link to the feature’s pull request (PR), and link to the documentation are provided.\nDeliverable Feature PR Documentation PR Allow plot_predictions to plot posterior predictive samples PR #668 PR #670 Add comparisons and plot_comparisons PR #684 PR #695 Add slopes and plot_slopes PR #699 PR #701 In order to quickly obtain a sense of the work completed over the GSoC program, it is probably best to view the documentation PRs. The documentation PRs consist of a Jupyter notebook that demonstrates: (1) why the new feature is useful in interpreting GLMs, (2) a brief overview of how the function computes the quantity of interest based on the user’s inputs, and (3) a demonstration of the function using different GLMs and datasets.\nFuture Work As the PRs have been merged upstream, some Bambi users have already been utilizing the new sub-package. The feedback has been positive, and a GitHub issue has been opened to request additional functionality. Going forward, I will continue to contribute to Bambi, maintain the interpret sub-package, and interact with the Bambi community.\n",
-  "wordCount" : "626",
-  "inLanguage": "en",
-  "datePublished": "2023-08-10T18:43:46+02:00",
-  "dateModified": "2023-08-10T18:43:46+02:00",
-  "author":{
-    "@type": "Person",
-    "name": "Gabriel Stechschulte"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://gstechschulte.github.io/posts/gsoc-final-report/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Gabe's Gulch",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://gstechschulte.github.io/favicon.ico"
-    }
-  }
-}
-</script>
 </head>
 
 <body class="" id="top">
@@ -176,7 +108,7 @@ My project &ldquo;Better tools to interpret complex Bambi regression models&rdqu
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="https://gstechschulte.github.io/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
+            <a href="http://localhost:1313/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -202,12 +134,17 @@ My project &ldquo;Better tools to interpret complex Bambi regression models&rdqu
         </div>
         <ul id="menu">
             <li>
-                <a href="https://gstechschulte.github.io/categories/" title="categories">
+                <a href="http://localhost:1313/archives" title="">
+                    <span></span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/" title="categories">
                     <span>categories</span>
                 </a>
             </li>
             <li>
-                <a href="https://gstechschulte.github.io/tags/" title="tags">
+                <a href="http://localhost:1313/tags/" title="tags">
                     <span>tags</span>
                 </a>
             </li>
@@ -315,7 +252,7 @@ The original objective was to extend upon the existing plotting functionality of
     </main>
     
 <footer class="footer">
-        <span>&copy; 2025 <a href="https://gstechschulte.github.io/">Gabe&#39;s Gulch</a></span> · 
+        <span>&copy; 2025 <a href="http://localhost:1313/">Gabe&#39;s Gulch</a></span> · 
 
     <span>
         Powered by

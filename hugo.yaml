@@ -19,6 +19,9 @@ params:
 
 menu:
   main:
+    - identifier: archive
+      url: archives
+      weight: 10
     - identifier: categories
       name: categories
       url: /categories/
@@ -27,7 +30,3 @@ menu:
       name: tags
       url: /tags/
       weight: 10
-    # - identifier: search
-    #   name: search
-    #   url: /search/
-    #   weight: 10

@@ -2,59 +2,59 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Categories on Gabe&#39;s Gulch</title>
-    <link>https://gstechschulte.github.io/categories/</link>
+    <link>http://localhost:1313/categories/</link>
     <description>Recent content in Categories on Gabe&#39;s Gulch</description>
     <generator>Hugo -- 0.140.0</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 01 Jan 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://gstechschulte.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Database-Systems</title>
-      <link>https://gstechschulte.github.io/categories/database-systems/</link>
+      <link>http://localhost:1313/categories/database-systems/</link>
       <pubDate>Wed, 01 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>https://gstechschulte.github.io/categories/database-systems/</guid>
+      <guid>http://localhost:1313/categories/database-systems/</guid>
       <description></description>
     </item>
     <item>
       <title>Rust</title>
-      <link>https://gstechschulte.github.io/categories/rust/</link>
+      <link>http://localhost:1313/categories/rust/</link>
       <pubDate>Sat, 30 Nov 2024 00:00:00 +0000</pubDate>
-      <guid>https://gstechschulte.github.io/categories/rust/</guid>
+      <guid>http://localhost:1313/categories/rust/</guid>
       <description></description>
     </item>
     <item>
       <title>Probabilistic-Programming</title>
-      <link>https://gstechschulte.github.io/categories/probabilistic-programming/</link>
+      <link>http://localhost:1313/categories/probabilistic-programming/</link>
       <pubDate>Tue, 10 Sep 2024 00:00:00 +0000</pubDate>
-      <guid>https://gstechschulte.github.io/categories/probabilistic-programming/</guid>
+      <guid>http://localhost:1313/categories/probabilistic-programming/</guid>
       <description></description>
     </item>
     <item>
       <title>Data-Engineering</title>
-      <link>https://gstechschulte.github.io/categories/data-engineering/</link>
+      <link>http://localhost:1313/categories/data-engineering/</link>
       <pubDate>Thu, 22 Aug 2024 00:00:00 +0000</pubDate>
-      <guid>https://gstechschulte.github.io/categories/data-engineering/</guid>
+      <guid>http://localhost:1313/categories/data-engineering/</guid>
       <description></description>
     </item>
     <item>
       <title>Optimization</title>
-      <link>https://gstechschulte.github.io/categories/optimization/</link>
+      <link>http://localhost:1313/categories/optimization/</link>
       <pubDate>Tue, 28 Nov 2023 00:00:00 +0000</pubDate>
-      <guid>https://gstechschulte.github.io/categories/optimization/</guid>
+      <guid>http://localhost:1313/categories/optimization/</guid>
       <description></description>
     </item>
     <item>
       <title>Gsoc</title>
-      <link>https://gstechschulte.github.io/categories/gsoc/</link>
+      <link>http://localhost:1313/categories/gsoc/</link>
       <pubDate>Thu, 10 Aug 2023 18:43:46 +0200</pubDate>
-      <guid>https://gstechschulte.github.io/categories/gsoc/</guid>
+      <guid>http://localhost:1313/categories/gsoc/</guid>
       <description></description>
     </item>
     <item>
       <title>Open-Source</title>
-      <link>https://gstechschulte.github.io/categories/open-source/</link>
+      <link>http://localhost:1313/categories/open-source/</link>
       <pubDate>Thu, 10 Aug 2023 18:43:46 +0200</pubDate>
-      <guid>https://gstechschulte.github.io/categories/open-source/</guid>
+      <guid>http://localhost:1313/categories/open-source/</guid>
       <description></description>
     </item>
   </channel>

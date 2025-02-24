@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Open-Source on Gabe&#39;s Gulch</title>
-    <link>https://gstechschulte.github.io/categories/open-source/</link>
+    <link>http://localhost:1313/categories/open-source/</link>
     <description>Recent content in Open-Source on Gabe&#39;s Gulch</description>
     <generator>Hugo -- 0.140.0</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 10 Aug 2023 18:43:46 +0200</lastBuildDate>
-    <atom:link href="https://gstechschulte.github.io/categories/open-source/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/open-source/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Google Summer of Code - Final Report</title>
-      <link>https://gstechschulte.github.io/posts/gsoc-final-report/</link>
+      <link>http://localhost:1313/posts/gsoc-final-report/</link>
       <pubDate>Thu, 10 Aug 2023 18:43:46 +0200</pubDate>
-      <guid>https://gstechschulte.github.io/posts/gsoc-final-report/</guid>
+      <guid>http://localhost:1313/posts/gsoc-final-report/</guid>
       <description>&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;bambi-logo.png&#34; alt=&#34;alt&#34;  /&gt;
 &lt;/p&gt;
 &lt;p&gt;My project &amp;ldquo;Better tools to interpret complex Bambi regression models&amp;rdquo; was completed under the organization of NumFOCUS, and mentors Tomás Capretto and Osvaldo Martin. Before I describe the project, objectives, and work completed, I would like to thank my mentors Tomás and Osvaldo for their precious time and support throughout the summer. They were always available and timely in communicating over Slack and GitHub, and provided valuable feedback during code reviews. Additionally, I would like to thank NumFOCUS and the Google Summer of Code (GSoC) program for providing the opportunity to work on such an open source project over the summer. It has been an invaluable experience, and I look forward to contributing to open source projects in the future.&lt;/p&gt;</description>

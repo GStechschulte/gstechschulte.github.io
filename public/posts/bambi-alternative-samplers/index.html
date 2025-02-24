@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, nofollow">
 <title>Alternative Samplers to NUTS in Bambi | Gabe&#39;s Gulch</title>
 <meta name="keywords" content="">
 <meta name="description" content="
@@ -12,16 +12,16 @@ Alternative sampling backends
 This blog post is a copy of the alternative samplers documentation I wrote for Bambi. The original post can be found here.
 In Bambi, the sampler used is automatically selected given the type of variables used in the model. For inference, Bambi supports both MCMC and variational inference. By default, Bambi uses PyMC&rsquo;s implementation of the adaptive Hamiltonian Monte Carlo (HMC) algorithm for sampling. Also known as the No-U-Turn Sampler (NUTS). This sampler is a good choice for many models. However, it is not the only sampling method, nor is PyMC the only library implementing NUTS.">
 <meta name="author" content="Gabriel Stechschulte">
-<link rel="canonical" href="https://gstechschulte.github.io/posts/bambi-alternative-samplers/">
+<link rel="canonical" href="http://localhost:1313/posts/bambi-alternative-samplers/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://gstechschulte.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://gstechschulte.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://gstechschulte.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://gstechschulte.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://gstechschulte.github.io/safari-pinned-tab.svg">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://gstechschulte.github.io/posts/bambi-alternative-samplers/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/bambi-alternative-samplers/">
 <noscript>
     <style>
         #theme-toggle,
@@ -91,77 +91,7 @@ In Bambi, the sampler used is automatically selected given the type of variables
     });
 </script>
 
-<meta property="og:title" content="Alternative Samplers to NUTS in Bambi" />
-<meta property="og:description" content="
-Alternative sampling backends
-This blog post is a copy of the alternative samplers documentation I wrote for Bambi. The original post can be found here.
-In Bambi, the sampler used is automatically selected given the type of variables used in the model. For inference, Bambi supports both MCMC and variational inference. By default, Bambi uses PyMC&rsquo;s implementation of the adaptive Hamiltonian Monte Carlo (HMC) algorithm for sampling. Also known as the No-U-Turn Sampler (NUTS). This sampler is a good choice for many models. However, it is not the only sampling method, nor is PyMC the only library implementing NUTS." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://gstechschulte.github.io/posts/bambi-alternative-samplers/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2024-03-29T00:00:00+00:00" />
-<meta property="article:modified_time" content="2024-03-29T00:00:00+00:00" />
 
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Alternative Samplers to NUTS in Bambi"/>
-<meta name="twitter:description" content="
-Alternative sampling backends
-This blog post is a copy of the alternative samplers documentation I wrote for Bambi. The original post can be found here.
-In Bambi, the sampler used is automatically selected given the type of variables used in the model. For inference, Bambi supports both MCMC and variational inference. By default, Bambi uses PyMC&rsquo;s implementation of the adaptive Hamiltonian Monte Carlo (HMC) algorithm for sampling. Also known as the No-U-Turn Sampler (NUTS). This sampler is a good choice for many models. However, it is not the only sampling method, nor is PyMC the only library implementing NUTS."/>
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Posts",
-      "item": "https://gstechschulte.github.io/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Alternative Samplers to NUTS in Bambi",
-      "item": "https://gstechschulte.github.io/posts/bambi-alternative-samplers/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "Alternative Samplers to NUTS in Bambi",
-  "name": "Alternative Samplers to NUTS in Bambi",
-  "description": " Alternative sampling backends This blog post is a copy of the alternative samplers documentation I wrote for Bambi. The original post can be found here.\nIn Bambi, the sampler used is automatically selected given the type of variables used in the model. For inference, Bambi supports both MCMC and variational inference. By default, Bambi uses PyMC\u0026rsquo;s implementation of the adaptive Hamiltonian Monte Carlo (HMC) algorithm for sampling. Also known as the No-U-Turn Sampler (NUTS). This sampler is a good choice for many models. However, it is not the only sampling method, nor is PyMC the only library implementing NUTS.\n",
-  "keywords": [
-    
-  ],
-  "articleBody": " Alternative sampling backends This blog post is a copy of the alternative samplers documentation I wrote for Bambi. The original post can be found here.\nIn Bambi, the sampler used is automatically selected given the type of variables used in the model. For inference, Bambi supports both MCMC and variational inference. By default, Bambi uses PyMC’s implementation of the adaptive Hamiltonian Monte Carlo (HMC) algorithm for sampling. Also known as the No-U-Turn Sampler (NUTS). This sampler is a good choice for many models. However, it is not the only sampling method, nor is PyMC the only library implementing NUTS.\nTo this extent, Bambi supports multiple backends for MCMC sampling such as NumPyro and Blackjax. This notebook will cover how to use such alternatives in Bambi.\nNote: Bambi utilizes bayeux to access a variety of sampling backends. Thus, you will need to install the optional dependencies in the Bambi pyproject.toml file to use these backends.\nimport arviz as az import bambi as bmb import bayeux as bx import numpy as np import pandas as pd WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions. bayeux Bambi leverages bayeux to access different sampling backends. In short, bayeux lets you write a probabilistic model in JAX and immediately have access to state-of-the-art inference methods.\nSince the underlying Bambi model is a PyMC model, this PyMC model can be “given” to bayeux. Then, we can choose from a variety of MCMC methods to perform inference.\nTo demonstrate the available backends, we will fist simulate data and build a model.\nnum_samples = 100 num_features = 1 noise_std = 1.0 random_seed = 42 np.random.seed(random_seed) coefficients = np.random.randn(num_features) X = np.random.randn(num_samples, num_features) error = np.random.normal(scale=noise_std, size=num_samples) y = X @ coefficients + error data = pd.DataFrame({\"y\": y, \"x\": X.flatten()}) model = bmb.Model(\"y ~ x\", data) model.build() We can call bmb.inference_methods.names that returns a nested dictionary of the backends and list of inference methods.\nmethods = bmb.inference_methods.names methods {'pymc': {'mcmc': ['mcmc'], 'vi': ['vi']}, 'bayeux': {'mcmc': ['tfp_hmc', 'tfp_nuts', 'tfp_snaper_hmc', 'blackjax_hmc', 'blackjax_chees_hmc', 'blackjax_meads_hmc', 'blackjax_nuts', 'blackjax_hmc_pathfinder', 'blackjax_nuts_pathfinder', 'flowmc_rqspline_hmc', 'flowmc_rqspline_mala', 'flowmc_realnvp_hmc', 'flowmc_realnvp_mala', 'numpyro_hmc', 'numpyro_nuts']}} With the PyMC backend, we have access to their implementation of the NUTS sampler and mean-field variational inference.\nmethods[\"pymc\"] {'mcmc': ['mcmc'], 'vi': ['vi']} bayeux lets us have access to Tensorflow probability, Blackjax, FlowMC, and NumPyro backends.\nmethods[\"bayeux\"] {'mcmc': ['tfp_hmc', 'tfp_nuts', 'tfp_snaper_hmc', 'blackjax_hmc', 'blackjax_chees_hmc', 'blackjax_meads_hmc', 'blackjax_nuts', 'blackjax_hmc_pathfinder', 'blackjax_nuts_pathfinder', 'flowmc_rqspline_hmc', 'flowmc_rqspline_mala', 'flowmc_realnvp_hmc', 'flowmc_realnvp_mala', 'numpyro_hmc', 'numpyro_nuts']} The values of the MCMC and VI keys in the dictionary are the names of the argument you would pass to inference_method in model.fit. This is shown in the section below.\nSpecifying an inference_method By default, Bambi uses the PyMC NUTS implementation. To use a different backend, pass the name of the bayeux MCMC method to the inference_method parameter of the fit method.\nBlackjax blackjax_nuts_idata = model.fit(inference_method=\"blackjax_nuts\") Different backends have different naming conventions for the parameters specific to that MCMC method. Thus, to specify backend-specific parameters, pass your own kwargs to the fit method.\nThe following can be performend to identify the kwargs specific to each method.\nbmb.inference_methods.get_kwargs(\"blackjax_nuts\") { blackjax.base.AdaptationAlgorithm\u003e: {'logdensity_fn': ",
-  "wordCount" : "802",
-  "inLanguage": "en",
-  "datePublished": "2024-03-29T00:00:00Z",
-  "dateModified": "2024-03-29T00:00:00Z",
-  "author":{
-    "@type": "Person",
-    "name": "Gabriel Stechschulte"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://gstechschulte.github.io/posts/bambi-alternative-samplers/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Gabe's Gulch",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://gstechschulte.github.io/favicon.ico"
-    }
-  }
-}
-</script>
 </head>
 
 <body class="" id="top">
@@ -179,7 +109,7 @@ In Bambi, the sampler used is automatically selected given the type of variables
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="https://gstechschulte.github.io/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
+            <a href="http://localhost:1313/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -205,12 +135,17 @@ In Bambi, the sampler used is automatically selected given the type of variables
         </div>
         <ul id="menu">
             <li>
-                <a href="https://gstechschulte.github.io/categories/" title="categories">
+                <a href="http://localhost:1313/archives" title="">
+                    <span></span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/" title="categories">
                     <span>categories</span>
                 </a>
             </li>
             <li>
-                <a href="https://gstechschulte.github.io/tags/" title="tags">
+                <a href="http://localhost:1313/tags/" title="tags">
                     <span>tags</span>
                 </a>
             </li>
@@ -428,7 +363,7 @@ Watermark: 2.4.3
     </main>
     
 <footer class="footer">
-        <span>&copy; 2025 <a href="https://gstechschulte.github.io/">Gabe&#39;s Gulch</a></span> · 
+        <span>&copy; 2025 <a href="http://localhost:1313/">Gabe&#39;s Gulch</a></span> · 
 
     <span>
         Powered by

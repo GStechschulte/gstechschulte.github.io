@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, nofollow">
 <title>Creating C Callbacks with Numba and Calling Them From Rust | Gabe&#39;s Gulch</title>
 <meta name="keywords" content="">
 <meta name="description" content="When interfacing with libraries written in C/C&#43;&#43; from Rust, it may require writing native callbacks to provide functionality or logic to the library. A C Callback is a function pointer that is passed as an argument to another function, allowing that function to &ldquo;call back&rdquo; and execute the passed function at runtime.
 When interfacing with Python from Rust, there may be scenarios where the Rust code also needs to be able to call a Python function. Rust&rsquo;s foreign function interface (FFI) and pyo3 crate in fact lets you do this. However, calling Python from Rust involves invoking the Python interpreter, which can reduce performance. If one of the goals for using Rust is to improve the performance of your application or library, this overhead might be undesirable. To avoid invoking the Python interpreter, you can use Numba. Numba allows you to create a C callback, pass this function pointer to Rust, and perform the callback without incurring the overhead associated with Python.">
 <meta name="author" content="Gabriel Stechschulte">
-<link rel="canonical" href="https://gstechschulte.github.io/posts/2024-11-30-c-callbacks/">
+<link rel="canonical" href="http://localhost:1313/posts/2024-11-30-c-callbacks/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://gstechschulte.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://gstechschulte.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://gstechschulte.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://gstechschulte.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://gstechschulte.github.io/safari-pinned-tab.svg">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://gstechschulte.github.io/posts/2024-11-30-c-callbacks/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/2024-11-30-c-callbacks/">
 <noscript>
     <style>
         #theme-toggle,
@@ -89,73 +89,7 @@ When interfacing with Python from Rust, there may be scenarios where the Rust co
     });
 </script>
 
-<meta property="og:title" content="Creating C Callbacks with Numba and Calling Them From Rust" />
-<meta property="og:description" content="When interfacing with libraries written in C/C&#43;&#43; from Rust, it may require writing native callbacks to provide functionality or logic to the library. A C Callback is a function pointer that is passed as an argument to another function, allowing that function to &ldquo;call back&rdquo; and execute the passed function at runtime.
-When interfacing with Python from Rust, there may be scenarios where the Rust code also needs to be able to call a Python function. Rust&rsquo;s foreign function interface (FFI) and pyo3 crate in fact lets you do this. However, calling Python from Rust involves invoking the Python interpreter, which can reduce performance. If one of the goals for using Rust is to improve the performance of your application or library, this overhead might be undesirable. To avoid invoking the Python interpreter, you can use Numba. Numba allows you to create a C callback, pass this function pointer to Rust, and perform the callback without incurring the overhead associated with Python." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://gstechschulte.github.io/posts/2024-11-30-c-callbacks/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2024-11-30T00:00:00+00:00" />
-<meta property="article:modified_time" content="2024-11-30T00:00:00+00:00" />
 
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Creating C Callbacks with Numba and Calling Them From Rust"/>
-<meta name="twitter:description" content="When interfacing with libraries written in C/C&#43;&#43; from Rust, it may require writing native callbacks to provide functionality or logic to the library. A C Callback is a function pointer that is passed as an argument to another function, allowing that function to &ldquo;call back&rdquo; and execute the passed function at runtime.
-When interfacing with Python from Rust, there may be scenarios where the Rust code also needs to be able to call a Python function. Rust&rsquo;s foreign function interface (FFI) and pyo3 crate in fact lets you do this. However, calling Python from Rust involves invoking the Python interpreter, which can reduce performance. If one of the goals for using Rust is to improve the performance of your application or library, this overhead might be undesirable. To avoid invoking the Python interpreter, you can use Numba. Numba allows you to create a C callback, pass this function pointer to Rust, and perform the callback without incurring the overhead associated with Python."/>
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Posts",
-      "item": "https://gstechschulte.github.io/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Creating C Callbacks with Numba and Calling Them From Rust",
-      "item": "https://gstechschulte.github.io/posts/2024-11-30-c-callbacks/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "Creating C Callbacks with Numba and Calling Them From Rust",
-  "name": "Creating C Callbacks with Numba and Calling Them From Rust",
-  "description": "When interfacing with libraries written in C/C++ from Rust, it may require writing native callbacks to provide functionality or logic to the library. A C Callback is a function pointer that is passed as an argument to another function, allowing that function to \u0026ldquo;call back\u0026rdquo; and execute the passed function at runtime.\nWhen interfacing with Python from Rust, there may be scenarios where the Rust code also needs to be able to call a Python function. Rust\u0026rsquo;s foreign function interface (FFI) and pyo3 crate in fact lets you do this. However, calling Python from Rust involves invoking the Python interpreter, which can reduce performance. If one of the goals for using Rust is to improve the performance of your application or library, this overhead might be undesirable. To avoid invoking the Python interpreter, you can use Numba. Numba allows you to create a C callback, pass this function pointer to Rust, and perform the callback without incurring the overhead associated with Python.\n",
-  "keywords": [
-    
-  ],
-  "articleBody": "When interfacing with libraries written in C/C++ from Rust, it may require writing native callbacks to provide functionality or logic to the library. A C Callback is a function pointer that is passed as an argument to another function, allowing that function to “call back” and execute the passed function at runtime.\nWhen interfacing with Python from Rust, there may be scenarios where the Rust code also needs to be able to call a Python function. Rust’s foreign function interface (FFI) and pyo3 crate in fact lets you do this. However, calling Python from Rust involves invoking the Python interpreter, which can reduce performance. If one of the goals for using Rust is to improve the performance of your application or library, this overhead might be undesirable. To avoid invoking the Python interpreter, you can use Numba. Numba allows you to create a C callback, pass this function pointer to Rust, and perform the callback without incurring the overhead associated with Python.\nThis post will briefly explain how to create C callbacks using Numba, and how to pass and call them from within Rust.\nCreating C Callbacks with Numba To create a C callback of a Python function using Numba, the cfunc function is used. Alternatively, one could use the @cfunc decorator. Regardless of the technique, passing a signature of the Python function is required as it determines the visible signature of the C callback. The C function object exposes the address of the compiled C callback as the address attribute, so that you can pass it to a foreign library. The object is also callable from Python.\nimport ctypes import numpy as np from numba import cfunc, carray, types from callback import initialize # Define the C signature c_sig = types.void(types.CPointer(types.double), types.CPointer(types.double), types.intc, types.intc) @cfunc(c_sig) def my_callback(in_, out, m, n): in_array = carray(in_, (m, n)) out_array = carray(out, (m, n)) for i in range(m): for j in range(n): out_array[i, j] = 2 * in_array[i, j] # Prepare input data m, n = 3, 2 input_array = np.array([1., 2., 3., 4., 5., 6.]) output_array = np.zeros(m * n, dtype=np.float64) # Get pointers to the data input_ptr = input_array.ctypes.data_as(ctypes.POINTER(ctypes.c_double)) output_ptr = output_array.ctypes.data_as(ctypes.POINTER(ctypes.c_double)) # Call the function using ctypes my_callback.ctypes(input_ptr, output_ptr, ctypes.c_int(m), ctypes.c_int(n)) print(f\"Input array : {input_array}\") print(f\"Output array: {output_array}\") Input array : [1. 2. 3. 4. 5. 6.] Output array: [2. 4. 6. 8. 10. 12.] Even though the code is being executed within Python, my_callback does not invoke the Python interpreter each time the function is called—making the code much faster.\n“Call back” from Rust What if part of our library is written in Rust and needs to be able to call this Python function? Performance is critical so Numba is used to create a C callback from the original Python function. This function pointer will then be passed to Rust where the “callback” is performed, i.e., my_callback is called from within Rust without ever invoking the Python interpreter.\nThe boundary between Rust and the C callback can be crossed using Rust’s FFI. FFI lets Rust code call functions written in other programming languages (typically C/C++), and is ultimately all about accessing bytes that originate somewhere outside the Rust code. For that, Rust provides two primary building blocks:\nSymbols. Names assigned to particular addresses in a given segment of your binary that allow you to share memory between the external origin and your Rust code. Calling convention. Provides a common understanding of how to call functions stored in such shared memory. Rust’s extern keyword is used to link with external functions and variables defined outside of the Rust environment libraries. This is achieved by declaring external blocks where these functions and variables are specified. In our example, we need to define an external block with the function signature (calling convention) of my_callback. The call to this function is then wrapped in an unsafe block due to the potential risks associated with calling code that originates outside of Rust.\nBelow, the function signature of my_callback is defined in Rust as the type alias Callback. The alias represents a function pointer type that can be used to call C functions from Rust. The ffi and os::raw modules provide type definitions required for C-compatible data types.\nuse std::{ ffi::{c_double, c_void}, os::raw::c_int, }; // Declare calling convention of `my_callback` using C types from the `ffi` module type Callback = unsafe extern \"C\" fn(in_: *const c_double, out: *mut c_double, m: c_int, n: c_int); Notice how the function signature of Callback matches that of my_callback. Now, we need a way of passing the pointer of my_callback to Rust. To enable this interface, we will use pyo3 to create a Python extension module. Details of how to use pyo3 will not be given here. Rather, we will focus on the declaration of my_python_fn. Here, the fn_ptr parameter is cast to the Callback type using std::mem::transmute. This casting is an unsafe operation that converts fn_ptr from a usize type to the function pointerCallback type enabling the callback.\nNow, we can perform the callback by passing the appropriate data to my_python_fn. The callback also happens in an unsafe block as it involves dereferencing raw pointers. Lastly, the output vector is returned as a Python object.\n#[pyfunction] fn compute_from_rust(fn_ptr: usize) -\u003e PyResult\u003c(PyObject)\u003e { // Cast `fn_ptr` from usize to the `Callback` type (aka the function pointer) let my_python_fn: Callback = unsafe { std::mem::transmute(fn_ptr as *const c_void) }; // Create data to be passed to `my_python_fn` let m: c_int = 3; let n: c_int = 2; let in_ = vec![1., 2., 3., 4., 5., 6.]; let mut out = vec![0.0; (m * n) as usize]; // Perform callback within an unsafe block unsafe { (my_python_fn)(in_.as_ptr(), out.as_mut_ptr(), m, n); } // Return the data to Python Python::with_gil(|py| Ok(PyList::new_bound(py, \u0026out).into())) } #[pymodule] fn callback(m: \u0026Bound\u003c'_, PyModule\u003e) -\u003e PyResult\u003c()\u003e { m.add_function(wrap_pyfunction!(compute_from_rust, m)?)?; Ok(()) } We can now compile the Rust code, and import and call the extension module in Python.\nimport ctypes import numpy as np from numba import cfunc, carray, types from callback import compute_from_rust c_sig = types.void(types.CPointer(types.double), types.CPointer(types.double), types.intc, types.intc) @cfunc(c_sig) def my_callback(in_, out, m, n): in_array = carray(in_, (m, n)) out_array = carray(out, (m, n)) for i in range(m): for j in range(n): out_array[i, j] = 2 * in_array[i, j] # Call `my_callback` within Rust using FFI result = compute_from_rust(my_callback.address) print(f\"Rust output: {result}\") Rust output: [2.0, 4.0, 6.0, 8.0, 10.0, 12.0] Voilà, the result is the same as above. The code in this blog post can be found here.\n",
-  "wordCount" : "1078",
-  "inLanguage": "en",
-  "datePublished": "2024-11-30T00:00:00Z",
-  "dateModified": "2024-11-30T00:00:00Z",
-  "author":{
-    "@type": "Person",
-    "name": "Gabriel Stechschulte"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://gstechschulte.github.io/posts/2024-11-30-c-callbacks/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Gabe's Gulch",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://gstechschulte.github.io/favicon.ico"
-    }
-  }
-}
-</script>
 </head>
 
 <body class="" id="top">
@@ -173,7 +107,7 @@ When interfacing with Python from Rust, there may be scenarios where the Rust co
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="https://gstechschulte.github.io/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
+            <a href="http://localhost:1313/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -199,12 +133,17 @@ When interfacing with Python from Rust, there may be scenarios where the Rust co
         </div>
         <ul id="menu">
             <li>
-                <a href="https://gstechschulte.github.io/categories/" title="categories">
+                <a href="http://localhost:1313/archives" title="">
+                    <span></span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/" title="categories">
                     <span>categories</span>
                 </a>
             </li>
             <li>
-                <a href="https://gstechschulte.github.io/tags/" title="tags">
+                <a href="http://localhost:1313/tags/" title="tags">
                     <span>tags</span>
                 </a>
             </li>
@@ -362,7 +301,7 @@ Output array: [2. 4. 6. 8. 10. 12.]
     </main>
     
 <footer class="footer">
-        <span>&copy; 2025 <a href="https://gstechschulte.github.io/">Gabe&#39;s Gulch</a></span> · 
+        <span>&copy; 2025 <a href="http://localhost:1313/">Gabe&#39;s Gulch</a></span> · 
 
     <span>
         Powered by

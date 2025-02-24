@@ -2,99 +2,101 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://gstechschulte.github.io/posts/db-systems-query-processing/</loc>
+    <loc>http://localhost:1313/posts/db-systems-query-processing/</loc>
     <lastmod>2025-01-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/categories/</loc>
+    <loc>http://localhost:1313/categories/</loc>
     <lastmod>2025-01-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/categories/database-systems/</loc>
+    <loc>http://localhost:1313/categories/database-systems/</loc>
     <lastmod>2025-01-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/</loc>
+    <loc>http://localhost:1313/</loc>
     <lastmod>2025-01-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/posts/</loc>
+    <loc>http://localhost:1313/posts/</loc>
     <lastmod>2025-01-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/posts/db-systems-file-formats/</loc>
+    <loc>http://localhost:1313/posts/db-systems-file-formats/</loc>
     <lastmod>2024-12-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/posts/2024-11-30-c-callbacks/</loc>
+    <loc>http://localhost:1313/posts/2024-11-30-c-callbacks/</loc>
     <lastmod>2024-11-30T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/categories/rust/</loc>
+    <loc>http://localhost:1313/categories/rust/</loc>
     <lastmod>2024-11-30T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/posts/db-systems-blog-series-overview/</loc>
+    <loc>http://localhost:1313/posts/db-systems-blog-series-overview/</loc>
     <lastmod>2024-10-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/posts/hierarchical-regression-missing-data/</loc>
+    <loc>http://localhost:1313/posts/hierarchical-regression-missing-data/</loc>
     <lastmod>2024-09-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/categories/probabilistic-programming/</loc>
+    <loc>http://localhost:1313/categories/probabilistic-programming/</loc>
     <lastmod>2024-09-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/categories/data-engineering/</loc>
+    <loc>http://localhost:1313/categories/data-engineering/</loc>
     <lastmod>2024-08-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/posts/sql-stateful-joins/</loc>
+    <loc>http://localhost:1313/posts/sql-stateful-joins/</loc>
     <lastmod>2024-08-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/posts/bambi-alternative-samplers/</loc>
+    <loc>http://localhost:1313/posts/bambi-alternative-samplers/</loc>
     <lastmod>2024-03-29T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/posts/bambi-advanced-marginal-effects/</loc>
+    <loc>http://localhost:1313/posts/bambi-advanced-marginal-effects/</loc>
     <lastmod>2023-12-09T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/categories/optimization/</loc>
+    <loc>http://localhost:1313/categories/optimization/</loc>
     <lastmod>2023-11-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/posts/constrained-bayesian-optimization/</loc>
+    <loc>http://localhost:1313/posts/constrained-bayesian-optimization/</loc>
     <lastmod>2023-11-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/posts/bambi-survival-models/</loc>
+    <loc>http://localhost:1313/posts/bambi-survival-models/</loc>
     <lastmod>2023-10-25T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/posts/bambi-predict-new-groups/</loc>
+    <loc>http://localhost:1313/posts/bambi-predict-new-groups/</loc>
     <lastmod>2023-10-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/posts/bambi-ordinal-models/</loc>
+    <loc>http://localhost:1313/posts/bambi-ordinal-models/</loc>
     <lastmod>2023-09-29T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/posts/bambi-zip-models/</loc>
+    <loc>http://localhost:1313/posts/bambi-zip-models/</loc>
     <lastmod>2023-09-29T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/posts/gsoc-final-report/</loc>
+    <loc>http://localhost:1313/posts/gsoc-final-report/</loc>
     <lastmod>2023-08-10T18:43:46+02:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/categories/gsoc/</loc>
+    <loc>http://localhost:1313/categories/gsoc/</loc>
     <lastmod>2023-08-10T18:43:46+02:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/categories/open-source/</loc>
+    <loc>http://localhost:1313/categories/open-source/</loc>
     <lastmod>2023-08-10T18:43:46+02:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/posts/bambi-slopes/</loc>
+    <loc>http://localhost:1313/posts/bambi-slopes/</loc>
     <lastmod>2023-08-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/posts/bambi-comparisons/</loc>
+    <loc>http://localhost:1313/posts/bambi-comparisons/</loc>
     <lastmod>2023-06-30T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/posts/gibbs-sampler/</loc>
+    <loc>http://localhost:1313/posts/gibbs-sampler/</loc>
     <lastmod>2022-10-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/posts/metropolis-hastings-sampler/</loc>
+    <loc>http://localhost:1313/posts/metropolis-hastings-sampler/</loc>
     <lastmod>2022-10-08T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/posts/monte-carlo-approximation/</loc>
+    <loc>http://localhost:1313/posts/monte-carlo-approximation/</loc>
     <lastmod>2022-10-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/posts/variational-inference/</loc>
+    <loc>http://localhost:1313/posts/variational-inference/</loc>
     <lastmod>2022-06-03T18:43:46+02:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/posts/no-code-building-technology/2021-08-10-no-code-dependency-and-building-technology/</loc>
+    <loc>http://localhost:1313/posts/no-code-building-technology/2021-08-10-no-code-dependency-and-building-technology/</loc>
     <lastmod>2021-08-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/tags/</loc>
+    <loc>http://localhost:1313/archives/</loc>
+  </url><url>
+    <loc>http://localhost:1313/tags/</loc>
   </url>
 </urlset>
