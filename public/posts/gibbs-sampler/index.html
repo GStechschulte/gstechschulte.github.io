@@ -7,8 +7,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Gibbs Sampler From Scratch | Gabe&#39;s Gulch</title>
 <meta name="keywords" content="">
-<meta name="description" content="
-A variant of the Metropolis-Hastings (MH) algorithm that uses clever proposals and is therefore more efficient (you can get a good approximate of the posterior with far fewer samples) is Gibbs sampling. A problem with MH is the need to choose the proposal distribution, and the fact that the acceptance rate may be low.
+<meta name="description" content="A variant of the Metropolis-Hastings (MH) algorithm that uses clever proposals and is therefore more efficient (you can get a good approximate of the posterior with far fewer samples) is Gibbs sampling. A problem with MH is the need to choose the proposal distribution, and the fact that the acceptance rate may be low.
 The improvement arises from adaptive proposals in which the distribution of proposed parameter values adjusts itself intelligently, depending upon the parameter values at the moment. This dependence upon the parameters at that moment is an exploitation of conditional independence properties of a graphical model to automatically create a good proposal, with acceptance probability equal to one.">
 <meta name="author" content="Gabriel Stechschulte">
 <link rel="canonical" href="http://localhost:1313/posts/gibbs-sampler/">
@@ -163,8 +162,7 @@ The improvement arises from adaptive proposals in which the distribution of prop
 
 </div>
   </header> 
-  <div class="post-content"><!-- raw HTML omitted -->
-<p>A variant of the Metropolis-Hastings (MH) algorithm that uses clever proposals and is therefore more efficient (you can get a good approximate of the posterior with far fewer samples) is Gibbs sampling. A problem with MH is the need to choose the proposal distribution, and the fact that the acceptance rate may be low.</p>
+  <div class="post-content"><p>A variant of the Metropolis-Hastings (MH) algorithm that uses clever proposals and is therefore more efficient (you can get a good approximate of the posterior with far fewer samples) is Gibbs sampling. A problem with MH is the need to choose the proposal distribution, and the fact that the acceptance rate may be low.</p>
 <p>The improvement arises from adaptive proposals in which the distribution of proposed parameter values adjusts itself intelligently, <strong>depending upon the parameter values at the moment</strong>. This dependence upon the parameters at that moment is an exploitation of conditional independence properties of a graphical model to automatically create a good proposal, with acceptance probability equal to one.</p>
 <h3 id="main-idea">Main Idea<a hidden class="anchor" aria-hidden="true" href="#main-idea">#</a></h3>
 <p>Suppose we have a 3-dimensional joint distribution. Estimating this joint distribution is much harder than a 1-dimensional distribution. Subsequently, sampling is also harder in $\mathbb{R}^3$. In Gibbs sampling, you condition each variable on the values of all the other variables in the distribution. For example, if we have $D=3$ variables:</p>

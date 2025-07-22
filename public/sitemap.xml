@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://gstechschulte.github.io/posts/2025-06-11-optimization-gymnastics/</loc>
+    <loc>https://gstechschulte.github.io/posts/2025-07-21-smc-rs/</loc>
     <lastmod>2025-06-11T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://gstechschulte.github.io/categories/</loc>
@@ -11,10 +11,13 @@
     <loc>https://gstechschulte.github.io/</loc>
     <lastmod>2025-06-11T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/categories/optimization/</loc>
+    <loc>https://gstechschulte.github.io/posts/</loc>
     <lastmod>2025-06-11T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/posts/</loc>
+    <loc>https://gstechschulte.github.io/categories/probabilistic-programming/</loc>
+    <lastmod>2025-06-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://gstechschulte.github.io/categories/rust/</loc>
     <lastmod>2025-06-11T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://gstechschulte.github.io/posts/db-systems-query-processing/</loc>
@@ -29,16 +32,10 @@
     <loc>https://gstechschulte.github.io/posts/2024-11-30-c-callbacks/</loc>
     <lastmod>2024-11-30T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/categories/rust/</loc>
-    <lastmod>2024-11-30T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://gstechschulte.github.io/posts/db-systems-blog-series-overview/</loc>
     <lastmod>2024-10-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://gstechschulte.github.io/posts/hierarchical-regression-missing-data/</loc>
-    <lastmod>2024-09-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://gstechschulte.github.io/categories/probabilistic-programming/</loc>
     <lastmod>2024-09-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://gstechschulte.github.io/categories/data-engineering/</loc>
@@ -52,6 +49,9 @@
   </url><url>
     <loc>https://gstechschulte.github.io/posts/bambi-advanced-marginal-effects/</loc>
     <lastmod>2023-12-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://gstechschulte.github.io/categories/optimization/</loc>
+    <lastmod>2023-11-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://gstechschulte.github.io/posts/constrained-bayesian-optimization/</loc>
     <lastmod>2023-11-28T00:00:00+00:00</lastmod>

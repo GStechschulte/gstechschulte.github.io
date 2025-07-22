@@ -7,8 +7,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Metropolis Hastings Sampler From Scratch | Gabe&#39;s Gulch</title>
 <meta name="keywords" content="">
-<meta name="description" content="
-Main Idea
+<meta name="description" content="Main Idea
 Metropolis-Hastings (MH) is one of the simplest kinds of MCMC algorithms. The idea with MH is that at each step, we propose to move from the current state $x$ to a new state $x&rsquo;$ with probability $q(x&rsquo;|x)$, where $q$ is the proposal distribution. The user is free to choose the proposal distribution and the choice of the proposal is dependent on the form of the target distribution. Once a proposal has been made to move to $x&rsquo;$, we then decide whether to accept or reject the proposal according to some rule. If the proposal is accepted, the new state is $x&rsquo;$, else the new state is the same as the current state $x$.">
 <meta name="author" content="Gabriel Stechschulte">
 <link rel="canonical" href="http://localhost:1313/posts/metropolis-hastings-sampler/">
@@ -163,8 +162,7 @@ Metropolis-Hastings (MH) is one of the simplest kinds of MCMC algorithms. The id
 
 </div>
   </header> 
-  <div class="post-content"><!-- raw HTML omitted -->
-<h3 id="main-idea">Main Idea<a hidden class="anchor" aria-hidden="true" href="#main-idea">#</a></h3>
+  <div class="post-content"><h3 id="main-idea">Main Idea<a hidden class="anchor" aria-hidden="true" href="#main-idea">#</a></h3>
 <p>Metropolis-Hastings (MH) is one of the simplest kinds of MCMC algorithms. The idea with MH is that at each step, we propose to move from the current state $x$ to a new state $x&rsquo;$ with probability $q(x&rsquo;|x)$, where $q$ is the <strong>proposal distribution</strong>. The user is free to choose the proposal distribution and the choice of the proposal is dependent on the form of the target distribution. Once a proposal has been made to move to $x&rsquo;$, we then decide whether to <strong>accept</strong> or <strong>reject</strong> the proposal according to some rule. If the proposal is accepted, the new state is $x&rsquo;$, else the new state is the same as the current state $x$.</p>
 <p>Proposals can be <strong>symmetric</strong> and <strong>asymmetric</strong>. In the case of symmetric proposals $q(x&rsquo;|x) = q(x|x&rsquo;)$, the acceptance probability is given by the rule:</p>
 <p>$$A = min(1, \frac{p^<em>(x&rsquo;)}{p^</em>(x)})$$</p>

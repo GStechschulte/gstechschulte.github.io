@@ -4,17 +4,24 @@
     <title>Optimization on Gabe&#39;s Gulch</title>
     <link>http://localhost:1313/categories/optimization/</link>
     <description>Recent content in Optimization on Gabe&#39;s Gulch</description>
-    <generator>Hugo -- 0.140.0</generator>
+    <generator>Hugo -- 0.147.7</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 28 Nov 2023 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 11 Jun 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/categories/optimization/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[WIP] Gymnastics in Constrained Optimization</title>
+      <link>http://localhost:1313/posts/2025-06-11-optimization-gymnastics/</link>
+      <pubDate>Wed, 11 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2025-06-11-optimization-gymnastics/</guid>
+      <description>&lt;h2 id=&#34;constrained-optimization&#34;&gt;Constrained optimization&lt;/h2&gt;
+&lt;p&gt;In unconstrained optimization problems, each design variable can take on any real number. However, in most industrial settings, we need to perform constrained optimization which forces design points to satisfy certain conditions. A theme in the mathematical optimization field is to transform the constrained problem into an unconstrained one. This transformation process requires a leap of faith, and often some gymnastics in the process. This blog reviews some of the popular approaches for transforming a constrained problem into problems without constraints and attempts to connect the underlying concepts these approaches utilize.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Outcome Constraints in Bayesian Optimization</title>
       <link>http://localhost:1313/posts/constrained-bayesian-optimization/</link>
       <pubDate>Tue, 28 Nov 2023 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/constrained-bayesian-optimization/</guid>
-      <description>&lt;!-- raw HTML omitted --&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#| code-fold: true&lt;/span&gt;
+      <description>&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#| code-fold: true&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; matplotlib.pyplot &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; plt
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; torch
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; numpy &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; np

@@ -4,7 +4,7 @@
     <title>Gsoc on Gabe&#39;s Gulch</title>
     <link>http://localhost:1313/categories/gsoc/</link>
     <description>Recent content in Gsoc on Gabe&#39;s Gulch</description>
-    <generator>Hugo -- 0.140.0</generator>
+    <generator>Hugo -- 0.147.7</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 10 Aug 2023 18:43:46 +0200</lastBuildDate>
     <atom:link href="http://localhost:1313/categories/gsoc/index.xml" rel="self" type="application/rss+xml" />
@@ -22,8 +22,7 @@
       <link>http://localhost:1313/posts/bambi-slopes/</link>
       <pubDate>Tue, 01 Aug 2023 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/bambi-slopes/</guid>
-      <description>&lt;!-- raw HTML omitted --&gt;
-&lt;p&gt;It is currently the beginning of week ten of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the basic functionality of the &lt;code&gt;plot_slopes&lt;/code&gt;. Subsequently, week 11 was reserved to further develop the &lt;code&gt;plot_slopes&lt;/code&gt; function, and to write tests and a notebook for the documentation, respectively.&lt;/p&gt;
+      <description>&lt;p&gt;It is currently the beginning of week ten of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the basic functionality of the &lt;code&gt;plot_slopes&lt;/code&gt;. Subsequently, week 11 was reserved to further develop the &lt;code&gt;plot_slopes&lt;/code&gt; function, and to write tests and a notebook for the documentation, respectively.&lt;/p&gt;
 &lt;p&gt;However, at the beginning of week ten, I have a &lt;a href=&#34;https://github.com/bambinos/bambi/pull/699&#34;&gt;PR&lt;/a&gt; open with the majority of the functionality that &lt;a href=&#34;https://vincentarelbundock.github.io/marginaleffects/&#34;&gt;marginaleffects&lt;/a&gt; has for &lt;code&gt;slopes&lt;/code&gt;. In addition, I also exposed the &lt;code&gt;slopes&lt;/code&gt; function, added tests, and have a &lt;a href=&#34;https://github.com/bambinos/bambi/pull/701&#34;&gt;PR&lt;/a&gt; open for the documentation.&lt;/p&gt;</description>
     </item>
     <item>
@@ -31,8 +30,7 @@
       <link>http://localhost:1313/posts/bambi-comparisons/</link>
       <pubDate>Fri, 30 Jun 2023 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/bambi-comparisons/</guid>
-      <description>&lt;!-- raw HTML omitted --&gt;
-&lt;p&gt;It is currently the end of week five of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the core functionality of the &lt;code&gt;plot_comparisons&lt;/code&gt;. Subsequently, week six and seven were to be spent further developing the &lt;code&gt;plot_comparisons&lt;/code&gt; function, and writing tests and a demo notebook for the documentation, respectively. However, at the end of week five, I have a PR open with the majority of the functionality that &lt;a href=&#34;https://vincentarelbundock.github.io/marginaleffects/&#34;&gt;marginaleffects&lt;/a&gt; has. In addition, I also exposed the &lt;code&gt;comparisons&lt;/code&gt; function, added tests (which can and will be improved), and have started on documentation.&lt;/p&gt;</description>
+      <description>&lt;p&gt;It is currently the end of week five of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the core functionality of the &lt;code&gt;plot_comparisons&lt;/code&gt;. Subsequently, week six and seven were to be spent further developing the &lt;code&gt;plot_comparisons&lt;/code&gt; function, and writing tests and a demo notebook for the documentation, respectively. However, at the end of week five, I have a PR open with the majority of the functionality that &lt;a href=&#34;https://vincentarelbundock.github.io/marginaleffects/&#34;&gt;marginaleffects&lt;/a&gt; has. In addition, I also exposed the &lt;code&gt;comparisons&lt;/code&gt; function, added tests (which can and will be improved), and have started on documentation.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

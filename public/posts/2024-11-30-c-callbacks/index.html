@@ -247,8 +247,8 @@ Output array: [2. 4. 6. 8. 10. 12.]
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">let</span> m: <span style="color:#a6e22e">c_int</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>;
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> n: <span style="color:#a6e22e">c_int</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> in_ <span style="color:#f92672">=</span> vec![<span style="color:#ae81ff">1.</span>, <span style="color:#ae81ff">2.</span>, <span style="color:#ae81ff">3.</span>, <span style="color:#ae81ff">4.</span>, <span style="color:#ae81ff">5.</span>, <span style="color:#ae81ff">6.</span>];
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> out <span style="color:#f92672">=</span> vec![<span style="color:#ae81ff">0.0</span>; (m <span style="color:#f92672">*</span> n) <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">usize</span>];
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> in_ <span style="color:#f92672">=</span> <span style="color:#a6e22e">vec!</span>[<span style="color:#ae81ff">1.</span>, <span style="color:#ae81ff">2.</span>, <span style="color:#ae81ff">3.</span>, <span style="color:#ae81ff">4.</span>, <span style="color:#ae81ff">5.</span>, <span style="color:#ae81ff">6.</span>];
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> out <span style="color:#f92672">=</span> <span style="color:#a6e22e">vec!</span>[<span style="color:#ae81ff">0.0</span>; (m <span style="color:#f92672">*</span> n) <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">usize</span>];
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Perform callback within an unsafe block
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">unsafe</span> {
@@ -261,7 +261,7 @@ Output array: [2. 4. 6. 8. 10. 12.]
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">#[pymodule]</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">callback</span>(m: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">Bound</span><span style="color:#f92672">&lt;</span>&#39;_, PyModule<span style="color:#f92672">&gt;</span>) -&gt; <span style="color:#a6e22e">PyResult</span><span style="color:#f92672">&lt;</span>()<span style="color:#f92672">&gt;</span> {
-</span></span><span style="display:flex;"><span>    m.add_function(wrap_pyfunction!(compute_from_rust, m)<span style="color:#f92672">?</span>)<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>    m.add_function(<span style="color:#a6e22e">wrap_pyfunction!</span>(compute_from_rust, m)<span style="color:#f92672">?</span>)<span style="color:#f92672">?</span>;
 </span></span><span style="display:flex;"><span>    Ok(())
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>We can now compile the Rust code, and import and call the extension module in Python.</p>

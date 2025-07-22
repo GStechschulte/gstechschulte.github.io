@@ -4,10 +4,27 @@
     <title>Posts on Gabe&#39;s Gulch</title>
     <link>http://localhost:1313/posts/</link>
     <description>Recent content in Posts on Gabe&#39;s Gulch</description>
-    <generator>Hugo -- 0.140.0</generator>
+    <generator>Hugo -- 0.147.7</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 01 Jan 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 11 Jun 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[WIP] Gymnastics in Constrained Optimization</title>
+      <link>http://localhost:1313/posts/2025-06-11-optimization-gymnastics/</link>
+      <pubDate>Wed, 11 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2025-06-11-optimization-gymnastics/</guid>
+      <description>&lt;h2 id=&#34;constrained-optimization&#34;&gt;Constrained optimization&lt;/h2&gt;
+&lt;p&gt;In unconstrained optimization problems, each design variable can take on any real number. However, in most industrial settings, we need to perform constrained optimization which forces design points to satisfy certain conditions. A theme in the mathematical optimization field is to transform the constrained problem into an unconstrained one. This transformation process requires a leap of faith, and often some gymnastics in the process. This blog reviews some of the popular approaches for transforming a constrained problem into problems without constraints and attempts to connect the underlying concepts these approaches utilize.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Reflection - Atlas Shrugged</title>
+      <link>http://localhost:1313/posts/2025-03-01-reflect-atlas-shrugged/</link>
+      <pubDate>Sat, 01 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2025-03-01-reflect-atlas-shrugged/</guid>
+      <description>&lt;p&gt;I have finally finished Atlas Shrugged and would like to take a moment to reflect on my interpretation of the idealogies portrayed throughout the book. To set the stage, Atlas Shrugged is a dystopian novel where productive individuals withdraw from a society that exploits them.&lt;/p&gt;
+&lt;h2 id=&#34;rational-self-interest&#34;&gt;Rational self interest&lt;/h2&gt;
+&lt;p&gt;One of the core ideas of Atlas Shrugged is that the pursuit of one&amp;rsquo;s self interest is morally good, not evil. This is in contrast to the conventional view that selflessness and self-sacrifice are virtuous.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>[WIP] Database Systems - Query Execution and Processing</title>
       <link>http://localhost:1313/posts/db-systems-query-processing/</link>
@@ -24,27 +41,18 @@
 &lt;p&gt;which fall into three primary ways for speeding up queries:&lt;/p&gt;</description>
     </item>
     <item>
+      <title>[WIP] South America</title>
+      <link>http://localhost:1313/posts/2025-06-07-south-america/</link>
+      <pubDate>Wed, 01 Jan 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2025-06-07-south-america/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Data Oriented Deisgn - Columnar Data Structures</title>
       <link>http://localhost:1313/posts/2024-12-10-dod-columnar-storage/</link>
       <pubDate>Tue, 10 Dec 2024 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/2024-12-10-dod-columnar-storage/</guid>
       <description>&lt;p&gt;Test. Test.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Reflection - Atlas Shrugged</title>
-      <link>http://localhost:1313/posts/2024-12-03-by-what-right/</link>
-      <pubDate>Tue, 03 Dec 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/2024-12-03-by-what-right/</guid>
-      <description>&lt;p&gt;I have finally finished Atlas Shrugged and would like to take a moment to reflect on my interpretation of some of the concepts and or idealogies portrayed throughout the book.&lt;/p&gt;
-&lt;p&gt;What idealogies and or philosophy is portrayed?&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Rationalism. What does rationalism even mean?&lt;/li&gt;
-&lt;li&gt;Individualism. What is this?&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Economic&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Connection to Hayek.&lt;/li&gt;
-&lt;/ul&gt;</description>
     </item>
     <item>
       <title>[WIP] Database Systems - Storage</title>
@@ -116,8 +124,7 @@ are not compatible. For example, &lt;code&gt;dyn Y&amp;lt;Y1 = String&amp;gt;&lt
       <link>http://localhost:1313/posts/hierarchical-regression-missing-data/</link>
       <pubDate>Tue, 10 Sep 2024 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/hierarchical-regression-missing-data/</guid>
-      <description>&lt;!-- raw HTML omitted --&gt;
-&lt;p&gt;Hierarchical regression, also known as multilevel modeling, is a powerful modeling technique that allows one to analyze data with a nested structure. This approach is particularly useful when dealing with data that has natural groupings, such as students within schools, patients within hospitals, or in the example below, product configurations within manufacturing processes. One of the key advantages of hierarchical regression lies in its ability to handle missing data in groups, i.e., when one group may not share the same covariates as another group or some groups may contain missong observations.&lt;/p&gt;</description>
+      <description>&lt;p&gt;Hierarchical regression, also known as multilevel modeling, is a powerful modeling technique that allows one to analyze data with a nested structure. This approach is particularly useful when dealing with data that has natural groupings, such as students within schools, patients within hospitals, or in the example below, product configurations within manufacturing processes. One of the key advantages of hierarchical regression lies in its ability to handle missing data in groups, i.e., when one group may not share the same covariates as another group or some groups may contain missong observations.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Stateful Joins in SQL</title>
@@ -133,8 +140,7 @@ are not compatible. For example, &lt;code&gt;dyn Y&amp;lt;Y1 = String&amp;gt;&lt
       <link>http://localhost:1313/posts/bambi-alternative-samplers/</link>
       <pubDate>Fri, 29 Mar 2024 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/bambi-alternative-samplers/</guid>
-      <description>&lt;!-- raw HTML omitted --&gt;
-&lt;h1 id=&#34;alternative-sampling-backends&#34;&gt;Alternative sampling backends&lt;/h1&gt;
+      <description>&lt;h1 id=&#34;alternative-sampling-backends&#34;&gt;Alternative sampling backends&lt;/h1&gt;
 &lt;p&gt;This blog post is a copy of the alternative samplers documentation I wrote for &lt;a href=&#34;https://bambinos.github.io/bambi/&#34;&gt;Bambi&lt;/a&gt;. The original post can be found &lt;a href=&#34;https://bambinos.github.io/bambi/notebooks/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;In Bambi, the sampler used is automatically selected given the type of variables used in the model. For inference, Bambi supports both MCMC and variational inference. By default, Bambi uses PyMC&amp;rsquo;s implementation of the adaptive Hamiltonian Monte Carlo (HMC) algorithm for sampling. Also known as the No-U-Turn Sampler (NUTS). This sampler is a good choice for many models. However, it is not the only sampling method, nor is PyMC the only library implementing NUTS.&lt;/p&gt;</description>
     </item>
@@ -143,8 +149,7 @@ are not compatible. For example, &lt;code&gt;dyn Y&amp;lt;Y1 = String&amp;gt;&lt
       <link>http://localhost:1313/posts/bambi-advanced-marginal-effects/</link>
       <pubDate>Sat, 09 Dec 2023 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/bambi-advanced-marginal-effects/</guid>
-      <description>&lt;!-- raw HTML omitted --&gt;
-&lt;h1 id=&#34;interpret-advanced-usage&#34;&gt;Interpret Advanced Usage&lt;/h1&gt;
+      <description>&lt;h1 id=&#34;interpret-advanced-usage&#34;&gt;Interpret Advanced Usage&lt;/h1&gt;
 &lt;p&gt;The &lt;code&gt;interpret&lt;/code&gt; module is inspired by the R package &lt;a href=&#34;https://marginaleffects.com&#34;&gt;marginaleffects&lt;/a&gt; and ports the core functionality of {marginaleffects} to Bambi. To close the gap of non-supported functionality in Bambi, &lt;code&gt;interpret&lt;/code&gt; now provides a set of helper functions to aid the user in more advanced and complex analysis not covered within the &lt;code&gt;comparisons&lt;/code&gt;, &lt;code&gt;predictions&lt;/code&gt;, and &lt;code&gt;slopes&lt;/code&gt; functions.&lt;/p&gt;
 &lt;p&gt;These helper functions are &lt;code&gt;data_grid&lt;/code&gt; and &lt;code&gt;select_draws&lt;/code&gt;. The &lt;code&gt;data_grid&lt;/code&gt; can be used to create a pairwise grid of data points for the user to pass to &lt;code&gt;model.predict&lt;/code&gt;. Subsequently, &lt;code&gt;select_draws&lt;/code&gt; is used to select the draws from the posterior (or posterior predictive) group of the InferenceData object returned by the predict method that correspond to the data points that &amp;ldquo;produced&amp;rdquo; that draw.&lt;/p&gt;</description>
     </item>
@@ -153,8 +158,7 @@ are not compatible. For example, &lt;code&gt;dyn Y&amp;lt;Y1 = String&amp;gt;&lt
       <link>http://localhost:1313/posts/constrained-bayesian-optimization/</link>
       <pubDate>Tue, 28 Nov 2023 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/constrained-bayesian-optimization/</guid>
-      <description>&lt;!-- raw HTML omitted --&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#| code-fold: true&lt;/span&gt;
+      <description>&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#| code-fold: true&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; matplotlib.pyplot &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; plt
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; torch
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; numpy &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; np
@@ -175,8 +179,7 @@ are not compatible. For example, &lt;code&gt;dyn Y&amp;lt;Y1 = String&amp;gt;&lt
       <link>http://localhost:1313/posts/bambi-survival-models/</link>
       <pubDate>Wed, 25 Oct 2023 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/bambi-survival-models/</guid>
-      <description>&lt;!-- raw HTML omitted --&gt;
-&lt;h1 id=&#34;survival-models&#34;&gt;Survival Models&lt;/h1&gt;
+      <description>&lt;h1 id=&#34;survival-models&#34;&gt;Survival Models&lt;/h1&gt;
 &lt;p&gt;Survival models, also known as time-to-event models, are specialized statistical methods designed to analyze the time until the occurrence of an event of interest. In this notebook, a review of survival analysis (using non-parametric and parametric methods) and censored data is provided, followed by a survival model implementation in Bambi.&lt;/p&gt;
 &lt;p&gt;This blog post is a copy of the survival models documentation I wrote for &lt;a href=&#34;https://bambinos.github.io/bambi/&#34;&gt;Bambi&lt;/a&gt;. The original post can be found &lt;a href=&#34;https://bambinos.github.io/bambi/notebooks/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
@@ -185,8 +188,7 @@ are not compatible. For example, &lt;code&gt;dyn Y&amp;lt;Y1 = String&amp;gt;&lt
       <link>http://localhost:1313/posts/bambi-predict-new-groups/</link>
       <pubDate>Tue, 10 Oct 2023 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/bambi-predict-new-groups/</guid>
-      <description>&lt;!-- raw HTML omitted --&gt;
-&lt;h1 id=&#34;predict-new-groups&#34;&gt;Predict New Groups&lt;/h1&gt;
+      <description>&lt;h1 id=&#34;predict-new-groups&#34;&gt;Predict New Groups&lt;/h1&gt;
 &lt;p&gt;In Bambi, it is possible to perform predictions on new, unseen, groups of data that were not in the observed data used to fit the model with the argument &lt;code&gt;sample_new_groups&lt;/code&gt; in the &lt;code&gt;model.predict()&lt;/code&gt; method. This is useful in the context of hierarchical modeling, where groups are assumed to be a sample from a larger group.&lt;/p&gt;
 &lt;p&gt;This blog post is a copy of the zero inflated models documentation I wrote for &lt;a href=&#34;https://bambinos.github.io/bambi/&#34;&gt;Bambi&lt;/a&gt;. The original post can be found &lt;a href=&#34;https://bambinos.github.io/bambi/notebooks/predict_new_groups.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
@@ -195,8 +197,7 @@ are not compatible. For example, &lt;code&gt;dyn Y&amp;lt;Y1 = String&amp;gt;&lt
       <link>http://localhost:1313/posts/bambi-ordinal-models/</link>
       <pubDate>Fri, 29 Sep 2023 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/bambi-ordinal-models/</guid>
-      <description>&lt;!-- raw HTML omitted --&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#| code-fold: true&lt;/span&gt;
+      <description>&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#| code-fold: true&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; arviz &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; az
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; matplotlib.pyplot &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; plt
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; matplotlib.lines &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; Line2D
@@ -218,8 +219,7 @@ are not compatible. For example, &lt;code&gt;dyn Y&amp;lt;Y1 = String&amp;gt;&lt
       <link>http://localhost:1313/posts/bambi-zip-models/</link>
       <pubDate>Fri, 29 Sep 2023 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/bambi-zip-models/</guid>
-      <description>&lt;!-- raw HTML omitted --&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#| code-fold: true&lt;/span&gt;
+      <description>&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#| code-fold: true&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; arviz &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; az
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; matplotlib.pyplot &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; plt
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; matplotlib.lines &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; Line2D
@@ -235,7 +235,8 @@ are not compatible. For example, &lt;code&gt;dyn Y&amp;lt;Y1 = String&amp;gt;&lt
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions.
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h1 id=&#34;zero-inflated-models&#34;&gt;Zero inflated models&lt;/h1&gt;
-&lt;p&gt;This blog post is a copy of the zero inflated models documentation I wrote for &lt;a href=&#34;https://bambinos.github.io/bambi/&#34;&gt;Bambi&lt;/a&gt;. The original post can be found &lt;a href=&#34;https://bambinos.github.io/bambi/notebooks/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;</description>
+&lt;p&gt;This blog post is a copy of the zero inflated models documentation I wrote for &lt;a href=&#34;https://bambinos.github.io/bambi/&#34;&gt;Bambi&lt;/a&gt;. The original post can be found &lt;a href=&#34;https://bambinos.github.io/bambi/notebooks/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In this notebook, we will describe zero inflated outcomes and why the data generating process behind these outcomes requires a special class of generalized linear models: zero-inflated Poisson (ZIP) and hurdle Poisson. Subsequently, we will describe and implement each model using a set of zero-inflated data from ecology. Along the way, we will also use the &lt;code&gt;interpret&lt;/code&gt; sub-package to interpret the predictions and parameters of the models.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Google Summer of Code - Final Report</title>
@@ -251,8 +252,7 @@ are not compatible. For example, &lt;code&gt;dyn Y&amp;lt;Y1 = String&amp;gt;&lt
       <link>http://localhost:1313/posts/bambi-slopes/</link>
       <pubDate>Tue, 01 Aug 2023 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/bambi-slopes/</guid>
-      <description>&lt;!-- raw HTML omitted --&gt;
-&lt;p&gt;It is currently the beginning of week ten of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the basic functionality of the &lt;code&gt;plot_slopes&lt;/code&gt;. Subsequently, week 11 was reserved to further develop the &lt;code&gt;plot_slopes&lt;/code&gt; function, and to write tests and a notebook for the documentation, respectively.&lt;/p&gt;
+      <description>&lt;p&gt;It is currently the beginning of week ten of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the basic functionality of the &lt;code&gt;plot_slopes&lt;/code&gt;. Subsequently, week 11 was reserved to further develop the &lt;code&gt;plot_slopes&lt;/code&gt; function, and to write tests and a notebook for the documentation, respectively.&lt;/p&gt;
 &lt;p&gt;However, at the beginning of week ten, I have a &lt;a href=&#34;https://github.com/bambinos/bambi/pull/699&#34;&gt;PR&lt;/a&gt; open with the majority of the functionality that &lt;a href=&#34;https://vincentarelbundock.github.io/marginaleffects/&#34;&gt;marginaleffects&lt;/a&gt; has for &lt;code&gt;slopes&lt;/code&gt;. In addition, I also exposed the &lt;code&gt;slopes&lt;/code&gt; function, added tests, and have a &lt;a href=&#34;https://github.com/bambinos/bambi/pull/701&#34;&gt;PR&lt;/a&gt; open for the documentation.&lt;/p&gt;</description>
     </item>
     <item>
@@ -260,16 +260,14 @@ are not compatible. For example, &lt;code&gt;dyn Y&amp;lt;Y1 = String&amp;gt;&lt
       <link>http://localhost:1313/posts/bambi-comparisons/</link>
       <pubDate>Fri, 30 Jun 2023 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/bambi-comparisons/</guid>
-      <description>&lt;!-- raw HTML omitted --&gt;
-&lt;p&gt;It is currently the end of week five of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the core functionality of the &lt;code&gt;plot_comparisons&lt;/code&gt;. Subsequently, week six and seven were to be spent further developing the &lt;code&gt;plot_comparisons&lt;/code&gt; function, and writing tests and a demo notebook for the documentation, respectively. However, at the end of week five, I have a PR open with the majority of the functionality that &lt;a href=&#34;https://vincentarelbundock.github.io/marginaleffects/&#34;&gt;marginaleffects&lt;/a&gt; has. In addition, I also exposed the &lt;code&gt;comparisons&lt;/code&gt; function, added tests (which can and will be improved), and have started on documentation.&lt;/p&gt;</description>
+      <description>&lt;p&gt;It is currently the end of week five of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the core functionality of the &lt;code&gt;plot_comparisons&lt;/code&gt;. Subsequently, week six and seven were to be spent further developing the &lt;code&gt;plot_comparisons&lt;/code&gt; function, and writing tests and a demo notebook for the documentation, respectively. However, at the end of week five, I have a PR open with the majority of the functionality that &lt;a href=&#34;https://vincentarelbundock.github.io/marginaleffects/&#34;&gt;marginaleffects&lt;/a&gt; has. In addition, I also exposed the &lt;code&gt;comparisons&lt;/code&gt; function, added tests (which can and will be improved), and have started on documentation.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Gibbs Sampler From Scratch</title>
       <link>http://localhost:1313/posts/gibbs-sampler/</link>
       <pubDate>Wed, 12 Oct 2022 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/gibbs-sampler/</guid>
-      <description>&lt;!-- raw HTML omitted --&gt;
-&lt;p&gt;A variant of the Metropolis-Hastings (MH) algorithm that uses clever proposals and is therefore more efficient (you can get a good approximate of the posterior with far fewer samples) is Gibbs sampling. A problem with MH is the need to choose the proposal distribution, and the fact that the acceptance rate may be low.&lt;/p&gt;
+      <description>&lt;p&gt;A variant of the Metropolis-Hastings (MH) algorithm that uses clever proposals and is therefore more efficient (you can get a good approximate of the posterior with far fewer samples) is Gibbs sampling. A problem with MH is the need to choose the proposal distribution, and the fact that the acceptance rate may be low.&lt;/p&gt;
 &lt;p&gt;The improvement arises from adaptive proposals in which the distribution of proposed parameter values adjusts itself intelligently, &lt;strong&gt;depending upon the parameter values at the moment&lt;/strong&gt;. This dependence upon the parameters at that moment is an exploitation of conditional independence properties of a graphical model to automatically create a good proposal, with acceptance probability equal to one.&lt;/p&gt;</description>
     </item>
     <item>
@@ -277,8 +275,7 @@ are not compatible. For example, &lt;code&gt;dyn Y&amp;lt;Y1 = String&amp;gt;&lt
       <link>http://localhost:1313/posts/metropolis-hastings-sampler/</link>
       <pubDate>Sat, 08 Oct 2022 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/metropolis-hastings-sampler/</guid>
-      <description>&lt;!-- raw HTML omitted --&gt;
-&lt;h3 id=&#34;main-idea&#34;&gt;Main Idea&lt;/h3&gt;
+      <description>&lt;h3 id=&#34;main-idea&#34;&gt;Main Idea&lt;/h3&gt;
 &lt;p&gt;Metropolis-Hastings (MH) is one of the simplest kinds of MCMC algorithms. The idea with MH is that at each step, we propose to move from the current state $x$ to a new state $x&amp;rsquo;$ with probability $q(x&amp;rsquo;|x)$, where $q$ is the &lt;strong&gt;proposal distribution&lt;/strong&gt;. The user is free to choose the proposal distribution and the choice of the proposal is dependent on the form of the target distribution. Once a proposal has been made to move to $x&amp;rsquo;$, we then decide whether to &lt;strong&gt;accept&lt;/strong&gt; or &lt;strong&gt;reject&lt;/strong&gt; the proposal according to some rule. If the proposal is accepted, the new state is $x&amp;rsquo;$, else the new state is the same as the current state $x$.&lt;/p&gt;</description>
     </item>
     <item>
@@ -286,8 +283,7 @@ are not compatible. For example, &lt;code&gt;dyn Y&amp;lt;Y1 = String&amp;gt;&lt
       <link>http://localhost:1313/posts/monte-carlo-approximation/</link>
       <pubDate>Fri, 07 Oct 2022 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/monte-carlo-approximation/</guid>
-      <description>&lt;!-- raw HTML omitted --&gt;
-&lt;h2 id=&#34;inference&#34;&gt;Inference&lt;/h2&gt;
+      <description>&lt;h2 id=&#34;inference&#34;&gt;Inference&lt;/h2&gt;
 &lt;p&gt;In the probabilistic approach to machine learning, all unknown quantities—predictions about the future, hidden states of a system, or parameters of a model—are treated as random variables, and endowed with probability distributions. The process of inference corresponds to computing the posterior distribution over these quantities, conditioning on whatever data is available. Given that the posterior is a probability distribution, we can draw samples from it. The samples in this case are parameter values. The Bayesian formalism treats parameter distributions as the degrees of relative plausibility, i.e., if this parameter is chosen, how likely is the data to have arisen? We use Bayes&amp;rsquo; rule for this process of inference. Let $h$ represent the uknown variables and $D$ the known variables, i.e., the data. Given a likelihood $p(D|h)$ and a prior $p(h)$, we can compute the posterior $p(h|D)$ using Bayes&amp;rsquo; rule:&lt;/p&gt;</description>
     </item>
     <item>

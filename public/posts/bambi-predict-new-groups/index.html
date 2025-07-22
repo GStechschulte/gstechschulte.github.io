@@ -7,8 +7,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Predict New Groups with Hierarchical Models in Bambi | Gabe&#39;s Gulch</title>
 <meta name="keywords" content="">
-<meta name="description" content="
-Predict New Groups
+<meta name="description" content="Predict New Groups
 In Bambi, it is possible to perform predictions on new, unseen, groups of data that were not in the observed data used to fit the model with the argument sample_new_groups in the model.predict() method. This is useful in the context of hierarchical modeling, where groups are assumed to be a sample from a larger group.
 This blog post is a copy of the zero inflated models documentation I wrote for Bambi. The original post can be found here.">
 <meta name="author" content="Gabriel Stechschulte">
@@ -164,8 +163,7 @@ This blog post is a copy of the zero inflated models documentation I wrote for B
 
 </div>
   </header> 
-  <div class="post-content"><!-- raw HTML omitted -->
-<h1 id="predict-new-groups">Predict New Groups<a hidden class="anchor" aria-hidden="true" href="#predict-new-groups">#</a></h1>
+  <div class="post-content"><h1 id="predict-new-groups">Predict New Groups<a hidden class="anchor" aria-hidden="true" href="#predict-new-groups">#</a></h1>
 <p>In Bambi, it is possible to perform predictions on new, unseen, groups of data that were not in the observed data used to fit the model with the argument <code>sample_new_groups</code> in the <code>model.predict()</code> method. This is useful in the context of hierarchical modeling, where groups are assumed to be a sample from a larger group.</p>
 <p>This blog post is a copy of the zero inflated models documentation I wrote for <a href="https://bambinos.github.io/bambi/">Bambi</a>. The original post can be found <a href="https://bambinos.github.io/bambi/notebooks/predict_new_groups.html">here</a>.</p>
 <p>Below, it is first described how predictions at multiple levels and for unseen groups are possible with hierarchical models. Then, it is described how this is performed in Bambi. Lastly, a hierarchical model is developed to show how to use the <code>sample_new_groups</code> argument in the <code>model.predict()</code> method, and within the <code>interpret</code> sub-package. For users coming from <code>brms</code> in R, this is equivalent to the <code>sample_new_levels</code> argument.</p>

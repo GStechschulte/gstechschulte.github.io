@@ -7,8 +7,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Alternative Samplers to NUTS in Bambi | Gabe&#39;s Gulch</title>
 <meta name="keywords" content="">
-<meta name="description" content="
-Alternative sampling backends
+<meta name="description" content="Alternative sampling backends
 This blog post is a copy of the alternative samplers documentation I wrote for Bambi. The original post can be found here.
 In Bambi, the sampler used is automatically selected given the type of variables used in the model. For inference, Bambi supports both MCMC and variational inference. By default, Bambi uses PyMC&rsquo;s implementation of the adaptive Hamiltonian Monte Carlo (HMC) algorithm for sampling. Also known as the No-U-Turn Sampler (NUTS). This sampler is a good choice for many models. However, it is not the only sampling method, nor is PyMC the only library implementing NUTS.">
 <meta name="author" content="Gabriel Stechschulte">
@@ -164,8 +163,7 @@ In Bambi, the sampler used is automatically selected given the type of variables
 
 </div>
   </header> 
-  <div class="post-content"><!-- raw HTML omitted -->
-<h1 id="alternative-sampling-backends">Alternative sampling backends<a hidden class="anchor" aria-hidden="true" href="#alternative-sampling-backends">#</a></h1>
+  <div class="post-content"><h1 id="alternative-sampling-backends">Alternative sampling backends<a hidden class="anchor" aria-hidden="true" href="#alternative-sampling-backends">#</a></h1>
 <p>This blog post is a copy of the alternative samplers documentation I wrote for <a href="https://bambinos.github.io/bambi/">Bambi</a>. The original post can be found <a href="https://bambinos.github.io/bambi/notebooks/">here</a>.</p>
 <p>In Bambi, the sampler used is automatically selected given the type of variables used in the model. For inference, Bambi supports both MCMC and variational inference. By default, Bambi uses PyMC&rsquo;s implementation of the adaptive Hamiltonian Monte Carlo (HMC) algorithm for sampling. Also known as the No-U-Turn Sampler (NUTS). This sampler is a good choice for many models. However, it is not the only sampling method, nor is PyMC the only library implementing NUTS.</p>
 <p>To this extent, Bambi supports multiple backends for MCMC sampling such as NumPyro and Blackjax. This notebook will cover how to use such alternatives in Bambi.</p>

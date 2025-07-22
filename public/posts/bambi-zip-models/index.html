@@ -7,8 +7,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Zero Inflated Models in Bambi | Gabe&#39;s Gulch</title>
 <meta name="keywords" content="">
-<meta name="description" content="
-#| code-fold: true
+<meta name="description" content="#| code-fold: true
 import arviz as az
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
@@ -24,7 +23,8 @@ warnings.simplefilter(action=&#39;ignore&#39;, category=FutureWarning)
 WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions.
 
 Zero inflated models
-This blog post is a copy of the zero inflated models documentation I wrote for Bambi. The original post can be found here.">
+This blog post is a copy of the zero inflated models documentation I wrote for Bambi. The original post can be found here.
+In this notebook, we will describe zero inflated outcomes and why the data generating process behind these outcomes requires a special class of generalized linear models: zero-inflated Poisson (ZIP) and hurdle Poisson. Subsequently, we will describe and implement each model using a set of zero-inflated data from ecology. Along the way, we will also use the interpret sub-package to interpret the predictions and parameters of the models.">
 <meta name="author" content="Gabriel Stechschulte">
 <link rel="canonical" href="http://localhost:1313/posts/bambi-zip-models/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
@@ -178,8 +178,7 @@ This blog post is a copy of the zero inflated models documentation I wrote for B
 
 </div>
   </header> 
-  <div class="post-content"><!-- raw HTML omitted -->
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#| code-fold: true</span>
+  <div class="post-content"><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#| code-fold: true</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> arviz <span style="color:#66d9ef">as</span> az
 </span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> matplotlib.lines <span style="color:#f92672">import</span> Line2D

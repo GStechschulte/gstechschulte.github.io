@@ -7,8 +7,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Advanced Interpret Usage in Bambi | Gabe&#39;s Gulch</title>
 <meta name="keywords" content="">
-<meta name="description" content="
-Interpret Advanced Usage
+<meta name="description" content="Interpret Advanced Usage
 The interpret module is inspired by the R package marginaleffects and ports the core functionality of {marginaleffects} to Bambi. To close the gap of non-supported functionality in Bambi, interpret now provides a set of helper functions to aid the user in more advanced and complex analysis not covered within the comparisons, predictions, and slopes functions.
 These helper functions are data_grid and select_draws. The data_grid can be used to create a pairwise grid of data points for the user to pass to model.predict. Subsequently, select_draws is used to select the draws from the posterior (or posterior predictive) group of the InferenceData object returned by the predict method that correspond to the data points that &ldquo;produced&rdquo; that draw.">
 <meta name="author" content="Gabriel Stechschulte">
@@ -164,8 +163,7 @@ These helper functions are data_grid and select_draws. The data_grid can be used
 
 </div>
   </header> 
-  <div class="post-content"><!-- raw HTML omitted -->
-<h1 id="interpret-advanced-usage">Interpret Advanced Usage<a hidden class="anchor" aria-hidden="true" href="#interpret-advanced-usage">#</a></h1>
+  <div class="post-content"><h1 id="interpret-advanced-usage">Interpret Advanced Usage<a hidden class="anchor" aria-hidden="true" href="#interpret-advanced-usage">#</a></h1>
 <p>The <code>interpret</code> module is inspired by the R package <a href="https://marginaleffects.com">marginaleffects</a> and ports the core functionality of {marginaleffects} to Bambi. To close the gap of non-supported functionality in Bambi, <code>interpret</code> now provides a set of helper functions to aid the user in more advanced and complex analysis not covered within the <code>comparisons</code>, <code>predictions</code>, and <code>slopes</code> functions.</p>
 <p>These helper functions are <code>data_grid</code> and <code>select_draws</code>. The <code>data_grid</code> can be used to create a pairwise grid of data points for the user to pass to <code>model.predict</code>. Subsequently, <code>select_draws</code> is used to select the draws from the posterior (or posterior predictive) group of the InferenceData object returned by the predict method that correspond to the data points that &ldquo;produced&rdquo; that draw.</p>
 <p>With access to the appropriately indexed draws, and data used to generate those draws, it enables for more complex analysis such as cross-comparisons and the choice of which model parameter to compute a quantity of interest for. Additionally, the user has more control over the data passed to <code>model.predict</code>. Below, it will be demonstrated how to use these helper functions. First, to reproduce the results from the standard <code>interpret</code> API, and then to compute cross-comparisons.</p>
