@@ -6,8 +6,17 @@
     <description>Recent content in Rust on Gabe&#39;s Gulch</description>
     <generator>Hugo -- 0.147.7</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 10 Dec 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 11 Jun 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/categories/rust/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[WIP] Fast Sequential Monte Carlo Sampler in Rust</title>
+      <link>http://localhost:1313/posts/2025-07-21-smc-rs/</link>
+      <pubDate>Wed, 11 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2025-07-21-smc-rs/</guid>
+      <description>&lt;p&gt;In this post, it is discussed how one can use Rust&amp;rsquo;s type system to implement a highly-performant Sequential Monte Carlo (SMC) algorithm. First, an overview of the SMC algorithm is given. Given this overview, I then discuss the &amp;ldquo;hot parts&amp;rdquo; of the algorithm, i.e., steps in the algorithm that hinder performance, followed by how one can use Rust&amp;rsquo;s type system to circumevent these bottlenecks.&lt;/p&gt;
+&lt;h2 id=&#34;sequential-monte-carlo&#34;&gt;Sequential Monte Carlo&lt;/h2&gt;
+&lt;p&gt;The core algrithm of SMC is simple:&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Data Oriented Deisgn - Columnar Data Structures</title>
       <link>http://localhost:1313/posts/2024-12-10-dod-columnar-storage/</link>

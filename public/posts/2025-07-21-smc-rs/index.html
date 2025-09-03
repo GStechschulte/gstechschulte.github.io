@@ -5,11 +5,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>Categories | Gabe&#39;s Gulch</title>
+<title>[WIP] Fast Sequential Monte Carlo Sampler in Rust | Gabe&#39;s Gulch</title>
 <meta name="keywords" content="">
-<meta name="description" content="">
-<meta name="author" content="">
-<link rel="canonical" href="http://localhost:1313/categories/">
+<meta name="description" content="In this post, it is discussed how one can use Rust&rsquo;s type system to implement a highly-performant Sequential Monte Carlo (SMC) algorithm. First, an overview of the SMC algorithm is given. Given this overview, I then discuss the &ldquo;hot parts&rdquo; of the algorithm, i.e., steps in the algorithm that hinder performance, followed by how one can use Rust&rsquo;s type system to circumevent these bottlenecks.
+Sequential Monte Carlo
+The core algrithm of SMC is simple:">
+<meta name="author" content="Gabriel Stechschulte">
+<link rel="canonical" href="http://localhost:1313/posts/2025-07-21-smc-rs/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
@@ -18,8 +20,7 @@
 <link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/categories/index.xml">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/categories/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/2025-07-21-smc-rs/">
 <noscript>
     <style>
         #theme-toggle,
@@ -92,7 +93,7 @@
 
 </head>
 
-<body class="list" id="top">
+<body class="" id="top">
 <script>
     if (localStorage.getItem("pref-theme") === "dark") {
         document.body.classList.add('dark');
@@ -139,7 +140,7 @@
             </li>
             <li>
                 <a href="http://localhost:1313/categories/" title="categories">
-                    <span class="active">categories</span>
+                    <span>categories</span>
                 </a>
             </li>
             <li>
@@ -151,45 +152,73 @@
     </nav>
 </header>
 <main class="main">
-<header class="page-header">
-    <h1>Categories</h1>
-</header>
 
-<ul class="terms-tags">
-    <li>
-        <a href="http://localhost:1313/categories/data-engineering/">data-engineering <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="http://localhost:1313/categories/database-systems/">database-systems <sup><strong><sup>4</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="http://localhost:1313/categories/gsoc/">gsoc <sup><strong><sup>3</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="http://localhost:1313/categories/jax/">jax <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="http://localhost:1313/categories/misc/">misc <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="http://localhost:1313/categories/open-source/">open-source <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="http://localhost:1313/categories/optimization/">optimization <sup><strong><sup>3</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="http://localhost:1313/categories/probabilistic-programming/">probabilistic-programming <sup><strong><sup>16</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="http://localhost:1313/categories/ramblings/">ramblings <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="http://localhost:1313/categories/reflection/">reflection <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="http://localhost:1313/categories/rust/">rust <sup><strong><sup>5</sup></strong></sup> </a>
-    </li>
-</ul>
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      [WIP] Fast Sequential Monte Carlo Sampler in Rust
+      <span class="entry-hint" title="Draft">
+        <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" fill="currentColor">
+          <path
+            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+        </svg>
+      </span>
+    </h1>
+    <div class="post-meta"><span title='2025-06-11 00:00:00 +0000 UTC'>June 11, 2025</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#sequential-monte-carlo" aria-label="Sequential Monte Carlo">Sequential Monte Carlo</a></li>
+                <li>
+                    <a href="#the-rusty-bits" aria-label="The Rusty bits">The Rusty bits</a><ul>
+                        
+                <li>
+                    <a href="#copy-on-write" aria-label="Copy on write">Copy on write</a></li></ul>
+                </li>
+                <li>
+                    <a href="#summary" aria-label="Summary">Summary</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>In this post, it is discussed how one can use Rust&rsquo;s type system to implement a highly-performant Sequential Monte Carlo (SMC) algorithm. First, an overview of the SMC algorithm is given. Given this overview, I then discuss the &ldquo;hot parts&rdquo; of the algorithm, i.e., steps in the algorithm that hinder performance, followed by how one can use Rust&rsquo;s type system to circumevent these bottlenecks.</p>
+<h2 id="sequential-monte-carlo">Sequential Monte Carlo<a hidden class="anchor" aria-hidden="true" href="#sequential-monte-carlo">#</a></h2>
+<p>The core algrithm of SMC is simple:</p>
+<ol>
+<li>Update</li>
+<li>Weight</li>
+<li>Resample</li>
+</ol>
+<h2 id="the-rusty-bits">The Rusty bits<a hidden class="anchor" aria-hidden="true" href="#the-rusty-bits">#</a></h2>
+<p>It was shown that the resampling step is very important as this leads to a population of particles that is more representative of the posterior distribution. The most common resampling method is <em>systematic resampling</em>. A subtle part of this method is that we are resampling with replacement. Thus, if we have five particles $[P_1, P_2, P_3, P_4, P_5]$ where the subscript indicates Particle 1, Particle 2, etc., and <strong>not</strong> the index. After resampling, we may have selected the following ancestors $[P_2, P_2, P_3, P_4, P_4]$. Particle 2 and 4 were sampled twice where Particle 3 was sampled once, and Particles 1 and 5 were not selected for further updating. As sampling is performed with replacement, we need to copy Particle 2 and 4 two times because in the next iteration, these particles will be updated independent of each other.</p>
+<p>Depending on what these particles represent, this copy may be expensive due to the data type being copied. For example, if the core data structure representing a particle is a <code>struct</code>, then the entire structure would need copied.</p>
+<h3 id="copy-on-write">Copy on write<a hidden class="anchor" aria-hidden="true" href="#copy-on-write">#</a></h3>
+<p>When resampling, we could defer copying the particle until we know that it will be mutated. We can implement this memory management strategy using the Clone-on-Write (COW) technique. Specifically, we can use a smart pointer such as <code>Rc</code> or <code>Arc</code> to enable shared ownership of particles.</p>
+<p>to implement the COW technique.</p>
+<p>Rust, COW can be implemented when using a smart pointer such as <code>Rc</code> or <code>Arc</code>.</p>
+<p>to allow shared ownership of data while minimizing unncessary copying.</p>
+<p>If the count is 1, it returns a mutable reference to the inner data without allocating.
+If the count is &gt; 1 (meaning it&rsquo;s shared), it will clone the inner data, create a new Rc with the clone, and return a mutable reference to the new data. This is called &ldquo;clone-on-write&rdquo; and is exactly what you need after a resampling step.</p>
+<h2 id="summary">Summary<a hidden class="anchor" aria-hidden="true" href="#summary">#</a></h2>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
     </main>
     
 <footer class="footer">
@@ -260,6 +289,53 @@
         }
     })
 
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
 </script>
 </body>
 

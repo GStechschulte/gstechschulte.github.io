@@ -159,6 +159,46 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">[WIP] It&#39;s About Making Decisions
+      <span class="entry-hint" title="Draft">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
+          <path
+            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+        </svg>
+      </span>
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Concepts:
+Data science is largely about making decisions. Disappointed with the Bayesian community. How PPLs can be a powerful tool for sequential decision making under uncertainty. What is sequential decision making? Energy modeling demo (part 1). For companies applying data science and machine learning, it is largely about making decisions—how much inventory should we stock?, how much resources should we allocate?, what parameters should be used for this manufacturing machine?—To arrive at such a decision, analyzing historical data and developing some sort of model is often required. This is the easy part. How this model and analysis is used in downstream systems to make optimal decisions is the hard part. The most impactful data scientists at a company are developing and deploying methods and systems to make decisions, not to develop the next Deep XG Random Effects Boosted Neural Tree Networks™ that achieves a super “good” evaluation metric. This post will be the first in a series of posts on sequential decision making under uncertainty. We will use probabilistic programming languages (PPLs) to model uncertainty and then embed these models in a sequential decision making framework to make optimal decisions.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-08-08 00:00:00 +0000 UTC'>August 8, 2025</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to [WIP] It&#39;s About Making Decisions" href="http://localhost:1313/posts/2025-08-08-its-about-decisions/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">[WIP] Fast Sequential Monte Carlo Sampler in Rust
+      <span class="entry-hint" title="Draft">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
+          <path
+            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+        </svg>
+      </span>
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>In this post, it is discussed how one can use Rust’s type system to implement a highly-performant Sequential Monte Carlo (SMC) algorithm. First, an overview of the SMC algorithm is given. Given this overview, I then discuss the “hot parts” of the algorithm, i.e., steps in the algorithm that hinder performance, followed by how one can use Rust’s type system to circumevent these bottlenecks.
+Sequential Monte Carlo The core algrithm of SMC is simple:
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-06-11 00:00:00 +0000 UTC'>June 11, 2025</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to [WIP] Fast Sequential Monte Carlo Sampler in Rust" href="http://localhost:1313/posts/2025-07-21-smc-rs/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Hierarchical Regression With Missing Data
     </h2>
   </header>
@@ -265,33 +305,6 @@ In this notebook, we will describe zero inflated outcomes and why the data gener
   </div>
   <footer class="entry-footer"><span title='2023-09-29 00:00:00 +0000 UTC'>September 29, 2023</span>&nbsp;·&nbsp;15 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
   <a class="entry-link" aria-label="post link to Zero Inflated Models in Bambi" href="http://localhost:1313/posts/bambi-zip-models/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Google Summer of Code - Average Predictive Slopes
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>It is currently the beginning of week ten of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the basic functionality of the plot_slopes. Subsequently, week 11 was reserved to further develop the plot_slopes function, and to write tests and a notebook for the documentation, respectively.
-However, at the beginning of week ten, I have a PR open with the majority of the functionality that marginaleffects has for slopes. In addition, I also exposed the slopes function, added tests, and have a PR open for the documentation.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-08-01 00:00:00 +0000 UTC'>August 1, 2023</span>&nbsp;·&nbsp;18 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Google Summer of Code - Average Predictive Slopes" href="http://localhost:1313/posts/bambi-slopes/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Google Summer of Code - Average Predictive Comparisons
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>It is currently the end of week five of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the core functionality of the plot_comparisons. Subsequently, week six and seven were to be spent further developing the plot_comparisons function, and writing tests and a demo notebook for the documentation, respectively. However, at the end of week five, I have a PR open with the majority of the functionality that marginaleffects has. In addition, I also exposed the comparisons function, added tests (which can and will be improved), and have started on documentation.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-06-30 00:00:00 +0000 UTC'>June 30, 2023</span>&nbsp;·&nbsp;16 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Google Summer of Code - Average Predictive Comparisons" href="http://localhost:1313/posts/bambi-comparisons/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

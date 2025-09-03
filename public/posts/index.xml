@@ -6,15 +6,46 @@
     <description>Recent content in Posts on Gabe&#39;s Gulch</description>
     <generator>Hugo -- 0.147.7</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 11 Jun 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 08 Aug 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[WIP] It&#39;s About Making Decisions</title>
+      <link>http://localhost:1313/posts/2025-08-08-its-about-decisions/</link>
+      <pubDate>Fri, 08 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2025-08-08-its-about-decisions/</guid>
+      <description>&lt;p&gt;Concepts:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Data science is largely about making decisions.&lt;/li&gt;
+&lt;li&gt;Disappointed with the Bayesian community.&lt;/li&gt;
+&lt;li&gt;How PPLs can be a powerful tool for sequential decision making under uncertainty.&lt;/li&gt;
+&lt;li&gt;What is sequential decision making?&lt;/li&gt;
+&lt;li&gt;Energy modeling demo (part 1).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;For companies applying data science and machine learning, it is largely about making decisions—how much inventory should we stock?, how much resources should we allocate?, what parameters should be used for this manufacturing machine?—To arrive at such a decision, analyzing historical data and developing some sort of model is often required. This is the easy part. How this model and analysis is used in downstream systems to make optimal decisions is the hard part. The most impactful data scientists at a company are developing and deploying methods and systems to make decisions, not to develop the next Deep XG Random Effects Boosted Neural Tree Networks™ that achieves a super &amp;ldquo;good&amp;rdquo; evaluation metric. This post will be the first in a series of posts on sequential decision making under uncertainty. We will use probabilistic programming languages (PPLs) to model uncertainty and then embed these models in a sequential decision making framework to make optimal decisions.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Alternative View of &#39;AI&#39;</title>
+      <link>http://localhost:1313/posts/2025-09-02-future-of-ai/</link>
+      <pubDate>Fri, 08 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2025-09-02-future-of-ai/</guid>
+      <description>&lt;p&gt;Nowadays, AI is primarily associated with LLMs, where the goal is to develop autonomous agents with human-level intelligence (whatever that means). I have always found the goal of creating something with &amp;ldquo;intelligence&amp;rdquo; boring for some reason. Maybe it is because the objective is too diffuse—create something at least as smart as humans and hope it figures out $x$. Regardless, LLM-based agents are useful tools and I use them as such, but these systems are a narrow view of intelligence.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>[WIP] Fast Sequential Monte Carlo Sampler in Rust</title>
+      <link>http://localhost:1313/posts/2025-07-21-smc-rs/</link>
+      <pubDate>Wed, 11 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2025-07-21-smc-rs/</guid>
+      <description>&lt;p&gt;In this post, it is discussed how one can use Rust&amp;rsquo;s type system to implement a highly-performant Sequential Monte Carlo (SMC) algorithm. First, an overview of the SMC algorithm is given. Given this overview, I then discuss the &amp;ldquo;hot parts&amp;rdquo; of the algorithm, i.e., steps in the algorithm that hinder performance, followed by how one can use Rust&amp;rsquo;s type system to circumevent these bottlenecks.&lt;/p&gt;
+&lt;h2 id=&#34;sequential-monte-carlo&#34;&gt;Sequential Monte Carlo&lt;/h2&gt;
+&lt;p&gt;The core algrithm of SMC is simple:&lt;/p&gt;</description>
+    </item>
     <item>
       <title>[WIP] Gymnastics in Constrained Optimization</title>
       <link>http://localhost:1313/posts/2025-06-11-optimization-gymnastics/</link>
       <pubDate>Wed, 11 Jun 2025 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/2025-06-11-optimization-gymnastics/</guid>
       <description>&lt;h2 id=&#34;constrained-optimization&#34;&gt;Constrained optimization&lt;/h2&gt;
-&lt;p&gt;In unconstrained optimization problems, each design variable can take on any real number. However, in most industrial settings, we need to perform constrained optimization which forces design points to satisfy certain conditions. A theme in the mathematical optimization field is to transform the constrained problem into an unconstrained one. This transformation process requires a leap of faith, and often some gymnastics in the process. This blog reviews some of the popular approaches for transforming a constrained problem into problems without constraints and attempts to connect the underlying concepts these approaches utilize.&lt;/p&gt;</description>
+&lt;p&gt;In unconstrained optimization problems, each design variable can take on any real number. However, in most applied and industrial settings, we need to perform constrained optimization which forces design points to satisfy certain conditions. A theme in the mathematical optimization field is to transform the constrained problem into an unconstrained one. This transformation process often requires some gymnastics. This blog reviews some of the popular approaches for transforming a constrained problem into problems without constraints and attempts to connect the underlying concepts these approaches utilize. In general there are two approaches to addressing constraints:&lt;/p&gt;</description>
     </item>
     <item>
       <title>Reflection - Atlas Shrugged</title>

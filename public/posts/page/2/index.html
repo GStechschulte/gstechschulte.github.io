@@ -159,6 +159,61 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Daily Rust - Memory Layout of Different Types
+      <span class="entry-hint" title="Draft">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
+          <path
+            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+        </svg>
+      </span>
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p></p>
+  </div>
+  <footer class="entry-footer"><span title='2024-11-28 00:00:00 +0000 UTC'>November 28, 2024</span>&nbsp;·&nbsp;0 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Daily Rust - Memory Layout of Different Types" href="http://localhost:1313/posts/2024-11-28-daily-rust-types/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Daily Rust - Using Trait Objects That Allow for Different Types
+      <span class="entry-hint" title="Draft">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
+          <path
+            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+        </svg>
+      </span>
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Trait objects…
+Associated types..
+You cannot use associated types with trait objects dyn Trait because:
+The compiler needs to know the exact signatures of methods at compile time to create the vtable for dynamic dispatch. Different implementations may have different function signatures involving the associated types. When using dyn Trait, you must specify the associated types because the vtables for different associated type implementations are not compatible. For example, dyn Y&lt;Y1 = String&gt; and dyn Y&lt;Y1 = u32&gt; have different vtables and cannot be used interchangeably. pub trait Iterator { type Item; fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;; ... } type Item; is an associated type. Each type that implements Iterator must specify what type of item it produces. Here’s what it looks like to implement Iterator for a type
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-11-01 00:00:00 +0000 UTC'>November 1, 2024</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Daily Rust - Using Trait Objects That Allow for Different Types" href="http://localhost:1313/posts/2024-11-01-daily-rust-trait-objects/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Database Systems - Series Overview
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>A blog series consisting of my notes on the Carnegie Mellon University (CMU) Introduction and Advanced Database Systems Lectures by Andy Pavlo and Jignesh Patel. The primary goal of this series is to: (1) consolidate my notes, and (2) act as a reference guide for my future self. Perhaps some readers may extract some value, but I would highly recommend watching the lectures for yourself.
+The series will cover:
+Database storage Indexes Join algorithms Query execution and processing Query optimization Query scheduling and coordination Concurrency control OLAP database management system components The series will primarily focus on the components of OLAP database management systems (DBMS). A recent trend of the last decade is the breakout of OLAP DBMS components into standalone services and libraries for:
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-10-22 00:00:00 +0000 UTC'>October 22, 2024</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Database Systems - Series Overview" href="http://localhost:1313/posts/db-systems-blog-series-overview/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Hierarchical Regression With Missing Data
     </h2>
   </header>
@@ -251,47 +306,6 @@ This blog post is a copy of the zero inflated models documentation I wrote for B
   </div>
   <footer class="entry-footer"><span title='2023-10-10 00:00:00 +0000 UTC'>October 10, 2023</span>&nbsp;·&nbsp;11 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
   <a class="entry-link" aria-label="post link to Predict New Groups with Hierarchical Models in Bambi" href="http://localhost:1313/posts/bambi-predict-new-groups/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Ordinal Models in Bambi
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>#| code-fold: true import arviz as az import matplotlib.pyplot as plt from matplotlib.lines import Line2D import numpy as np import pandas as pd import warnings import bambi as bmb warnings.filterwarnings(&#34;ignore&#34;, category=FutureWarning) WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions. Ordinal Regression This blog post is a copy of the ordinal models documentation I wrote for Bambi. The original post can be found here.
-In some scenarios, the response variable is discrete, like a count, and ordered. Common examples of such data come from questionnaires where the respondent is asked to rate a product, service, or experience on a scale. This scale is often referred to as a Likert scale. For example, a five-level Likert scale could be:
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-09-29 00:00:00 +0000 UTC'>September 29, 2023</span>&nbsp;·&nbsp;17 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Ordinal Models in Bambi" href="http://localhost:1313/posts/bambi-ordinal-models/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Zero Inflated Models in Bambi
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>#| code-fold: true import arviz as az import matplotlib.pyplot as plt from matplotlib.lines import Line2D import numpy as np import pandas as pd import scipy.stats as stats import seaborn as sns import warnings import bambi as bmb warnings.simplefilter(action=&#39;ignore&#39;, category=FutureWarning) WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions. Zero inflated models This blog post is a copy of the zero inflated models documentation I wrote for Bambi. The original post can be found here.
-In this notebook, we will describe zero inflated outcomes and why the data generating process behind these outcomes requires a special class of generalized linear models: zero-inflated Poisson (ZIP) and hurdle Poisson. Subsequently, we will describe and implement each model using a set of zero-inflated data from ecology. Along the way, we will also use the interpret sub-package to interpret the predictions and parameters of the models.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-09-29 00:00:00 +0000 UTC'>September 29, 2023</span>&nbsp;·&nbsp;15 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Zero Inflated Models in Bambi" href="http://localhost:1313/posts/bambi-zip-models/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Google Summer of Code - Final Report
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p> My project “Better tools to interpret complex Bambi regression models” was completed under the organization of NumFOCUS, and mentors Tomás Capretto and Osvaldo Martin. Before I describe the project, objectives, and work completed, I would like to thank my mentors Tomás and Osvaldo for their precious time and support throughout the summer. They were always available and timely in communicating over Slack and GitHub, and provided valuable feedback during code reviews. Additionally, I would like to thank NumFOCUS and the Google Summer of Code (GSoC) program for providing the opportunity to work on such an open source project over the summer. It has been an invaluable experience, and I look forward to contributing to open source projects in the future.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-08-10 18:43:46 +0200 CEST'>August 10, 2023</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Google Summer of Code - Final Report" href="http://localhost:1313/posts/gsoc-final-report/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
