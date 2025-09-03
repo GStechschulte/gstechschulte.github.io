@@ -1,11 +1,11 @@
 +++
 title = "Alternative View of AI"
-date = 2025-08-08
+date = 2025-09-02
 author = "Gabriel Stechschulte"
 categories = ["ramblings"]
 ShowToc = true
 TocOpen = false  # Optional - keeps TOC open by default
-draft = true
+draft = false
 math = true
 +++
 
