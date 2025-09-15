@@ -4,10 +4,24 @@
     <title>Posts on Gabe&#39;s Gulch</title>
     <link>http://localhost:1313/posts/</link>
     <description>Recent content in Posts on Gabe&#39;s Gulch</description>
-    <generator>Hugo -- 0.147.7</generator>
+    <generator>Hugo -- 0.149.1</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 08 Aug 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 08 Sep 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Reproducing Uber&#39;s Marketplace Optimization</title>
+      <link>http://localhost:1313/posts/2025-09-08-marketplace-optimization/</link>
+      <pubDate>Mon, 08 Sep 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2025-09-08-marketplace-optimization/</guid>
+      <description>&lt;p&gt;Uber allocates money across different regions and programs to incentivize riders and drivers to use Uber products. This incentive structure ultimately influences the market. This leads to the natural question of &amp;ldquo;how much to allocate to each city and which program&amp;rdquo; to maximize business objectives? Uber has a finite amount of money that must be allocated accordingly. Given a total budget of say, $1,000,000, how should it be divied up amongst the cities and programs?&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Alternative View of AI</title>
+      <link>http://localhost:1313/posts/2025-09-02-future-of-ai/</link>
+      <pubDate>Tue, 02 Sep 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2025-09-02-future-of-ai/</guid>
+      <description>&lt;p&gt;Nowadays, AI is primarily associated with LLMs, where the goal is to develop autonomous agents with human-level intelligence (whatever that means). I have always found the goal of creating something with &amp;ldquo;intelligence&amp;rdquo; boring for some reason. Maybe it is because the objective is too diffuse—create something at least as smart as humans and hope it figures out &lt;code&gt;&amp;lt;insert your problem here&amp;gt;&lt;/code&gt;. Regardless, these LLM-based agents are useful tools and should be used, but these systems are a narrow view of intelligence.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>[WIP] It&#39;s About Making Decisions</title>
       <link>http://localhost:1313/posts/2025-08-08-its-about-decisions/</link>
@@ -22,13 +36,6 @@
 &lt;li&gt;Energy modeling demo (part 1).&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;For companies applying data science and machine learning, it is largely about making decisions—how much inventory should we stock?, how much resources should we allocate?, what parameters should be used for this manufacturing machine?—To arrive at such a decision, analyzing historical data and developing some sort of model is often required. This is the easy part. How this model and analysis is used in downstream systems to make optimal decisions is the hard part. The most impactful data scientists at a company are developing and deploying methods and systems to make decisions, not to develop the next Deep XG Random Effects Boosted Neural Tree Networks™ that achieves a super &amp;ldquo;good&amp;rdquo; evaluation metric. This post will be the first in a series of posts on sequential decision making under uncertainty. We will use probabilistic programming languages (PPLs) to model uncertainty and then embed these models in a sequential decision making framework to make optimal decisions.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Alternative View of &#39;AI&#39;</title>
-      <link>http://localhost:1313/posts/2025-09-02-future-of-ai/</link>
-      <pubDate>Fri, 08 Aug 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/2025-09-02-future-of-ai/</guid>
-      <description>&lt;p&gt;Nowadays, AI is primarily associated with LLMs, where the goal is to develop autonomous agents with human-level intelligence (whatever that means). I have always found the goal of creating something with &amp;ldquo;intelligence&amp;rdquo; boring for some reason. Maybe it is because the objective is too diffuse—create something at least as smart as humans and hope it figures out $x$. Regardless, LLM-based agents are useful tools and I use them as such, but these systems are a narrow view of intelligence.&lt;/p&gt;</description>
     </item>
     <item>
       <title>[WIP] Fast Sequential Monte Carlo Sampler in Rust</title>

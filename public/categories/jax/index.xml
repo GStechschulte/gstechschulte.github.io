@@ -4,10 +4,17 @@
     <title>Jax on Gabe&#39;s Gulch</title>
     <link>http://localhost:1313/categories/jax/</link>
     <description>Recent content in Jax on Gabe&#39;s Gulch</description>
-    <generator>Hugo -- 0.147.7</generator>
+    <generator>Hugo -- 0.149.1</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 08 Aug 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 08 Sep 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/categories/jax/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Reproducing Uber&#39;s Marketplace Optimization</title>
+      <link>http://localhost:1313/posts/2025-09-08-marketplace-optimization/</link>
+      <pubDate>Mon, 08 Sep 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2025-09-08-marketplace-optimization/</guid>
+      <description>&lt;p&gt;Uber allocates money across different regions and programs to incentivize riders and drivers to use Uber products. This incentive structure ultimately influences the market. This leads to the natural question of &amp;ldquo;how much to allocate to each city and which program&amp;rdquo; to maximize business objectives? Uber has a finite amount of money that must be allocated accordingly. Given a total budget of say, $1,000,000, how should it be divied up amongst the cities and programs?&lt;/p&gt;</description>
+    </item>
     <item>
       <title>[WIP] It&#39;s About Making Decisions</title>
       <link>http://localhost:1313/posts/2025-08-08-its-about-decisions/</link>

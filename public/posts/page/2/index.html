@@ -142,11 +142,6 @@
                     <span>categories</span>
                 </a>
             </li>
-            <li>
-                <a href="http://localhost:1313/tags/" title="tags">
-                    <span>tags</span>
-                </a>
-            </li>
         </ul>
     </nav>
 </header>
@@ -156,6 +151,20 @@
     Posts
   </h1>
 </header>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Creating C Callbacks with Numba and Calling Them From Rust
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>When interfacing with libraries written in C/C&#43;&#43; from Rust, it may require writing native callbacks to provide functionality or logic to the library. A C Callback is a function pointer that is passed as an argument to another function, allowing that function to “call back” and execute the passed function at runtime.
+When interfacing with Python from Rust, there may be scenarios where the Rust code also needs to be able to call a Python function. Rust’s foreign function interface (FFI) and pyo3 crate in fact lets you do this. However, calling Python from Rust involves invoking the Python interpreter, which can reduce performance. If one of the goals for using Rust is to improve the performance of your application or library, this overhead might be undesirable. To avoid invoking the Python interpreter, you can use Numba. Numba allows you to create a C callback, pass this function pointer to Rust, and perform the callback without incurring the overhead associated with Python.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-11-30 00:00:00 +0000 UTC'>November 30, 2024</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Creating C Callbacks with Numba and Calling Them From Rust" href="http://localhost:1313/posts/2024-11-30-c-callbacks/"></a>
+</article>
 
 <article class="post-entry"> 
   <header class="entry-header">
@@ -292,20 +301,6 @@ This blog post is a copy of the survival models documentation I wrote for Bambi.
   </div>
   <footer class="entry-footer"><span title='2023-10-25 00:00:00 +0000 UTC'>October 25, 2023</span>&nbsp;·&nbsp;20 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
   <a class="entry-link" aria-label="post link to Survival Models in Bambi" href="http://localhost:1313/posts/bambi-survival-models/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Predict New Groups with Hierarchical Models in Bambi
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Predict New Groups In Bambi, it is possible to perform predictions on new, unseen, groups of data that were not in the observed data used to fit the model with the argument sample_new_groups in the model.predict() method. This is useful in the context of hierarchical modeling, where groups are assumed to be a sample from a larger group.
-This blog post is a copy of the zero inflated models documentation I wrote for Bambi. The original post can be found here.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-10-10 00:00:00 +0000 UTC'>October 10, 2023</span>&nbsp;·&nbsp;11 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Predict New Groups with Hierarchical Models in Bambi" href="http://localhost:1313/posts/bambi-predict-new-groups/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
