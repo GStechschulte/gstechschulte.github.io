@@ -13,6 +13,8 @@ Uber allocates money across different regions and programs to incentivize riders
 
 Uber has developed an automated system for answering such a question. In this post, I will be reproducing the paper [Practical Marketplace Optimization at Uber Using Causally-Informed Machine Learning](https://arxiv.org/abs/2407.19078) in JAX on a simulated marketplace dataset. The main objective of this post is to: (1) develop a neural network that learns the association between budget allocations and marketplace outcomes, and (2) implement the Alternating Direction Method of Multipliers (ADMM) algorithm in the context of resource allocation problems using the neural network.
 
+The code contained in this post can be found in this [repo](https://github.com/GStechschulte/uber-admm?tab=readme-ov-file).
+
 ## Data simulation
 
 In order to better understand how the neural network is embedded into ADMM and how ADMM works, a simple marketplace dataset with three cities and one program for each city is simulated. To maintain some of the real-life characteristics of the data, non-linearity and interaction effects are introduced. This results in the following graphs
