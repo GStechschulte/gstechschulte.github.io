@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Stochastic Model Predictive Control | Gabe&#39;s Gulch</title>
+<meta name="keywords" content="">
+<meta name="description" content="Many applications of optimization and control are performed in a deterministic setting. That is, the quantities of the problem such as the state variables, control variables, and or parameters of a model are treated as fixed known values. This assumption may be reasonable in applications such as robotics, but in others such as resource allocation, we may need to incorporate the uncertainty of various quantities in order to compute the expectation of the objective.">
+<meta name="author" content="Gabriel Stechschulte">
+<link rel="canonical" href="http://localhost:1313/posts/2025-11-18-stochastic-mpc/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/2025-11-18-stochastic-mpc/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+    integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
+    crossorigin="anonymous"
+/>
+<script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"
+    integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8"
+    crossorigin="anonymous"
+></script>
+<script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+    crossorigin="anonymous"
+></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true },
+            ],
+            throwOnError: false,
+        });
+    });
+</script>
+
+
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/archives/" title="archives">
+                    <span>archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/" title="categories">
+                    <span>categories</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Stochastic Model Predictive Control
+    </h1>
+    <div class="post-meta"><span title='2025-11-18 00:00:00 +0000 UTC'>November 18, 2025</span>&nbsp;·&nbsp;11 min&nbsp;·&nbsp;Gabriel Stechschulte
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#model-predictive-control" aria-label="Model predictive control">Model predictive control</a></li>
+                <li>
+                    <a href="#problem-formulation" aria-label="Problem formulation">Problem formulation</a><ul>
+                        
+                <li>
+                    <a href="#sample-average-approximation" aria-label="Sample average approximation">Sample average approximation</a></li>
+                <li>
+                    <a href="#constraints" aria-label="Constraints">Constraints</a></li></ul>
+                </li>
+                <li>
+                    <a href="#implementation" aria-label="Implementation">Implementation</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>Many applications of optimization and control are performed in a deterministic setting. That is, the quantities of the problem such as the state variables, control variables, and or parameters of a model are treated as fixed known values. This assumption may be reasonable in applications such as robotics, but in others such as resource allocation, we may need to incorporate the uncertainty of various quantities in order to compute the <strong>expectation</strong> of the objective.</p>
+<p>For example, when performing battery arbitrage, the goal is to develop a system that uses a battery to buy energy from the grid when prices are low and sell back to the grid when prices are high. Electricity prices can fluctuate greatly due to supply and demand. Thus, our system needs to take into account the uncertainty of the electricity prices. Optimizing <strong>and</strong> taking uncertainty into account means that we seek an optimal solution that accounts for different outcomes of the data.</p>
+<p>For example, in the bottom subplot at 12:00, we face different price scenarios for the remainder of the day. Each price scenario can result in a differerent optimal decision (second to top plot) which impacts the reward (top plot) and consequently the battery state of charge (SoC).</p>
+<p><img loading="lazy" src="figures/mpc_trajectories.png" alt="stochastic-mpc"  />
+</p>
+<p>Stochastic optimization essentially boils down to putting expectations in front of things and or computing probabilities and then solving the optimization problem. Most basic stochastic optimization problems, like the one above, can be solved via strategies that either: compute expectations directly, or by methods that approximate them.</p>
+<p>In this post, we will develop a model predictive control (MPC) framework utilizing sampled approximations to solve the battery arbitrage problem described above. To simplify the problem setup, to generate the samples, a set of price paths will be sampled from the historical data and we will act like these samples are the price forecasts from the posterior predictive distribution of a Bayesian model.</p>
+<h2 id="model-predictive-control">Model predictive control<a hidden class="anchor" aria-hidden="true" href="#model-predictive-control">#</a></h2>
+<p>MPC is a flexible control framework that uses a model of a system to predict its future behavior and optimize control actions over a time horizon. At each time step, an MPC controller solves an optimization problem to find the best sequence of control actions that minimizes a cost function while satisfying system constraints. In MPC, only the first control action from the control trajectory is implemented, and the process is repeated at the next time step allowing the controller to adapt to new information.</p>
+<h2 id="problem-formulation">Problem formulation<a hidden class="anchor" aria-hidden="true" href="#problem-formulation">#</a></h2>
+<p>The objective is to develop a MPC controller that maximizes the <strong>expected profit</strong> by choosing how much energy to buy from or sell to the grid $e$ given the electricity price $p$ at each timestep $t$ over some horizon $T$.</p>
+<p>$$
+\begin{equation}
+\max_{u} \mathbb{E} \sum_{t=0}^T -p_t e_t
+\end{equation}
+$$</p>
+<p>The decision variables (controls) are subject to the following constraints</p>
+<p>$$
+\begin{align}
+e_t &amp;\leq \frac{1}{\eta} (R^{\max} - R_t) \\
+e_t &amp;\geq -\frac{1}{\eta} R_t
+\end{align}
+$$</p>
+<p>where $R$ is the battery SoC at each time step $t$. So far, the system is comprised of the following state vector $\mathbf{x}$ and control vector $\mathbf{u}$</p>
+<p>$$
+\begin{align}
+\mathbf{x} = (R_t, p_t) \\
+\mathbf{u} = (e_t)
+\end{align}
+$$</p>
+<p>The variables in the state vector evolve according to the following transition functions</p>
+<p>$$
+\begin{align}
+R_{t+1} = R_t + \eta x_t \\
+p_{t+1} = f(p_t)
+\end{align}
+$$</p>
+<p>where $f$ is a Bayesian model that forecasts the electricity price over the horizon $T$.</p>
+<h3 id="sample-average-approximation">Sample average approximation<a hidden class="anchor" aria-hidden="true" href="#sample-average-approximation">#</a></h3>
+<p>Our objective function (1) involves an expectation over uncertain price forecasts. Rather than computing the expectation analytically, we can use sample average approximation (SAA) by drawing $N$ samples from the posterior predictive distribution obtained from a Bayesian model. Let $c_n$ represent the $n$&lsquo;th sample from the posterior predictive distribution. The SAA of equation (1) becomes</p>
+<p>$$
+\begin{align}
+\min_{x, x_{n=1}^N} \frac{1}{N} \sum_{n=1}^N c_n^T  x_n
+\end{align}
+$$</p>
+<p>where $x_n \in \mathbb{R}^H$ is the control trajectory for price sample $n$ and $c_n \in \mathbb{R}^H$ is the price forecast trajectory for price sample $n$. Since the SAA problem is embeded into the MPC framework, this problem is solved at each timestep</p>
+<p>$$
+\begin{align}
+\min_{x, x_{n=1}^N} \frac{1}{N} \sum_{n=1}^N \sum_{h=0}^{H-1}  c_h^n  x_h^n
+\end{align}
+$$</p>
+<p>where $x_h^n$ is the $n$&lsquo;th control trajectory at the $h$&lsquo;th hour and $c_h^n$ is the $n$&lsquo;th price forecast at the $h$&lsquo;th hour. In practice (and shown in the implementation below), we will stack the control vector into $\bar{x}$ to obtain a single large LP. Then, when you take the dot product between $c$ and $x$, you effectively compute the <strong>expected profit</strong>.</p>
+<p>$$
+\begin{align}
+\min_{x} \bar{c}^T \bar{x} \\
+\text{s.t.} \space A_{ub} \bar{x} \leq b_{ub} \\
+A_{eq} \bar{x} = b_{eq} \\
+l \leq \bar{x} \leq u
+\end{align}
+$$</p>
+<h3 id="constraints">Constraints<a hidden class="anchor" aria-hidden="true" href="#constraints">#</a></h3>
+<p>Constraints are one of those things that are easy to state in words, but can be tricky when it comes to implementing them in code. The constraints of our problem quickly become complex as we are optimizing over scenarios (samples) and time (the control horizon). Here, we introduce and use triangular and block diagonal matrices to encode the constraints of our system.</p>
+<p>In our MPC problem we need to ensure the following at each timestep</p>
+<ol>
+<li>The battery SoC cannot exceed its minimum or maximum capacity.</li>
+<li>The amount of power bought from the grid cannot cause the battery SoC to go above its maximum capacity.</li>
+<li>The amount of power sold to the grid cannot cause the battery SoC to go below its minimum capacity.</li>
+<li>For each scenario (sample), the first decision (control) must be equal to each other.</li>
+</ol>
+<p>Recall the standard LP formulation</p>
+<p>$$
+\begin{align}
+\min_{x} c^Tx \\
+\text{s.t.} \space A_{ub} x \leq b_{ub} \\
+A_{eq} x = b_{eq} \\
+l \leq x \leq u
+\end{align}
+$$</p>
+<p>where $x$ is a control vector, $c$ is a coefficient vector, $A_{ub}$ encodes inequality constraints, $A_{eq}$ encodes equality constraints, and $\ell$ and $u$ encode lower and upper bounds (box constraints) on controls.</p>
+<p>Constraint (1) is the easiest. These are the box constraints $\alpha$ of $R_t$ and are traditionally passed to the SciPy <code>linprog</code> function as a list of tuples</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>bounds <span style="color:#f92672">=</span> [(<span style="color:#f92672">-</span>alpha, alpha) <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(n_vars)]
+</span></span></code></pre></div><p>Constraints (2) and (3) are more complex. We need to translate the decision variable constraints from above to matrix-form $A_{ub} x \leq b_{ub}$. First, lets imagine we only have one sample. Reformulate the constraint equations above to</p>
+<p>$$
+\begin{align}
+e_t &amp;\leq \frac{1}{\eta} (R^{\max} - R_t) &amp;\rightarrow \eta e_t \leq R^{max} - R_t \\
+e_t &amp;\geq -\frac{1}{\eta} R_t &amp;\rightarrow -\eta e_t \leq R_t
+\end{align}
+$$</p>
+<p>Notice how the left hand side terms $\eta$ can be expressed as a matrix of coefficients and the right hand side terms can be expressed in terms of a column vector.</p>
+<p>At each time step, we solve the LP for the next 24 hours subject to these &ldquo;upper&rdquo; and &ldquo;lower&rdquo; constraints on the decision variables. The optimizer evaluates the constraints via the dot product <code>A_ub @ x &lt;= b_ub</code>. To enforce the respective constraints on each decision variable $u_0, u_1, \ldots, u_N$ at each timestep we use a lower triangular matrix for each upper and lower constraint of shape <code>(24, 24)</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>upper_constraint <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>tri(H, H) <span style="color:#f92672">*</span> eta
+</span></span><span style="display:flex;"><span>lower_constraint <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>tri(H, H) <span style="color:#f92672">*</span> (<span style="color:#f92672">-</span>eta)
+</span></span></code></pre></div><p>which would give us the following upper constraint in matrix-form</p>
+<p>$$
+\begin{bmatrix}
+\eta &amp; 0 &amp; 0 &amp; \ldots &amp; 0 \\
+\eta &amp; \eta &amp; 0 &amp; \ldots &amp; 0 \\
+\eta &amp; \eta &amp; \eta &amp; \ldots &amp; 0 \\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+\eta &amp; \eta &amp; \eta &amp; \ldots &amp; \eta \\
+\end{bmatrix}
+\begin{bmatrix}
+x_0 \\
+x_1 \\
+x_2 \\
+\vdots \\
+x_{H-1} \\
+\end{bmatrix}
+\leq
+\begin{bmatrix}
+R^{max} - R_t \\
+R^{max} - R_t \\
+R^{max} - R_t \\
+\vdots \\
+R^{max} - R_t \\
+\end{bmatrix}
+$$</p>
+<p>and the lower constraint</p>
+<p>$$
+\begin{bmatrix}
+-\eta &amp; 0 &amp; 0 &amp; \ldots &amp; 0 \\
+-\eta &amp; -\eta &amp; 0 &amp; \ldots &amp; 0 \\
+-\eta &amp; -\eta &amp; -\eta &amp; \ldots &amp; 0 \\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+-\eta &amp; -\eta &amp; -\eta &amp; \ldots &amp; -\eta \\
+\end{bmatrix}
+\begin{bmatrix}
+x_0 \\
+x_1 \\
+x_2 \\
+\vdots \\
+x_{H-1} \\
+\end{bmatrix}
+\leq
+\begin{bmatrix}
+R_t \\
+R_t \\
+R_t \\
+\vdots \\
+R_t \\
+\end{bmatrix}
+$$</p>
+<p>If we only had a single sample we could just vertically stack these two matrices and we would have the final $A_{ub}$ matrix. However, since each sample needs to satsify these upper and lower constraints, we can use a block diagonal matrix to encode this behavior. A block diagonal matrix is a square matrix where the diagonal entries are themselves square matrices (blocks) and all other off-diagonal entries are zero matrices. For example, if there were four posterior samples the upper constraint block diagonal matrix is</p>
+<p>$$
+\begin{bmatrix}
+A_{ub_1} &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; A_{ub_2} &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; A_{ub_3} &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; A_{ub_4}
+\end{bmatrix}
+$$</p>
+<p>where there are four diagonal matrices; one for each sample. Each diagonal matrix is an <code>upper_constraint</code> matrix. The structure for the lower constraint block diagonal matrix it the same. We use <code>scipy.linalg.block_diag</code> to build the block matrices. Lastly, these two block matrices are vertically stacked to obtain the final $A_{ub}$ matrix.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Repeat upper/lower constraints for each sample</span>
+</span></span><span style="display:flex;"><span>upper_blocks <span style="color:#f92672">=</span> [upper_constraint<span style="color:#f92672">.</span>copy() <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(n_samples)]
+</span></span><span style="display:flex;"><span>lower_blocks <span style="color:#f92672">=</span> [lower_constraint<span style="color:#f92672">.</span>copy() <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(n_samples)]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Each diagonal block contains the constraints for this sample</span>
+</span></span><span style="display:flex;"><span>A_ub_upper <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>block_diag(<span style="color:#f92672">*</span>upper_blocks)
+</span></span><span style="display:flex;"><span>A_ub_lower <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>block_diag(<span style="color:#f92672">*</span>lower_blocks)
+</span></span><span style="display:flex;"><span>A_ub <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>vstack([A_ub_upper, A_ub_lower])
+</span></span></code></pre></div><p>The $b_{ub}$ column vector is where the inequality constraint evaluations happen. We just need to concatenate the evaluation for the upper and lower constraints.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>b_ub <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>concatenate([
+</span></span><span style="display:flex;"><span>    np<span style="color:#f92672">.</span>full(n_samples <span style="color:#f92672">*</span> H, R_max <span style="color:#f92672">-</span> R_current),  <span style="color:#75715e"># Upper constraint eval</span>
+</span></span><span style="display:flex;"><span>    np<span style="color:#f92672">.</span>full(n_samples <span style="color:#f92672">*</span> H, R_current)           <span style="color:#75715e"># Lower constraint eval</span>
+</span></span><span style="display:flex;"><span>])
+</span></span></code></pre></div><p>Lastly, constraint (4) encodes non-anticipativity constraints which is a fancy name for saying that &ldquo;the first control of each sample must be equal to each other&rdquo;. This constraint is primarily required to ensure that the optimal solution is implementable in practice. Without this constraint, the optimal solution may contain different values for the first control sequence in each posterior predictive sample sparking the question—&ldquo;which control should I implement?&rdquo;.</p>
+<p>Non-anticipativity constraints can be encoded using equality constraints. Below, we encode arithmetic that the difference between the first control value for each sample must be zero, i.e., the control values are the same.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(n_na_constraints):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Constraint: u^i_0 - u^{i+1}_0 = 0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Position of u^{i+1}_0 in the stacked vector: (i+1) * H + 0</span>
+</span></span><span style="display:flex;"><span>    A_eq_na[i, i <span style="color:#f92672">*</span> H] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1.0</span>          <span style="color:#75715e"># Coefficient for u^i_0</span>
+</span></span><span style="display:flex;"><span>    A_eq_na[i, (i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">*</span> H] <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1.0</span>   <span style="color:#75715e"># Coefficient for u^{i+1}_0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>b_eq_na <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros(n_na_constraints)
+</span></span></code></pre></div><h2 id="implementation">Implementation<a hidden class="anchor" aria-hidden="true" href="#implementation">#</a></h2>
+<p>The full sample average approximation implementation is the following</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">solve_saa</span>(R_current, p_forecast_samples):
+</span></span><span style="display:flex;"><span>    n_samples, H, dim <span style="color:#f92672">=</span> p_forecast_samples<span style="color:#f92672">.</span>shape
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    n_vars <span style="color:#f92672">=</span> n_samples <span style="color:#f92672">*</span> H
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Coefficient vector is the forecasted prices</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Now in terms of the expected profit</span>
+</span></span><span style="display:flex;"><span>    c <span style="color:#f92672">=</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">/</span> n_samples) <span style="color:#f92672">*</span> p_forecast_samples<span style="color:#f92672">.</span>flatten()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    upper_constraint <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>tri(H, H) <span style="color:#f92672">*</span> eta
+</span></span><span style="display:flex;"><span>    lower_constraint <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>tri(H, H) <span style="color:#f92672">*</span> (<span style="color:#f92672">-</span>eta)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    upper_blocks <span style="color:#f92672">=</span> [upper_constraint<span style="color:#f92672">.</span>copy() <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(n_samples)]
+</span></span><span style="display:flex;"><span>    lower_blocks <span style="color:#f92672">=</span> [lower_constraint<span style="color:#f92672">.</span>copy() <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(n_samples)]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Each diagonal block contains the constraints for this sample</span>
+</span></span><span style="display:flex;"><span>    A_ub_upper <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>block_diag(<span style="color:#f92672">*</span>upper_blocks)
+</span></span><span style="display:flex;"><span>    A_ub_lower <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>block_diag(<span style="color:#f92672">*</span>lower_blocks)
+</span></span><span style="display:flex;"><span>    A_ub <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>vstack([A_ub_upper, A_ub_lower])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    b_ub <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>concatenate([
+</span></span><span style="display:flex;"><span>        np<span style="color:#f92672">.</span>full(n_samples <span style="color:#f92672">*</span> H, R_max <span style="color:#f92672">-</span> R_current), <span style="color:#75715e"># Upper constraint eval</span>
+</span></span><span style="display:flex;"><span>        np<span style="color:#f92672">.</span>full(n_samples <span style="color:#f92672">*</span> H, R_current) <span style="color:#75715e"># Lower constraint eval</span>
+</span></span><span style="display:flex;"><span>    ])
+</span></span><span style="display:flex;"><span>    bounds <span style="color:#f92672">=</span> [(<span style="color:#f92672">-</span>alpha, alpha) <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(n_vars)]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Build non-anticipativity constraints</span>
+</span></span><span style="display:flex;"><span>    n_na_constraints <span style="color:#f92672">=</span> n_samples <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span> 
+</span></span><span style="display:flex;"><span>    A_eq_na <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros((n_na_constraints, n_vars))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(n_na_constraints):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Constraint: u^i_0 - u^{i+1}_0 = 0</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Position of u^i_0 in the stacked vector: i * H + 0</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Position of u^{i+1}_0 in the stacked vector: (i+1) * H + 0</span>
+</span></span><span style="display:flex;"><span>        A_eq_na[i, i <span style="color:#f92672">*</span> H] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1.0</span>          <span style="color:#75715e"># Coefficient for u^i_0</span>
+</span></span><span style="display:flex;"><span>        A_eq_na[i, (i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">*</span> H] <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1.0</span>   <span style="color:#75715e"># Coefficient for u^{i+1}_0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    b_eq_na <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros(n_na_constraints)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    res <span style="color:#f92672">=</span> linprog(
+</span></span><span style="display:flex;"><span>        c<span style="color:#f92672">=</span>c,
+</span></span><span style="display:flex;"><span>        A_ub<span style="color:#f92672">=</span>A_ub,
+</span></span><span style="display:flex;"><span>        b_ub<span style="color:#f92672">=</span>b_ub,
+</span></span><span style="display:flex;"><span>        A_eq<span style="color:#f92672">=</span>A_eq_na,
+</span></span><span style="display:flex;"><span>        b_eq<span style="color:#f92672">=</span>b_eq_na,
+</span></span><span style="display:flex;"><span>        bounds<span style="color:#f92672">=</span>bounds,
+</span></span><span style="display:flex;"><span>        method<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;highs&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> res
+</span></span></code></pre></div><p>Running the MPC controller over the control horizon, we can visualize the trajectories over time.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># System parameters</span>
+</span></span><span style="display:flex;"><span>T <span style="color:#f92672">=</span> <span style="color:#ae81ff">48</span>
+</span></span><span style="display:flex;"><span>H <span style="color:#f92672">=</span> <span style="color:#ae81ff">24</span>
+</span></span><span style="display:flex;"><span>n_states <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>n_controls <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>R_max <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>alpha <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>eta <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.9</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Trajectories</span>
+</span></span><span style="display:flex;"><span>x_traj <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros((H, n_states))
+</span></span><span style="display:flex;"><span>u_traj <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros((H, n_controls))
+</span></span><span style="display:flex;"><span>obj_traj <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros((H,))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Initial conditions</span>
+</span></span><span style="display:flex;"><span>R_current <span style="color:#f92672">=</span> <span style="color:#ae81ff">5.0</span>
+</span></span><span style="display:flex;"><span>actual_p_idx <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> <span style="color:#75715e"># Realized price scenario</span>
+</span></span><span style="display:flex;"><span>p_current <span style="color:#f92672">=</span> p_sampled[actual_p_idx, <span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>item()
+</span></span><span style="display:flex;"><span>total_obj <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.0</span>
+</span></span><span style="display:flex;"><span>future_xs <span style="color:#f92672">=</span> range(H)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> range(H):
+</span></span><span style="display:flex;"><span>    current_xs <span style="color:#f92672">=</span> range(k)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Get price forecast</span>
+</span></span><span style="display:flex;"><span>    p_forecast <span style="color:#f92672">=</span> p_sampled[:, k: H <span style="color:#f92672">+</span> k]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Solve the sample average approx. problem</span>
+</span></span><span style="display:flex;"><span>    out <span style="color:#f92672">=</span> solve_saa(R_current, p_forecast)
+</span></span><span style="display:flex;"><span>    profit <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>out<span style="color:#f92672">.</span>fun
+</span></span><span style="display:flex;"><span>    u_opt <span style="color:#f92672">=</span> out<span style="color:#f92672">.</span>x
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Apply first control sequence</span>
+</span></span><span style="display:flex;"><span>    uk_opt <span style="color:#f92672">=</span> u_opt[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Compute contribution</span>
+</span></span><span style="display:flex;"><span>    obj <span style="color:#f92672">=</span> objective(uk_opt, p_current)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># State transition</span>
+</span></span><span style="display:flex;"><span>    R_current <span style="color:#f92672">=</span> R_current <span style="color:#f92672">+</span> (eta <span style="color:#f92672">*</span> uk_opt)
+</span></span><span style="display:flex;"><span>    p_current <span style="color:#f92672">=</span> p_sampled[actual_p_idx, k <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>item()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Compute cumulative reward</span>
+</span></span><span style="display:flex;"><span>    total_obj <span style="color:#f92672">+=</span> obj
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Track trajectories</span>
+</span></span><span style="display:flex;"><span>    x_traj[k] <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([R_current, p_current])
+</span></span><span style="display:flex;"><span>    u_traj[k] <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([uk_opt])
+</span></span><span style="display:flex;"><span>    obj_traj[k] <span style="color:#f92672">=</span> total_obj
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Propogate uncertainty</span>
+</span></span><span style="display:flex;"><span>    u_opt_all <span style="color:#f92672">=</span> u_opt<span style="color:#f92672">.</span>reshape(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">24</span>, <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    obj_all <span style="color:#f92672">=</span> objective(u_opt_all, p_forecast)
+</span></span><span style="display:flex;"><span>    meanobj <span style="color:#f92672">=</span> obj_all<span style="color:#f92672">.</span>mean(axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)<span style="color:#f92672">.</span>flatten()
+</span></span><span style="display:flex;"><span>    stdobj <span style="color:#f92672">=</span> obj_all<span style="color:#f92672">.</span>std(axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)<span style="color:#f92672">.</span>flatten()
+</span></span><span style="display:flex;"><span>    r_current_all <span style="color:#f92672">=</span> R_current <span style="color:#f92672">+</span> (eta <span style="color:#f92672">*</span> u_opt_all)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Plotting code not shown here...</span>
+</span></span></code></pre></div><p>It is interesting to observe the uncertainty of the reward (profit) given the samples for the decision and state variables. For example, we can observe that when the controls are all the same, e.g., from timestep 15:00 to 16:00, the reward uncertainty is very small. Whereas in the time period from 16:00 to 20:00, prices and control decisions are more uncertain, and thus the uncertainty in the reward is much higher. The realized trajectory (indicated by the solid black line following the dashed vertical line) shows that the reward roughly followed the expected reward.</p>
+<p><img loading="lazy" src="figures/image.png" alt="stochastic-mpc-1"  />
+</p>
+<p><img loading="lazy" src="figures/image-1.png" alt="stochastic-mpc-2"  />
+</p>
+<p><img loading="lazy" src="figures/image-2.png" alt="stochastic-mpc-2"  />
+</p>
+<p><img loading="lazy" src="figures/image-3.png" alt="stochastic-mpc-2"  />
+</p>
+<p><img loading="lazy" src="figures/image-4.png" alt="stochastic-mpc-2"  />
+</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="http://localhost:1313/">Gabe&#39;s Gulch</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

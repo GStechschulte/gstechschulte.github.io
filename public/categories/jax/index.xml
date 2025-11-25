@@ -4,15 +4,22 @@
     <title>Jax on Gabe&#39;s Gulch</title>
     <link>http://localhost:1313/categories/jax/</link>
     <description>Recent content in Jax on Gabe&#39;s Gulch</description>
-    <generator>Hugo -- 0.149.1</generator>
+    <generator>Hugo -- 0.150.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 08 Sep 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 18 Nov 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/categories/jax/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Stochastic Model Predictive Control</title>
+      <link>http://localhost:1313/posts/2025-11-18-stochastic-mpc/</link>
+      <pubDate>Tue, 18 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2025-11-18-stochastic-mpc/</guid>
+      <description>&lt;p&gt;Many applications of optimization and control are performed in a deterministic setting. That is, the quantities of the problem such as the state variables, control variables, and or parameters of a model are treated as fixed known values. This assumption may be reasonable in applications such as robotics, but in others such as resource allocation, we may need to incorporate the uncertainty of various quantities in order to compute the &lt;strong&gt;expectation&lt;/strong&gt; of the objective.&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>Reproducing Uber&#39;s Marketplace Optimization</title>
-      <link>http://localhost:1313/posts/2025-09-08-marketplace-optimization/</link>
-      <pubDate>Mon, 08 Sep 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/2025-09-08-marketplace-optimization/</guid>
+      <link>http://localhost:1313/posts/2025-09-15-marketplace-optimization/</link>
+      <pubDate>Mon, 15 Sep 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2025-09-15-marketplace-optimization/</guid>
       <description>&lt;p&gt;Uber allocates money across different regions and programs to incentivize riders and drivers to use Uber products. This incentive structure ultimately influences the market. This leads to the natural question of &amp;ldquo;how much to allocate to each city and which program&amp;rdquo; to maximize business objectives? Uber has a finite amount of money that must be allocated accordingly. Given a total budget of say, $1,000,000, how should it be divied up amongst the cities and programs?&lt;/p&gt;</description>
     </item>
     <item>

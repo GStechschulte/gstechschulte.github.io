@@ -4,10 +4,17 @@
     <title>Probabilistic-Programming on Gabe&#39;s Gulch</title>
     <link>http://localhost:1313/categories/probabilistic-programming/</link>
     <description>Recent content in Probabilistic-Programming on Gabe&#39;s Gulch</description>
-    <generator>Hugo -- 0.149.1</generator>
+    <generator>Hugo -- 0.150.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 08 Aug 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 18 Nov 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/categories/probabilistic-programming/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Stochastic Model Predictive Control</title>
+      <link>http://localhost:1313/posts/2025-11-18-stochastic-mpc/</link>
+      <pubDate>Tue, 18 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2025-11-18-stochastic-mpc/</guid>
+      <description>&lt;p&gt;Many applications of optimization and control are performed in a deterministic setting. That is, the quantities of the problem such as the state variables, control variables, and or parameters of a model are treated as fixed known values. This assumption may be reasonable in applications such as robotics, but in others such as resource allocation, we may need to incorporate the uncertainty of various quantities in order to compute the &lt;strong&gt;expectation&lt;/strong&gt; of the objective.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>[WIP] It&#39;s About Making Decisions</title>
       <link>http://localhost:1313/posts/2025-08-08-its-about-decisions/</link>
