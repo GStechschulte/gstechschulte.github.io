@@ -21,6 +21,8 @@ Stochastic optimization essentially boils down to putting expectations in front 
 
 In this post, we will develop a model predictive control (MPC) framework utilizing sampled approximations to solve the battery arbitrage problem described above. To simplify the problem setup, to generate the samples, a set of price paths will be sampled from the historical data and we will act like these samples are the price forecasts from the posterior predictive distribution of a Bayesian model.
 
+The code to reproduce the results of this post can be found in the following [GitHub repository](https://github.com/GStechschulte/seq-opt-jax).
+
 ## Model predictive control
 
 MPC is a flexible control framework that uses a model of a system to predict its future behavior and optimize control actions over a time horizon. At each time step, an MPC controller solves an optimization problem to find the best sequence of control actions that minimizes a cost function while satisfying system constraints. In MPC, only the first control action from the control trajectory is implemented, and the process is repeated at the next time step allowing the controller to adapt to new information.
