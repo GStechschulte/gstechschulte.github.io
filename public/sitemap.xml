@@ -3,19 +3,25 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://gstechschulte.github.io/categories/</loc>
-    <lastmod>2025-11-18T00:00:00+00:00</lastmod>
+    <lastmod>2026-02-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://gstechschulte.github.io/posts/2026-28-02-dro/</loc>
+    <lastmod>2026-02-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://gstechschulte.github.io/</loc>
-    <lastmod>2025-11-18T00:00:00+00:00</lastmod>
+    <lastmod>2026-02-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://gstechschulte.github.io/categories/jax/</loc>
-    <lastmod>2025-11-18T00:00:00+00:00</lastmod>
+    <lastmod>2026-02-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://gstechschulte.github.io/categories/optimization/</loc>
-    <lastmod>2025-11-18T00:00:00+00:00</lastmod>
+    <lastmod>2026-02-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://gstechschulte.github.io/posts/</loc>
-    <lastmod>2025-11-18T00:00:00+00:00</lastmod>
+    <lastmod>2026-02-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://gstechschulte.github.io/categories/probability/</loc>
+    <lastmod>2026-02-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://gstechschulte.github.io/categories/probabilistic-programming/</loc>
     <lastmod>2025-11-18T00:00:00+00:00</lastmod>
@@ -32,11 +38,38 @@
     <loc>https://gstechschulte.github.io/categories/ramblings/</loc>
     <lastmod>2025-09-02T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>https://gstechschulte.github.io/posts/2025-08-08-its-about-decisions/</loc>
+    <lastmod>2025-08-08T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://gstechschulte.github.io/posts/2025-07-21-smc-rs/</loc>
+    <lastmod>2025-06-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://gstechschulte.github.io/posts/2025-06-11-optimization-gymnastics/</loc>
+    <lastmod>2025-06-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://gstechschulte.github.io/categories/rust/</loc>
+    <lastmod>2025-06-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://gstechschulte.github.io/categories/reflection/</loc>
+    <lastmod>2025-03-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://gstechschulte.github.io/posts/2025-03-01-reflect-atlas-shrugged/</loc>
+    <lastmod>2025-03-01T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://gstechschulte.github.io/posts/db-systems-query-processing/</loc>
+    <lastmod>2025-01-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://gstechschulte.github.io/posts/2025-06-07-south-america/</loc>
     <lastmod>2025-01-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://gstechschulte.github.io/categories/database-systems/</loc>
     <lastmod>2025-01-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://gstechschulte.github.io/categories/misc/</loc>
+    <lastmod>2025-01-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://gstechschulte.github.io/posts/2024-12-10-dod-columnar-storage/</loc>
+    <lastmod>2024-12-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://gstechschulte.github.io/posts/db-systems-file-formats/</loc>
     <lastmod>2024-12-01T00:00:00+00:00</lastmod>
@@ -44,8 +77,11 @@
     <loc>https://gstechschulte.github.io/posts/2024-11-30-c-callbacks/</loc>
     <lastmod>2024-11-30T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://gstechschulte.github.io/categories/rust/</loc>
-    <lastmod>2024-11-30T00:00:00+00:00</lastmod>
+    <loc>https://gstechschulte.github.io/posts/2024-11-28-daily-rust-types/</loc>
+    <lastmod>2024-11-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://gstechschulte.github.io/posts/2024-11-01-daily-rust-trait-objects/</loc>
+    <lastmod>2024-11-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://gstechschulte.github.io/posts/db-systems-blog-series-overview/</loc>
     <lastmod>2024-10-22T00:00:00+00:00</lastmod>
