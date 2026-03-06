@@ -163,6 +163,21 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Distributionally Robust Optimization - Part 1
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>In classical Robust Optimization (RO), we are uncertain about which outcome will be realized, so we optimize for the worst possible outcome. For example, a mechanical engineer is designing the wings of an airplane such that the weight is minimized, but the wing still has to withstand the stresses under the worst possible conditions.
+These worst possible conditions are encoded as uncertainty sets $W$
+$$\min_{x \in \mathcal{X}} \max_{w \in \mathcal{W}} F(x, w)$$
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-02-28 00:00:00 +0000 UTC'>February 28, 2026</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Distributionally Robust Optimization - Part 1" href="http://localhost:1313/posts/2026-28-02-dro/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Stochastic Model Predictive Control
     </h2>
   </header>
@@ -202,85 +217,6 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">[WIP] It&#39;s About Making Decisions
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Concepts:
-Data science is largely about making decisions. Disappointed with the Bayesian community. How PPLs can be a powerful tool for sequential decision making under uncertainty. What is sequential decision making? Energy modeling demo (part 1). For companies applying data science and machine learning, it is largely about making decisions—how much inventory should we stock?, how much resources should we allocate?, what parameters should be used for this manufacturing machine?—To arrive at such a decision, analyzing historical data and developing some sort of model is often required. This is the easy part. How this model and analysis is used in downstream systems to make optimal decisions is the hard part. The most impactful data scientists at a company are developing and deploying methods and systems to make decisions, not to develop the next Deep XG Random Effects Boosted Neural Tree Networks™ that achieves a super “good” evaluation metric. This post will be the first in a series of posts on sequential decision making under uncertainty. We will use probabilistic programming languages (PPLs) to model uncertainty and then embed these models in a sequential decision making framework to make optimal decisions.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-08-08 00:00:00 +0000 UTC'>August 8, 2025</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to [WIP] It&#39;s About Making Decisions" href="http://localhost:1313/posts/2025-08-08-its-about-decisions/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">[WIP] Fast Sequential Monte Carlo Sampler in Rust
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>In this post, it is discussed how one can use Rust’s type system to implement a highly-performant Sequential Monte Carlo (SMC) algorithm. First, an overview of the SMC algorithm is given. Given this overview, I then discuss the “hot parts” of the algorithm, i.e., steps in the algorithm that hinder performance, followed by how one can use Rust’s type system to circumevent these bottlenecks.
-Sequential Monte Carlo The core algrithm of SMC is simple:
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-06-11 00:00:00 +0000 UTC'>June 11, 2025</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to [WIP] Fast Sequential Monte Carlo Sampler in Rust" href="http://localhost:1313/posts/2025-07-21-smc-rs/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">[WIP] Gymnastics in Constrained Optimization
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Constrained optimization In unconstrained optimization problems, each design variable can take on any real number. However, in most applied and industrial settings, we need to perform constrained optimization which forces design points to satisfy certain conditions. A theme in the mathematical optimization field is to transform the constrained problem into an unconstrained one. This transformation process often requires some gymnastics. This blog reviews some of the popular approaches for transforming a constrained problem into problems without constraints and attempts to connect the underlying concepts these approaches utilize. In general there are two approaches to addressing constraints:
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-06-11 00:00:00 +0000 UTC'>June 11, 2025</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to [WIP] Gymnastics in Constrained Optimization" href="http://localhost:1313/posts/2025-06-11-optimization-gymnastics/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Reflection - Atlas Shrugged
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>I have finally finished Atlas Shrugged and would like to take a moment to reflect on my interpretation of the idealogies portrayed throughout the book. To set the stage, Atlas Shrugged is a dystopian novel where productive individuals withdraw from a society that exploits them.
-Rational self interest One of the core ideas of Atlas Shrugged is that the pursuit of one’s self interest is morally good, not evil. This is in contrast to the conventional view that selflessness and self-sacrifice are virtuous.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-03-01 00:00:00 +0000 UTC'>March 1, 2025</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Reflection - Atlas Shrugged" href="http://localhost:1313/posts/2025-03-01-reflect-atlas-shrugged/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
     <h2 class="entry-hint-parent">[WIP] Database Systems - Query Execution and Processing
     </h2>
   </header>
@@ -296,39 +232,72 @@ Data parallelization (vectorization). Breaking down a query into smaller tasks a
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">[WIP] South America
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
+    <h2 class="entry-hint-parent">[WIP] Database Systems - Storage
     </h2>
   </header>
   <div class="entry-content">
-    <p></p>
+    <p>Introduction As the business landscape embraces data-driven approaches for analysis and decision-making, there is a rapid surge in the volume of data requiring storage and processing. This surge has led to the growing popularity of OLAP database systems.
+An OLAP system workload is characterized by complex queries that require scanning over large portions of the database. In OLAP workloads, the database system is often analyzing and deriving new data from existing data collected on the OLTP side. In contrast, OLTP workloads are characterized by fast, relatively simple and repetitive queries that operate on a single entity at a time (usually involving an update or insert).
+...</p>
   </div>
-  <footer class="entry-footer"><span title='2025-01-01 00:00:00 +0000 UTC'>January 1, 2025</span>&nbsp;·&nbsp;0 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to [WIP] South America" href="http://localhost:1313/posts/2025-06-07-south-america/"></a>
+  <footer class="entry-footer"><span title='2024-12-01 00:00:00 +0000 UTC'>December 1, 2024</span>&nbsp;·&nbsp;12 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to [WIP] Database Systems - Storage" href="http://localhost:1313/posts/db-systems-file-formats/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Data Oriented Deisgn - Columnar Data Structures
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
+    <h2 class="entry-hint-parent">Creating C Callbacks with Numba and Calling Them From Rust
     </h2>
   </header>
   <div class="entry-content">
-    <p>Test. Test.
-</p>
+    <p>When interfacing with libraries written in C/C&#43;&#43; from Rust, it may require writing native callbacks to provide functionality or logic to the library. A C Callback is a function pointer that is passed as an argument to another function, allowing that function to “call back” and execute the passed function at runtime.
+When interfacing with Python from Rust, there may be scenarios where the Rust code also needs to be able to call a Python function. Rust’s foreign function interface (FFI) and pyo3 crate in fact lets you do this. However, calling Python from Rust involves invoking the Python interpreter, which can reduce performance. If one of the goals for using Rust is to improve the performance of your application or library, this overhead might be undesirable. To avoid invoking the Python interpreter, you can use Numba. Numba allows you to create a C callback, pass this function pointer to Rust, and perform the callback without incurring the overhead associated with Python.
+...</p>
   </div>
-  <footer class="entry-footer"><span title='2024-12-10 00:00:00 +0000 UTC'>December 10, 2024</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Data Oriented Deisgn - Columnar Data Structures" href="http://localhost:1313/posts/2024-12-10-dod-columnar-storage/"></a>
+  <footer class="entry-footer"><span title='2024-11-30 00:00:00 +0000 UTC'>November 30, 2024</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Creating C Callbacks with Numba and Calling Them From Rust" href="http://localhost:1313/posts/2024-11-30-c-callbacks/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Database Systems - Series Overview
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>A blog series consisting of my notes on the Carnegie Mellon University (CMU) Introduction and Advanced Database Systems Lectures by Andy Pavlo and Jignesh Patel. The primary goal of this series is to: (1) consolidate my notes, and (2) act as a reference guide for my future self. Perhaps some readers may extract some value, but I would highly recommend watching the lectures for yourself.
+The series will cover:
+Database storage Indexes Join algorithms Query execution and processing Query optimization Query scheduling and coordination Concurrency control OLAP database management system components The series will primarily focus on the components of OLAP database management systems (DBMS). A recent trend of the last decade is the breakout of OLAP DBMS components into standalone services and libraries for:
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-10-22 00:00:00 +0000 UTC'>October 22, 2024</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Database Systems - Series Overview" href="http://localhost:1313/posts/db-systems-blog-series-overview/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Hierarchical Regression With Missing Data
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Hierarchical regression, also known as multilevel modeling, is a powerful modeling technique that allows one to analyze data with a nested structure. This approach is particularly useful when dealing with data that has natural groupings, such as students within schools, patients within hospitals, or in the example below, product configurations within manufacturing processes. One of the key advantages of hierarchical regression lies in its ability to handle missing data in groups, i.e., when one group may not share the same covariates as another group or some groups may contain missong observations.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-09-10 00:00:00 +0000 UTC'>September 10, 2024</span>&nbsp;·&nbsp;5 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Hierarchical Regression With Missing Data" href="http://localhost:1313/posts/hierarchical-regression-missing-data/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Stateful Joins in SQL
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Introduction In some scenarios, one needs to enrich an event stream with data from another source that holds “state”. This state provides additional context to the event stream.
+For example, in manufacturing, a machine may use a set of machine process parameters (pressure, speed, force, etc.) when producing an item. The process parameters represent the “state” of the machine at production time $t$. However, the software services that publishes messages on what is being produced and the machine process parameters currently used are separate. Furthermore, to avoid the duplication of data, the service that publishes process parameters only publishes a message when there is a change in state, e.g when an operator changes one of process parameters.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-08-22 00:00:00 +0000 UTC'>August 22, 2024</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Stateful Joins in SQL" href="http://localhost:1313/posts/sql-stateful-joins/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
@@ -339,7 +308,7 @@ Data parallelization (vectorization). Breaking down a query into smaller tasks a
     </main>
     
 <footer class="footer">
-        <span>&copy; 2025 <a href="http://localhost:1313/">Gabe&#39;s Gulch</a></span> · 
+        <span>&copy; 2026 <a href="http://localhost:1313/">Gabe&#39;s Gulch</a></span> · 
 
     <span>
         Powered by

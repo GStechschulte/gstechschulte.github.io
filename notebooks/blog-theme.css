@@ -1,0 +1,38 @@
+/* -------------------------------------------------------
+   Blog theme for Marimo notebooks
+   Matches the typography of the PaperMod site.
+
+   The Tiempos font is served by Hugo at /fonts/…
+   (absolute path works regardless of notebook URL depth).
+   ------------------------------------------------------- */
+
+@font-face {
+    font-display: swap;
+    font-family: "Tiempos";
+    font-style: normal;
+    font-weight: 400;
+    src: url("/fonts/TiemposText-Regular.otf") format("truetype");
+}
+
+/* Override Marimo's font CSS variables.
+   --text-font   → used by .prose (all markdown / text cells)
+   --default-font-family → used by html for UI chrome        */
+:root {
+    --text-font: "Tiempos", Georgia, serif;
+    --default-font-family: "Tiempos", Georgia, serif;
+}
+
+/* Make sure prose text cells pick up the font even when
+   Marimo's specificity wins via html { font-family: … }    */
+.prose,
+.prose p,
+.prose li,
+.prose blockquote,
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+    font-family: "Tiempos", Georgia, serif;
+}

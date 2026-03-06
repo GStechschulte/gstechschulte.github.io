@@ -6,8 +6,24 @@
     <description>Recent content on Gabe&#39;s Gulch</description>
     <generator>Hugo -- 0.150.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 18 Nov 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 06 Mar 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Bayesian Updating: an Interactive Demo</title>
+      <link>http://localhost:1313/posts/2026-03-06-bayesian-updating/</link>
+      <pubDate>Fri, 06 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2026-03-06-bayesian-updating/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Distributionally Robust Optimization - Part 1</title>
+      <link>http://localhost:1313/posts/2026-28-02-dro/</link>
+      <pubDate>Sat, 28 Feb 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2026-28-02-dro/</guid>
+      <description>&lt;p&gt;In classical Robust Optimization (RO), we are uncertain about which outcome will be realized, so we optimize for the &lt;strong&gt;worst&lt;/strong&gt; possible outcome. For example, a mechanical engineer is designing the wings of an airplane such that the weight is minimized, but the wing still has to withstand the stresses under the worst possible conditions.&lt;/p&gt;
+&lt;p&gt;These worst possible conditions are encoded as uncertainty sets $W$&lt;/p&gt;
+&lt;p&gt;$$\min_{x \in \mathcal{X}} \max_{w \in \mathcal{W}} F(x, w)$$&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Stochastic Model Predictive Control</title>
       <link>http://localhost:1313/posts/2025-11-18-stochastic-mpc/</link>
@@ -30,47 +46,6 @@
       <description>&lt;p&gt;Nowadays, AI is primarily associated with LLMs, where the goal is to develop autonomous agents with human-level intelligence (whatever that means). I have always found the goal of creating something with &amp;ldquo;intelligence&amp;rdquo; boring for some reason. Maybe it is because the objective is too diffuse—create something at least as smart as humans and hope it figures out &lt;code&gt;&amp;lt;insert your problem here&amp;gt;&lt;/code&gt;. Regardless, these LLM-based agents are useful tools and should be used, but these systems are a narrow view of intelligence.&lt;/p&gt;</description>
     </item>
     <item>
-      <title>[WIP] It&#39;s About Making Decisions</title>
-      <link>http://localhost:1313/posts/2025-08-08-its-about-decisions/</link>
-      <pubDate>Fri, 08 Aug 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/2025-08-08-its-about-decisions/</guid>
-      <description>&lt;p&gt;Concepts:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Data science is largely about making decisions.&lt;/li&gt;
-&lt;li&gt;Disappointed with the Bayesian community.&lt;/li&gt;
-&lt;li&gt;How PPLs can be a powerful tool for sequential decision making under uncertainty.&lt;/li&gt;
-&lt;li&gt;What is sequential decision making?&lt;/li&gt;
-&lt;li&gt;Energy modeling demo (part 1).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;For companies applying data science and machine learning, it is largely about making decisions—how much inventory should we stock?, how much resources should we allocate?, what parameters should be used for this manufacturing machine?—To arrive at such a decision, analyzing historical data and developing some sort of model is often required. This is the easy part. How this model and analysis is used in downstream systems to make optimal decisions is the hard part. The most impactful data scientists at a company are developing and deploying methods and systems to make decisions, not to develop the next Deep XG Random Effects Boosted Neural Tree Networks™ that achieves a super &amp;ldquo;good&amp;rdquo; evaluation metric. This post will be the first in a series of posts on sequential decision making under uncertainty. We will use probabilistic programming languages (PPLs) to model uncertainty and then embed these models in a sequential decision making framework to make optimal decisions.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>[WIP] Fast Sequential Monte Carlo Sampler in Rust</title>
-      <link>http://localhost:1313/posts/2025-07-21-smc-rs/</link>
-      <pubDate>Wed, 11 Jun 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/2025-07-21-smc-rs/</guid>
-      <description>&lt;p&gt;In this post, it is discussed how one can use Rust&amp;rsquo;s type system to implement a highly-performant Sequential Monte Carlo (SMC) algorithm. First, an overview of the SMC algorithm is given. Given this overview, I then discuss the &amp;ldquo;hot parts&amp;rdquo; of the algorithm, i.e., steps in the algorithm that hinder performance, followed by how one can use Rust&amp;rsquo;s type system to circumevent these bottlenecks.&lt;/p&gt;
-&lt;h2 id=&#34;sequential-monte-carlo&#34;&gt;Sequential Monte Carlo&lt;/h2&gt;
-&lt;p&gt;The core algrithm of SMC is simple:&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>[WIP] Gymnastics in Constrained Optimization</title>
-      <link>http://localhost:1313/posts/2025-06-11-optimization-gymnastics/</link>
-      <pubDate>Wed, 11 Jun 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/2025-06-11-optimization-gymnastics/</guid>
-      <description>&lt;h2 id=&#34;constrained-optimization&#34;&gt;Constrained optimization&lt;/h2&gt;
-&lt;p&gt;In unconstrained optimization problems, each design variable can take on any real number. However, in most applied and industrial settings, we need to perform constrained optimization which forces design points to satisfy certain conditions. A theme in the mathematical optimization field is to transform the constrained problem into an unconstrained one. This transformation process often requires some gymnastics. This blog reviews some of the popular approaches for transforming a constrained problem into problems without constraints and attempts to connect the underlying concepts these approaches utilize. In general there are two approaches to addressing constraints:&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Reflection - Atlas Shrugged</title>
-      <link>http://localhost:1313/posts/2025-03-01-reflect-atlas-shrugged/</link>
-      <pubDate>Sat, 01 Mar 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/2025-03-01-reflect-atlas-shrugged/</guid>
-      <description>&lt;p&gt;I have finally finished Atlas Shrugged and would like to take a moment to reflect on my interpretation of the idealogies portrayed throughout the book. To set the stage, Atlas Shrugged is a dystopian novel where productive individuals withdraw from a society that exploits them.&lt;/p&gt;
-&lt;h2 id=&#34;rational-self-interest&#34;&gt;Rational self interest&lt;/h2&gt;
-&lt;p&gt;One of the core ideas of Atlas Shrugged is that the pursuit of one&amp;rsquo;s self interest is morally good, not evil. This is in contrast to the conventional view that selflessness and self-sacrifice are virtuous.&lt;/p&gt;</description>
-    </item>
-    <item>
       <title>[WIP] Database Systems - Query Execution and Processing</title>
       <link>http://localhost:1313/posts/db-systems-query-processing/</link>
       <pubDate>Wed, 01 Jan 2025 00:00:00 +0000</pubDate>
@@ -84,20 +59,6 @@
 &lt;li&gt;&lt;strong&gt;Code specialization (pre-compiled / JIT)&lt;/strong&gt;. Code generation for specific queries, e.g. JIT or pre-compiled parameters.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;which fall into three primary ways for speeding up queries:&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>[WIP] South America</title>
-      <link>http://localhost:1313/posts/2025-06-07-south-america/</link>
-      <pubDate>Wed, 01 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/2025-06-07-south-america/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Data Oriented Deisgn - Columnar Data Structures</title>
-      <link>http://localhost:1313/posts/2024-12-10-dod-columnar-storage/</link>
-      <pubDate>Tue, 10 Dec 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/2024-12-10-dod-columnar-storage/</guid>
-      <description>&lt;p&gt;Test. Test.&lt;/p&gt;</description>
     </item>
     <item>
       <title>[WIP] Database Systems - Storage</title>
@@ -115,35 +76,6 @@
       <guid>http://localhost:1313/posts/2024-11-30-c-callbacks/</guid>
       <description>&lt;p&gt;When interfacing with libraries written in C/C++ from Rust, it may require writing native callbacks to provide functionality or logic to the library. A C Callback is a function pointer that is passed as an argument to another function, allowing that function to &amp;ldquo;call back&amp;rdquo; and execute the passed function at runtime.&lt;/p&gt;
 &lt;p&gt;When interfacing with Python from Rust, there may be scenarios where the Rust code also needs to be able to call a Python function. Rust&amp;rsquo;s foreign function interface (FFI) and &lt;code&gt;pyo3&lt;/code&gt; crate in fact lets you do this. However, calling Python from Rust involves invoking the Python interpreter, which can reduce performance. If one of the goals for using Rust is to improve the performance of your application or library, this overhead might be undesirable. To avoid invoking the Python interpreter, you can use Numba. Numba allows you to create a C callback, pass this function pointer to Rust, and perform the callback without incurring the overhead associated with Python.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Daily Rust - Memory Layout of Different Types</title>
-      <link>http://localhost:1313/posts/2024-11-28-daily-rust-types/</link>
-      <pubDate>Thu, 28 Nov 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/2024-11-28-daily-rust-types/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Daily Rust - Using Trait Objects That Allow for Different Types</title>
-      <link>http://localhost:1313/posts/2024-11-01-daily-rust-trait-objects/</link>
-      <pubDate>Fri, 01 Nov 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/2024-11-01-daily-rust-trait-objects/</guid>
-      <description>&lt;p&gt;Trait objects&amp;hellip;&lt;/p&gt;
-&lt;p&gt;Associated types..&lt;/p&gt;
-&lt;p&gt;You cannot use associated types with trait objects &lt;code&gt;dyn Trait&lt;/code&gt; because:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;The compiler needs to know the exact signatures of methods at compile time to create the &lt;code&gt;vtable&lt;/code&gt; for dynamic dispatch.
-Different implementations may have different function signatures involving the associated types.&lt;/li&gt;
-&lt;li&gt;When using &lt;code&gt;dyn Trait&lt;/code&gt;, you must specify the associated types because the vtables for different associated type implementations
-are not compatible. For example, &lt;code&gt;dyn Y&amp;lt;Y1 = String&amp;gt;&lt;/code&gt; and &lt;code&gt;dyn Y&amp;lt;Y1 = u32&amp;gt;&lt;/code&gt; have different vtables and cannot be used interchangeably.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-Rust&#34; data-lang=&#34;Rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;trait&lt;/span&gt; Iterator {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Item&lt;/span&gt;;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;next&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;mut&lt;/span&gt; self) -&amp;gt; Option&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Self::Item&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;type Item;&lt;/code&gt; is an &lt;em&gt;associated type&lt;/em&gt;. Each type that implements &lt;code&gt;Iterator&lt;/code&gt; must specify what type of item it produces. Here&amp;rsquo;s what it looks like to implement &lt;code&gt;Iterator&lt;/code&gt; for a type&lt;/p&gt;</description>
     </item>
     <item>
       <title>Database Systems - Series Overview</title>

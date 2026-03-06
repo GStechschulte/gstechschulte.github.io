@@ -154,6 +154,20 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Bayesian Updating: an Interactive Demo
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>The Beta-Binomial model is the canonical conjugate prior example: given a coin with unknown bias $\theta$, we place a $\text{Beta}(\alpha, \beta)$ prior on it and observe $k$ heads in $n$ flips. Because the Beta is conjugate to the Binomial likelihood, the posterior is available in closed form as $\text{Beta}(\alpha &#43; k,; \beta &#43; n - k)$.
+Use the sliders below to explore how the choice of prior and the amount of observed data shape the posterior — and watch the posterior mean interpolate between the prior mean and the maximum-likelihood estimate as $n$ grows.
+</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-03-06 00:00:00 +0000 UTC'>March 6, 2026</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Bayesian Updating: an Interactive Demo" href="http://localhost:1313/posts/2026-03-06-bayesian-updating/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Stochastic Model Predictive Control
     </h2>
   </header>
@@ -161,48 +175,8 @@
     <p>Many applications of optimization and control are performed in a deterministic setting. That is, the quantities of the problem such as the state variables, control variables, and or parameters of a model are treated as fixed known values. This assumption may be reasonable in applications such as robotics, but in others such as resource allocation, we may need to incorporate the uncertainty of various quantities in order to compute the expectation of the objective.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2025-11-18 00:00:00 +0000 UTC'>November 18, 2025</span>&nbsp;·&nbsp;7 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <footer class="entry-footer"><span title='2025-11-18 00:00:00 +0000 UTC'>November 18, 2025</span>&nbsp;·&nbsp;11 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
   <a class="entry-link" aria-label="post link to Stochastic Model Predictive Control" href="http://localhost:1313/posts/2025-11-18-stochastic-mpc/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">[WIP] It&#39;s About Making Decisions
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Concepts:
-Data science is largely about making decisions. Disappointed with the Bayesian community. How PPLs can be a powerful tool for sequential decision making under uncertainty. What is sequential decision making? Energy modeling demo (part 1). For companies applying data science and machine learning, it is largely about making decisions—how much inventory should we stock?, how much resources should we allocate?, what parameters should be used for this manufacturing machine?—To arrive at such a decision, analyzing historical data and developing some sort of model is often required. This is the easy part. How this model and analysis is used in downstream systems to make optimal decisions is the hard part. The most impactful data scientists at a company are developing and deploying methods and systems to make decisions, not to develop the next Deep XG Random Effects Boosted Neural Tree Networks™ that achieves a super “good” evaluation metric. This post will be the first in a series of posts on sequential decision making under uncertainty. We will use probabilistic programming languages (PPLs) to model uncertainty and then embed these models in a sequential decision making framework to make optimal decisions.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-08-08 00:00:00 +0000 UTC'>August 8, 2025</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to [WIP] It&#39;s About Making Decisions" href="http://localhost:1313/posts/2025-08-08-its-about-decisions/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">[WIP] Fast Sequential Monte Carlo Sampler in Rust
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>In this post, it is discussed how one can use Rust’s type system to implement a highly-performant Sequential Monte Carlo (SMC) algorithm. First, an overview of the SMC algorithm is given. Given this overview, I then discuss the “hot parts” of the algorithm, i.e., steps in the algorithm that hinder performance, followed by how one can use Rust’s type system to circumevent these bottlenecks.
-Sequential Monte Carlo The core algrithm of SMC is simple:
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-06-11 00:00:00 +0000 UTC'>June 11, 2025</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to [WIP] Fast Sequential Monte Carlo Sampler in Rust" href="http://localhost:1313/posts/2025-07-21-smc-rs/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
@@ -300,6 +274,20 @@ In some scenarios, the response variable is discrete, like a count, and ordered.
   <footer class="entry-footer"><span title='2023-09-29 00:00:00 +0000 UTC'>September 29, 2023</span>&nbsp;·&nbsp;17 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
   <a class="entry-link" aria-label="post link to Ordinal Models in Bambi" href="http://localhost:1313/posts/bambi-ordinal-models/"></a>
 </article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Zero Inflated Models in Bambi
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>#| code-fold: true import arviz as az import matplotlib.pyplot as plt from matplotlib.lines import Line2D import numpy as np import pandas as pd import scipy.stats as stats import seaborn as sns import warnings import bambi as bmb warnings.simplefilter(action=&#39;ignore&#39;, category=FutureWarning) WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions. Zero inflated models This blog post is a copy of the zero inflated models documentation I wrote for Bambi. The original post can be found here.
+In this notebook, we will describe zero inflated outcomes and why the data generating process behind these outcomes requires a special class of generalized linear models: zero-inflated Poisson (ZIP) and hurdle Poisson. Subsequently, we will describe and implement each model using a set of zero-inflated data from ecology. Along the way, we will also use the interpret sub-package to interpret the predictions and parameters of the models.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-09-29 00:00:00 +0000 UTC'>September 29, 2023</span>&nbsp;·&nbsp;15 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Zero Inflated Models in Bambi" href="http://localhost:1313/posts/bambi-zip-models/"></a>
+</article>
 <footer class="page-footer">
   <nav class="pagination">
     <a class="next" href="http://localhost:1313/categories/probabilistic-programming/page/2/">Next&nbsp;&nbsp;»
@@ -309,7 +297,7 @@ In some scenarios, the response variable is discrete, like a count, and ordered.
     </main>
     
 <footer class="footer">
-        <span>&copy; 2025 <a href="http://localhost:1313/">Gabe&#39;s Gulch</a></span> · 
+        <span>&copy; 2026 <a href="http://localhost:1313/">Gabe&#39;s Gulch</a></span> · 
 
     <span>
         Powered by

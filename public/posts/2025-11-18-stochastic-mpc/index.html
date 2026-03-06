@@ -187,6 +187,7 @@
 </p>
 <p>Stochastic optimization essentially boils down to putting expectations in front of things and or computing probabilities and then solving the optimization problem. Most basic stochastic optimization problems, like the one above, can be solved via strategies that either: compute expectations directly, or by methods that approximate them.</p>
 <p>In this post, we will develop a model predictive control (MPC) framework utilizing sampled approximations to solve the battery arbitrage problem described above. To simplify the problem setup, to generate the samples, a set of price paths will be sampled from the historical data and we will act like these samples are the price forecasts from the posterior predictive distribution of a Bayesian model.</p>
+<p>The code to reproduce the results of this post can be found in the following <a href="https://github.com/GStechschulte/seq-opt-jax">GitHub repository</a>.</p>
 <h2 id="model-predictive-control">Model predictive control<a hidden class="anchor" aria-hidden="true" href="#model-predictive-control">#</a></h2>
 <p>MPC is a flexible control framework that uses a model of a system to predict its future behavior and optimize control actions over a time horizon. At each time step, an MPC controller solves an optimization problem to find the best sequence of control actions that minimizes a cost function while satisfying system constraints. In MPC, only the first control action from the control trajectory is implemented, and the process is repeated at the next time step allowing the controller to adapt to new information.</p>
 <h2 id="problem-formulation">Problem formulation<a hidden class="anchor" aria-hidden="true" href="#problem-formulation">#</a></h2>
@@ -488,7 +489,7 @@ $$</p>
     </main>
     
 <footer class="footer">
-        <span>&copy; 2025 <a href="http://localhost:1313/">Gabe&#39;s Gulch</a></span> · 
+        <span>&copy; 2026 <a href="http://localhost:1313/">Gabe&#39;s Gulch</a></span> · 
 
     <span>
         Powered by
