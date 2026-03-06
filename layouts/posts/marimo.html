@@ -1,0 +1,42 @@
+{{ define "main" }}
+<article class="post-single">
+  <header class="post-header">
+    {{ partial "breadcrumbs.html" . }}
+    <h1 class="post-title">{{ .Title }}</h1>
+    {{- if .Params.hideMeta }}{{- else }}
+    <div class="post-meta">{{ partial "post_meta.html" . }}</div>
+    {{- end }}
+  </header>
+  {{- if .Content }}
+  <div class="post-content">{{ .Content }}</div>
+  {{- end }}
+  <div class="marimo-embed">
+    <iframe
+      src="{{ .Params.notebook }}"
+      sandbox="allow-scripts allow-same-origin allow-downloads allow-popups"
+      style="width:100%; height:85vh; border:none;"
+      loading="lazy"
+    ></iframe>
+  </div>
+  <script>
+  (function () {
+    var toggle = document.getElementById('theme-toggle');
+    if (!toggle) return;
+    toggle.addEventListener('click', function () {
+      setTimeout(function () {
+        var dark = document.body.classList.contains('dark');
+        var iframe = document.querySelector('.marimo-embed iframe');
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage({ type: 'marimo-theme', dark: dark }, '*');
+        }
+      }, 0);
+    });
+  })();
+  </script>
+  {{- if not (.Param "hideFooter") }}
+  <footer class="post-footer">
+    {{- partial "post_nav_links.html" . }}
+  </footer>
+  {{- end }}
+</article>
+{{ end }}

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Bayesian on Gabe&#39;s Gulch</title>
-    <link>http://localhost:56945/categories/bayesian/</link>
+    <link>http://localhost:57952/categories/bayesian/</link>
     <description>Recent content in Bayesian on Gabe&#39;s Gulch</description>
     <generator>Hugo -- 0.150.0</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 06 Mar 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:56945/categories/bayesian/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:57952/categories/bayesian/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Bayesian Updating: an Interactive Demo</title>
-      <link>http://localhost:56945/posts/2026-03-06-bayesian-updating/</link>
+      <link>http://localhost:57952/posts/2026-03-06-bayesian-updating/</link>
       <pubDate>Fri, 06 Mar 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:56945/posts/2026-03-06-bayesian-updating/</guid>
+      <guid>http://localhost:57952/posts/2026-03-06-bayesian-updating/</guid>
       <description></description>
     </item>
   </channel>

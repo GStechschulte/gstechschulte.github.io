@@ -7,6 +7,7 @@ app = marimo.App(width="medium")
 @app.cell
 def __():
     import marimo as mo
+
     return (mo,)
 
 
@@ -14,7 +15,7 @@ def __():
 def __(mo):
     mo.md(
         r"""
-        # Bayesian Updating: Beta-Binomial Model
+        ## Bayesian Updating: Beta-Binomial Model
 
         Bayesian inference updates a **prior** belief about an unknown parameter
         $\theta$ using observed data to produce a **posterior** distribution.
@@ -107,10 +108,10 @@ def __(alpha_slider, beta_slider, heads_slider, tails_slider):
 
 @app.cell
 def __(alpha_post, alpha_prior, beta_post, beta_prior, k, mo, n):
+    import matplotlib.patches as mpatches
+    import matplotlib.pyplot as plt
     import numpy as np
     from scipy import stats
-    import matplotlib.pyplot as plt
-    import matplotlib.patches as mpatches
 
     theta = np.linspace(0, 1, 500)
 
@@ -132,9 +133,19 @@ def __(alpha_post, alpha_prior, beta_post, beta_prior, k, mo, n):
     ax.fill_between(theta, post_pdf, alpha=0.30, color="#55A868")
     ax.plot(theta, post_pdf, color="#55A868", linewidth=2)
 
-    prior_patch = mpatches.Patch(color="#4C72B0", alpha=0.6, label=f"Prior  Beta({alpha_prior:.1f}, {beta_prior:.1f})")
-    lik_patch = mpatches.Patch(color="#DD8452", alpha=0.5, label=f"Likelihood  Bin(n={n}, k={k})  [scaled]")
-    post_patch = mpatches.Patch(color="#55A868", alpha=0.7, label=f"Posterior  Beta({alpha_post:.1f}, {beta_post:.1f})")
+    prior_patch = mpatches.Patch(
+        color="#4C72B0",
+        alpha=0.6,
+        label=f"Prior  Beta({alpha_prior:.1f}, {beta_prior:.1f})",
+    )
+    lik_patch = mpatches.Patch(
+        color="#DD8452", alpha=0.5, label=f"Likelihood  Bin(n={n}, k={k})  [scaled]"
+    )
+    post_patch = mpatches.Patch(
+        color="#55A868",
+        alpha=0.7,
+        label=f"Posterior  Beta({alpha_post:.1f}, {beta_post:.1f})",
+    )
 
     ax.legend(handles=[prior_patch, lik_patch, post_patch], fontsize=10)
     ax.set_xlabel("θ  (coin bias)", fontsize=12)
@@ -167,7 +178,11 @@ def __(alpha_post, alpha_prior, beta_post, beta_prior, k, mo, n):
 def __(alpha_post, alpha_prior, beta_post, beta_prior, k, mo, n, stats):
     prior_mean = alpha_prior / (alpha_prior + beta_prior)
     post_mean = alpha_post / (alpha_post + beta_post)
-    post_mode = (alpha_post - 1) / (alpha_post + beta_post - 2) if (alpha_post > 1 and beta_post > 1) else None
+    post_mode = (
+        (alpha_post - 1) / (alpha_post + beta_post - 2)
+        if (alpha_post > 1 and beta_post > 1)
+        else None
+    )
     post_std = stats.beta.std(alpha_post, beta_post)
     mle = k / n if n > 0 else 0.0
 
