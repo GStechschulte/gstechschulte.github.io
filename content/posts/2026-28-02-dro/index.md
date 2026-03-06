@@ -5,7 +5,7 @@ author = "Gabriel Stechschulte"
 categories = ["optimization", "jax", "probability"]
 ShowToc = true
 TocOpen = false
-draft = false
+draft = true
 math = true
 +++
 

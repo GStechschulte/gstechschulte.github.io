@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>Database-Systems | Gabe&#39;s Gulch</title>
+<title>Distributionally Robust Optimization - Part 1 | Gabe&#39;s Gulch</title>
 <meta name="keywords" content="">
-<meta name="description" content="">
-<meta name="author" content="">
-<link rel="canonical" href="http://localhost:59341/categories/database-systems/">
+<meta name="description" content="Distributionally Robust Optimization - Part 1 - Gabe&#39;s Gulch">
+<meta name="author" content="Gabriel Stechschulte">
+<link rel="canonical" href="http://localhost:59341/posts/2026-03-06-dro-part-one/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:59341/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:59341/favicon-16x16.png">
@@ -18,8 +18,7 @@
 <link rel="mask-icon" href="http://localhost:59341/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="http://localhost:59341/categories/database-systems/index.xml">
-<link rel="alternate" hreflang="en" href="http://localhost:59341/categories/database-systems/">
+<link rel="alternate" hreflang="en" href="http://localhost:59341/posts/2026-03-06-dro-part-one/">
 <noscript>
     <style>
         #theme-toggle,
@@ -92,7 +91,7 @@
 
 </head>
 
-<body class="list" id="top">
+<body class="" id="top">
 <script>
     if (localStorage.getItem("pref-theme") === "dark") {
         document.body.classList.add('dark');
@@ -145,56 +144,48 @@
         </ul>
     </nav>
 </header>
-<main class="main"> 
-<header class="page-header">
-  <h1>
-    Database-Systems
-  </h1>
-</header>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">[WIP] Database Systems - Query Execution and Processing
-    </h2>
+<main class="main">
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">Distributionally Robust Optimization - Part 1</h1>
+    <div class="post-meta"><span title='2026-03-06 00:00:00 +0000 UTC'>March 6, 2026</span>&nbsp;·&nbsp;0 min&nbsp;·&nbsp;Gabriel Stechschulte</div>
   </header>
-  <div class="entry-content">
-    <p>Operator execution In OLAP systems, sequential scans are the primary method for query execution. The goal is two-fold: (1) minimize the amount of data fetched from the disk or a remote object store, and (2) maximize the use of hardware resources for efficient query execution.
-Andy’s (unscientific) top three execution optimization techniques:
-Data parallelization (vectorization). Breaking down a query into smaller tasks and running them in parallel on different cores, threads, or nodes. Task parallelization (multi-threading). Breaking down a query into smaller independent tasks and executing them concurrently. This allows the DBMS to take full advantage of hardware capabilities and or multiple machines to improve query execution time. Code specialization (pre-compiled / JIT). Code generation for specific queries, e.g. JIT or pre-compiled parameters. which fall into three primary ways for speeding up queries:
-...</p>
+  <div class="marimo-embed">
+    <iframe
+      src="/notebooks/wasserstein_sampling/"
+      sandbox="allow-scripts allow-same-origin allow-downloads allow-popups"
+      style="width:100%; height:85vh; border:none;"
+      loading="lazy"
+    ></iframe>
   </div>
-  <footer class="entry-footer"><span title='2025-01-01 00:00:00 +0000 UTC'>January 1, 2025</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to [WIP] Database Systems - Query Execution and Processing" href="http://localhost:59341/posts/db-systems-query-processing/"></a>
+  <script>
+  (function () {
+    var toggle = document.getElementById('theme-toggle');
+    if (!toggle) return;
+    toggle.addEventListener('click', function () {
+      setTimeout(function () {
+        var dark = document.body.classList.contains('dark');
+        var iframe = document.querySelector('.marimo-embed iframe');
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage({ type: 'marimo-theme', dark: dark }, '*');
+        }
+      }, 0);
+    });
+  })();
+  </script>
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="next" href="http://localhost:59341/posts/2025-11-18-stochastic-mpc/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Stochastic Model Predictive Control</span>
+  </a>
+</nav>
+
+  </footer>
 </article>
 
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">[WIP] Database Systems - Storage
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Introduction As the business landscape embraces data-driven approaches for analysis and decision-making, there is a rapid surge in the volume of data requiring storage and processing. This surge has led to the growing popularity of OLAP database systems.
-An OLAP system workload is characterized by complex queries that require scanning over large portions of the database. In OLAP workloads, the database system is often analyzing and deriving new data from existing data collected on the OLTP side. In contrast, OLTP workloads are characterized by fast, relatively simple and repetitive queries that operate on a single entity at a time (usually involving an update or insert).
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-12-01 00:00:00 +0000 UTC'>December 1, 2024</span>&nbsp;·&nbsp;12 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to [WIP] Database Systems - Storage" href="http://localhost:59341/posts/db-systems-file-formats/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Database Systems - Series Overview
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>A blog series consisting of my notes on the Carnegie Mellon University (CMU) Introduction and Advanced Database Systems Lectures by Andy Pavlo and Jignesh Patel. The primary goal of this series is to: (1) consolidate my notes, and (2) act as a reference guide for my future self. Perhaps some readers may extract some value, but I would highly recommend watching the lectures for yourself.
-The series will cover:
-Database storage Indexes Join algorithms Query execution and processing Query optimization Query scheduling and coordination Concurrency control OLAP database management system components The series will primarily focus on the components of OLAP database management systems (DBMS). A recent trend of the last decade is the breakout of OLAP DBMS components into standalone services and libraries for:
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-10-22 00:00:00 +0000 UTC'>October 22, 2024</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Database Systems - Series Overview" href="http://localhost:59341/posts/db-systems-blog-series-overview/"></a>
-</article>
     </main>
     
 <footer class="footer">
@@ -265,6 +256,53 @@ Database storage Indexes Join algorithms Query execution and processing Query op
         }
     })
 
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
 </script>
 </body>
 
