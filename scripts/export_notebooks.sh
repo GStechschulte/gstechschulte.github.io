@@ -21,8 +21,28 @@ with open(html_path, encoding="utf-8") as f:
 with open(css_path, encoding="utf-8") as f:
     css = f.read()
 
-tag = f"<style id=\"blog-theme\">\n{css}\n</style>"
-html = html.replace("</head>", f"{tag}\n</head>", 1)
+style_tag = f"<style id=\"blog-theme\">\n{css}\n</style>"
+script_tag = """<script id="blog-theme-sync">
+(function () {
+  function isDark() {
+    var pref = localStorage.getItem('pref-theme');
+    return pref === 'dark' ||
+      (!pref && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  }
+  function applyTheme(dark) {
+    document.documentElement.classList.toggle('dark', dark);
+    localStorage.setItem('marimo:theme', dark ? 'dark' : 'light');
+  }
+  applyTheme(isDark());
+  window.addEventListener('storage', function (e) {
+    if (e.key === 'pref-theme') applyTheme(e.newValue === 'dark');
+  });
+  window.addEventListener('message', function (e) {
+    if (e.data && e.data.type === 'marimo-theme') applyTheme(e.data.dark);
+  });
+})();
+</script>"""
+html = html.replace("</head>", style_tag + "\n" + script_tag + "\n</head>", 1)
 
 with open(html_path, "w", encoding="utf-8") as f:
     f.write(html)
