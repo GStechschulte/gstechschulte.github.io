@@ -13,7 +13,8 @@
       <link>http://localhost:56940/posts/2026-03-06-dro-part-one/</link>
       <pubDate>Fri, 06 Mar 2026 00:00:00 +0000</pubDate>
       <guid>http://localhost:56940/posts/2026-03-06-dro-part-one/</guid>
-      <description></description>
+      <description>&lt;p&gt;In Distributionally Robust Optimization (DRO) we are uncertain about the data generating process, i.e., what distribution generated the data we observe. For example, if there is a random variable (RV) in the objective function or constraints (e.g. a forecast) that is distributed according to some unknown distribution. However, we may have collected $N$ historical samples of the outcome and can construct an empirical probability distribution.&lt;/p&gt;
+&lt;p&gt;$$\hat{\mathbb{P}} = \frac{1}{N} \sum_{i=1}^N \delta_{s_i}$$&lt;/p&gt;</description>
     </item>
     <item>
       <title>Stochastic Model Predictive Control</title>

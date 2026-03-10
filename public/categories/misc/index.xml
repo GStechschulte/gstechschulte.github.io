@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Misc on Gabe&#39;s Gulch</title>
-    <link>http://localhost:56794/categories/misc/</link>
+    <link>http://localhost:57743/categories/misc/</link>
     <description>Recent content in Misc on Gabe&#39;s Gulch</description>
     <generator>Hugo -- 0.150.0</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 01 Jan 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:56794/categories/misc/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:57743/categories/misc/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[WIP] South America</title>
-      <link>http://localhost:56794/posts/2025-06-07-south-america/</link>
+      <link>http://localhost:57743/posts/2025-06-07-south-america/</link>
       <pubDate>Wed, 01 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:56794/posts/2025-06-07-south-america/</guid>
+      <guid>http://localhost:57743/posts/2025-06-07-south-america/</guid>
       <description></description>
     </item>
   </channel>

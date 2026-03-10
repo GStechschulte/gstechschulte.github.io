@@ -2,73 +2,87 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Categories on Gabe&#39;s Gulch</title>
-    <link>http://localhost:59341/categories/</link>
+    <link>http://localhost:57743/categories/</link>
     <description>Recent content in Categories on Gabe&#39;s Gulch</description>
     <generator>Hugo -- 0.150.0</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 06 Mar 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:59341/categories/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:57743/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Optimization</title>
-      <link>http://localhost:59341/categories/optimization/</link>
+      <link>http://localhost:57743/categories/optimization/</link>
       <pubDate>Fri, 06 Mar 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:59341/categories/optimization/</guid>
+      <guid>http://localhost:57743/categories/optimization/</guid>
       <description></description>
     </item>
     <item>
       <title>Probabilistic-Programming</title>
-      <link>http://localhost:59341/categories/probabilistic-programming/</link>
+      <link>http://localhost:57743/categories/probabilistic-programming/</link>
       <pubDate>Fri, 06 Mar 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:59341/categories/probabilistic-programming/</guid>
+      <guid>http://localhost:57743/categories/probabilistic-programming/</guid>
       <description></description>
     </item>
     <item>
       <title>Jax</title>
-      <link>http://localhost:59341/categories/jax/</link>
+      <link>http://localhost:57743/categories/jax/</link>
       <pubDate>Tue, 18 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:59341/categories/jax/</guid>
+      <guid>http://localhost:57743/categories/jax/</guid>
       <description></description>
     </item>
     <item>
       <title>Ramblings</title>
-      <link>http://localhost:59341/categories/ramblings/</link>
+      <link>http://localhost:57743/categories/ramblings/</link>
       <pubDate>Tue, 02 Sep 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:59341/categories/ramblings/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Database-Systems</title>
-      <link>http://localhost:59341/categories/database-systems/</link>
-      <pubDate>Wed, 01 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:59341/categories/database-systems/</guid>
+      <guid>http://localhost:57743/categories/ramblings/</guid>
       <description></description>
     </item>
     <item>
       <title>Rust</title>
-      <link>http://localhost:59341/categories/rust/</link>
-      <pubDate>Sat, 30 Nov 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:59341/categories/rust/</guid>
+      <link>http://localhost:57743/categories/rust/</link>
+      <pubDate>Wed, 11 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:57743/categories/rust/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Reflection</title>
+      <link>http://localhost:57743/categories/reflection/</link>
+      <pubDate>Sat, 01 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:57743/categories/reflection/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Database-Systems</title>
+      <link>http://localhost:57743/categories/database-systems/</link>
+      <pubDate>Wed, 01 Jan 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:57743/categories/database-systems/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Misc</title>
+      <link>http://localhost:57743/categories/misc/</link>
+      <pubDate>Wed, 01 Jan 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:57743/categories/misc/</guid>
       <description></description>
     </item>
     <item>
       <title>Data-Engineering</title>
-      <link>http://localhost:59341/categories/data-engineering/</link>
+      <link>http://localhost:57743/categories/data-engineering/</link>
       <pubDate>Thu, 22 Aug 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:59341/categories/data-engineering/</guid>
+      <guid>http://localhost:57743/categories/data-engineering/</guid>
       <description></description>
     </item>
     <item>
       <title>Gsoc</title>
-      <link>http://localhost:59341/categories/gsoc/</link>
+      <link>http://localhost:57743/categories/gsoc/</link>
       <pubDate>Thu, 10 Aug 2023 18:43:46 +0200</pubDate>
-      <guid>http://localhost:59341/categories/gsoc/</guid>
+      <guid>http://localhost:57743/categories/gsoc/</guid>
       <description></description>
     </item>
     <item>
       <title>Open-Source</title>
-      <link>http://localhost:59341/categories/open-source/</link>
+      <link>http://localhost:57743/categories/open-source/</link>
       <pubDate>Thu, 10 Aug 2023 18:43:46 +0200</pubDate>
-      <guid>http://localhost:59341/categories/open-source/</guid>
+      <guid>http://localhost:57743/categories/open-source/</guid>
       <description></description>
     </item>
   </channel>

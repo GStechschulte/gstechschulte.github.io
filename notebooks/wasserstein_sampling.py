@@ -12,6 +12,7 @@ def _():
     import numpy as np
     import scipy.stats as stats
 
+    # plt.style.use("./docs/styles.mplstyle")
     return gridspec, mo, np, plt, stats
 
 
@@ -26,13 +27,13 @@ def _(rng):
     N = 60
     mu_true = 5.0
     sigma_true = 1.0
-    historical = rng.normal(mu_true, sigma_true, size=N)
-    return N, historical, mu_true, sigma_true
+    empirical = rng.normal(mu_true, sigma_true, size=N)
+    return N, empirical, mu_true, sigma_true
 
 
 @app.cell
-def _(historical, np):
-    empirical_sorted = np.sort(historical)
+def _(empirical, np):
+    empirical_sorted = np.sort(empirical)
     return (empirical_sorted,)
 
 
@@ -57,31 +58,19 @@ def _(np, stats, w1_sorted):
 
 
 @app.cell
-def _(np, rng, stats):
-    def sample_wasserstein_ball_simple(eng, empirical, epsilon, n_samples):
+def _(np, stats):
+    def sample_wasserstein_ball(rng, empirical, epsilon, n_samples):
+        """Sample from the Wasserstein ball guaranteeing d_W(P_hat, Q) <=
+        epsilon for every sample.
         """
-        Sample from 
-        the Wasserstein ball using normalize-then-scale.
-
-        The logic in plain english:
-          1. Draw a random direction in R^N (any symmetric distribution works).
-          2. Normalize it so its L1 radius equals exactly epsilon — this puts
-             it on the surface of the L1 ball (the "sphere").
-          3. Scale by Uniform(0, 1) to land somewhere inside the ball,
-             not just on its boundary.
-
-        This guarantees W_1(P_hat, Q) <= epsilon for every sample by construction.
-        The tradeoff vs. Barthe et al. is that sampling is not perfectly uniform
-        over the ball — points cluster slightly toward the center — but the
-        distributions we generate are just as diverse and valid for intuition.
-        """
-
         N = len(empirical)
 
+        # Sample a random direction (delta)
         raw_deltas = rng.normal(0, 1, size=(n_samples, N))
+        # L1 radius (mean absolute value) of each sample 
         l1_radii = np.mean(np.abs(raw_deltas), axis=1, keepdims=True)
         sphere_deltas = raw_deltas * (epsilon / l1_radii)
-
+        # Scale to ensure satisfies constraint
         scale = rng.uniform(0, 1, size=(n_samples, 1))
         scaled_deltas = sphere_deltas * scale
 
@@ -94,26 +83,31 @@ def _(np, rng, stats):
 
         return distributions, np.array(w1_distances)
 
-    return (sample_wasserstein_ball_simple,)
+    return (sample_wasserstein_ball,)
 
 
 @app.cell
 def _(mo):
     slider = mo.ui.slider(
         start=0.01,
-        stop=1.5,
+        stop=2.0,
         step=0.05,
         label="Ball radius ε",
-        value=0.3,
+        value=1.0,
         show_value=True,
     )
     return (slider,)
 
 
 @app.cell
-def _(empirical_sorted, rng, sample_wasserstein_ball_simple, slider):
+def _(empirical_sorted, rng, sample_wasserstein_ball, slider):
     ball_eps = slider.value
-    ball_dists, ball_w1s = sample_wasserstein_ball_simple(rng, empirical_sorted, ball_eps, 300)
+    ball_dists, ball_w1s = sample_wasserstein_ball(
+        rng, 
+        empirical_sorted, 
+        ball_eps, 
+        n_samples=300
+    )
     return ball_dists, ball_eps, ball_w1s
 
 
@@ -134,7 +128,12 @@ def _(
     stats,
 ):
     color = "#2196F3"
-    x_grid = np.linspace(mu_true - 4 * sigma_true, mu_true + 4 * sigma_true, 500)
+
+    x_grid = np.linspace(
+        mu_true - 4 * sigma_true, 
+        mu_true + 4 * sigma_true, 
+        500
+    )
 
     fig = plt.figure(figsize=(14, 5))
     fig.suptitle(
@@ -147,9 +146,16 @@ def _(
 
     ax_cdf = fig.add_subplot(gs[0, 0])
 
-    for _q in ball_dists[:80]:
+    for _q in ball_dists:
         _cdf_y = np.arange(1, N + 1) / N
-        ax_cdf.step(_q, _cdf_y, color=color, alpha=0.08, linewidth=0.8, where="post")
+        ax_cdf.step(
+            _q, 
+            _cdf_y, 
+            color=color, 
+            alpha=0.08, 
+            linewidth=0.8, 
+            where="post"
+        )
 
     _cdf_y = np.arange(1, N + 1) / N
     ax_cdf.step(
@@ -169,20 +175,12 @@ def _(
         linestyle="--",
         label=r"True $\mathcal{N}(5,1)$",
     )
-    ax_cdf.set_title(f"CDF ribbon — ε = {ball_eps:.2f}", fontsize=12, color=color, fontweight="bold")
+
     ax_cdf.set_xlabel("Value", fontsize=10)
     ax_cdf.set_ylabel("CDF", fontsize=10)
-    ax_cdf.legend(fontsize=8, loc="upper left")
     ax_cdf.set_xlim(x_grid[0], x_grid[-1])
     ax_cdf.set_ylim(-0.02, 1.05)
     ax_cdf.grid(True, alpha=0.3)
-    ax_cdf.text(
-        0.98, 0.5,
-        f"Ribbon width\n∝ ε = {ball_eps:.2f}",
-        transform=ax_cdf.transAxes,
-        fontsize=8, ha="right", va="center", color=color,
-        bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8),
-    )
 
     ax_hist = fig.add_subplot(gs[0, 1])
     ax_hist.hist(ball_w1s, bins=30, color=color, alpha=0.75, edgecolor="white", linewidth=0.5)
@@ -193,22 +191,9 @@ def _(
     )
     ax_hist.set_xlabel("Actual W₁ distance to P̂", fontsize=10)
     ax_hist.set_ylabel("Count", fontsize=10)
-    ax_hist.set_title(f"W₁ distances (ε = {ball_eps:.2f})", fontsize=11)
-    ax_hist.legend(fontsize=9)
     ax_hist.grid(True, alpha=0.3)
-    ax_hist.text(
-        0.02, 0.95,
-        f"Max = {ball_w1s.max():.3f} ≤ ε ✓",
-        transform=ax_hist.transAxes,
-        fontsize=9, va="top", color="green", fontweight="bold",
-    )
 
     mo.vstack([slider, mo.as_html(fig)])
-    return
-
-
-@app.cell
-def _():
     return
 
 

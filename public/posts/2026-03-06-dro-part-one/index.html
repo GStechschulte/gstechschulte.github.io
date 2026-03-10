@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=59341&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
 <title>Distributionally Robust Optimization - Part 1 | Gabe&#39;s Gulch</title>
 <meta name="keywords" content="">
-<meta name="description" content="Distributionally Robust Optimization - Part 1 - Gabe&#39;s Gulch">
+<meta name="description" content="In Distributionally Robust Optimization (DRO) we are uncertain about the data generating process, i.e., what distribution generated the data we observe. For example, if there is a random variable (RV) in the objective function or constraints (e.g. a forecast) that is distributed according to some unknown distribution. However, we may have collected $N$ historical samples of the outcome and can construct an empirical probability distribution.
+$$\hat{\mathbb{P}} = \frac{1}{N} \sum_{i=1}^N \delta_{s_i}$$">
 <meta name="author" content="Gabriel Stechschulte">
-<link rel="canonical" href="http://localhost:59341/posts/2026-03-06-dro-part-one/">
+<link rel="canonical" href="http://localhost:1313/posts/2026-03-06-dro-part-one/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:59341/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:59341/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:59341/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:59341/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:59341/safari-pinned-tab.svg">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:59341/posts/2026-03-06-dro-part-one/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/2026-03-06-dro-part-one/">
 <noscript>
     <style>
         #theme-toggle,
@@ -106,7 +107,7 @@
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:59341/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
+            <a href="http://localhost:1313/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -132,12 +133,12 @@
         </div>
         <ul id="menu">
             <li>
-                <a href="http://localhost:59341/archives/" title="archives">
+                <a href="http://localhost:1313/archives/" title="archives">
                     <span>archives</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:59341/categories/" title="categories">
+                <a href="http://localhost:1313/categories/" title="categories">
                     <span>categories</span>
                 </a>
             </li>
@@ -149,8 +150,25 @@
   <header class="post-header">
     
     <h1 class="post-title">Distributionally Robust Optimization - Part 1</h1>
-    <div class="post-meta"><span title='2026-03-06 00:00:00 +0000 UTC'>March 6, 2026</span>&nbsp;·&nbsp;0 min&nbsp;·&nbsp;Gabriel Stechschulte</div>
+    <div class="post-meta"><span title='2026-03-06 00:00:00 +0000 UTC'>March 6, 2026</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte</div>
   </header>
+  <div class="post-content"><p>In Distributionally Robust Optimization (DRO) we are uncertain about the data generating process, i.e., what distribution generated the data we observe. For example, if there is a random variable (RV) in the objective function or constraints (e.g. a forecast) that is distributed according to some unknown distribution. However, we may have collected $N$ historical samples of the outcome and can construct an empirical probability distribution.</p>
+<p>$$\hat{\mathbb{P}} = \frac{1}{N} \sum_{i=1}^N \delta_{s_i}$$</p>
+<p>With the these samples, we could use sample average approximation (SAA) and directly optimize against it. But this can lead to poor out-of-sample performance. For example, if there is distribution-shift and the forecast for the next day is completely off with respect to the empirical distribution then the optimization will also be sub-optimal. DROs idea is to optimize against the worst case distribution in a neighborhood around $\hat{\mathbb{P}}$. This neighborhood is called the <strong>ambiguity set</strong> and quantifies the set of distributions within some distance of the empirical distribution.</p>
+<p>$$
+\mathcal{B}^{\epsilon} := {\mathbb{Q} \in \mathcal{P}_1(\mathcal{S}) \mid d_W(\hat{\mathbb{P}}, \mathbb{Q}) \leq \epsilon }
+$$</p>
+<p>where $\mathcal{B}$ is the collection of all distributions $\mathbb{Q}$ in the set $\mathcal{S}$ whose Wasserstein distance from $\hat{\mathbb{P}}$ is at most $\epsilon$. The Wasserstein ball is the set of distributions we &ldquo;could reach&rdquo; within some distance of the empirical distribution if we expend some amount of work.</p>
+<ul>
+<li>Small $\epsilon \rightarrow$ the worst case distribution won&rsquo;t be too different from the empirical distribution.</li>
+<li>Large $\epsilon \rightarrow$ the worst case distribution can be significantly different from the empirical distribution.</li>
+</ul>
+<p>Conceptually, this makes sense but it is not so obvious how one would go about implementing such a method. To try and gain some intuition behind the method, lets draw $N$ samples from a Normal distribution that will act as our empirical distribution $\hat{\mathbb{P}}$. Then, we will draw samples from the  Wasserstein ball of radius $\epsilon$ around $\hat{\mathbb{P}}$ to visually see how different these distributions $\mathbb{Q}$ are from $\hat{\mathbb{Q}}$.</p>
+<p>In 1D, the Wasserstein distance between two equal-weighted empirical distributions reduces to the average absolute difference between their sorted quantiles.</p>
+<p>Putting a ball around $\hat{\mathbb{P}}$ in distribution space reduces to defining a perturbation vector $\delta \in \mathbb{R}^N$ where $\delta_i = y_i - x_i$ is how much you shift the $i$-th sorted quantile.</p>
+<p>As we increase $\epsilon$ the perturbations $\delta$ get bigger resulting in a much more different distribution compared to the empirical distribution as indicated by the Wasserstein distance.</p>
+<p>Play with the slider below to change the value of $\epsilon$ and observe how $\mathbb{Q}$ changes</p>
+</div>
   <div class="marimo-embed">
     <iframe
       src="/notebooks/wasserstein_sampling/"
@@ -176,7 +194,7 @@
   </script>
   <footer class="post-footer">
 <nav class="paginav">
-  <a class="next" href="http://localhost:59341/posts/2025-11-18-stochastic-mpc/">
+  <a class="next" href="http://localhost:1313/posts/2025-11-18-stochastic-mpc/">
     <span class="title">Next »</span>
     <br>
     <span>Stochastic Model Predictive Control</span>
@@ -189,7 +207,7 @@
     </main>
     
 <footer class="footer">
-        <span>&copy; 2026 <a href="http://localhost:59341/">Gabe&#39;s Gulch</a></span> · 
+        <span>&copy; 2026 <a href="http://localhost:1313/">Gabe&#39;s Gulch</a></span> · 
 
     <span>
         Powered by
