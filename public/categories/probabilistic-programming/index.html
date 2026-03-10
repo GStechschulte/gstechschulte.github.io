@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=56940&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=58812&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
@@ -9,17 +9,17 @@
 <meta name="keywords" content="">
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="http://localhost:56940/categories/probabilistic-programming/">
+<link rel="canonical" href="http://localhost:58812/categories/probabilistic-programming/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:56940/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:56940/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:56940/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:56940/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:56940/safari-pinned-tab.svg">
+<link rel="icon" href="http://localhost:58812/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:58812/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:58812/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:58812/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:58812/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="http://localhost:56940/categories/probabilistic-programming/index.xml">
-<link rel="alternate" hreflang="en" href="http://localhost:56940/categories/probabilistic-programming/">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:58812/categories/probabilistic-programming/index.xml">
+<link rel="alternate" hreflang="en" href="http://localhost:58812/categories/probabilistic-programming/">
 <noscript>
     <style>
         #theme-toggle,
@@ -107,7 +107,7 @@
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:56940/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
+            <a href="http://localhost:58812/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -133,12 +133,12 @@
         </div>
         <ul id="menu">
             <li>
-                <a href="http://localhost:56940/archives/" title="archives">
+                <a href="http://localhost:58812/archives/" title="archives">
                     <span>archives</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:56940/categories/" title="categories">
+                <a href="http://localhost:58812/categories/" title="categories">
                     <span>categories</span>
                 </a>
             </li>
@@ -158,12 +158,12 @@
     </h2>
   </header>
   <div class="entry-content">
-    <p>In Distributionally Robust Optimization (DRO) we are uncertain about the data generating process, i.e., what distribution generated the data we observe. For example, if there is a random variable (RV) in the objective function or constraints (e.g. a forecast) that is distributed according to some unknown distribution. However, we may have collected $N$ historical samples of the outcome and can construct an empirical probability distribution.
-$$\hat{\mathbb{P}} = \frac{1}{N} \sum_{i=1}^N \delta_{s_i}$$
+    <p>I recently read the paper Carbon-Aware Computing for Data Centers with Probabilistic Performance Guarantees which demonstrated the benefits and power of a Distributionally Robust Optimization method and I wanted to dive deeper into the method. This blog post is a result of the deep dive.
+Introduction In Stochastic Optimization (SO), we are interested in solutions that account for different possible outcomes of uncertain data. Accounting for this uncertainty requires us to define a probability distribution over the uncertain quantities—a forecast error, a demand signal, a compute load—and then optimize an objective defined with respect to that distribution. The choice of how to use the distribution depends on the application: one might minimize expected cost, guard against a high-percentile loss using Conditional Value-at-Risk (CVaR), or enforce a chance constraint that a capacity limit is violated with probability no greater than some threshold. What all of these approaches share is the assumption that we know, or can accurately estimate, the distribution itself. Distributionally Robust Optimization is the framework we reach for when that assumption breaks down.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2026-03-06 00:00:00 +0000 UTC'>March 6, 2026</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Distributionally Robust Optimization - Part 1" href="http://localhost:56940/posts/2026-03-06-dro-part-one/"></a>
+  <footer class="entry-footer"><span title='2026-03-06 00:00:00 +0000 UTC'>March 6, 2026</span>&nbsp;·&nbsp;7 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Distributionally Robust Optimization - Part 1" href="http://localhost:58812/posts/2026-03-06-dro-part-one/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
@@ -176,7 +176,47 @@ $$\hat{\mathbb{P}} = \frac{1}{N} \sum_{i=1}^N \delta_{s_i}$$
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2025-11-18 00:00:00 +0000 UTC'>November 18, 2025</span>&nbsp;·&nbsp;11 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Stochastic Model Predictive Control" href="http://localhost:56940/posts/2025-11-18-stochastic-mpc/"></a>
+  <a class="entry-link" aria-label="post link to Stochastic Model Predictive Control" href="http://localhost:58812/posts/2025-11-18-stochastic-mpc/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">[WIP] It&#39;s About Making Decisions
+      <span class="entry-hint" title="Draft">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
+          <path
+            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+        </svg>
+      </span>
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Concepts:
+Data science is largely about making decisions. Disappointed with the Bayesian community. How PPLs can be a powerful tool for sequential decision making under uncertainty. What is sequential decision making? Energy modeling demo (part 1). For companies applying data science and machine learning, it is largely about making decisions—how much inventory should we stock?, how much resources should we allocate?, what parameters should be used for this manufacturing machine?—To arrive at such a decision, analyzing historical data and developing some sort of model is often required. This is the easy part. How this model and analysis is used in downstream systems to make optimal decisions is the hard part. The most impactful data scientists at a company are developing and deploying methods and systems to make decisions, not to develop the next Deep XG Random Effects Boosted Neural Tree Networks™ that achieves a super “good” evaluation metric. This post will be the first in a series of posts on sequential decision making under uncertainty. We will use probabilistic programming languages (PPLs) to model uncertainty and then embed these models in a sequential decision making framework to make optimal decisions.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-08-08 00:00:00 +0000 UTC'>August 8, 2025</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to [WIP] It&#39;s About Making Decisions" href="http://localhost:58812/posts/2025-08-08-its-about-decisions/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">[WIP] Fast Sequential Monte Carlo Sampler in Rust
+      <span class="entry-hint" title="Draft">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
+          <path
+            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+        </svg>
+      </span>
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>In this post, it is discussed how one can use Rust’s type system to implement a highly-performant Sequential Monte Carlo (SMC) algorithm. First, an overview of the SMC algorithm is given. Given this overview, I then discuss the “hot parts” of the algorithm, i.e., steps in the algorithm that hinder performance, followed by how one can use Rust’s type system to circumevent these bottlenecks.
+Sequential Monte Carlo The core algrithm of SMC is simple:
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-06-11 00:00:00 +0000 UTC'>June 11, 2025</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to [WIP] Fast Sequential Monte Carlo Sampler in Rust" href="http://localhost:58812/posts/2025-07-21-smc-rs/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
@@ -189,7 +229,7 @@ $$\hat{\mathbb{P}} = \frac{1}{N} \sum_{i=1}^N \delta_{s_i}$$
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2024-09-10 00:00:00 +0000 UTC'>September 10, 2024</span>&nbsp;·&nbsp;5 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Hierarchical Regression With Missing Data" href="http://localhost:56940/posts/hierarchical-regression-missing-data/"></a>
+  <a class="entry-link" aria-label="post link to Hierarchical Regression With Missing Data" href="http://localhost:58812/posts/hierarchical-regression-missing-data/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
@@ -203,7 +243,7 @@ In Bambi, the sampler used is automatically selected given the type of variables
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2024-03-29 00:00:00 +0000 UTC'>March 29, 2024</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Alternative Samplers to NUTS in Bambi" href="http://localhost:56940/posts/bambi-alternative-samplers/"></a>
+  <a class="entry-link" aria-label="post link to Alternative Samplers to NUTS in Bambi" href="http://localhost:58812/posts/bambi-alternative-samplers/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
@@ -217,7 +257,7 @@ These helper functions are data_grid and select_draws. The data_grid can be used
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2023-12-09 00:00:00 +0000 UTC'>December 9, 2023</span>&nbsp;·&nbsp;9 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Advanced Interpret Usage in Bambi" href="http://localhost:56940/posts/bambi-advanced-marginal-effects/"></a>
+  <a class="entry-link" aria-label="post link to Advanced Interpret Usage in Bambi" href="http://localhost:58812/posts/bambi-advanced-marginal-effects/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
@@ -230,7 +270,7 @@ These helper functions are data_grid and select_draws. The data_grid can be used
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2023-11-28 00:00:00 +0000 UTC'>November 28, 2023</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Outcome Constraints in Bayesian Optimization" href="http://localhost:56940/posts/constrained-bayesian-optimization/"></a>
+  <a class="entry-link" aria-label="post link to Outcome Constraints in Bayesian Optimization" href="http://localhost:58812/posts/constrained-bayesian-optimization/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
@@ -244,7 +284,7 @@ This blog post is a copy of the survival models documentation I wrote for Bambi.
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2023-10-25 00:00:00 +0000 UTC'>October 25, 2023</span>&nbsp;·&nbsp;20 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Survival Models in Bambi" href="http://localhost:56940/posts/bambi-survival-models/"></a>
+  <a class="entry-link" aria-label="post link to Survival Models in Bambi" href="http://localhost:58812/posts/bambi-survival-models/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
@@ -258,46 +298,18 @@ This blog post is a copy of the zero inflated models documentation I wrote for B
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2023-10-10 00:00:00 +0000 UTC'>October 10, 2023</span>&nbsp;·&nbsp;11 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Predict New Groups with Hierarchical Models in Bambi" href="http://localhost:56940/posts/bambi-predict-new-groups/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Ordinal Models in Bambi
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>#| code-fold: true import arviz as az import matplotlib.pyplot as plt from matplotlib.lines import Line2D import numpy as np import pandas as pd import warnings import bambi as bmb warnings.filterwarnings(&#34;ignore&#34;, category=FutureWarning) WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions. Ordinal Regression This blog post is a copy of the ordinal models documentation I wrote for Bambi. The original post can be found here.
-In some scenarios, the response variable is discrete, like a count, and ordered. Common examples of such data come from questionnaires where the respondent is asked to rate a product, service, or experience on a scale. This scale is often referred to as a Likert scale. For example, a five-level Likert scale could be:
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-09-29 00:00:00 +0000 UTC'>September 29, 2023</span>&nbsp;·&nbsp;17 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Ordinal Models in Bambi" href="http://localhost:56940/posts/bambi-ordinal-models/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Zero Inflated Models in Bambi
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>#| code-fold: true import arviz as az import matplotlib.pyplot as plt from matplotlib.lines import Line2D import numpy as np import pandas as pd import scipy.stats as stats import seaborn as sns import warnings import bambi as bmb warnings.simplefilter(action=&#39;ignore&#39;, category=FutureWarning) WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions. Zero inflated models This blog post is a copy of the zero inflated models documentation I wrote for Bambi. The original post can be found here.
-In this notebook, we will describe zero inflated outcomes and why the data generating process behind these outcomes requires a special class of generalized linear models: zero-inflated Poisson (ZIP) and hurdle Poisson. Subsequently, we will describe and implement each model using a set of zero-inflated data from ecology. Along the way, we will also use the interpret sub-package to interpret the predictions and parameters of the models.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-09-29 00:00:00 +0000 UTC'>September 29, 2023</span>&nbsp;·&nbsp;15 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Zero Inflated Models in Bambi" href="http://localhost:56940/posts/bambi-zip-models/"></a>
+  <a class="entry-link" aria-label="post link to Predict New Groups with Hierarchical Models in Bambi" href="http://localhost:58812/posts/bambi-predict-new-groups/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
-    <a class="next" href="http://localhost:56940/categories/probabilistic-programming/page/2/">Next&nbsp;&nbsp;»
+    <a class="next" href="http://localhost:58812/categories/probabilistic-programming/page/2/">Next&nbsp;&nbsp;»
     </a>
   </nav>
 </footer>
     </main>
     
 <footer class="footer">
-        <span>&copy; 2026 <a href="http://localhost:56940/">Gabe&#39;s Gulch</a></span> · 
+        <span>&copy; 2026 <a href="http://localhost:58812/">Gabe&#39;s Gulch</a></span> · 
 
     <span>
         Powered by

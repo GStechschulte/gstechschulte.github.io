@@ -2,7 +2,7 @@
 <html lang="en" dir="auto">
 
 <head>
-	<meta name="generator" content="Hugo 0.150.0"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=56940&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+	<meta name="generator" content="Hugo 0.150.0"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=58812&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
@@ -10,17 +10,17 @@
 
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="http://localhost:56940/">
+<link rel="canonical" href="http://localhost:58812/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:56940/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:56940/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:56940/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:56940/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:56940/safari-pinned-tab.svg">
+<link rel="icon" href="http://localhost:58812/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:58812/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:58812/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:58812/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:58812/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="http://localhost:56940/index.xml">
-<link rel="alternate" hreflang="en" href="http://localhost:56940/">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:58812/index.xml">
+<link rel="alternate" hreflang="en" href="http://localhost:58812/">
 <noscript>
     <style>
         #theme-toggle,
@@ -108,7 +108,7 @@
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:56940/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
+            <a href="http://localhost:58812/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -134,12 +134,12 @@
         </div>
         <ul id="menu">
             <li>
-                <a href="http://localhost:56940/archives/" title="archives">
+                <a href="http://localhost:58812/archives/" title="archives">
                     <span>archives</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:56940/categories/" title="categories">
+                <a href="http://localhost:58812/categories/" title="categories">
                     <span>categories</span>
                 </a>
             </li>
@@ -147,6 +147,115 @@
     </nav>
 </header>
 <main class="main"> 
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Outcome Constraints in Bayesian Optimization
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>#| code-fold: true import matplotlib.pyplot as plt import torch import numpy as np from botorch.acquisition import qLogExpectedImprovement from botorch.fit import fit_gpytorch_model from botorch.models import SingleTaskGP from botorch.optim import optimize_acqf from gpytorch.mlls import ExactMarginalLogLikelihood from torch.distributions import Normal plt.style.use(&#34;https://raw.githubusercontent.com/GStechschulte/filterjax/main/docs/styles.mplstyle&#34;) Outcome constraints In optimization, it is often the goal that we need to optimize an objective function while satisfying some constraints. For example, we may want to minimize the scrap rate by finding the optimal process parameters of an manufacturing machine. However, we know the scrap rate cannot be below 0. In another setting, we may want to maximize the throughput of a machine, but we know that the throughput cannot exceed the maximum belt speed of the machine. Thus, we need to find regions in the search space that both yield high objective values and satisfy these constraints. In this blog, we will focus on inequality outcome constraints. That is, the domain of the objective function is
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-11-28 00:00:00 +0000 UTC'>November 28, 2023</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Outcome Constraints in Bayesian Optimization" href="http://localhost:58812/posts/constrained-bayesian-optimization/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Survival Models in Bambi
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Survival Models Survival models, also known as time-to-event models, are specialized statistical methods designed to analyze the time until the occurrence of an event of interest. In this notebook, a review of survival analysis (using non-parametric and parametric methods) and censored data is provided, followed by a survival model implementation in Bambi.
+This blog post is a copy of the survival models documentation I wrote for Bambi. The original post can be found here.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-10-25 00:00:00 +0000 UTC'>October 25, 2023</span>&nbsp;·&nbsp;20 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Survival Models in Bambi" href="http://localhost:58812/posts/bambi-survival-models/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Predict New Groups with Hierarchical Models in Bambi
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Predict New Groups In Bambi, it is possible to perform predictions on new, unseen, groups of data that were not in the observed data used to fit the model with the argument sample_new_groups in the model.predict() method. This is useful in the context of hierarchical modeling, where groups are assumed to be a sample from a larger group.
+This blog post is a copy of the zero inflated models documentation I wrote for Bambi. The original post can be found here.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-10-10 00:00:00 +0000 UTC'>October 10, 2023</span>&nbsp;·&nbsp;11 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Predict New Groups with Hierarchical Models in Bambi" href="http://localhost:58812/posts/bambi-predict-new-groups/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Ordinal Models in Bambi
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>#| code-fold: true import arviz as az import matplotlib.pyplot as plt from matplotlib.lines import Line2D import numpy as np import pandas as pd import warnings import bambi as bmb warnings.filterwarnings(&#34;ignore&#34;, category=FutureWarning) WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions. Ordinal Regression This blog post is a copy of the ordinal models documentation I wrote for Bambi. The original post can be found here.
+In some scenarios, the response variable is discrete, like a count, and ordered. Common examples of such data come from questionnaires where the respondent is asked to rate a product, service, or experience on a scale. This scale is often referred to as a Likert scale. For example, a five-level Likert scale could be:
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-09-29 00:00:00 +0000 UTC'>September 29, 2023</span>&nbsp;·&nbsp;17 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Ordinal Models in Bambi" href="http://localhost:58812/posts/bambi-ordinal-models/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Zero Inflated Models in Bambi
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>#| code-fold: true import arviz as az import matplotlib.pyplot as plt from matplotlib.lines import Line2D import numpy as np import pandas as pd import scipy.stats as stats import seaborn as sns import warnings import bambi as bmb warnings.simplefilter(action=&#39;ignore&#39;, category=FutureWarning) WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions. Zero inflated models This blog post is a copy of the zero inflated models documentation I wrote for Bambi. The original post can be found here.
+In this notebook, we will describe zero inflated outcomes and why the data generating process behind these outcomes requires a special class of generalized linear models: zero-inflated Poisson (ZIP) and hurdle Poisson. Subsequently, we will describe and implement each model using a set of zero-inflated data from ecology. Along the way, we will also use the interpret sub-package to interpret the predictions and parameters of the models.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-09-29 00:00:00 +0000 UTC'>September 29, 2023</span>&nbsp;·&nbsp;15 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Zero Inflated Models in Bambi" href="http://localhost:58812/posts/bambi-zip-models/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Google Summer of Code - Final Report
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> My project “Better tools to interpret complex Bambi regression models” was completed under the organization of NumFOCUS, and mentors Tomás Capretto and Osvaldo Martin. Before I describe the project, objectives, and work completed, I would like to thank my mentors Tomás and Osvaldo for their precious time and support throughout the summer. They were always available and timely in communicating over Slack and GitHub, and provided valuable feedback during code reviews. Additionally, I would like to thank NumFOCUS and the Google Summer of Code (GSoC) program for providing the opportunity to work on such an open source project over the summer. It has been an invaluable experience, and I look forward to contributing to open source projects in the future.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-08-10 18:43:46 +0200 CEST'>August 10, 2023</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Google Summer of Code - Final Report" href="http://localhost:58812/posts/gsoc-final-report/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Google Summer of Code - Average Predictive Slopes
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>It is currently the beginning of week ten of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the basic functionality of the plot_slopes. Subsequently, week 11 was reserved to further develop the plot_slopes function, and to write tests and a notebook for the documentation, respectively.
+However, at the beginning of week ten, I have a PR open with the majority of the functionality that marginaleffects has for slopes. In addition, I also exposed the slopes function, added tests, and have a PR open for the documentation.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-08-01 00:00:00 +0000 UTC'>August 1, 2023</span>&nbsp;·&nbsp;18 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Google Summer of Code - Average Predictive Slopes" href="http://localhost:58812/posts/bambi-slopes/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Google Summer of Code - Average Predictive Comparisons
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>It is currently the end of week five of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the core functionality of the plot_comparisons. Subsequently, week six and seven were to be spent further developing the plot_comparisons function, and writing tests and a demo notebook for the documentation, respectively. However, at the end of week five, I have a PR open with the majority of the functionality that marginaleffects has. In addition, I also exposed the comparisons function, added tests (which can and will be improved), and have started on documentation.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-06-30 00:00:00 +0000 UTC'>June 30, 2023</span>&nbsp;·&nbsp;16 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
+  <a class="entry-link" aria-label="post link to Google Summer of Code - Average Predictive Comparisons" href="http://localhost:58812/posts/bambi-comparisons/"></a>
+</article>
 
 <article class="post-entry"> 
   <header class="entry-header">
@@ -159,7 +268,7 @@ The improvement arises from adaptive proposals in which the distribution of prop
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2022-10-12 00:00:00 +0000 UTC'>October 12, 2022</span>&nbsp;·&nbsp;5 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Gibbs Sampler From Scratch" href="http://localhost:56940/posts/gibbs-sampler/"></a>
+  <a class="entry-link" aria-label="post link to Gibbs Sampler From Scratch" href="http://localhost:58812/posts/gibbs-sampler/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -172,58 +281,21 @@ The improvement arises from adaptive proposals in which the distribution of prop
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2022-10-08 00:00:00 +0000 UTC'>October 8, 2022</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Metropolis Hastings Sampler From Scratch" href="http://localhost:56940/posts/metropolis-hastings-sampler/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Monte Carlo Approximation
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Inference In the probabilistic approach to machine learning, all unknown quantities—predictions about the future, hidden states of a system, or parameters of a model—are treated as random variables, and endowed with probability distributions. The process of inference corresponds to computing the posterior distribution over these quantities, conditioning on whatever data is available. Given that the posterior is a probability distribution, we can draw samples from it. The samples in this case are parameter values. The Bayesian formalism treats parameter distributions as the degrees of relative plausibility, i.e., if this parameter is chosen, how likely is the data to have arisen? We use Bayes’ rule for this process of inference. Let $h$ represent the uknown variables and $D$ the known variables, i.e., the data. Given a likelihood $p(D|h)$ and a prior $p(h)$, we can compute the posterior $p(h|D)$ using Bayes’ rule:
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2022-10-07 00:00:00 +0000 UTC'>October 7, 2022</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Monte Carlo Approximation" href="http://localhost:56940/posts/monte-carlo-approximation/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Variational Inference - Evidence Lower Bound
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>We don’t know the real posterior so we are going to choose a distribution $Q(\theta)$ from a family of distributions $Q^*$ that are easy to work with and parameterized by $\theta$. The approximate distribution should be as close as possible to the true posterior. This closeness is measured using KL-Divergence. If we have the joint $p(x, z)$ where $x$ is some observed data, the goal is to perform inference: given what we have observed, what can we infer about the latent states?, i.e , we want the posterior.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2022-06-03 18:43:46 +0200 CEST'>June 3, 2022</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Variational Inference - Evidence Lower Bound" href="http://localhost:56940/posts/variational-inference/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">No Code, Dependency, and Building Technology
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Modernity and Abstraction ‘Programmers’, loosely speaking, in some form or another have always been developing software to automate tedious and repetitive tasks. Rightly so, as this is one of the tasks computers are designed to perform. As science and technology progresses, and gets more technological, there is a growing seperation between the maker and the user. This is one of the negative externalities of modernism - we enjoy the benefits of a more advanced and technologically adept society, but fewer and fewer people understand the inner workings. Andrej Karpathy has a jokingly short paragraph in his blog on the matter, “A courageous developer has taken the burden of understanding query strings, urls, GET/POST requests, HTTP connections, and so on from you and largely hidden the complexity behind a few lines of code. This is what we are now familiar with and expect”.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2021-08-10 00:00:00 +0000 UTC'>August 10, 2021</span>&nbsp;·&nbsp;5 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to No Code, Dependency, and Building Technology" href="http://localhost:56940/posts/no-code-building-technology/2021-08-10-no-code-dependency-and-building-technology/"></a>
+  <a class="entry-link" aria-label="post link to Metropolis Hastings Sampler From Scratch" href="http://localhost:58812/posts/metropolis-hastings-sampler/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
-    <a class="prev" href="http://localhost:56940/page/2/">
+    <a class="prev" href="http://localhost:58812/page/2/">
       «&nbsp;Prev&nbsp;
+    </a>
+    <a class="next" href="http://localhost:58812/page/4/">Next&nbsp;&nbsp;»
     </a>
   </nav>
 </footer>
     </main>
     
 <footer class="footer">
-        <span>&copy; 2026 <a href="http://localhost:56940/">Gabe&#39;s Gulch</a></span> · 
+        <span>&copy; 2026 <a href="http://localhost:58812/">Gabe&#39;s Gulch</a></span> · 
 
     <span>
         Powered by

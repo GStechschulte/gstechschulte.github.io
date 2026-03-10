@@ -12,7 +12,6 @@ def _():
     import numpy as np
     import scipy.stats as stats
 
-    # plt.style.use("./docs/styles.mplstyle")
     return gridspec, mo, np, plt, stats
 
 
@@ -106,7 +105,7 @@ def _(empirical_sorted, rng, sample_wasserstein_ball, slider):
         rng, 
         empirical_sorted, 
         ball_eps, 
-        n_samples=300
+        n_samples=100
     )
     return ball_dists, ball_eps, ball_w1s
 
@@ -137,8 +136,7 @@ def _(
 
     fig = plt.figure(figsize=(14, 5))
     fig.suptitle(
-        "Wasserstein Ball: Sampling from the Ambiguity Set  |  "
-        r"Center $\hat{\mathbb{P}}$: empirical distribution, $N=60$, $\mathcal{N}(5,1)$",
+        "Wasserstein Ball: Sampling from the Ambiguity Set",
         fontsize=11,
     )
 
@@ -194,6 +192,16 @@ def _(
     ax_hist.grid(True, alpha=0.3)
 
     mo.vstack([slider, mo.as_html(fig)])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    Each faint blue line is a distribution $\mathbb{Q}$ drawn from $\mathcal{B}^\varepsilon$ where the solid black line is the empirical center $\hat{\mathbb{P}}$ and the dashed gray line is the true distribution. The collection of faint lines forms a *ribbon* around the empirical CDF, and the width of that ribbon is directly proportional to $\varepsilon$.
+
+    At small $\varepsilon$, the ribbon is tight, i.e., every distribution in the ball looks nearly identical to $\hat{\mathbb{P}}$, and the worst-case adversary has little room to maneuver. At large $\varepsilon$ however, the ribbon is wide, i.e., the ball contains distributions with quite different means and variances, and the adversary can select from a much more diverse and challenging set.
+    """)
     return
 
 
