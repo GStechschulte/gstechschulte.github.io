@@ -26,7 +26,7 @@ $$
 
 where $\delta_{s^i}$ is a Dirac mass centered at the $i$-th historical observation $s^i$.
 
-Given these samples, a natural approach is **Sample Average Approximation (SAA)**: simply treat $\hat{\mathbb{P}}$ as if it were the true distribution $\mathbb{P}$ and optimize directly against your historical values. SAA is easy to implement and works well when $N$ is large and the future resembles the past. The problem is that $\hat{\mathbb{P}}$ places zero probability on any outcome not in your historical data. If tomorrow's data looks nothing like you have ever seen before—a public holiday, a viral product launch, a seasonal shift—the SAA solution provides no protection whatsoever. The empirical distribution is a point estimate in the space of distributions, and like any point estimate, it carries sampling error that grows more severe as $N$ decreases.
+Given these samples, a natural approach is **Sample Average Approximation (SAA)**: simply treat $\hat{\mathbb{P}}$ as if it were the true distribution $\mathbb{P}$ and optimize directly against your historical values. SAA is easy to implement and works well when $N$ is large and the future resembles the past. The problem is that $\hat{\mathbb{P}}$ places zero probability on any outcome not in your historical data. If tomorrow's data looks nothing like you have ever seen before such as a public holiday, a viral product launch or a seasonal shif. The SAA solution provides no protection whatsoever. The empirical distribution is a point estimate in the space of distributions, and like any point estimate, it carries sampling error that grows more severe as $N$ decreases.
 
 DRO's central idea is to hedge against this uncertainty by optimizing against the **worst-case distribution in a neighborhood around $\hat{\mathbb{P}}$**. This neighborhood is called the **ambiguity set**, and it quantifies the collection of distributions that are plausibly consistent with the data you have observed. Formally, we define the ambiguity set as a Wasserstein ball:
 
@@ -94,9 +94,5 @@ $$\delta \leftarrow \delta \cdot \frac{\varepsilon}{\frac{1}{N}\sum_i |\delta_i|
 $$\delta_{\text{final}} = u \cdot \delta$$
 
 The resulting perturbation satisfies $\frac{1}{N}\sum_i |\delta_{\text{final},i}| \leq \varepsilon$ by construction. Adding $\delta_{\text{final}}$ to the sorted quantiles of $\hat{\mathbb{P}}$ and re-sorting gives the support of a valid sample distribution $\mathbb{Q} \in \mathcal{B}^\varepsilon$.
-
-## Summary
-
-DRO addresses a fundamental limitation of SAA: it acknowledges that your historical data is a finite, imperfect window into the true data-generating process, and it builds that acknowledgment directly into the optimization. The Wasserstein ambiguity set provides a geometrically intuitive and statistically principled neighborhood around the empirical distribution, with the radius $\varepsilon$ calibrated to your sample size and confidence requirements. Despite the infinite-dimensional nature of the ambiguity set, the worst-case optimization over it collapses to a tractable finite program that depends only on your observed data. The result is a decision that is provably robust — with quantified probability — to the kinds of distributional shifts and rare events that make SAA unreliable in practice.
 
 Play with the slider below to change the value of $\epsilon$ and observe how $\mathbb{Q}$ changes.

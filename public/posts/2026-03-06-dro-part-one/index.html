@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=58812&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
@@ -11,16 +11,16 @@
 Introduction
 In Stochastic Optimization (SO), we are interested in solutions that account for different possible outcomes of uncertain data. Accounting for this uncertainty requires us to define a probability distribution over the uncertain quantities—a forecast error, a demand signal, a compute load—and then optimize an objective defined with respect to that distribution. The choice of how to use the distribution depends on the application: one might minimize expected cost, guard against a high-percentile loss using Conditional Value-at-Risk (CVaR), or enforce a chance constraint that a capacity limit is violated with probability no greater than some threshold. What all of these approaches share is the assumption that we know, or can accurately estimate, the distribution itself. Distributionally Robust Optimization is the framework we reach for when that assumption breaks down.">
 <meta name="author" content="Gabriel Stechschulte">
-<link rel="canonical" href="http://localhost:58812/posts/2026-03-06-dro-part-one/">
+<link rel="canonical" href="http://localhost:1313/posts/2026-03-06-dro-part-one/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:58812/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:58812/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:58812/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:58812/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:58812/safari-pinned-tab.svg">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:58812/posts/2026-03-06-dro-part-one/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/2026-03-06-dro-part-one/">
 <noscript>
     <style>
         #theme-toggle,
@@ -108,7 +108,7 @@ In Stochastic Optimization (SO), we are interested in solutions that account for
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:58812/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
+            <a href="http://localhost:1313/" accesskey="h" title="Gabe&#39;s Gulch (Alt + H)">Gabe&#39;s Gulch</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -134,12 +134,12 @@ In Stochastic Optimization (SO), we are interested in solutions that account for
         </div>
         <ul id="menu">
             <li>
-                <a href="http://localhost:58812/archives/" title="archives">
+                <a href="http://localhost:1313/archives/" title="archives">
                     <span>archives</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:58812/categories/" title="categories">
+                <a href="http://localhost:1313/categories/" title="categories">
                     <span>categories</span>
                 </a>
             </li>
@@ -151,7 +151,7 @@ In Stochastic Optimization (SO), we are interested in solutions that account for
   <header class="post-header">
     
     <h1 class="post-title">Distributionally Robust Optimization - Part 1</h1>
-    <div class="post-meta"><span title='2026-03-06 00:00:00 +0000 UTC'>March 6, 2026</span>&nbsp;·&nbsp;7 min&nbsp;·&nbsp;Gabriel Stechschulte</div>
+    <div class="post-meta"><span title='2026-03-06 00:00:00 +0000 UTC'>March 6, 2026</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Gabriel Stechschulte</div>
   </header>
   <div class="post-content"><p>I recently read the paper <a href="https://ieeexplore.ieee.org/document/11250739">Carbon-Aware Computing for Data Centers with Probabilistic Performance Guarantees </a> which demonstrated the benefits and power of a Distributionally Robust Optimization method and I wanted to dive deeper into the method. This blog post is a result of the deep dive.</p>
 <h2 id="introduction">Introduction</h2>
@@ -163,7 +163,7 @@ In Stochastic Optimization (SO), we are interested in solutions that account for
 \end{equation}
 $$</p>
 <p>where $\delta_{s^i}$ is a Dirac mass centered at the $i$-th historical observation $s^i$.</p>
-<p>Given these samples, a natural approach is <strong>Sample Average Approximation (SAA)</strong>: simply treat $\hat{\mathbb{P}}$ as if it were the true distribution $\mathbb{P}$ and optimize directly against your historical values. SAA is easy to implement and works well when $N$ is large and the future resembles the past. The problem is that $\hat{\mathbb{P}}$ places zero probability on any outcome not in your historical data. If tomorrow&rsquo;s data looks nothing like you have ever seen before—a public holiday, a viral product launch, a seasonal shift—the SAA solution provides no protection whatsoever. The empirical distribution is a point estimate in the space of distributions, and like any point estimate, it carries sampling error that grows more severe as $N$ decreases.</p>
+<p>Given these samples, a natural approach is <strong>Sample Average Approximation (SAA)</strong>: simply treat $\hat{\mathbb{P}}$ as if it were the true distribution $\mathbb{P}$ and optimize directly against your historical values. SAA is easy to implement and works well when $N$ is large and the future resembles the past. The problem is that $\hat{\mathbb{P}}$ places zero probability on any outcome not in your historical data. If tomorrow&rsquo;s data looks nothing like you have ever seen before such as a public holiday, a viral product launch or a seasonal shif. The SAA solution provides no protection whatsoever. The empirical distribution is a point estimate in the space of distributions, and like any point estimate, it carries sampling error that grows more severe as $N$ decreases.</p>
 <p>DRO&rsquo;s central idea is to hedge against this uncertainty by optimizing against the <strong>worst-case distribution in a neighborhood around $\hat{\mathbb{P}}$</strong>. This neighborhood is called the <strong>ambiguity set</strong>, and it quantifies the collection of distributions that are plausibly consistent with the data you have observed. Formally, we define the ambiguity set as a Wasserstein ball:</p>
 <p>$$
 \begin{equation}
@@ -216,8 +216,6 @@ $$</p>
 </ol>
 <p>$$\delta_{\text{final}} = u \cdot \delta$$</p>
 <p>The resulting perturbation satisfies $\frac{1}{N}\sum_i |\delta_{\text{final},i}| \leq \varepsilon$ by construction. Adding $\delta_{\text{final}}$ to the sorted quantiles of $\hat{\mathbb{P}}$ and re-sorting gives the support of a valid sample distribution $\mathbb{Q} \in \mathcal{B}^\varepsilon$.</p>
-<h2 id="summary">Summary</h2>
-<p>DRO addresses a fundamental limitation of SAA: it acknowledges that your historical data is a finite, imperfect window into the true data-generating process, and it builds that acknowledgment directly into the optimization. The Wasserstein ambiguity set provides a geometrically intuitive and statistically principled neighborhood around the empirical distribution, with the radius $\varepsilon$ calibrated to your sample size and confidence requirements. Despite the infinite-dimensional nature of the ambiguity set, the worst-case optimization over it collapses to a tractable finite program that depends only on your observed data. The result is a decision that is provably robust — with quantified probability — to the kinds of distributional shifts and rare events that make SAA unreliable in practice.</p>
 <p>Play with the slider below to change the value of $\epsilon$ and observe how $\mathbb{Q}$ changes.</p>
 </div>
   <div class="marimo-embed">
@@ -245,7 +243,7 @@ $$</p>
   </script>
   <footer class="post-footer">
 <nav class="paginav">
-  <a class="next" href="http://localhost:58812/posts/2025-11-18-stochastic-mpc/">
+  <a class="next" href="http://localhost:1313/posts/2025-11-18-stochastic-mpc/">
     <span class="title">Next »</span>
     <br>
     <span>Stochastic Model Predictive Control</span>
@@ -258,7 +256,7 @@ $$</p>
     </main>
     
 <footer class="footer">
-        <span>&copy; 2026 <a href="http://localhost:58812/">Gabe&#39;s Gulch</a></span> · 
+        <span>&copy; 2026 <a href="http://localhost:1313/">Gabe&#39;s Gulch</a></span> · 
 
     <span>
         Powered by
