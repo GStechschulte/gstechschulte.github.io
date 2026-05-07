@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Economics on Gabe&#39;s Gulch</title>
+    <link>http://localhost:1313/categories/economics/</link>
+    <description>Recent content in Economics on Gabe&#39;s Gulch</description>
+    <generator>Hugo -- 0.150.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 12 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/economics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Construction Versus Finance Worker</title>
+      <link>http://localhost:1313/posts/2026-04-12-labor-margin/</link>
+      <pubDate>Sun, 12 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2026-04-12-labor-margin/</guid>
+      <description>&lt;p&gt;Being able to build something, or at least having some knowledge about how something is built is sort of beautiful. It&amp;rsquo;s a kind of hidden superpower. Whenever I see a new apartment building or street being built, it always crosses my mind how the people in this line of work are paid less, on average, than those in offices. It appears that the work of those building the houses and streets is more valuable than those of the management class, so why are they paid less?&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -10,17 +10,7 @@ main {
 
 /* New below here */
 body {
-    font-family: "Tiempos", monospace;
-    /* font-family: "Fredoka Condensed", monospace; */
-}
-
-/* Font face declaration */
-@font-face {
-    font-display: swap;
-    font-family: "Tiempos";
-    font-style: normal;
-    font-weight: 400;
-    src: url("/fonts/TiemposText-Regular.otf") format("truetype");
+    font-family: "Inter", sans-serif;
 }
 
 /* Code blocks styling */
