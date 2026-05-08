@@ -27,6 +27,11 @@ code {
     line-height: 1.4;
 } */
 
+.first-entry {
+    min-height: unset;
+    margin-bottom: var(--gap);
+}
+
 .marimo-embed {
     margin: 1.5rem 0;
     border: 1px solid var(--border);
