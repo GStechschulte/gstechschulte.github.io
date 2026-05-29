@@ -13,7 +13,8 @@
       <link>http://localhost:1313/posts/2026-05-08-thinking-about-mechanism-design/</link>
       <pubDate>Fri, 29 May 2026 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/2026-05-08-thinking-about-mechanism-design/</guid>
-      <description>&lt;p&gt;Game theory is concerned with understanding the&lt;/p&gt;</description>
+      <description>&lt;p&gt;This post is an ongoing investigation of my &lt;a href=&#34;https://gstechschulte.github.io/posts/2025-09-02-future-of-ai/&#34;&gt;alternative view of AI&lt;/a&gt; and the role of algorithms for multi-agent systems in markets.&lt;/p&gt;
+&lt;p&gt;Game theory is concerned with predicting the behavior of agents participating in an strategic interaction. We can also ask the inverse. Given a desired behavior of the agents, what strategic interaction would give rise to this behavior? For example, there are two firms $A$ and $B$. Each firm can choose to cooperate $C$ or defect $D$ which results in the following payoff matrix&lt;/p&gt;</description>
     </item>
     <item>
       <title>The Construction Versus Finance Worker</title>

@@ -24,8 +24,8 @@ In this example, we would like to introduce a mechanism such that when the firms
 
 |  | **Firm 2: C** | **Firm 2: D** |
 |---|---|---|
-| **Firm 1: C** | (3, 3) | (0, 5 - $\tau) |
-| **Firm 1: D** | (5 - $\tau$, 0) | (1 - $\tau, 1 - $\tau) |
+| **Firm 1: C** | (3, 3) | (0, 5 - $\tau$) |
+| **Firm 1: D** | (5 - $\tau$, 0) | (1 - $\tau$, 1 - $\tau$) |
 
 For $D$ to longer be the dominant strategy, $C$ needs to be at least as good as $D$ in both actions. In other words, the value of $\tau \geq 2$ which results in 
 

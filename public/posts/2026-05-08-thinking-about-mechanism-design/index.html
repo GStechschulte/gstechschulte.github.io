@@ -7,7 +7,8 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Mechanism Design - A Primer | The Feasible Set</title>
 <meta name="keywords" content="">
-<meta name="description" content="Game theory is concerned with the">
+<meta name="description" content="This post is an ongoing investigation of my alternative view of AI and the role of algorithms for multi-agent systems in markets.
+Game theory is concerned with predicting the behavior of agents participating in an strategic interaction. We can also ask the inverse. Given a desired behavior of the agents, what strategic interaction would give rise to this behavior? For example, there are two firms $A$ and $B$. Each firm can choose to cooperate $C$ or defect $D$ which results in the following payoff matrix">
 <meta name="author" content="Gabriel Stechschulte">
 <link rel="canonical" href="http://localhost:1313/posts/2026-05-08-thinking-about-mechanism-design/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
@@ -156,12 +157,80 @@
     <h1 class="post-title entry-hint-parent">
       Mechanism Design - A Primer
     </h1>
-    <div class="post-meta"><span title='2026-05-29 00:00:00 +0000 UTC'>May 29, 2026</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;Gabriel Stechschulte
+    <div class="post-meta"><span title='2026-05-29 00:00:00 +0000 UTC'>May 29, 2026</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte
 
 </div>
   </header> 
 
-  <div class="post-content"><p>Game theory is concerned with the</p>
+  <div class="post-content"><p>This post is an ongoing investigation of my <a href="https://gstechschulte.github.io/posts/2025-09-02-future-of-ai/">alternative view of AI</a> and the role of algorithms for multi-agent systems in markets.</p>
+<p>Game theory is concerned with predicting the behavior of agents participating in an strategic interaction. We can also ask the inverse. Given a desired behavior of the agents, what strategic interaction would give rise to this behavior? For example, there are two firms $A$ and $B$. Each firm can choose to cooperate $C$ or defect $D$ which results in the following payoff matrix</p>
+<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th><strong>Firm 2: C</strong></th>
+          <th><strong>Firm 2: D</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Firm 1: C</strong></td>
+          <td>(3, 3)</td>
+          <td>(0, 5)</td>
+      </tr>
+      <tr>
+          <td><strong>Firm 1: D</strong></td>
+          <td>(5, 0)</td>
+          <td>(1, 1)</td>
+      </tr>
+  </tbody>
+</table>
+<p>The methods of game theory looks at this interaction and predicts what each agent will do. In this interaction, defecting $D$ is the strictly dominant strategy for both firms. Correspondingly, the Nash Equilibrium (NE) is $(D, D)$ with payoffs $(1, 1)$, but the socially efficient outcome is $(C, C)$ with payoffs $(3, 3)$. We can resolve this inefficency using mechanism design.</p>
+<p>In this example, we would like to introduce a mechanism such that when the firms play the <em>modified game</em>, they find it in their interest to produce the socially efficient outcome. The mechanism is <strong>not</strong> changing the agents&rsquo; preferences, rather, the payoff is changed. Imagine a regulation is introduced such that a tax $\tau$ is imposed on firms that engage in $D$. The firm pays $\tau$ to the regulator regardless of what the other firms do. The payoff matrix is now</p>
+<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th><strong>Firm 2: C</strong></th>
+          <th><strong>Firm 2: D</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Firm 1: C</strong></td>
+          <td>(3, 3)</td>
+          <td>(0, 5 - $\tau$)</td>
+      </tr>
+      <tr>
+          <td><strong>Firm 1: D</strong></td>
+          <td>(5 - $\tau$, 0)</td>
+          <td>(1 - $\tau$, 1 - $\tau$)</td>
+      </tr>
+  </tbody>
+</table>
+<p>For $D$ to longer be the dominant strategy, $C$ needs to be at least as good as $D$ in both actions. In other words, the value of $\tau \geq 2$ which results in</p>
+<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th><strong>Firm 2: C</strong></th>
+          <th><strong>Firm 2: D</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Firm 1: C</strong></td>
+          <td>(3, 3)</td>
+          <td>(0, 3)</td>
+      </tr>
+      <tr>
+          <td><strong>Firm 1: D</strong></td>
+          <td>(3, 0)</td>
+          <td>(-1, -1)</td>
+      </tr>
+  </tbody>
+</table>
+<p>$D$ is now weakly dominated by $C$ and $(C, C)$ becomes the NE which is the socially efficient outcome we desired. Notice that the designer of the mechanism does not force the firms to cooperate. The firms remain rational and self-interested.</p>
 
 
   </div>

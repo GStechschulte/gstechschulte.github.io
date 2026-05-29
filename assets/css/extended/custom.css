@@ -58,6 +58,13 @@ code {
     overflow: hidden;
 }
 
+.post-content table {
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* Inline code */
 /* :not(pre) > code {
     font-family: "Anonymous Pro", monospace;
