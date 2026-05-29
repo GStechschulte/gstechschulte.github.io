@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Game-Theory on The Feasible Set</title>
+    <link>http://localhost:1313/categories/game-theory/</link>
+    <description>Recent content in Game-Theory on The Feasible Set</description>
+    <generator>Hugo -- 0.150.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 29 May 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/game-theory/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mechanism Design - A Primer</title>
+      <link>http://localhost:1313/posts/2026-05-08-thinking-about-mechanism-design/</link>
+      <pubDate>Fri, 29 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2026-05-08-thinking-about-mechanism-design/</guid>
+      <description>&lt;p&gt;Game theory is concerned with understanding the&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

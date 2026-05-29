@@ -11,6 +11,25 @@ main {
 /* New below here */
 body {
     font-family: "Inter", sans-serif;
+    line-height: 1.7;
+}
+
+h1, h2, h3 {
+    font-family: 'Marcellus', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+    line-height: 1.2;
+}
+
+.logo a,
+#menu a {
+    font-family: 'Marcellus', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+}
+
+code, pre, kbd, samp {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
 }
 
 /* Code blocks styling */
