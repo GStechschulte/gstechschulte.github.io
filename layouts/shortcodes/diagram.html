@@ -1,0 +1,33 @@
+{{/*
+  Embeds an animated SVG diagram in a sandboxed iframe (same pattern PlanetScale
+  uses for their architecture-diagram posts).
+
+  Usage (page-bundle resource, e.g. an SVG sitting next to this post's index.md):
+    {{< diagram src="autobidding.svg" alt="Autobidding mechanism" >}}
+
+  Params:
+    src    (required) path to the SVG. Relative paths resolve against the page bundle.
+    alt    (required) accessible label for the iframe
+    ratio  (optional) aspect ratio as "w/h", default "684/309" (matches the svg viewBox)
+*/}}
+{{ $src := .Get "src" }}
+{{ $alt := .Get "alt" }}
+{{ $ratio := .Get "ratio" | default "684/309" }}
+<div class="diagram-embed" style="aspect-ratio: {{ $ratio }};">
+  <iframe
+    src="{{ $src }}"
+    title="{{ $alt }}"
+    loading="lazy"
+    sandbox=""
+    style="width:100%; height:100%; border:0; display:block; background:#0d0d0d;"
+  ></iframe>
+</div>
+<style>
+  .diagram-embed {
+    width: 100%;
+    max-width: 900px;
+    margin: 2rem auto;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+</style>

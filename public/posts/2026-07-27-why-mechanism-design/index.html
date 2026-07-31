@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>Economics | The Feasible Set</title>
+<title>Coordinating Agents With Mechanism Design | The Feasible Set</title>
 <meta name="keywords" content="">
-<meta name="description" content="">
-<meta name="author" content="">
-<link rel="canonical" href="http://localhost:1313/categories/economics/">
+<meta name="description" content="Imagine the large scale deployment of AI agents that make decisions on behalf of individuals or firms. For example, in online advertising auctions, an advertiser gives their high-level goal and constraints to a personal bidding agent. The responsibility of the bidding agent is to convert the advertiser&rsquo;s goal and constraints into per-auction bids without human review. How do we ensure: (1) the advertiser&rsquo;s goal is maximized, and (2) the outcome (who wins the auction) is efficient?">
+<meta name="author" content="Gabriel Stechschulte">
+<link rel="canonical" href="http://localhost:1313/posts/2026-07-27-why-mechanism-design/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
@@ -18,8 +18,7 @@
 <link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/categories/economics/index.xml">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/categories/economics/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/2026-07-27-why-mechanism-design/">
 <noscript>
     <style>
         #theme-toggle,
@@ -96,7 +95,7 @@
 
 </head>
 
-<body class="list" id="top">
+<body class="" id="top">
 <script>
     if (localStorage.getItem("pref-theme") === "dark") {
         document.body.classList.add('dark');
@@ -149,43 +148,84 @@
         </ul>
     </nav>
 </header>
-<main class="main"> 
-<header class="page-header">
-  <h1>
-    Economics
-  </h1>
-</header>
+<main class="main">
 
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Coordinating Agents With Mechanism Design
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Coordinating Agents With Mechanism Design
       <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" fill="currentColor">
           <path
             d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
         </svg>
       </span>
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Imagine the large scale deployment of AI agents that make decisions on behalf of individuals or firms. For example, in online advertising auctions, an advertiser gives their high-level goal and constraints to a personal bidding agent. The responsibility of the bidding agent is to convert the advertiser’s goal and constraints into per-auction bids without human review. How do we ensure: (1) the advertiser’s goal is maximized, and (2) the outcome (who wins the auction) is efficient?
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-07-27 00:00:00 +0000 UTC'>July 27, 2026</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to Coordinating Agents With Mechanism Design" href="http://localhost:1313/posts/2026-07-27-why-mechanism-design/"></a>
-</article>
+    </h1>
+    <div class="post-meta"><span title='2026-07-27 00:00:00 +0000 UTC'>July 27, 2026</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;Gabriel Stechschulte
 
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">The Construction Versus Finance Worker
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Being able to build something, or at least having some knowledge about how something is built is sort of beautiful. It’s a kind of hidden superpower. Whenever I see a new apartment building or street being built, it always crosses my mind how the people in this line of work are paid less, on average, than those in offices. It appears that the work of those building the houses and streets is more valuable than those of the management class, so why are they paid less?
-...</p>
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#the-problems" aria-label="The problems">The problems</a><ul>
+                        
+                <li>
+                    <a href="#agent-problem" aria-label="Agent problem">Agent problem</a></li>
+                <li>
+                    <a href="#designer-problem" aria-label="Designer problem">Designer problem</a></li></ul>
+                </li>
+                <li>
+                    <a href="#examples" aria-label="Examples">Examples</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>Imagine the large scale deployment of AI agents that make decisions on behalf of individuals or firms. For example, in online advertising auctions, an advertiser gives their high-level goal and constraints to a personal bidding agent. The responsibility of the bidding agent is to convert the advertiser&rsquo;s goal and constraints into per-auction bids without human review. How do we ensure: (1) the advertiser&rsquo;s goal is maximized, and (2) the outcome (who wins the auction) is efficient?</p>
+<p>This example related to automated bidding in the online-ads industry is part of a more general problem I think we will continue to see more of in the future. AI agents are increasingly being used to negotiate and make decisions in the real world on behalf of the individuals and firms that deploy them. To ensure that the outcomes amongst a set of self-interested agents is efficient, we should adopt methods from the field of mechanism design <sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>.</p>
+<h2 id="the-problems">The problems<a hidden class="anchor" aria-hidden="true" href="#the-problems">#</a></h2>
+<p>When developing such a system, there are fundamentally two core problems that need to be solved: the <strong>agent&rsquo;s problem</strong> and the <strong>designer&rsquo;s problem</strong>. The <strong>agent</strong> is the AI agent whom is responsible for making decions on behalf of the individual or firm whereas the <strong>designer</strong> is the platform or entity responsible for developing the mechanism that governs how scarce resources are allocated amongst strategically interacting self-interested agents.</p>
+<h3 id="agent-problem">Agent problem<a hidden class="anchor" aria-hidden="true" href="#agent-problem">#</a></h3>
+<p>Individuals or firms have an objective they would like to maximize subject to some constraints. Agents are often either: <strong>utility</strong> or <strong>value</strong> maximizing <sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>. Constraints often encode the private preferences of the individual or firm. Constraints can be budgets, return-on-spend, or cost-based, among many others. For example, an advertiser may have a budget they cannot exceed. Or a supply chain vendor may have a cost associated with transporting a product to a warehouse. The AI agent solves this optimization problem and sends the result to the designer. For example, the bidding agent computes the optimal bid amount to send to the auctioneer.</p>
+<h3 id="designer-problem">Designer problem<a hidden class="anchor" aria-hidden="true" href="#designer-problem">#</a></h3>
+<p>Given the output of the agent&rsquo;s problem, what mechanism does the designer use such that the outcome is efficient? Determining whether an outcome is efficient or not depends on the objective of the designer. Do they want to maximize revenue? Fairness? For example, a utility provider may be required to curtail power generated by residiential photovoltaics (PVs). Should the utility: minimize total curtailment? Equal curtailment? Proportional curtailment? Different curtailment rules result in different outcomes.</p>
+<p>One of the hardest parts for the designer is that the inputs to the mechanism ultimately come from the private preferences of the individual or firm. Thus, the mechanism must incentivize them to truthfully reveal their private preferences to their agents as well as the incentive to participate in the mechanism.</p>
+<h2 id="examples">Examples<a hidden class="anchor" aria-hidden="true" href="#examples">#</a></h2>
+<p>Examples of this multi-agent framework are popping up in several domains:</p>
+<ul>
+<li>Energy management (demand response or power curtailment).</li>
+<li>Data networks.</li>
+<li>Public transit.</li>
+<li>Online advertising.</li>
+<li>Supply chain coordination.</li>
+<li>Environmental protection.</li>
+</ul>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>I define the field of mechanism design loosely here and it is meant to encapsulate concepts from social-choice theory and contract-design, among others.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>Agents can also be both (hybrid).&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+
   </div>
-  <footer class="entry-footer"><span title='2026-04-12 00:00:00 +0000 UTC'>April 12, 2026</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte</footer>
-  <a class="entry-link" aria-label="post link to The Construction Versus Finance Worker" href="http://localhost:1313/posts/2026-04-12-labor-margin/"></a>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
 </article>
     </main>
     
@@ -257,6 +297,53 @@
         }
     })
 
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
 </script>
 </body>
 
