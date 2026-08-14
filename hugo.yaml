@@ -3,6 +3,12 @@ languageCode: en-us
 title: The Feasible Set
 theme: PaperMod
 
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
 params:
   math: true
   enableEmoji: true
@@ -33,3 +39,7 @@ menu:
       name: categories
       url: /categories/
       weight: 15
+    - identifier: search
+      name: search
+      url: /search/
+      weight: 20
