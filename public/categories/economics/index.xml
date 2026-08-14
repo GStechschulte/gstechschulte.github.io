@@ -4,15 +4,15 @@
     <title>Economics on The Feasible Set</title>
     <link>http://localhost:1313/categories/economics/</link>
     <description>Recent content in Economics on The Feasible Set</description>
-    <generator>Hugo -- 0.150.0</generator>
+    <generator>Hugo -- 0.164.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 27 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 31 Jul 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/categories/economics/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Coordinating Agents With Mechanism Design</title>
-      <link>http://localhost:1313/posts/2026-07-27-why-mechanism-design/</link>
-      <pubDate>Mon, 27 Jul 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/2026-07-27-why-mechanism-design/</guid>
+      <link>http://localhost:1313/posts/2026-07-31-why-mechanism-design/</link>
+      <pubDate>Fri, 31 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2026-07-31-why-mechanism-design/</guid>
       <description>&lt;p&gt;Imagine the large scale deployment of AI agents that make decisions on behalf of individuals or firms. For example, in online advertising auctions, an advertiser gives their high-level goal and constraints to a personal bidding agent. The responsibility of the bidding agent is to convert the advertiser&amp;rsquo;s goal and constraints into per-auction bids without human review. How do we ensure: (1) the advertiser&amp;rsquo;s goal is maximized, and (2) the outcome (who wins the auction) is efficient?&lt;/p&gt;</description>
     </item>
     <item>

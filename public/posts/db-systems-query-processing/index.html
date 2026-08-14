@@ -227,7 +227,7 @@ which fall into three primary ways for speeding up queries:">
 </ol>
 <h2 id="query-execution">Query execution<a hidden class="anchor" aria-hidden="true" href="#query-execution">#</a></h2>
 <p>The DBMS converts a SQL statement into a <em>query plan</em>. This plan is a DAG of operators where each <em>operator instance</em> is an invocation of an operator on a unique segment of data. A task is a sequence of one or more operator instances. A <em>task set</em> is the collection of executable tasks for a logical pipeline.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> A.id, B.value
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> A.id, B.value
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> A
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">JOIN</span> B
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">USING</span> (id)

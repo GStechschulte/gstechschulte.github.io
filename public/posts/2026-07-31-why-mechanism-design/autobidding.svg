@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="328.711 169.207 684.496 309.078" font-family="ui-monospace,monospace">
+<defs>
+<pattern id="hatch-green" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#1a3a1e"/><line x1="0" y1="0" x2="0" y2="8" stroke="#3dba5f" stroke-width="1.4" opacity="0.35"/></pattern>
+<path id="arrowA" d="M670.256,362.930 L670.256,322.619 L670.469,322.619 L670.469,302.559" fill="none"/>
+<path id="arrowB" d="M902.068,363.289 L902.068,242.725 L780.426,242.725" fill="none"/>
+<path id="arrowC" d="M439.850,361.938 L439.850,243.465 L547.395,243.465" fill="none"/>
+</defs>
+<rect x="328.711" y="169.207" width="684.496" height="309.078" fill="#0d0d0d"/>
+<path d="M670.256,362.930 L670.256,322.619 L670.469,322.619 L670.469,302.559" fill="none" stroke="#888888" stroke-width="1.75" stroke-dasharray="6 5"/>
+<path d="M902.068,363.289 L902.068,242.725 L780.426,242.725" fill="none" stroke="#888888" stroke-width="1.75" stroke-dasharray="6 5"/>
+<path d="M439.850,361.938 L439.850,243.465 L547.395,243.465" fill="none" stroke="#888888" stroke-width="1.75" stroke-dasharray="6 5"/>
+<rect x="556.953" y="193.207" width="223.473" height="99.035" fill="none" stroke="#3dba5f" stroke-width="2"/>
+<rect x="567.139" y="204.045" width="202.386" height="75.372" fill="url(#hatch-green)"/>
+<rect x="567.139" y="204.045" width="202.386" height="75.372" fill="none" stroke="#3dba5f" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="668.332" y="241.731" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="middle" letter-spacing="1">MECHANISM</text>
+<rect x="583.117" y="362.930" width="174.277" height="90.996" fill="#1e1e1e" stroke="#888888" stroke-width="2"/>
+<rect x="590.117" y="369.930" width="160.277" height="76.996" fill="none" stroke="#888888" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="670.256" y="408.428" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="middle" letter-spacing="1">AGENT A</text>
+<rect x="814.930" y="363.289" width="174.277" height="90.996" fill="#1e1e1e" stroke="#888888" stroke-width="2"/>
+<rect x="821.930" y="370.289" width="160.277" height="76.996" fill="none" stroke="#888888" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="902.068" y="408.787" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="middle" letter-spacing="1">AGENT B</text>
+<rect x="352.711" y="361.938" width="174.277" height="90.996" fill="#1e1e1e" stroke="#888888" stroke-width="2"/>
+<rect x="359.711" y="368.938" width="160.277" height="76.996" fill="none" stroke="#888888" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="439.850" y="407.436" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="middle" letter-spacing="1">AGENT C</text>
+<circle r="6" fill="#e06020"><animateMotion dur="3500ms" repeatCount="indefinite" rotate="0" keyPoints="0;1;1;1" keyTimes="0;0.342857;0.457143;1" keySplines="0.45 0 0.55 1;0 0 1 1;0 0 1 1" calcMode="spline"><mpath href="#arrowA"/></animateMotion><animate attributeName="opacity" dur="3500ms" repeatCount="indefinite" values="1;1;0;0" keyTimes="0;0.342857;0.457143;1"/></circle>
+<circle r="6" fill="#e06020"><animateMotion dur="3500ms" repeatCount="indefinite" rotate="0" keyPoints="0;1;1;1" keyTimes="0;0.342857;0.457143;1" keySplines="0.45 0 0.55 1;0 0 1 1;0 0 1 1" calcMode="spline"><mpath href="#arrowB"/></animateMotion><animate attributeName="opacity" dur="3500ms" repeatCount="indefinite" values="1;1;0;0" keyTimes="0;0.342857;0.457143;1"/></circle>
+<circle r="6" fill="#e06020"><animateMotion dur="3500ms" repeatCount="indefinite" rotate="0" keyPoints="0;1;1;1" keyTimes="0;0.342857;0.457143;1" keySplines="0.45 0 0.55 1;0 0 1 1;0 0 1 1" calcMode="spline"><mpath href="#arrowC"/></animateMotion><animate attributeName="opacity" dur="3500ms" repeatCount="indefinite" values="1;1;0;0" keyTimes="0;0.342857;0.457143;1"/></circle>
+<circle r="6" fill="#3dba5f"><animateMotion dur="10500ms" repeatCount="indefinite" rotate="0" keyPoints="1;1;0;0" keyTimes="0;0.152381;0.266667;1" keySplines="0 0 1 1;0.45 0 0.55 1;0 0 1 1" calcMode="spline"><mpath href="#arrowA"/></animateMotion><animate attributeName="opacity" dur="10500ms" repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;0.152381;0.266667;0.266867;1"/></circle>
+<circle r="6" fill="#3dba5f"><animateMotion dur="10500ms" repeatCount="indefinite" rotate="0" keyPoints="1;1;0;0" keyTimes="0;0.485714;0.600000;1" keySplines="0 0 1 1;0.45 0 0.55 1;0 0 1 1" calcMode="spline"><mpath href="#arrowB"/></animateMotion><animate attributeName="opacity" dur="10500ms" repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;0.485714;0.600000;0.600200;1"/></circle>
+<circle r="6" fill="#3dba5f"><animateMotion dur="10500ms" repeatCount="indefinite" rotate="0" keyPoints="1;1;0;0" keyTimes="0;0.819048;0.933333;1" keySplines="0 0 1 1;0.45 0 0.55 1;0 0 1 1" calcMode="spline"><mpath href="#arrowC"/></animateMotion><animate attributeName="opacity" dur="10500ms" repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;0.819048;0.933333;0.933533;1"/></circle>
+</svg>

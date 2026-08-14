@@ -6,12 +6,18 @@ theme: PaperMod
 params:
   math: true
   enableEmoji: true
+  author:
+    name: Gabriel Stechschulte
   homeInfoParams:
     Title: Hi there.
     Content: My name is Gabriel Stechschulte, a software engineer interested in probabilistic programming and optimization.
-    # socialIcons: # optional
-    #   - name: github
-    #     url: https://github.com/GStechschulte
+  socialIcons:
+    - name: github
+      url: https://github.com/GStechschulte
+    - name: x
+      url: https://x.com/__gsteck__
+    - name: linkedin
+      url: https://www.linkedin.com/in/gabrielstechschulte/
   ShowReadingTime: true
   ShowCodeCopyButtons: true
   assets:

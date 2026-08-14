@@ -297,7 +297,7 @@ An OLAP system workload is characterized by complex queries that require scannin
 </ol>
 <p><strong>TODO: insert diagram here</strong></p>
 <p>Furthermore, OLAP queries rarely select a single column, i.e. the projection and predicates often involve different columns. For example:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> product_id,
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> product_id,
 </span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">AVG</span>(price)
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> sales
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span> time <span style="color:#f92672">&gt;</span> <span style="color:#e6db74">&#39;2024-01-01&#39;</span>
