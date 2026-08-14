@@ -1,6 +1,13 @@
 /* Default */
 .post-content {
-    font-size: 12pt;
+    font-size: 11pt;
+}
+
+/* Narrower reading column on single post pages */
+.post-single .post-content {
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* For the main content area */
