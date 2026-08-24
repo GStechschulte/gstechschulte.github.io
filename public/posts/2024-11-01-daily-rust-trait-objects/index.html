@@ -1,187 +1,192 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto">
-
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1314&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="noindex, nofollow">
-<title>Daily Rust - Using Trait Objects That Allow for Different Types | The Feasible Set</title>
-<meta name="keywords" content="">
-<meta name="description" content="Trait objects&hellip;
+<!doctype html>
+<html lang="en-us"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Rust - Using Trait Objects That Allow for Different Types · Gabes Gulch</title>
+  <meta name="title" content="Daily Rust - Using Trait Objects That Allow for Different Types · Gabes Gulch" />
+  <meta name="description" content="Trait objects&hellip;
 Associated types..
 You cannot use associated types with trait objects dyn Trait because:
+The compiler needs to know the exact signatures of methods at compile time to create the vtable for dynamic dispatch. Different implementations may have different function signatures involving the associated types. When using dyn Trait, you must specify the associated types because the vtables for different associated type implementations are not compatible. For example, dyn Y&lt;Y1 = String&gt; and dyn Y&lt;Y1 = u32&gt; have different vtables and cannot be used interchangeably. Rust Copy pub trait Iterator { type Item; fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;; ... } type Item; is an associated type. Each type that implements Iterator must specify what type of item it produces. Here&rsquo;s what it looks like to implement Iterator for a type
+" />
+  <link rel="canonical" href="http://localhost:1313/posts/2024-11-01-daily-rust-trait-objects/" />
 
-The compiler needs to know the exact signatures of methods at compile time to create the vtable for dynamic dispatch.
-Different implementations may have different function signatures involving the associated types.
-When using dyn Trait, you must specify the associated types because the vtables for different associated type implementations
-are not compatible. For example, dyn Y&lt;Y1 = String&gt; and dyn Y&lt;Y1 = u32&gt; have different vtables and cannot be used interchangeably.
+  <meta property="og:site_name" content="Gabes Gulch" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="http://localhost:1313/posts/2024-11-01-daily-rust-trait-objects/" />
+  <meta property="og:title" content="Daily Rust - Using Trait Objects That Allow for Different Types · Gabes Gulch" />
+  <meta property="og:description" content="Trait objects&hellip;
+Associated types..
+You cannot use associated types with trait objects dyn Trait because:
+The compiler needs to know the exact signatures of methods at compile time to create the vtable for dynamic dispatch. Different implementations may have different function signatures involving the associated types. When using dyn Trait, you must specify the associated types because the vtables for different associated type implementations are not compatible. For example, dyn Y&lt;Y1 = String&gt; and dyn Y&lt;Y1 = u32&gt; have different vtables and cannot be used interchangeably. Rust Copy pub trait Iterator { type Item; fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;; ... } type Item; is an associated type. Each type that implements Iterator must specify what type of item it produces. Here&rsquo;s what it looks like to implement Iterator for a type
+" />
+  <meta property="og:image" content="http://localhost:1313/favicon/android-chrome-512x512.png" />
+  <meta property="og:image:width" content="512" />
+  <meta property="og:image:height" content="512" />
+  <meta property="article:published_time" content="2024-11-01T00:00:00Z" />
+  <meta property="article:modified_time" content="2024-11-01T00:00:00Z" />
+  <meta property="article:tag" content="rust" />
 
-pub trait Iterator {
-    type Item;
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Daily Rust - Using Trait Objects That Allow for Different Types · Gabes Gulch" />
+  <meta name="twitter:description" content="Trait objects&hellip;
+Associated types..
+You cannot use associated types with trait objects dyn Trait because:
+The compiler needs to know the exact signatures of methods at compile time to create the vtable for dynamic dispatch. Different implementations may have different function signatures involving the associated types. When using dyn Trait, you must specify the associated types because the vtables for different associated type implementations are not compatible. For example, dyn Y&lt;Y1 = String&gt; and dyn Y&lt;Y1 = u32&gt; have different vtables and cannot be used interchangeably. Rust Copy pub trait Iterator { type Item; fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;; ... } type Item; is an associated type. Each type that implements Iterator must specify what type of item it produces. Here&rsquo;s what it looks like to implement Iterator for a type
+" />
+  <meta name="twitter:image" content="http://localhost:1313/favicon/android-chrome-512x512.png" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "Daily Rust - Using Trait Objects That Allow for Different Types",
+      "description": "Trait objects\u0026hellip;\nAssociated types..\nYou cannot use associated types with trait objects dyn Trait because:\nThe compiler needs to know the exact signatures of methods at compile time to create the vtable for dynamic dispatch. Different implementations may have different function signatures involving the associated types. When using dyn Trait, you must specify the associated types because the vtables for different associated type implementations are not compatible. For example, dyn Y\u0026lt;Y1 = String\u0026gt; and dyn Y\u0026lt;Y1 = u32\u0026gt; have different vtables and cannot be used interchangeably. Rust Copy pub trait Iterator { type Item; fn next(\u0026amp;mut self) -\u0026gt; Option\u0026lt;Self::Item\u0026gt;; ... } type Item; is an associated type. Each type that implements Iterator must specify what type of item it produces. Here\u0026rsquo;s what it looks like to implement Iterator for a type\n",
+      "url": "http:\/\/localhost:1313\/posts\/2024-11-01-daily-rust-trait-objects\/",
+      "datePublished": "2024-11-01T00:00:00Z",
+      "dateModified": "2024-11-01T00:00:00Z",
+      "image": "http:\/\/localhost:1313\/favicon\/android-chrome-512x512.png",
+      "mainEntityOfPage": "http:\/\/localhost:1313\/posts\/2024-11-01-daily-rust-trait-objects\/",
+      "author": { "@id": "http:\/\/localhost:1313\/#person" },
+      "publisher": { "@id": "http:\/\/localhost:1313\/#person" }
+    }
+  </script>
 
-    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;;
-    ...
-}
-type Item; is an associated type. Each type that implements Iterator must specify what type of item it produces. Here&rsquo;s what it looks like to implement Iterator for a type">
-<meta name="author" content="Gabriel Stechschulte">
-<link rel="canonical" href="http://localhost:1314/posts/2024-11-01-daily-rust-trait-objects/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:1314/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1314/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1314/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1314/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1314/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1314/posts/2024-11-01-daily-rust-trait-objects/">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --code-block-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript><link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-
-<link
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400&family=Silkscreen:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/main.min.fe107c9226bd748e68be6805ce0dbbd2b20c696caa0811517640ce7d9006c4ed.css" integrity="sha256-/hB8kia9dI5ovmgFzg270rIMaWyqCBFRdkDOfZAGxO0=" />
+  <link rel="stylesheet" href="/css/custom.min.4ee4d2cc5b3538d1cc601cd2c77857aba9b17730f246699404d7e0f8ac583e7f.css" integrity="sha256-TuTSzFs1ONHMYBzSx3hXq6mxdzDyRmmUBNfg&#43;KxYPn8=" />
+  <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
     integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
     crossorigin="anonymous"
-/>
-<script
+  />
+  <script
     defer
     src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"
     integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8"
     crossorigin="anonymous"
-></script>
-<script
+  ></script>
+  <script
     defer
     src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
     integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
     crossorigin="anonymous"
-></script>
-<script>
+  ></script>
+  <script>
     document.addEventListener("DOMContentLoaded", function () {
-        renderMathInElement(document.body, {
-            delimiters: [
-                { left: "$$", right: "$$", display: true },
-                { left: "$", right: "$", display: false },
-                { left: "\\(", right: "\\)", display: false },
-                { left: "\\[", right: "\\]", display: true },
-            ],
-            throwOnError: false,
-        });
+      renderMathInElement(document.body, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$", right: "$", display: false },
+          { left: "\\(", right: "\\)", display: false },
+          { left: "\\[", right: "\\]", display: true },
+        ],
+        throwOnError: false,
+      });
     });
-</script>
+  </script>
+
+  <script>
+    (function () {
+      var stored = null;
+      try { stored = localStorage.getItem("theme"); } catch (e) {}
+      var theme = stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+
 
 
 </head>
 
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
+<body>
+  <div class="shell">
+    <header class="mobile-header">
+  <a class="mobile-header-title logo-letters" href="/"><span style="--i:0">G</span><span style="--i:1">a</span><span style="--i:2">b</span><span style="--i:3">e</span><span style="--i:4">s</span><span style="--i:5">&nbsp;</span><span style="--i:6">G</span><span style="--i:7">u</span><span style="--i:8">l</span><span style="--i:9">c</span><span style="--i:10">h</span></a>
+  <button type="button" id="sidebar-toggle" class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
 
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="http://localhost:1314/" accesskey="h" title="The Feasible Set (Alt + H)">The Feasible Set</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu">
-            <li>
-                <a href="http://localhost:1314/archives/" title="archives">
-                    <span>archives</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:1314/categories/" title="categories">
-                    <span>categories</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+  </button>
 </header>
-<main class="main">
 
-<article class="post-single">
-  <header class="post-header">
-    
-    <h1 class="post-title entry-hint-parent">
-      Daily Rust - Using Trait Objects That Allow for Different Types
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
-    </h1>
-    <div class="post-meta"><span title='2024-11-01 00:00:00 +0000 UTC'>November 1, 2024</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Gabriel Stechschulte
+<div id="sidebar-backdrop" class="sidebar-backdrop" hidden></div>
 
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-top">
+    <h1 class="site-title"><a href="/" class="logo-letters"><span style="--i:0">G</span><span style="--i:1">a</span><span style="--i:2">b</span><span style="--i:3">e</span><span style="--i:4">s</span><span style="--i:5">&nbsp;</span><span style="--i:6">G</span><span style="--i:7">u</span><span style="--i:8">l</span><span style="--i:9">c</span><span style="--i:10">h</span></a></h1>
+    <p class="bio">My name is Gabriel Stechschulte, a software engineer interested in probabilistic programming and optimization.</p>
+    <div class="sidebar-tools">
+      <button type="button" id="search-open" aria-label="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+
+        <span>Search</span>
+      </button>
+    </div>
+
+    <div class="sidebar-links">
+      <a href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+<span>Home</span></a>
+      <a href="https://github.com/GStechschulte" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+<span>GitHub</span></a>
+      <a href="https://x.com/__gsteck__" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+<span>X</span></a>
+      <a href="https://www.linkedin.com/in/gabrielstechschulte/" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M7 10v7M7 7v.01M12 17v-4a2 2 0 014 0v4M12 10v7"/></svg>
+<span>LinkedIn</span></a>
+      <a href="/index.xml"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg>
+<span>RSS</span></a>
+    </div>
+  </div>
+
+  <div class="sidebar-bottom">
+    <div class="sidebar-links">
+      <a href="/tags/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41L13.42 20.58a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+<span>Tags</span></a>
+      <button type="button" id="theme-toggle" aria-label="Toggle color theme">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+</span>
+        <span class="icon-moon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+</span>
+        <span class="theme-toggle-label">Theme</span>
+      </button>
+    </div>
+    <div class="sidebar-footer">&copy; 2026 Gabes Gulch</div>
+  </div>
+</aside>
+
+    <main class="content">
+      
+  <article class="article">
+    <header class="article-header" id="top">
+      <h1>Daily Rust - Using Trait Objects That Allow for Different Types</h1>
+      <div class="article-meta">
+  <time datetime="2024-11-01">1 November 2024</time>
+  
+  <span class="meta-sep">&middot;</span>
+  <span>2 min read</span>
+  
 </div>
-  </header> 
-  <div class="post-content"><p>Trait objects&hellip;</p>
+
+    </header>
+
+    
+    
+<button type="button" id="toc-toggle" class="toc-toggle" aria-label="Table of contents" aria-expanded="false" aria-controls="toc">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+
+</button>
+<nav class="toc" id="toc">
+  
+  <a href="#options" class="toc-link">Options</a>
+  
+  <a href="#tradeoffs-between-trait-objects-and-generics" class="toc-link">Tradeoffs between trait objects and generics</a>
+  
+</nav>
+    
+
+    <div class="prose">
+      <p>Trait objects&hellip;</p>
 <p>Associated types..</p>
 <p>You cannot use associated types with trait objects <code>dyn Trait</code> because:</p>
 <ol>
@@ -190,156 +195,95 @@ Different implementations may have different function signatures involving the a
 <li>When using <code>dyn Trait</code>, you must specify the associated types because the vtables for different associated type implementations
 are not compatible. For example, <code>dyn Y&lt;Y1 = String&gt;</code> and <code>dyn Y&lt;Y1 = u32&gt;</code> have different vtables and cannot be used interchangeably.</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Rust" data-lang="Rust"><span style="display:flex;"><span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">trait</span> Iterator {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Item</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">next</span>(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> self) -&gt; Option<span style="color:#f92672">&lt;</span>Self::Item<span style="color:#f92672">&gt;</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">..</span>.
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p><code>type Item;</code> is an <em>associated type</em>. Each type that implements <code>Iterator</code> must specify what type of item it produces. Here&rsquo;s what it looks like to implement <code>Iterator</code> for a type</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Rust" data-lang="Rust"><span style="display:flex;"><span><span style="color:#75715e">// (code from the std::env standard library module)
-</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> Iterator <span style="color:#66d9ef">for</span> Args {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Item</span> <span style="color:#f92672">=</span> String;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">next</span>(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> self) -&gt; Option<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">..</span>.
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">..</span>.
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p><code>Args</code> returns <code>String</code> values, so the <code>impl</code> declares <code>type Item = String;</code>. However, what if we wanted&hellip;</p>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">Rust</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Rust" data-lang="Rust"><span class="line"><span class="cl"><span class="k">pub</span><span class="w"> </span><span class="k">trait</span><span class="w"> </span><span class="nb">Iterator</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">type</span> <span class="nc">Item</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">fn</span> <span class="nf">next</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="bp">self</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="nb">Option</span><span class="o">&lt;</span><span class="bp">Self</span>::<span class="n">Item</span><span class="o">&gt;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="o">..</span><span class="p">.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div>
+</div>
+<p><code>type Item;</code> is an <em>associated type</em>. Each type that implements <code>Iterator</code> must specify what type of item it produces. Here&rsquo;s what it looks like to implement <code>Iterator</code> for a type</p>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">Rust</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Rust" data-lang="Rust"><span class="line"><span class="cl"><span class="c1">// (code from the std::env standard library module)
+</span></span></span><span class="line"><span class="cl"><span class="k">impl</span><span class="w"> </span><span class="nb">Iterator</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">Args</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">type</span> <span class="nc">Item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">String</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">fn</span> <span class="nf">next</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="bp">self</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="nb">Option</span><span class="o">&lt;</span><span class="nb">String</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="o">..</span><span class="p">.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="o">..</span><span class="p">.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div>
+</div>
+<p><code>Args</code> returns <code>String</code> values, so the <code>impl</code> declares <code>type Item = String;</code>. However, what if we wanted&hellip;</p>
 <p>Performance implications of <code>Box&lt;Trait&gt;</code> vs <code>enum</code> delegation&hellip;</p>
-<h2 id="options">Options<a hidden class="anchor" aria-hidden="true" href="#options">#</a></h2>
+<h2 id="options">Options</h2>
 <p>Associated type where the associated type is an <code>enum</code>?</p>
-<h2 id="tradeoffs-between-trait-objects-and-generics">Tradeoffs between trait objects and generics<a hidden class="anchor" aria-hidden="true" href="#tradeoffs-between-trait-objects-and-generics">#</a></h2>
+<h2 id="tradeoffs-between-trait-objects-and-generics">Tradeoffs between trait objects and generics</h2>
 <p>Use a trait object if your library is designed to be extensible. If not, an <code>enum</code> may be sufficient.</p>
 <p>There are primarily two ways to make use of traits: as trait bounds for generics or trait objects.</p>
 
+    </div>
 
-  </div>
-
-  <footer class="post-footer">
-    <ul class="post-tags">
-    </ul>
-  </footer>
-</article>
-    </main>
     
-<footer class="footer">
-        <span>&copy; 2026 <a href="http://localhost:1314/">The Feasible Set</a></span> · 
+    <div class="tag-list">
+      
+      <a class="tag" href="/tags/rust/">rust</a>
+      
+    </div>
+    
 
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
+    
+    
+    
+    
+    <nav class="article-pagination">
+      <a class="prev" href="/posts/db-systems-blog-series-overview/"><span class="pagination-arrow">&larr;</span><span class="pagination-title">Database Systems - Series Overview</span></a>
+      <a class="next" href="/posts/2024-11-28-daily-rust-types/"><span class="pagination-title">Daily Rust - Memory Layout of Different Types</span><span class="pagination-arrow">&rarr;</span></a>
+    </nav>
+    
+    
+  </article>
 
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
+    </main>
+  </div>
+  <div id="search-modal" class="search-modal" hidden>
+  <div class="search-backdrop" id="search-backdrop"></div>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="Search">
+    <div class="search-input-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
 
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
+      <input id="search-input" type="text" placeholder="Search posts and projects&hellip;" autocomplete="off"
+        data-index-url="/index.json"
+        data-recent-posts="3"
+        data-recent-projects="3" />
+      <button type="button" id="search-close" aria-label="Close search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+</button>
+    </div>
+    <div id="search-results" class="search-results"></div>
+  </div>
+</div>
 
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-<script>
-    document.querySelectorAll('pre > code').forEach((codeblock) => {
-        const container = codeblock.parentNode.parentNode;
-
-        const copybutton = document.createElement('button');
-        copybutton.classList.add('copy-code');
-        copybutton.innerHTML = 'copy';
-
-        function copyingDone() {
-            copybutton.innerHTML = 'copied!';
-            setTimeout(() => {
-                copybutton.innerHTML = 'copy';
-            }, 2000);
-        }
-
-        copybutton.addEventListener('click', (cb) => {
-            if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(codeblock.textContent);
-                copyingDone();
-                return;
-            }
-
-            const range = document.createRange();
-            range.selectNodeContents(codeblock);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            try {
-                document.execCommand('copy');
-                copyingDone();
-            } catch (e) { };
-            selection.removeRange(range);
-        });
-
-        if (container.classList.contains("highlight")) {
-            container.appendChild(copybutton);
-        } else if (container.parentNode.firstChild == container) {
-            
-        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
-            
-            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
-        } else {
-            
-            codeblock.parentNode.appendChild(copybutton);
-        }
-    });
-</script>
+  <script defer src="/js/main.7fa1375a71832ff60a47c91903a2933f00202e8166b90792375d116e64979d4c.js" integrity="sha256-f6E3WnGDL/YKR8kZA6KTPwAgLoFmuQeSN10RbmSXnUw="></script>
 </body>
-
 </html>

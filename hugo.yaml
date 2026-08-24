@@ -1,45 +1,54 @@
 baseURL: https://gstechschulte.github.io
 languageCode: en-us
-title: The Feasible Set
-theme: PaperMod
+title: Gabes Gulch
+theme: hugo-omegion
+enableEmoji: true
+enableRobotsTXT: true
 
 outputs:
   home:
     - HTML
     - RSS
-    - JSON
+    - searchindex
+
+outputFormats:
+  searchindex:
+    mediaType: application/json
+    baseName: index
+    isPlainText: true
+    notAlternative: true
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+  highlight:
+    style: github
+    noClasses: false
+  tableOfContents:
+    startLevel: 2
+    endLevel: 4
+
+taxonomies:
+  tag: tags
 
 params:
   math: true
   enableEmoji: true
+  enableSearch: true
+  enableTableOfContents: true
+  description: Gabriel Stechschulte, a software engineer interested in probabilistic programming and optimization.
   author:
     name: Gabriel Stechschulte
-  homeInfoParams:
-    Title: Hi there.
-    Content: My name is Gabriel Stechschulte, a software engineer interested in probabilistic programming and optimization.
-  socialIcons:
-    - name: github
-      url: https://github.com/GStechschulte
-    - name: x
-      url: https://x.com/__gsteck__
-    - name: linkedin
-      url: https://www.linkedin.com/in/gabrielstechschulte/
-  ShowReadingTime: true
-  ShowCodeCopyButtons: true
-  assets:
-    disableFingerprinting: true
-
-menu:
-  main:
-    - identifier: archives
-      name: archives
-      url: /archives/
-      weight: 10
-    - identifier: categories
-      name: categories
-      url: /categories/
-      weight: 15
-    - identifier: search
-      name: search
-      url: /search/
-      weight: 20
+    bio:
+      - My name is Gabriel Stechschulte, a software engineer interested in probabilistic programming and optimization.
+    links:
+      - name: GitHub
+        url: https://github.com/GStechschulte
+        icon: github
+      - name: X
+        url: https://x.com/__gsteck__
+        icon: x
+      - name: LinkedIn
+        url: https://www.linkedin.com/in/gabrielstechschulte/
+        icon: linkedin

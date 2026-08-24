@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Economics on Gabes Gulch</title>
+		<link>http://localhost:1313/tags/economics/</link>
+		<description>Recent content in Economics on Gabes Gulch</description>
+		<generator>Hugo</generator>
+		<language>en-us</language>
+		
+		
+		
+		
+			<lastBuildDate>Fri, 31 Jul 2026 00:00:00 +0000</lastBuildDate>
+		
+			<atom:link href="http://localhost:1313/tags/economics/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Coordinating Agents With Mechanism Design</title>
+				<link>http://localhost:1313/posts/2026-07-31-why-mechanism-design/</link>
+				<pubDate>Fri, 31 Jul 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/posts/2026-07-31-why-mechanism-design/</guid>
+				<description>&lt;p&gt;Imagine the large scale deployment of AI agents that make decisions on behalf of individuals or firms. For example, in online advertising auctions, an advertiser gives their high-level goal and constraints to a personal bidding agent. The responsibility of the bidding agent is to convert the advertiser&amp;rsquo;s goal and constraints into per-auction bids without human review. How do we ensure: (1) the advertiser&amp;rsquo;s goal is maximized, and (2) the outcome (who wins the auction) is efficient?&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>The Construction Versus Finance Worker</title>
+				<link>http://localhost:1313/posts/2026-04-12-labor-margin/</link>
+				<pubDate>Sun, 12 Apr 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/posts/2026-04-12-labor-margin/</guid>
+				<description>&lt;p&gt;Being able to build something, or at least having some knowledge about how something is built is sort of beautiful. It&amp;rsquo;s a kind of hidden superpower. Whenever I see a new apartment building or street being built, it always crosses my mind how the people in this line of work are paid less, on average, than those in offices. It appears that the work of those building the houses and streets is more valuable than those of the management class, so why are they paid less?&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

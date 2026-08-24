@@ -2,7 +2,7 @@
 title = 'Reflection - Atlas Shrugged'
 date = 2025-03-01
 author = 'Gabriel Stechschulte'
-categories = ['reflection']
+tags = ['reflection']
 draft = true
 ShowToc = true
 TocOpen = false  # Optional - keeps TOC open by default

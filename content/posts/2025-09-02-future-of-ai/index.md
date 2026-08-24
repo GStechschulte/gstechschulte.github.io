@@ -2,7 +2,7 @@
 title = "Alternative View of AI"
 date = 2025-09-02
 author = "Gabriel Stechschulte"
-categories = ["ramblings"]
+tags = ["ramblings"]
 ShowToc = true
 TocOpen = false  # Optional - keeps TOC open by default
 draft = false

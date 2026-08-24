@@ -2,7 +2,7 @@
 title = 'Daily Rust - Using Trait Objects That Allow for Different Types'
 date = 2024-11-01
 author = 'Gabriel Stechschulte'
-categories = ['rust']
+tags = ['rust']
 draft = true
 +++
 

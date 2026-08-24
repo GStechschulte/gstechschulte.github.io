@@ -3,7 +3,7 @@ title: 'Advanced Interpret Usage in Bambi'
 date: 2023-12-09
 author: 'Gabriel Stechschulte'
 draft: false
-categories: ['probabilistic-programming']
+tags: ['probabilistic-programming']
 ---
 
 <!--eofm-->

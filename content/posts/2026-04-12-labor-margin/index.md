@@ -2,7 +2,7 @@
 title = "The Construction Versus Finance Worker"
 date = 2026-04-12
 author = "Gabriel Stechschulte"
-categories = ["economics"]
+tags = ["economics"]
 ShowToc = true
 TocOpen = false
 draft = false

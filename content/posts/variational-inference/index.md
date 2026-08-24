@@ -2,7 +2,7 @@
 title = 'Variational Inference - Evidence Lower Bound'
 date = 2022-06-03T18:43:46+02:00
 author = 'Gabriel Stechschulte'
-categories = ['probabilistic-programming']
+tags = ['probabilistic-programming']
 draft = false
 math = true
 +++

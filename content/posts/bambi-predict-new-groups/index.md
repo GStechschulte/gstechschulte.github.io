@@ -3,7 +3,7 @@ title: 'Predict New Groups with Hierarchical Models in Bambi'
 date: 2023-10-10
 author: 'Gabriel Stechschulte'
 draft: false
-categories: ['probabilistic-programming']
+tags: ['probabilistic-programming']
 ---
 
 <!--eofm-->

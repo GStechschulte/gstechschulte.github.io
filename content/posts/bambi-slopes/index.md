@@ -3,7 +3,7 @@ title: 'Google Summer of Code - Average Predictive Slopes'
 date: 2023-08-01
 author: 'Gabriel Stechschulte'
 draft: false
-categories: ['probabilistic-programming', 'gsoc']
+tags: ['probabilistic-programming', 'gsoc']
 ---
 
 <!--eofm-->

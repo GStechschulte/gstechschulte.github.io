@@ -2,7 +2,7 @@
 title = "Reproducing Uber's Marketplace Optimization"
 date = 2025-09-15
 author = "Gabriel Stechschulte"
-categories = ["optimization", "jax"]
+tags = ["optimization", "jax"]
 ShowToc = true
 TocOpen = false
 draft = false

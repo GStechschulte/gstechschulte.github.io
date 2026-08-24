@@ -3,7 +3,7 @@ title: 'Alternative Samplers to NUTS in Bambi'
 date: 2024-03-29
 author: 'Gabriel Stechschulte'
 draft: false
-categories: ['probabilistic-programming']
+tags: ['probabilistic-programming']
 ---
 
 <!--eofm-->

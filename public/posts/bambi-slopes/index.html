@@ -1,184 +1,204 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto">
+<!doctype html>
+<html lang="en-us"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Google Summer of Code - Average Predictive Slopes · Gabes Gulch</title>
+  <meta name="title" content="Google Summer of Code - Average Predictive Slopes · Gabes Gulch" />
+  <meta name="description" content=" It is currently the beginning of week ten of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the basic functionality of the plot_slopes. Subsequently, week 11 was reserved to further develop the plot_slopes function, and to write tests and a notebook for the documentation, respectively.
+However, at the beginning of week ten, I have a PR open with the majority of the functionality that marginaleffects has for slopes. In addition, I also exposed the slopes function, added tests, and have a PR open for the documentation.
+" />
+  <link rel="canonical" href="http://localhost:1313/posts/bambi-slopes/" />
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="noindex, nofollow">
-<title>Google Summer of Code - Average Predictive Slopes | The Feasible Set</title>
-<meta name="keywords" content="">
-<meta name="description" content="It is currently the beginning of week ten of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the basic functionality of the plot_slopes. Subsequently, week 11 was reserved to further develop the plot_slopes function, and to write tests and a notebook for the documentation, respectively.
-However, at the beginning of week ten, I have a PR open with the majority of the functionality that marginaleffects has for slopes. In addition, I also exposed the slopes function, added tests, and have a PR open for the documentation.">
-<meta name="author" content="Gabriel Stechschulte">
-<link rel="canonical" href="http://localhost:1313/posts/bambi-slopes/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/bambi-slopes/">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
+  <meta property="og:site_name" content="Gabes Gulch" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="http://localhost:1313/posts/bambi-slopes/" />
+  <meta property="og:title" content="Google Summer of Code - Average Predictive Slopes · Gabes Gulch" />
+  <meta property="og:description" content=" It is currently the beginning of week ten of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the basic functionality of the plot_slopes. Subsequently, week 11 was reserved to further develop the plot_slopes function, and to write tests and a notebook for the documentation, respectively.
+However, at the beginning of week ten, I have a PR open with the majority of the functionality that marginaleffects has for slopes. In addition, I also exposed the slopes function, added tests, and have a PR open for the documentation.
+" />
+  <meta property="og:image" content="http://localhost:1313/favicon/android-chrome-512x512.png" />
+  <meta property="og:image:width" content="512" />
+  <meta property="og:image:height" content="512" />
+  <meta property="article:published_time" content="2023-08-01T00:00:00Z" />
+  <meta property="article:modified_time" content="2023-08-01T00:00:00Z" />
+  <meta property="article:tag" content="probabilistic-programming" />
+  <meta property="article:tag" content="gsoc" />
 
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --code-block-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Google Summer of Code - Average Predictive Slopes · Gabes Gulch" />
+  <meta name="twitter:description" content=" It is currently the beginning of week ten of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the basic functionality of the plot_slopes. Subsequently, week 11 was reserved to further develop the plot_slopes function, and to write tests and a notebook for the documentation, respectively.
+However, at the beginning of week ten, I have a PR open with the majority of the functionality that marginaleffects has for slopes. In addition, I also exposed the slopes function, added tests, and have a PR open for the documentation.
+" />
+  <meta name="twitter:image" content="http://localhost:1313/favicon/android-chrome-512x512.png" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "Google Summer of Code - Average Predictive Slopes",
+      "description": " It is currently the beginning of week ten of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the basic functionality of the plot_slopes. Subsequently, week 11 was reserved to further develop the plot_slopes function, and to write tests and a notebook for the documentation, respectively.\nHowever, at the beginning of week ten, I have a PR open with the majority of the functionality that marginaleffects has for slopes. In addition, I also exposed the slopes function, added tests, and have a PR open for the documentation.\n",
+      "url": "http:\/\/localhost:1313\/posts\/bambi-slopes\/",
+      "datePublished": "2023-08-01T00:00:00Z",
+      "dateModified": "2023-08-01T00:00:00Z",
+      "image": "http:\/\/localhost:1313\/favicon\/android-chrome-512x512.png",
+      "mainEntityOfPage": "http:\/\/localhost:1313\/posts\/bambi-slopes\/",
+      "author": { "@id": "http:\/\/localhost:1313\/#person" },
+      "publisher": { "@id": "http:\/\/localhost:1313\/#person" }
+    }
+  </script>
 
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript><link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-
-<link
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400&family=Silkscreen:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/main.min.fe107c9226bd748e68be6805ce0dbbd2b20c696caa0811517640ce7d9006c4ed.css" integrity="sha256-/hB8kia9dI5ovmgFzg270rIMaWyqCBFRdkDOfZAGxO0=" />
+  <link rel="stylesheet" href="/css/custom.min.4ee4d2cc5b3538d1cc601cd2c77857aba9b17730f246699404d7e0f8ac583e7f.css" integrity="sha256-TuTSzFs1ONHMYBzSx3hXq6mxdzDyRmmUBNfg&#43;KxYPn8=" />
+  <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
     integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
     crossorigin="anonymous"
-/>
-<script
+  />
+  <script
     defer
     src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"
     integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8"
     crossorigin="anonymous"
-></script>
-<script
+  ></script>
+  <script
     defer
     src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
     integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
     crossorigin="anonymous"
-></script>
-<script>
+  ></script>
+  <script>
     document.addEventListener("DOMContentLoaded", function () {
-        renderMathInElement(document.body, {
-            delimiters: [
-                { left: "$$", right: "$$", display: true },
-                { left: "$", right: "$", display: false },
-                { left: "\\(", right: "\\)", display: false },
-                { left: "\\[", right: "\\]", display: true },
-            ],
-            throwOnError: false,
-        });
+      renderMathInElement(document.body, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$", right: "$", display: false },
+          { left: "\\(", right: "\\)", display: false },
+          { left: "\\[", right: "\\]", display: true },
+        ],
+        throwOnError: false,
+      });
     });
-</script>
+  </script>
+
+  <script>
+    (function () {
+      var stored = null;
+      try { stored = localStorage.getItem("theme"); } catch (e) {}
+      var theme = stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+
 
 
 </head>
 
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
+<body>
+  <div class="shell">
+    <header class="mobile-header">
+  <a class="mobile-header-title logo-letters" href="/"><span style="--i:0">G</span><span style="--i:1">a</span><span style="--i:2">b</span><span style="--i:3">e</span><span style="--i:4">s</span><span style="--i:5">&nbsp;</span><span style="--i:6">G</span><span style="--i:7">u</span><span style="--i:8">l</span><span style="--i:9">c</span><span style="--i:10">h</span></a>
+  <button type="button" id="sidebar-toggle" class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
 
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="The Feasible Set (Alt + H)">The Feasible Set</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu">
-            <li>
-                <a href="http://localhost:1313/archives/" title="archives">
-                    <span>archives</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/categories/" title="categories">
-                    <span>categories</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/search/" title="search (Alt &#43; /)" accesskey=/>
-                    <span>search</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+  </button>
 </header>
-<main class="main">
 
-<article class="post-single">
-  <header class="post-header">
-    
-    <h1 class="post-title entry-hint-parent">
-      Google Summer of Code - Average Predictive Slopes
-    </h1>
-    <div class="post-meta"><span title='2023-08-01 00:00:00 +0000 UTC'>August 1, 2023</span>&nbsp;·&nbsp;18 min&nbsp;·&nbsp;Gabriel Stechschulte
+<div id="sidebar-backdrop" class="sidebar-backdrop" hidden></div>
 
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-top">
+    <h1 class="site-title"><a href="/" class="logo-letters"><span style="--i:0">G</span><span style="--i:1">a</span><span style="--i:2">b</span><span style="--i:3">e</span><span style="--i:4">s</span><span style="--i:5">&nbsp;</span><span style="--i:6">G</span><span style="--i:7">u</span><span style="--i:8">l</span><span style="--i:9">c</span><span style="--i:10">h</span></a></h1>
+    <p class="bio">My name is Gabriel Stechschulte, a software engineer interested in probabilistic programming and optimization.</p>
+    <div class="sidebar-tools">
+      <button type="button" id="search-open" aria-label="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+
+        <span>Search</span>
+      </button>
+    </div>
+
+    <div class="sidebar-links">
+      <a href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+<span>Home</span></a>
+      <a href="https://github.com/GStechschulte" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+<span>GitHub</span></a>
+      <a href="https://x.com/__gsteck__" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+<span>X</span></a>
+      <a href="https://www.linkedin.com/in/gabrielstechschulte/" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M7 10v7M7 7v.01M12 17v-4a2 2 0 014 0v4M12 10v7"/></svg>
+<span>LinkedIn</span></a>
+      <a href="/index.xml"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg>
+<span>RSS</span></a>
+    </div>
+  </div>
+
+  <div class="sidebar-bottom">
+    <div class="sidebar-links">
+      <a href="/tags/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41L13.42 20.58a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+<span>Tags</span></a>
+      <button type="button" id="theme-toggle" aria-label="Toggle color theme">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+</span>
+        <span class="icon-moon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+</span>
+        <span class="theme-toggle-label">Theme</span>
+      </button>
+    </div>
+    <div class="sidebar-footer">&copy; 2026 Gabes Gulch</div>
+  </div>
+</aside>
+
+    <main class="content">
+      
+  <article class="article">
+    <header class="article-header" id="top">
+      <h1>Google Summer of Code - Average Predictive Slopes</h1>
+      <div class="article-meta">
+  <time datetime="2023-08-01">1 August 2023</time>
+  
+  <span class="meta-sep">&middot;</span>
+  <span>21 min read</span>
+  
 </div>
-  </header> 
-  <div class="post-content"><p>It is currently the beginning of week ten of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the basic functionality of the <code>plot_slopes</code>. Subsequently, week 11 was reserved to further develop the <code>plot_slopes</code> function, and to write tests and a notebook for the documentation, respectively.</p>
+
+    </header>
+
+    
+    
+<button type="button" id="toc-toggle" class="toc-toggle" aria-label="Table of contents" aria-expanded="false" aria-controls="toc">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+
+</button>
+<nav class="toc" id="toc">
+  
+  <a href="#interpretation-of-regression-coefficients" class="toc-link">Interpretation of Regression Coefficients</a>
+  
+  <a href="#average-predictive-slopes" class="toc-link">Average Predictive Slopes</a>
+  
+  <a href="#computing-slopes" class="toc-link">Computing Slopes</a>
+  
+  <a href="#logistic-regression" class="toc-link">Logistic Regression</a>
+  
+</nav>
+    
+
+    <div class="prose">
+      <!--eofm-->
+<p>It is currently the beginning of week ten of Google Summer of Code 2023. According to the original deliverables table outlined in my proposal, the goal was to have opened a draft PR for the basic functionality of the <code>plot_slopes</code>. Subsequently, week 11 was reserved to further develop the <code>plot_slopes</code> function, and to write tests and a notebook for the documentation, respectively.</p>
 <p>However, at the beginning of week ten, I have a <a href="https://github.com/bambinos/bambi/pull/699">PR</a> open with the majority of the functionality that <a href="https://vincentarelbundock.github.io/marginaleffects/">marginaleffects</a> has for <code>slopes</code>. In addition, I also exposed the <code>slopes</code> function, added tests, and have a <a href="https://github.com/bambinos/bambi/pull/701">PR</a> open for the documentation.</p>
 <p>Below is the documentation for <code>slopes</code> and <code>plot_slopes</code> in Bambi, and is a culmination of the work completed in weeks five through nine.</p>
-<h1 id="plot-slopes">Plot Slopes<a hidden class="anchor" aria-hidden="true" href="#plot-slopes">#</a></h1>
+<h1 id="plot-slopes">Plot Slopes</h1>
 <p>Bambi&rsquo;s sub-package <code>interpret</code> features a set of functions to help interpret complex regression models. The sub-package is inspired by the R package <a href="https://vincentarelbundock.github.io/marginaleffects/articles/predictions.html#conditional-adjusted-predictions-plot">marginaleffects</a>. In this notebook we will discuss two functions <code>slopes</code> and <code>plot_slopes</code>. These two functions allow the modeler to easier interpret slopes, either by a inspecting a summary output or plotting them.</p>
 <p>Below, it is described why estimating the slope of the prediction function is useful in interpreting generalized linear models (GLMs), how this methodology is implemented in Bambi, and how to use <code>slopes</code> and <code>plot_slopes</code>. It is assumed that the reader is familiar with the basics of GLMs. If not, refer to the Bambi <a href="https://bambinos.github.io/bambi/notebooks/how_bambi_works.html#Link-functions">Basic Building Blocks</a> example.</p>
-<h2 id="interpretation-of-regression-coefficients">Interpretation of Regression Coefficients<a hidden class="anchor" aria-hidden="true" href="#interpretation-of-regression-coefficients">#</a></h2>
+<h2 id="interpretation-of-regression-coefficients">Interpretation of Regression Coefficients</h2>
 <p>Assuming we have fit a linear regression model of the form</p>
 <p>$$y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \dots + \beta_k x_k + \epsilon$$</p>
 <p>the &ldquo;safest&rdquo; interpretation of the regression coefficients $\beta$ is as a comparison between two groups of items that differ by $1$ in the relevant predictor variable $x_i$ while being identical in all the other predictors. Formally, the predicted difference between two items $i$ and $j$ that differ by an amount $n$ on predictor $k$, but are identical on all other predictors, the predicted difference is $y_i - y_j$ is $\beta_kx$, on average.</p>
 <p>However, once we move away from a regression model with a Gaussian response, the identity function, and no interaction terms, the interpretation of the coefficients are not as straightforward. For example, in a logistic regression model, the coefficients are on a different scale and are measured in logits (log odds), not probabilities or percentage points. Thus, you cannot interpret the coefficents as a &ldquo;one unit increase in $x_k$ is associated with an $n$ percentage point decrease in $y$&rdquo;. First, the logits must be converted to the probability scale. Secondly, a one unit change in $x_k$ may produce a larger or smaller change in the outcome, depending upon how far away from zero the logits are.</p>
 <p><code>slopes</code> and <code>plot_slopes</code>, by default, computes quantities of interest on the response scale for GLMs. For example, for a logistic regression model, this is the probability scale, and for a Poisson regression model, this is the count scale.</p>
-<h3 id="interpreting-interaction-effects">Interpreting interaction effects<a hidden class="anchor" aria-hidden="true" href="#interpreting-interaction-effects">#</a></h3>
+<h3 id="interpreting-interaction-effects">Interpreting interaction effects</h3>
 <p>Specifying interactions in a regression model is a way of allowing parameters to be conditional on certain aspects of the data. By contrast, for a model with no interactions, the parameters are <strong>not</strong> conditional and thus, the value of one parameter is not dependent on the value of another covariate. However, once interactions exist, multiple parameters are always in play at the same time. Additionally, interactions can be specified for either categorical, continuous, or both types of covariates. Thus, making the interpretation of the parameters more difficult.</p>
 <p>With GLMs, every covariate essentially interacts with itself because of the link function. To demonstrate parameters interacting with themselves, consider the mean of a Gaussian linear model with an identity link function</p>
 <p>$$\mu = \alpha + \beta x$$</p>
@@ -187,7 +207,7 @@ However, at the beginning of week ten, I have a PR open with the majority of the
 <p>And taking the derivative of $p$ with respect to $x$ yields</p>
 <p>$$\frac{\partial p}{\partial x} = \frac{\beta}{2(1 + cosh(\alpha + \beta x))}$$</p>
 <p>Since $x$ appears in the derivative, the impact of a change in $x$ depends upon $x$, i.e., an interaction with itself even though no interaction term was specified in the model.Thus, visualizing the rate of change in the mean response with respect to a covariate $x$ becomes a useful tool in interpreting GLMs.</p>
-<h2 id="average-predictive-slopes">Average Predictive Slopes<a hidden class="anchor" aria-hidden="true" href="#average-predictive-slopes">#</a></h2>
+<h2 id="average-predictive-slopes">Average Predictive Slopes</h2>
 <p>Here, we adopt the notation from Chapter 14.4 of <a href="https://avehtari.github.io/ROS-Examples/">Regression and Other Stories</a> to first describe average predictive differences which is essential to computing <code>slopes</code>, and then secondly, average predictive slopes. Assume we have fit a Bambi model predicting an outcome $Y$ based on inputs $X$ and parameters $\theta$. Consider the following scalar inputs:</p>
 <p>$$w: \text{the input of interest}$$
 $$c: \text{all the other inputs}$$
@@ -197,7 +217,7 @@ $$X = (w, c)$$</p>
 <p>Selecting $w$ and $w^{\text{value}+\epsilon}$ and averaging over all other inputs $c$ in the data gives you a new &ldquo;hypothetical&rdquo; dataset and corresponds to counting all pairs of transitions of $(w^\text{value})$ to $(w^{\text{value}+\epsilon})$, i.e., differences in $w$ with $c$ held constant. The difference between these two terms is the average predictive difference.</p>
 <p>However, to obtain the slope estimate, we need to take the above formula and divide by $\epsilon$ to obtain the <em>average predictive slope</em>:</p>
 <p>$$\text{average predictive slope} = \frac{\mathbb{E}(y|w^{\text{value}}, c, \theta) - \mathbb{E}(y|w^{\text{value}+\epsilon}, c, \theta)}{\epsilon}$$</p>
-<h2 id="computing-slopes">Computing Slopes<a hidden class="anchor" aria-hidden="true" href="#computing-slopes">#</a></h2>
+<h2 id="computing-slopes">Computing Slopes</h2>
 <p>The objective of <code>slopes</code> and <code>plot_slopes</code> is to compute the rate of change (slope) in the mean of the response $y$ with respect to a small change $\epsilon$ in the predictor $x$ conditional on other covariates $c$ specified in the model. $w$ is specified by the user and the original value is either provided by the user, else a default value (the mean) is computed by Bambi. The values for the other covariates $c$ specified in the model can be determined under the following three scenarios:</p>
 <ol>
 <li>user provided values</li>
@@ -207,11 +227,23 @@ $$X = (w, c)$$</p>
 <p>In the case of (1) and (2) above, Bambi assembles all pairwise combinations (transitions) of $w$ and $c$ into a new &ldquo;hypothetical&rdquo; dataset. In (3), Bambi uses the original $c$, and adds a small amount $\epsilon$ to each unit of observation&rsquo;s $w$. In each scenario, predictions are made on the data using the fitted model. Once the predictions are made, comparisons are computed using the posterior samples by taking the difference in the predicted outcome for each pair of transitions and dividing by $\epsilon$. The average of these slopes is the average predictive slopes.</p>
 <p>For variables $w$ with a string or categorical data type, the <code>comparisons</code> function is called to compute the expected difference in group means. Please refer to the <a href="https://bambinos.github.io/bambi/notebooks/plot_comparisons.html">comparisons</a> documentation for more details.</p>
 <p>Below, we present several examples showing how to use Bambi to perform these computations for us, and to return either a summary dataframe, or a visualization of the results.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> arviz <span style="color:#66d9ef">as</span> az
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> bambi <span style="color:#66d9ef">as</span> bmb
-</span></span></code></pre></div><h2 id="logistic-regression">Logistic Regression<a hidden class="anchor" aria-hidden="true" href="#logistic-regression">#</a></h2>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">bambi</span> <span class="k">as</span> <span class="nn">bmb</span></span></span></code></pre></div>
+</div>
+<h2 id="logistic-regression">Logistic Regression</h2>
 <p>To demonstrate <code>slopes</code> and <code>plot_slopes</code>, we will use the <a href="https://vincentarelbundock.github.io/Rdatasets/doc/carData/Wells.html">well switching dataset</a> to model the probability a household in Bangladesh switches water wells. The data are for an area of Arahazar Upazila, Bangladesh. The researchers labelled each well with its level of arsenic and an indication of whether the well was “safe” or “unsafe”. Those using unsafe wells were encouraged to switch. After several years, it was determined whether each household using an unsafe well had changed its well. The data contains $3020$ observations on the following five variables:</p>
 <ul>
 <li><code>switch</code>: a factor with levels <code>no</code> and <code>yes</code> indicating whether the household switched to a new well</li>
@@ -221,12 +253,28 @@ $$X = (w, c)$$</p>
 <li><code>educ</code>: years of education of the household head</li>
 </ul>
 <p>First, a logistic regression model with no interactions is fit to the data. Subsequently, to demonstrate the benefits of <code>plot_slopes</code> in interpreting interactions, we will fit a logistic regression model with an interaction term.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>data <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#34;http://www.stat.columbia.edu/~gelman/arm/examples/arsenic/wells.dat&#34;</span>, sep<span style="color:#f92672">=</span><span style="color:#e6db74">&#34; &#34;</span>)
-</span></span><span style="display:flex;"><span>data[<span style="color:#e6db74">&#34;switch&#34;</span>] <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>Categorical(data[<span style="color:#e6db74">&#34;switch&#34;</span>])
-</span></span><span style="display:flex;"><span>data[<span style="color:#e6db74">&#34;dist100&#34;</span>] <span style="color:#f92672">=</span> data[<span style="color:#e6db74">&#34;dist&#34;</span>] <span style="color:#f92672">/</span> <span style="color:#ae81ff">100</span>
-</span></span><span style="display:flex;"><span>data[<span style="color:#e6db74">&#34;educ4&#34;</span>] <span style="color:#f92672">=</span> data[<span style="color:#e6db74">&#34;educ&#34;</span>] <span style="color:#f92672">/</span> <span style="color:#ae81ff">4</span>
-</span></span><span style="display:flex;"><span>data<span style="color:#f92672">.</span>head()
-</span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&#34;http://www.stat.columbia.edu/~gelman/arm/examples/arsenic/wells.dat&#34;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&#34; &#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">data</span><span class="p">[</span><span class="s2">&#34;switch&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&#34;switch&#34;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">data</span><span class="p">[</span><span class="s2">&#34;dist100&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&#34;dist&#34;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">100</span>
+</span></span><span class="line"><span class="cl"><span class="n">data</span><span class="p">[</span><span class="s2">&#34;educ4&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&#34;educ&#34;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">4</span>
+</span></span><span class="line"><span class="cl"><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span></span></span></code></pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 <pre><code>.dataframe tbody tr th {
     vertical-align: top;
 }
@@ -235,46 +283,151 @@ $$X = (w, c)$$</p>
     text-align: right;
 }
 </code></pre>
-<p><!-- raw HTML omitted --></p>
-<!-- raw HTML omitted -->
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>well_model <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>Model(
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;switch ~ dist100 + arsenic + educ4&#34;</span>,
-</span></span><span style="display:flex;"><span>    data,
-</span></span><span style="display:flex;"><span>    family<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;bernoulli&#34;</span>
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>well_idata <span style="color:#f92672">=</span> well_model<span style="color:#f92672">.</span>fit(
-</span></span><span style="display:flex;"><span>    draws<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>,
-</span></span><span style="display:flex;"><span>    target_accept<span style="color:#f92672">=</span><span style="color:#ae81ff">0.95</span>,
-</span></span><span style="display:flex;"><span>    random_seed<span style="color:#f92672">=</span><span style="color:#ae81ff">1234</span>,
-</span></span><span style="display:flex;"><span>    chains<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>
-</span></span><span style="display:flex;"><span>)
-</span></span></code></pre></div><h3 id="user-provided-values">User provided values<a hidden class="anchor" aria-hidden="true" href="#user-provided-values">#</a></h3>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>switch</th>
+      <th>arsenic</th>
+      <th>dist</th>
+      <th>assoc</th>
+      <th>educ</th>
+      <th>dist100</th>
+      <th>educ4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>2.36</td>
+      <td>16.826000</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.16826</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>0.71</td>
+      <td>47.321999</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.47322</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0</td>
+      <td>2.07</td>
+      <td>20.966999</td>
+      <td>0</td>
+      <td>10</td>
+      <td>0.20967</td>
+      <td>2.5</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>1.15</td>
+      <td>21.486000</td>
+      <td>0</td>
+      <td>12</td>
+      <td>0.21486</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1</td>
+      <td>1.10</td>
+      <td>40.874001</td>
+      <td>1</td>
+      <td>14</td>
+      <td>0.40874</td>
+      <td>3.5</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">well_model</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;switch ~ dist100 + arsenic + educ4&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">data</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">family</span><span class="o">=</span><span class="s2">&#34;bernoulli&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">well_idata</span> <span class="o">=</span> <span class="n">well_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">draws</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">target_accept</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">random_seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">chains</span><span class="o">=</span><span class="mi">4</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span></span></span></code></pre></div>
+</div>
+<h3 id="user-provided-values">User provided values</h3>
 <p>First, an example of scenario 1 (user provided values) is given below. In both <code>plot_slopes</code> and <code>slopes</code>, $w$ and $c$ are represented by <code>wrt</code> (with respect to) and <code>conditional</code>, respectively. The modeler has the ability to pass their own values for <code>wrt</code> and <code>conditional</code> by using a dictionary where the key-value pairs are the covariate and value(s) of interest.</p>
 <p>For example, if we wanted to compute the slope of the probability of switching wells for a typical <code>arsenic</code> value of $1.3$ conditional on a range of <code>dist</code> and <code>educ</code> values, we would pass the following dictionary in the code block below. By default, for $w$, Bambi compares $w^\text{value}$ to $w^{\text{value} + \epsilon}$ where $\epsilon =$ <code>1e-4</code>. However, the value for $\epsilon$ can be changed by passing a value to the argument <code>eps</code>.</p>
 <p>Thus, in this example, $w^\text{value} = 1.3$ and $w^{\text{value} + \epsilon} = 1.3001$. The user is not limited to passing a list for the values. A <code>np.array</code> can also be used. Furthermore, Bambi by default, maps the order of the dict keys to the main, group, and panel of the matplotlib figure. Below, since <code>dist100</code> is the first key, this is used for the x-axis, and <code>educ4</code> is used for the group (color). If a third key was passed, it would be used for the panel (facet).</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>plot_slopes(
-</span></span><span style="display:flex;"><span>    well_model,
-</span></span><span style="display:flex;"><span>    well_idata,
-</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;arsenic&#34;</span>: <span style="color:#ae81ff">1.3</span>},
-</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;dist100&#34;</span>: [<span style="color:#ae81ff">0.20</span>, <span style="color:#ae81ff">0.50</span>, <span style="color:#ae81ff">0.80</span>], <span style="color:#e6db74">&#34;educ4&#34;</span>: [<span style="color:#ae81ff">1.00</span>, <span style="color:#ae81ff">1.20</span>, <span style="color:#ae81ff">2.00</span>]},
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>fig<span style="color:#f92672">.</span>set_size_inches(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>)
-</span></span><span style="display:flex;"><span>fig<span style="color:#f92672">.</span>axes[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>set_ylabel(<span style="color:#e6db74">&#34;Slope of Well Switching Probability&#34;</span>);
-</span></span></code></pre></div><p><img loading="lazy" src="2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_12_0.png" alt="png"  />
-</p>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">interpret</span><span class="o">.</span><span class="n">plot_slopes</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_model</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_idata</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">wrt</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;arsenic&#34;</span><span class="p">:</span> <span class="mf">1.3</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="n">conditional</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;dist100&#34;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.20</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.80</span><span class="p">],</span> <span class="s2">&#34;educ4&#34;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.00</span><span class="p">,</span> <span class="mf">1.20</span><span class="p">,</span> <span class="mf">2.00</span><span class="p">]},</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&#34;Slope of Well Switching Probability&#34;</span><span class="p">);</span></span></span></code></pre></div>
+</div>
+<p><img src="2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_12_0.png" alt="png"></p>
 <p>The plot above shows that, for example, conditional on <code>dist100</code> $= 0.2$ and <code>educ4</code> $= 1.0$ a unit increase in <code>arsenic</code> is associated with households being $11$% less likely to switch wells. Notice that even though we fit a logistic regression model where the coefficients are on the log-odds scale, the <code>slopes</code> function returns the slope on the probability scale. Thus, we can interpret the y-axis (slope) as the expected change in the probability of switching wells for a unit increase in <code>arsenic</code> conditional on the specified covariates.</p>
 <p><code>slopes</code> can be called directly to view a summary dataframe that includes the term name, estimate type (discussed in detail in the <em>interpreting coefficients as an elasticity</em> section), values $w$ used to compute the estimate, the specified conditional covariates $c$, and the expected slope of the outcome with the uncertainty interval (by default the $94$% highest density interval is computed).</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>slopes(
-</span></span><span style="display:flex;"><span>    well_model,
-</span></span><span style="display:flex;"><span>    well_idata,
-</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;arsenic&#34;</span>: <span style="color:#ae81ff">1.5</span>},
-</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span>{
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;dist100&#34;</span>: [<span style="color:#ae81ff">0.20</span>, <span style="color:#ae81ff">0.50</span>, <span style="color:#ae81ff">0.80</span>],
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;educ4&#34;</span>: [<span style="color:#ae81ff">1.00</span>, <span style="color:#ae81ff">1.20</span>, <span style="color:#ae81ff">2.00</span>]
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>)
-</span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">bmb</span><span class="o">.</span><span class="n">interpret</span><span class="o">.</span><span class="n">slopes</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_model</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_idata</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">wrt</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;arsenic&#34;</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="n">conditional</span><span class="o">=</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;dist100&#34;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.20</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.80</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;educ4&#34;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.00</span><span class="p">,</span> <span class="mf">1.20</span><span class="p">,</span> <span class="mf">2.00</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span></span></span></code></pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 <pre><code>.dataframe tbody tr th {
     vertical-align: top;
 }
@@ -283,23 +436,155 @@ $$X = (w, c)$$</p>
     text-align: right;
 }
 </code></pre>
-<p><!-- raw HTML omitted --></p>
-<!-- raw HTML omitted -->
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>term</th>
+      <th>estimate_type</th>
+      <th>value</th>
+      <th>dist100</th>
+      <th>educ4</th>
+      <th>estimate</th>
+      <th>lower_3.0%</th>
+      <th>upper_97.0%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>(1.5, 1.5001)</td>
+      <td>0.2</td>
+      <td>1.0</td>
+      <td>-0.110797</td>
+      <td>-0.128775</td>
+      <td>-0.092806</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>(1.5, 1.5001)</td>
+      <td>0.2</td>
+      <td>1.2</td>
+      <td>-0.109867</td>
+      <td>-0.126725</td>
+      <td>-0.091065</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>(1.5, 1.5001)</td>
+      <td>0.2</td>
+      <td>2.0</td>
+      <td>-0.105618</td>
+      <td>-0.122685</td>
+      <td>-0.088383</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>(1.5, 1.5001)</td>
+      <td>0.5</td>
+      <td>1.0</td>
+      <td>-0.116087</td>
+      <td>-0.134965</td>
+      <td>-0.096843</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>(1.5, 1.5001)</td>
+      <td>0.5</td>
+      <td>1.2</td>
+      <td>-0.115632</td>
+      <td>-0.134562</td>
+      <td>-0.096543</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>(1.5, 1.5001)</td>
+      <td>0.5</td>
+      <td>2.0</td>
+      <td>-0.113140</td>
+      <td>-0.130448</td>
+      <td>-0.093209</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>(1.5, 1.5001)</td>
+      <td>0.8</td>
+      <td>1.0</td>
+      <td>-0.117262</td>
+      <td>-0.136850</td>
+      <td>-0.098549</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>(1.5, 1.5001)</td>
+      <td>0.8</td>
+      <td>1.2</td>
+      <td>-0.117347</td>
+      <td>-0.136475</td>
+      <td>-0.098044</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>(1.5, 1.5001)</td>
+      <td>0.8</td>
+      <td>2.0</td>
+      <td>-0.116957</td>
+      <td>-0.135079</td>
+      <td>-0.096476</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 <p>Since all covariates used to fit the model were also specified to compute the slopes, no default value is used for unspecified covariates. A default value is computed for the unspecified covariates because in order to peform predictions, Bambi is expecting a value for each covariate used to fit the model. Additionally, with GLM models, average predictive slopes are conditional in the sense that the estimate depends on the values of <strong>all</strong> the covariates in the model. Thus, for unspecified covariates, <code>slopes</code> and <code>plot_slopes</code> computes a default value (mean or mode based on the data type of the covariate). Each row in the summary dataframe is read as &ldquo;the slope (or rate of change) of the probability of switching wells with respect to a small change in $w$ conditional on $c$ is $y$&rdquo;.</p>
-<h3 id="multiple-slope-values">Multiple slope values<a hidden class="anchor" aria-hidden="true" href="#multiple-slope-values">#</a></h3>
+<h3 id="multiple-slope-values">Multiple slope values</h3>
 <p>Users can also compute slopes on multiple values for <code>wrt</code>. For example, if we want to compute the slope of $y$ with respect to <code>arsenic</code> $= 1.5$, $2.0$, and $2.5$, simply pass a list or numpy array as the dictionary values for <code>wrt</code>. Keeping the conditional covariate and values the same, the following slope estimates are computed below.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>multiple_values <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>slopes(
-</span></span><span style="display:flex;"><span>    well_model,
-</span></span><span style="display:flex;"><span>    well_idata,
-</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;arsenic&#34;</span>: [<span style="color:#ae81ff">1.5</span>, <span style="color:#ae81ff">2.0</span>, <span style="color:#ae81ff">2.5</span>]},
-</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span>{
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;dist100&#34;</span>: [<span style="color:#ae81ff">0.20</span>, <span style="color:#ae81ff">0.50</span>, <span style="color:#ae81ff">0.80</span>],
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;educ4&#34;</span>: [<span style="color:#ae81ff">1.00</span>, <span style="color:#ae81ff">1.20</span>, <span style="color:#ae81ff">2.00</span>]
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>multiple_values<span style="color:#f92672">.</span>head(<span style="color:#ae81ff">6</span>)
-</span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">multiple_values</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">interpret</span><span class="o">.</span><span class="n">slopes</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_model</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_idata</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">wrt</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;arsenic&#34;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">]},</span>
+</span></span><span class="line"><span class="cl">    <span class="n">conditional</span><span class="o">=</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;dist100&#34;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.20</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.80</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;educ4&#34;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.00</span><span class="p">,</span> <span class="mf">1.20</span><span class="p">,</span> <span class="mf">2.00</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">multiple_values</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span></span></span></code></pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 <pre><code>.dataframe tbody tr th {
     vertical-align: top;
 }
@@ -308,26 +593,137 @@ $$X = (w, c)$$</p>
     text-align: right;
 }
 </code></pre>
-<p><!-- raw HTML omitted --></p>
-<!-- raw HTML omitted -->
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>term</th>
+      <th>estimate_type</th>
+      <th>value</th>
+      <th>dist100</th>
+      <th>educ4</th>
+      <th>estimate</th>
+      <th>lower_3.0%</th>
+      <th>upper_97.0%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>(1.5, 1.5001)</td>
+      <td>0.2</td>
+      <td>1.0</td>
+      <td>-0.110797</td>
+      <td>-0.128775</td>
+      <td>-0.092806</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>(2.0, 2.0001)</td>
+      <td>0.2</td>
+      <td>1.0</td>
+      <td>-0.109867</td>
+      <td>-0.126725</td>
+      <td>-0.091065</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>(2.5, 2.5001)</td>
+      <td>0.2</td>
+      <td>1.0</td>
+      <td>-0.105618</td>
+      <td>-0.122685</td>
+      <td>-0.088383</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>(1.5, 1.5001)</td>
+      <td>0.2</td>
+      <td>1.2</td>
+      <td>-0.116087</td>
+      <td>-0.134965</td>
+      <td>-0.096843</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>(2.0, 2.0001)</td>
+      <td>0.2</td>
+      <td>1.2</td>
+      <td>-0.115632</td>
+      <td>-0.134562</td>
+      <td>-0.096543</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>(2.5, 2.5001)</td>
+      <td>0.2</td>
+      <td>1.2</td>
+      <td>-0.113140</td>
+      <td>-0.130448</td>
+      <td>-0.093209</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 <p>The output above is essentially the same as the summary dataframe when we only passed one value to <code>wrt</code>. However, now each element (value) in the list gets a small amount $\epsilon$ added to it, and the slope is calculated for each of these values.</p>
-<h3 id="conditional-slopes">Conditional slopes<a hidden class="anchor" aria-hidden="true" href="#conditional-slopes">#</a></h3>
+<h3 id="conditional-slopes">Conditional slopes</h3>
 <p>As stated in the <em>interpreting interaction effects</em> section, interpreting coefficients of multiple interaction terms can be difficult and cumbersome. Thus, <code>plot_slopes</code> provides an effective way to visualize the conditional slopes of the interaction effects. Below, we will use the same well switching dataset, but with interaction terms. Specifically, one interaction is added between <code>dist100</code> and <code>educ4</code>, and another between <code>arsenic</code> and <code>educ4</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>well_model_interact <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>Model(
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;switch ~ dist100 + arsenic + educ4 + dist100:educ4 + arsenic:educ4&#34;</span>,
-</span></span><span style="display:flex;"><span>    data,
-</span></span><span style="display:flex;"><span>    family<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;bernoulli&#34;</span>
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>well_idata_interact <span style="color:#f92672">=</span> well_model_interact<span style="color:#f92672">.</span>fit(
-</span></span><span style="display:flex;"><span>    draws<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>,
-</span></span><span style="display:flex;"><span>    target_accept<span style="color:#f92672">=</span><span style="color:#ae81ff">0.95</span>,
-</span></span><span style="display:flex;"><span>    random_seed<span style="color:#f92672">=</span><span style="color:#ae81ff">1234</span>,
-</span></span><span style="display:flex;"><span>    chains<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>
-</span></span><span style="display:flex;"><span>)
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># summary of coefficients</span>
-</span></span><span style="display:flex;"><span>az<span style="color:#f92672">.</span>summary(well_idata_interact)
-</span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">well_model_interact</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;switch ~ dist100 + arsenic + educ4 + dist100:educ4 + arsenic:educ4&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">data</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">family</span><span class="o">=</span><span class="s2">&#34;bernoulli&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">well_idata_interact</span> <span class="o">=</span> <span class="n">well_model_interact</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">draws</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">target_accept</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">random_seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">chains</span><span class="o">=</span><span class="mi">4</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span></span></span></code></pre></div>
+</div>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># summary of coefficients</span>
+</span></span><span class="line"><span class="cl"><span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">well_idata_interact</span><span class="p">)</span></span></span></code></pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 <pre><code>.dataframe tbody tr th {
     vertical-align: top;
 }
@@ -336,50 +732,178 @@ $$X = (w, c)$$</p>
     text-align: right;
 }
 </code></pre>
-<p><!-- raw HTML omitted --></p>
-<!-- raw HTML omitted -->
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mean</th>
+      <th>sd</th>
+      <th>hdi_3%</th>
+      <th>hdi_97%</th>
+      <th>mcse_mean</th>
+      <th>mcse_sd</th>
+      <th>ess_bulk</th>
+      <th>ess_tail</th>
+      <th>r_hat</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Intercept</th>
+      <td>-0.097</td>
+      <td>0.122</td>
+      <td>-0.322</td>
+      <td>0.137</td>
+      <td>0.003</td>
+      <td>0.002</td>
+      <td>2259.0</td>
+      <td>2203.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>dist100</th>
+      <td>1.320</td>
+      <td>0.175</td>
+      <td>0.982</td>
+      <td>1.640</td>
+      <td>0.004</td>
+      <td>0.003</td>
+      <td>2085.0</td>
+      <td>2457.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>arsenic</th>
+      <td>-0.398</td>
+      <td>0.061</td>
+      <td>-0.521</td>
+      <td>-0.291</td>
+      <td>0.001</td>
+      <td>0.001</td>
+      <td>2141.0</td>
+      <td>2558.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>educ4</th>
+      <td>0.102</td>
+      <td>0.080</td>
+      <td>-0.053</td>
+      <td>0.246</td>
+      <td>0.002</td>
+      <td>0.001</td>
+      <td>1935.0</td>
+      <td>2184.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>dist100:educ4</th>
+      <td>-0.330</td>
+      <td>0.106</td>
+      <td>-0.528</td>
+      <td>-0.136</td>
+      <td>0.002</td>
+      <td>0.002</td>
+      <td>2070.0</td>
+      <td>2331.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>arsenic:educ4</th>
+      <td>-0.079</td>
+      <td>0.043</td>
+      <td>-0.161</td>
+      <td>-0.000</td>
+      <td>0.001</td>
+      <td>0.001</td>
+      <td>2006.0</td>
+      <td>2348.0</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 <p>The coefficients of the linear model are shown in the table above. The interaction coefficents indicate the slope varies in a continuous fashion with the continuous variable.</p>
 <p>A negative value for <code>arsenic:dist100</code> indicates that the &ldquo;effect&rdquo; of arsenic on the outcome is less negative as distance from the well increases. Similarly, a negative value for <code>arsenic:educ4</code> indicates that the &ldquo;effect&rdquo; of arsenic on the outcome is more negative as education increases. Remember, these coefficients are still on the logit scale. Furthermore, as more variables and interaction terms are added to the model, interpreting these coefficients becomes more difficult.</p>
 <p>Thus, lets use <code>plot_slopes</code> to visually see how the slope changes with respect to <code>arsenic</code> conditional on <code>dist100</code> and <code>educ4</code> changing. Notice in the code block below how parameters are passed to the <code>subplot_kwargs</code> and <code>fig_kwargs</code> arguments. At times, it can be useful to pass specific <code>group</code> and <code>panel</code> arguments to aid in the interpretation of the plot. Therefore, <code>subplot_kwargs</code> allows the user to manipulate the plotting by passing a dictionary where the keys are <code>{&quot;main&quot;: ..., &quot;group&quot;: ..., &quot;panel&quot;: ...}</code> and the values are the names of the covariates to be plotted. <code>fig_kwargs</code> are figure level key word arguments such as <code>figsize</code> and <code>sharey</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>plot_slopes(
-</span></span><span style="display:flex;"><span>    well_model_interact,
-</span></span><span style="display:flex;"><span>    well_idata_interact,
-</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;arsenic&#34;</span>,
-</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;dist100&#34;</span>, <span style="color:#e6db74">&#34;educ4&#34;</span>],
-</span></span><span style="display:flex;"><span>    subplot_kwargs<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;main&#34;</span>: <span style="color:#e6db74">&#34;dist100&#34;</span>, <span style="color:#e6db74">&#34;group&#34;</span>: <span style="color:#e6db74">&#34;educ4&#34;</span>, <span style="color:#e6db74">&#34;panel&#34;</span>: <span style="color:#e6db74">&#34;educ4&#34;</span>},
-</span></span><span style="display:flex;"><span>    fig_kwargs<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;figsize&#34;</span>: (<span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">4</span>), <span style="color:#e6db74">&#34;sharey&#34;</span>: <span style="color:#66d9ef">True</span>},
-</span></span><span style="display:flex;"><span>    legend<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>
-</span></span><span style="display:flex;"><span>)
-</span></span></code></pre></div><p><img loading="lazy" src="2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_23_0.png" alt="png"  />
-</p>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">interpret</span><span class="o">.</span><span class="n">plot_slopes</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_model_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_idata_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">wrt</span><span class="o">=</span><span class="s2">&#34;arsenic&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">conditional</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;dist100&#34;</span><span class="p">,</span> <span class="s2">&#34;educ4&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="n">subplot_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;main&#34;</span><span class="p">:</span> <span class="s2">&#34;dist100&#34;</span><span class="p">,</span> <span class="s2">&#34;group&#34;</span><span class="p">:</span> <span class="s2">&#34;educ4&#34;</span><span class="p">,</span> <span class="s2">&#34;panel&#34;</span><span class="p">:</span> <span class="s2">&#34;educ4&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fig_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;figsize&#34;</span><span class="p">:</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="s2">&#34;sharey&#34;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="n">legend</span><span class="o">=</span><span class="kc">False</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span></span></span></code></pre></div>
+</div>
+<p><img src="2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_23_0.png" alt="png"></p>
 <p>With interaction terms now defined, it can be seen how the slope of the outcome with respect to <code>arsenic</code> differ depending on the value of <code>educ4</code>. Especially in the case of <code>educ4</code> $= 4.25$, the slope is more &ldquo;constant&rdquo;, but with greater uncertainty. Lets compare this with the model that does not include any interaction terms.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>plot_slopes(
-</span></span><span style="display:flex;"><span>    well_model,
-</span></span><span style="display:flex;"><span>    well_idata,
-</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;arsenic&#34;</span>,
-</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;dist100&#34;</span>, <span style="color:#e6db74">&#34;educ4&#34;</span>],
-</span></span><span style="display:flex;"><span>    subplot_kwargs<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;main&#34;</span>: <span style="color:#e6db74">&#34;dist100&#34;</span>, <span style="color:#e6db74">&#34;group&#34;</span>: <span style="color:#e6db74">&#34;educ4&#34;</span>, <span style="color:#e6db74">&#34;panel&#34;</span>: <span style="color:#e6db74">&#34;educ4&#34;</span>},
-</span></span><span style="display:flex;"><span>    fig_kwargs<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;figsize&#34;</span>: (<span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">4</span>), <span style="color:#e6db74">&#34;sharey&#34;</span>: <span style="color:#66d9ef">True</span>},
-</span></span><span style="display:flex;"><span>    legend<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>
-</span></span><span style="display:flex;"><span>)
-</span></span></code></pre></div><p><img loading="lazy" src="2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_25_0.png" alt="png"  />
-</p>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">interpret</span><span class="o">.</span><span class="n">plot_slopes</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_model</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_idata</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">wrt</span><span class="o">=</span><span class="s2">&#34;arsenic&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">conditional</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;dist100&#34;</span><span class="p">,</span> <span class="s2">&#34;educ4&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="n">subplot_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;main&#34;</span><span class="p">:</span> <span class="s2">&#34;dist100&#34;</span><span class="p">,</span> <span class="s2">&#34;group&#34;</span><span class="p">:</span> <span class="s2">&#34;educ4&#34;</span><span class="p">,</span> <span class="s2">&#34;panel&#34;</span><span class="p">:</span> <span class="s2">&#34;educ4&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fig_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;figsize&#34;</span><span class="p">:</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="s2">&#34;sharey&#34;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="n">legend</span><span class="o">=</span><span class="kc">False</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span></span></span></code></pre></div>
+</div>
+<p><img src="2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_25_0.png" alt="png"></p>
 <p>For the non-interaction model, conditional on a range of values for <code>educ4</code> and <code>dist100</code>, the slopes of the outcome are nearly identical.</p>
-<h3 id="unit-level-slopes">Unit level slopes<a hidden class="anchor" aria-hidden="true" href="#unit-level-slopes">#</a></h3>
+<h3 id="unit-level-slopes">Unit level slopes</h3>
 <p>Evaluating average predictive slopes at central values for the conditional covariates $c$ can be problematic when the inputs have a large variance since no single central value (mean, median, etc.) is representative of the covariate. This is especially true when $c$ exhibits bi or multimodality. Thus, it may be desireable to use the empirical distribution of $c$ to compute the predictive slopes, and then average over a specific or set of covariates to obtain average slopes. To achieve unit level slopes, do not pass a parameter into <code>conditional</code> and or specify <code>None</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>unit_level <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>slopes(
-</span></span><span style="display:flex;"><span>    well_model_interact,
-</span></span><span style="display:flex;"><span>    well_idata_interact,
-</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;arsenic&#34;</span>,
-</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># empirical distribution</span>
-</span></span><span style="display:flex;"><span>print(unit_level<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">==</span> well_model_interact<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>])
-</span></span><span style="display:flex;"><span>unit_level<span style="color:#f92672">.</span>head(<span style="color:#ae81ff">10</span>)
-</span></span></code></pre></div><pre><code>True
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">unit_level</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">interpret</span><span class="o">.</span><span class="n">slopes</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_model_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_idata_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">wrt</span><span class="o">=</span><span class="s2">&#34;arsenic&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">conditional</span><span class="o">=</span><span class="kc">None</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># empirical distribution</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">unit_level</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">well_model_interact</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">unit_level</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span></span></span></code></pre></div>
+</div>
+<pre><code>True
 </code></pre>
-<!-- raw HTML omitted -->
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 <pre><code>.dataframe tbody tr th {
     vertical-align: top;
 }
@@ -388,10 +912,153 @@ $$X = (w, c)$$</p>
     text-align: right;
 }
 </code></pre>
-<p><!-- raw HTML omitted --></p>
-<!-- raw HTML omitted -->
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>well_model_interact<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>head(<span style="color:#ae81ff">10</span>)
-</span></span></code></pre></div><!-- raw HTML omitted -->
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>term</th>
+      <th>estimate_type</th>
+      <th>value</th>
+      <th>dist100</th>
+      <th>educ4</th>
+      <th>estimate</th>
+      <th>lower_3.0%</th>
+      <th>upper_97.0%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>(2.36, 2.3601)</td>
+      <td>0.16826</td>
+      <td>0.00</td>
+      <td>-0.084280</td>
+      <td>-0.105566</td>
+      <td>-0.063403</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>(0.71, 0.7101)</td>
+      <td>0.47322</td>
+      <td>0.00</td>
+      <td>-0.097837</td>
+      <td>-0.125057</td>
+      <td>-0.070959</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>(2.07, 2.0701)</td>
+      <td>0.20967</td>
+      <td>2.50</td>
+      <td>-0.118093</td>
+      <td>-0.139848</td>
+      <td>-0.093442</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>(1.15, 1.1501)</td>
+      <td>0.21486</td>
+      <td>3.00</td>
+      <td>-0.150638</td>
+      <td>-0.194765</td>
+      <td>-0.108946</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>(1.1, 1.1001)</td>
+      <td>0.40874</td>
+      <td>3.50</td>
+      <td>-0.161272</td>
+      <td>-0.214761</td>
+      <td>-0.108663</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>(3.9, 3.9001)</td>
+      <td>0.69518</td>
+      <td>2.25</td>
+      <td>-0.073908</td>
+      <td>-0.080525</td>
+      <td>-0.067493</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>(2.97, 2.9701000000000004)</td>
+      <td>0.80711</td>
+      <td>1.00</td>
+      <td>-0.108482</td>
+      <td>-0.123517</td>
+      <td>-0.093042</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>(3.24, 3.2401000000000004)</td>
+      <td>0.55146</td>
+      <td>2.50</td>
+      <td>-0.088049</td>
+      <td>-0.097939</td>
+      <td>-0.078020</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>(3.28, 3.2801)</td>
+      <td>0.52647</td>
+      <td>0.00</td>
+      <td>-0.087388</td>
+      <td>-0.107331</td>
+      <td>-0.068076</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>(2.52, 2.5201000000000002)</td>
+      <td>0.75072</td>
+      <td>0.00</td>
+      <td>-0.099035</td>
+      <td>-0.129517</td>
+      <td>-0.073222</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">well_model_interact</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span></span></span></code></pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 <pre><code>.dataframe tbody tr th {
     vertical-align: top;
 }
@@ -400,19 +1067,151 @@ $$X = (w, c)$$</p>
     text-align: right;
 }
 </code></pre>
-<p><!-- raw HTML omitted --></p>
-<!-- raw HTML omitted -->
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>switch</th>
+      <th>arsenic</th>
+      <th>dist</th>
+      <th>assoc</th>
+      <th>educ</th>
+      <th>dist100</th>
+      <th>educ4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>2.36</td>
+      <td>16.826000</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.16826</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>0.71</td>
+      <td>47.321999</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.47322</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0</td>
+      <td>2.07</td>
+      <td>20.966999</td>
+      <td>0</td>
+      <td>10</td>
+      <td>0.20967</td>
+      <td>2.50</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>1.15</td>
+      <td>21.486000</td>
+      <td>0</td>
+      <td>12</td>
+      <td>0.21486</td>
+      <td>3.00</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1</td>
+      <td>1.10</td>
+      <td>40.874001</td>
+      <td>1</td>
+      <td>14</td>
+      <td>0.40874</td>
+      <td>3.50</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1</td>
+      <td>3.90</td>
+      <td>69.517998</td>
+      <td>1</td>
+      <td>9</td>
+      <td>0.69518</td>
+      <td>2.25</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>1</td>
+      <td>2.97</td>
+      <td>80.710999</td>
+      <td>1</td>
+      <td>4</td>
+      <td>0.80711</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1</td>
+      <td>3.24</td>
+      <td>55.146000</td>
+      <td>0</td>
+      <td>10</td>
+      <td>0.55146</td>
+      <td>2.50</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>1</td>
+      <td>3.28</td>
+      <td>52.646999</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0.52647</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>1</td>
+      <td>2.52</td>
+      <td>75.071999</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0.75072</td>
+      <td>0.00</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 <p>Above, <code>unit_level</code> is the slopes summary dataframe and <code>well_model_interact.data</code> is the empirical data used to fit the model. Notice how the values for $c$ are identical in both dataframes. However, for $w$, the values are the original $w$ value plus $\epsilon$. Thus, the <code>estimate</code> value represents the instantaneous rate of change for that unit of observation. However, these unit level slopes are difficult to interpret since each row may have a different slope estimate. Therefore, it is useful to average over (marginalize) the estimates to summarize the unit level predictive slopes.</p>
-<h4 id="marginalizing-over-covariates">Marginalizing over covariates<a hidden class="anchor" aria-hidden="true" href="#marginalizing-over-covariates">#</a></h4>
+<h4 id="marginalizing-over-covariates">Marginalizing over covariates</h4>
 <p>Since the empirical distrubution is used for computing the average predictive slopes, the same number of rows ($3020$) is returned as the data used to fit the model. To average over a covariate, use the <code>average_by</code> argument. If <code>True</code> is passed, then <code>slopes</code> averages over all covariates. Else, if a single or list of covariates are passed, then <code>slopes</code> averages by the covariates passed.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>slopes(
-</span></span><span style="display:flex;"><span>    well_model_interact,
-</span></span><span style="display:flex;"><span>    well_idata_interact,
-</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;arsenic&#34;</span>,
-</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
-</span></span><span style="display:flex;"><span>    average_by<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
-</span></span><span style="display:flex;"><span>)
-</span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">bmb</span><span class="o">.</span><span class="n">interpret</span><span class="o">.</span><span class="n">slopes</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_model_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_idata_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">wrt</span><span class="o">=</span><span class="s2">&#34;arsenic&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">conditional</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">average_by</span><span class="o">=</span><span class="kc">True</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span></span></span></code></pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 <pre><code>.dataframe tbody tr th {
     vertical-align: top;
 }
@@ -421,26 +1220,76 @@ $$X = (w, c)$$</p>
     text-align: right;
 }
 </code></pre>
-<p><!-- raw HTML omitted --></p>
-<!-- raw HTML omitted -->
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>term</th>
+      <th>estimate_type</th>
+      <th>estimate</th>
+      <th>lower_3.0%</th>
+      <th>upper_97.0%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>-0.111342</td>
+      <td>-0.134846</td>
+      <td>-0.088171</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 <p>The code block above is equivalent to taking the mean of the <code>estimate</code> and uncertainty columns. For example:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>unit_level[[<span style="color:#e6db74">&#34;estimate&#34;</span>, <span style="color:#e6db74">&#34;lower_3.0%&#34;</span>, <span style="color:#e6db74">&#34;upper_97.0%&#34;</span>]]<span style="color:#f92672">.</span>mean()
-</span></span></code></pre></div><pre><code>estimate      -0.111342
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">unit_level</span><span class="p">[[</span><span class="s2">&#34;estimate&#34;</span><span class="p">,</span> <span class="s2">&#34;lower_3.0%&#34;</span><span class="p">,</span> <span class="s2">&#34;upper_97.0%&#34;</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span></span></span></code></pre></div>
+</div>
+<pre><code>estimate      -0.111342
 lower_3.0%    -0.134846
 upper_97.0%   -0.088171
 dtype: float64
 </code></pre>
-<h4 id="average-by-subgroups">Average by subgroups<a hidden class="anchor" aria-hidden="true" href="#average-by-subgroups">#</a></h4>
+<h4 id="average-by-subgroups">Average by subgroups</h4>
 <p>Averaging over all covariates may not be desired, and you would rather average by a group or specific covariate. To perform averaging by subgroups, users can pass a single or list of covariates to <code>average_by</code> to average over specific covariates. For example, if we wanted to average by <code>educ4</code>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># average by educ4</span>
-</span></span><span style="display:flex;"><span>bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>slopes(
-</span></span><span style="display:flex;"><span>    well_model_interact,
-</span></span><span style="display:flex;"><span>    well_idata_interact,
-</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;arsenic&#34;</span>,
-</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
-</span></span><span style="display:flex;"><span>    average_by<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;educ4&#34;</span>
-</span></span><span style="display:flex;"><span>)
-</span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># average by educ4</span>
+</span></span><span class="line"><span class="cl"><span class="n">bmb</span><span class="o">.</span><span class="n">interpret</span><span class="o">.</span><span class="n">slopes</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_model_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_idata_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">wrt</span><span class="o">=</span><span class="s2">&#34;arsenic&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">conditional</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">average_by</span><span class="o">=</span><span class="s2">&#34;educ4&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span></span></span></code></pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 <pre><code>.dataframe tbody tr th {
     vertical-align: top;
 }
@@ -449,17 +1298,210 @@ dtype: float64
     text-align: right;
 }
 </code></pre>
-<p><!-- raw HTML omitted --></p>
-<!-- raw HTML omitted -->
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># average by both educ4 and dist100</span>
-</span></span><span style="display:flex;"><span>bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>slopes(
-</span></span><span style="display:flex;"><span>    well_model_interact,
-</span></span><span style="display:flex;"><span>    well_idata_interact,
-</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;arsenic&#34;</span>,
-</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
-</span></span><span style="display:flex;"><span>    average_by<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;educ4&#34;</span>, <span style="color:#e6db74">&#34;dist100&#34;</span>]
-</span></span><span style="display:flex;"><span>)
-</span></span></code></pre></div><!-- raw HTML omitted -->
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>term</th>
+      <th>estimate_type</th>
+      <th>educ4</th>
+      <th>estimate</th>
+      <th>lower_3.0%</th>
+      <th>upper_97.0%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>0.00</td>
+      <td>-0.092389</td>
+      <td>-0.119320</td>
+      <td>-0.068167</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>0.25</td>
+      <td>-0.101704</td>
+      <td>-0.126096</td>
+      <td>-0.076910</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>0.50</td>
+      <td>-0.102112</td>
+      <td>-0.122443</td>
+      <td>-0.082142</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>0.75</td>
+      <td>-0.106004</td>
+      <td>-0.124247</td>
+      <td>-0.088132</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>1.00</td>
+      <td>-0.110580</td>
+      <td>-0.127803</td>
+      <td>-0.093221</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>1.25</td>
+      <td>-0.112334</td>
+      <td>-0.128771</td>
+      <td>-0.094870</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>1.50</td>
+      <td>-0.114875</td>
+      <td>-0.132652</td>
+      <td>-0.096790</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>1.75</td>
+      <td>-0.122557</td>
+      <td>-0.142921</td>
+      <td>-0.101423</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>2.00</td>
+      <td>-0.125187</td>
+      <td>-0.148096</td>
+      <td>-0.101350</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>2.25</td>
+      <td>-0.125367</td>
+      <td>-0.150676</td>
+      <td>-0.099852</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>2.50</td>
+      <td>-0.130748</td>
+      <td>-0.159912</td>
+      <td>-0.101058</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>2.75</td>
+      <td>-0.137422</td>
+      <td>-0.170662</td>
+      <td>-0.102995</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>3.00</td>
+      <td>-0.136103</td>
+      <td>-0.172119</td>
+      <td>-0.099548</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>3.25</td>
+      <td>-0.156941</td>
+      <td>-0.202215</td>
+      <td>-0.107625</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>3.50</td>
+      <td>-0.142571</td>
+      <td>-0.186079</td>
+      <td>-0.098362</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>3.75</td>
+      <td>-0.138336</td>
+      <td>-0.181042</td>
+      <td>-0.093120</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>4.00</td>
+      <td>-0.138152</td>
+      <td>-0.185974</td>
+      <td>-0.089611</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>4.25</td>
+      <td>-0.176623</td>
+      <td>-0.244273</td>
+      <td>-0.107141</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># average by both educ4 and dist100</span>
+</span></span><span class="line"><span class="cl"><span class="n">bmb</span><span class="o">.</span><span class="n">interpret</span><span class="o">.</span><span class="n">slopes</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_model_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_idata_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">wrt</span><span class="o">=</span><span class="s2">&#34;arsenic&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">conditional</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">average_by</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;educ4&#34;</span><span class="p">,</span> <span class="s2">&#34;dist100&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span></span></span></code></pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 <pre><code>.dataframe tbody tr th {
     vertical-align: top;
 }
@@ -468,20 +1510,158 @@ dtype: float64
     text-align: right;
 }
 </code></pre>
-<p><!-- raw HTML omitted --></p>
-<!-- raw HTML omitted -->
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>term</th>
+      <th>estimate_type</th>
+      <th>educ4</th>
+      <th>dist100</th>
+      <th>estimate</th>
+      <th>lower_3.0%</th>
+      <th>upper_97.0%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>0.00</td>
+      <td>0.00591</td>
+      <td>-0.085861</td>
+      <td>-0.109133</td>
+      <td>-0.061614</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>0.00</td>
+      <td>0.02409</td>
+      <td>-0.096272</td>
+      <td>-0.127518</td>
+      <td>-0.069670</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>0.00</td>
+      <td>0.02454</td>
+      <td>-0.056617</td>
+      <td>-0.065433</td>
+      <td>-0.046970</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>0.00</td>
+      <td>0.02791</td>
+      <td>-0.097646</td>
+      <td>-0.128131</td>
+      <td>-0.069660</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>0.00</td>
+      <td>0.03252</td>
+      <td>-0.076300</td>
+      <td>-0.095832</td>
+      <td>-0.057900</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2992</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>4.00</td>
+      <td>1.13727</td>
+      <td>-0.070078</td>
+      <td>-0.094698</td>
+      <td>-0.046623</td>
+    </tr>
+    <tr>
+      <th>2993</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>4.00</td>
+      <td>1.14418</td>
+      <td>-0.125547</td>
+      <td>-0.172943</td>
+      <td>-0.075368</td>
+    </tr>
+    <tr>
+      <th>2994</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>4.00</td>
+      <td>1.25308</td>
+      <td>-0.156780</td>
+      <td>-0.218836</td>
+      <td>-0.088258</td>
+    </tr>
+    <tr>
+      <th>2995</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>4.00</td>
+      <td>1.67025</td>
+      <td>-0.161465</td>
+      <td>-0.227211</td>
+      <td>-0.085394</td>
+    </tr>
+    <tr>
+      <th>2996</th>
+      <td>arsenic</td>
+      <td>dydx</td>
+      <td>4.25</td>
+      <td>0.29633</td>
+      <td>-0.176623</td>
+      <td>-0.244273</td>
+      <td>-0.107141</td>
+    </tr>
+  </tbody>
+</table>
+<p>2997 rows × 7 columns</p>
+</div>
 <p>It is still possible to use <code>plot_slopes</code> when passing an argument to <code>average_by</code>. In the plot below, the empirical distribution is used to compute unit level slopes with respect to <code>arsenic</code> and then averaged over <code>educ4</code> to obtain the average predictive slopes.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>plot_slopes(
-</span></span><span style="display:flex;"><span>    well_model_interact,
-</span></span><span style="display:flex;"><span>    well_idata_interact,
-</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;arsenic&#34;</span>,
-</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
-</span></span><span style="display:flex;"><span>    average_by<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;educ4&#34;</span>
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>fig<span style="color:#f92672">.</span>set_size_inches(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>)
-</span></span></code></pre></div><p><img loading="lazy" src="2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_39_0.png" alt="png"  />
-</p>
-<h3 id="interpreting-coefficients-as-an-elasticity">Interpreting coefficients as an elasticity<a hidden class="anchor" aria-hidden="true" href="#interpreting-coefficients-as-an-elasticity">#</a></h3>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">interpret</span><span class="o">.</span><span class="n">plot_slopes</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_model_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_idata_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">wrt</span><span class="o">=</span><span class="s2">&#34;arsenic&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">conditional</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">average_by</span><span class="o">=</span><span class="s2">&#34;educ4&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span></span></span></code></pre></div>
+</div>
+<p><img src="2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_39_0.png" alt="png"></p>
+<h3 id="interpreting-coefficients-as-an-elasticity">Interpreting coefficients as an elasticity</h3>
 <p>In some fields, such as economics, it is useful to interpret the results of a regression model in terms of an elasticity (a percent change in $x$ is associated with a percent change in $y$) or semi-elasticity (a unit change in $x$ is associated with a percent change in $y$, or vice versa). Typically, this is achieved by fitting a model where either the outcome and or the covariates are log-transformed. However, since the log transformation is performed by the modeler, to compute elasticities for <code>slopes</code> and <code>plot_slopes</code>, Bambi &ldquo;post-processes&rdquo; the predictions to compute the elasticities. Below, it is shown the possible elasticity arguments and how they are computed for <code>slopes</code> and <code>plot_slopes</code>:</p>
 <ul>
 <li><code>eyex</code>: a percentage point increase in $x_1$ is associated with an $n$ percentage point increase in $y$</li>
@@ -496,15 +1676,31 @@ dtype: float64
 </ul>
 <p>$$\frac{\partial \hat{y}}{\partial x_1} * x_1$$</p>
 <p>Below, each code cell shows the same model, and <code>wrt</code> and <code>conditional</code> argument, but with a different elasticity (<code>slope</code>) argument. By default, <code>dydx</code> (a derivative with no post-processing) is used.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>slopes(
-</span></span><span style="display:flex;"><span>    well_model_interact,
-</span></span><span style="display:flex;"><span>    well_idata_interact,
-</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;arsenic&#34;</span>,
-</span></span><span style="display:flex;"><span>    slope<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;eyex&#34;</span>,
-</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
-</span></span><span style="display:flex;"><span>    average_by<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
-</span></span><span style="display:flex;"><span>)
-</span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">bmb</span><span class="o">.</span><span class="n">interpret</span><span class="o">.</span><span class="n">slopes</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_model_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_idata_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">wrt</span><span class="o">=</span><span class="s2">&#34;arsenic&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">slope</span><span class="o">=</span><span class="s2">&#34;eyex&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">conditional</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">average_by</span><span class="o">=</span><span class="kc">True</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span></span></span></code></pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 <pre><code>.dataframe tbody tr th {
     vertical-align: top;
 }
@@ -513,17 +1709,55 @@ dtype: float64
     text-align: right;
 }
 </code></pre>
-<p><!-- raw HTML omitted --></p>
-<!-- raw HTML omitted -->
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>slopes(
-</span></span><span style="display:flex;"><span>    well_model_interact,
-</span></span><span style="display:flex;"><span>    well_idata_interact,
-</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;arsenic&#34;</span>,
-</span></span><span style="display:flex;"><span>    slope<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;eydx&#34;</span>,
-</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
-</span></span><span style="display:flex;"><span>    average_by<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
-</span></span><span style="display:flex;"><span>)
-</span></span></code></pre></div><!-- raw HTML omitted -->
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>term</th>
+      <th>estimate_type</th>
+      <th>estimate</th>
+      <th>lower_3.0%</th>
+      <th>upper_97.0%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>arsenic</td>
+      <td>eyex</td>
+      <td>-0.525124</td>
+      <td>-0.652708</td>
+      <td>-0.396082</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">bmb</span><span class="o">.</span><span class="n">interpret</span><span class="o">.</span><span class="n">slopes</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_model_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_idata_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">wrt</span><span class="o">=</span><span class="s2">&#34;arsenic&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">slope</span><span class="o">=</span><span class="s2">&#34;eydx&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">conditional</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">average_by</span><span class="o">=</span><span class="kc">True</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span></span></span></code></pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 <pre><code>.dataframe tbody tr th {
     vertical-align: top;
 }
@@ -532,17 +1766,55 @@ dtype: float64
     text-align: right;
 }
 </code></pre>
-<p><!-- raw HTML omitted --></p>
-<!-- raw HTML omitted -->
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>slopes(
-</span></span><span style="display:flex;"><span>    well_model_interact,
-</span></span><span style="display:flex;"><span>    well_idata_interact,
-</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;arsenic&#34;</span>,
-</span></span><span style="display:flex;"><span>    slope<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dyex&#34;</span>,
-</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
-</span></span><span style="display:flex;"><span>    average_by<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
-</span></span><span style="display:flex;"><span>)
-</span></span></code></pre></div><!-- raw HTML omitted -->
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>term</th>
+      <th>estimate_type</th>
+      <th>estimate</th>
+      <th>lower_3.0%</th>
+      <th>upper_97.0%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>arsenic</td>
+      <td>eydx</td>
+      <td>-0.286753</td>
+      <td>-0.351592</td>
+      <td>-0.220459</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">bmb</span><span class="o">.</span><span class="n">interpret</span><span class="o">.</span><span class="n">slopes</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_model_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_idata_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">wrt</span><span class="o">=</span><span class="s2">&#34;arsenic&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">slope</span><span class="o">=</span><span class="s2">&#34;dyex&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">conditional</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">average_by</span><span class="o">=</span><span class="kc">True</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span></span></span></code></pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 <pre><code>.dataframe tbody tr th {
     vertical-align: top;
 }
@@ -551,74 +1823,176 @@ dtype: float64
     text-align: right;
 }
 </code></pre>
-<p><!-- raw HTML omitted --></p>
-<!-- raw HTML omitted -->
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>term</th>
+      <th>estimate_type</th>
+      <th>estimate</th>
+      <th>lower_3.0%</th>
+      <th>upper_97.0%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>arsenic</td>
+      <td>dyex</td>
+      <td>-0.167616</td>
+      <td>-0.201147</td>
+      <td>-0.134605</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 <p><code>slope</code> is also an argument for <code>plot_slopes</code>. Below, we visualize the elasticity with respect to <code>arsenic</code> conditional on a range of <code>dist100</code> and <code>educ4</code> values (notice this is the same plot as in the <em>conditional slopes</em> section).</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>plot_slopes(
-</span></span><span style="display:flex;"><span>    well_model_interact,
-</span></span><span style="display:flex;"><span>    well_idata_interact,
-</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;arsenic&#34;</span>,
-</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;dist100&#34;</span>, <span style="color:#e6db74">&#34;educ4&#34;</span>],
-</span></span><span style="display:flex;"><span>    slope<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;eyex&#34;</span>,
-</span></span><span style="display:flex;"><span>    subplot_kwargs<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;main&#34;</span>: <span style="color:#e6db74">&#34;dist100&#34;</span>, <span style="color:#e6db74">&#34;group&#34;</span>: <span style="color:#e6db74">&#34;educ4&#34;</span>, <span style="color:#e6db74">&#34;panel&#34;</span>: <span style="color:#e6db74">&#34;educ4&#34;</span>},
-</span></span><span style="display:flex;"><span>    fig_kwargs<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;figsize&#34;</span>: (<span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">4</span>), <span style="color:#e6db74">&#34;sharey&#34;</span>: <span style="color:#66d9ef">True</span>},
-</span></span><span style="display:flex;"><span>    legend<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>
-</span></span><span style="display:flex;"><span>)
-</span></span></code></pre></div><p><img loading="lazy" src="2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_45_0.png" alt="png"  />
-</p>
-<h3 id="categorical-covariates">Categorical covariates<a hidden class="anchor" aria-hidden="true" href="#categorical-covariates">#</a></h3>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">interpret</span><span class="o">.</span><span class="n">plot_slopes</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_model_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_idata_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">wrt</span><span class="o">=</span><span class="s2">&#34;arsenic&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">conditional</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;dist100&#34;</span><span class="p">,</span> <span class="s2">&#34;educ4&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="n">slope</span><span class="o">=</span><span class="s2">&#34;eyex&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">subplot_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;main&#34;</span><span class="p">:</span> <span class="s2">&#34;dist100&#34;</span><span class="p">,</span> <span class="s2">&#34;group&#34;</span><span class="p">:</span> <span class="s2">&#34;educ4&#34;</span><span class="p">,</span> <span class="s2">&#34;panel&#34;</span><span class="p">:</span> <span class="s2">&#34;educ4&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fig_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;figsize&#34;</span><span class="p">:</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="s2">&#34;sharey&#34;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="n">legend</span><span class="o">=</span><span class="kc">False</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span></span></span></code></pre></div>
+</div>
+<p><img src="2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_45_0.png" alt="png"></p>
+<h3 id="categorical-covariates">Categorical covariates</h3>
 <p>As mentioned in the <em>computing slopes</em> section, if you pass a variable with a string or categorical data type, the <code>comparisons</code> function will be called to compute the expected difference in group means. Here, we fit the same interaction model as above, albeit, by specifying <code>educ4</code> as an ordinal data type.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>data <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#34;http://www.stat.columbia.edu/~gelman/arm/examples/arsenic/wells.dat&#34;</span>, sep<span style="color:#f92672">=</span><span style="color:#e6db74">&#34; &#34;</span>)
-</span></span><span style="display:flex;"><span>data[<span style="color:#e6db74">&#34;switch&#34;</span>] <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>Categorical(data[<span style="color:#e6db74">&#34;switch&#34;</span>])
-</span></span><span style="display:flex;"><span>data[<span style="color:#e6db74">&#34;dist100&#34;</span>] <span style="color:#f92672">=</span> data[<span style="color:#e6db74">&#34;dist&#34;</span>] <span style="color:#f92672">/</span> <span style="color:#ae81ff">100</span>
-</span></span><span style="display:flex;"><span>data[<span style="color:#e6db74">&#34;educ4&#34;</span>] <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>Categorical(data[<span style="color:#e6db74">&#34;educ&#34;</span>] <span style="color:#f92672">/</span> <span style="color:#ae81ff">4</span>, ordered<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>well_model_interact <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>Model(
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;switch ~ dist100 + arsenic + educ4 + dist100:educ4 + arsenic:educ4&#34;</span>,
-</span></span><span style="display:flex;"><span>    data,
-</span></span><span style="display:flex;"><span>    family<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;bernoulli&#34;</span>
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>well_idata_interact <span style="color:#f92672">=</span> well_model_interact<span style="color:#f92672">.</span>fit(
-</span></span><span style="display:flex;"><span>    draws<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>,
-</span></span><span style="display:flex;"><span>    target_accept<span style="color:#f92672">=</span><span style="color:#ae81ff">0.95</span>,
-</span></span><span style="display:flex;"><span>    random_seed<span style="color:#f92672">=</span><span style="color:#ae81ff">1234</span>,
-</span></span><span style="display:flex;"><span>    chains<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>
-</span></span><span style="display:flex;"><span>)
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>plot_slopes(
-</span></span><span style="display:flex;"><span>    well_model_interact,
-</span></span><span style="display:flex;"><span>    well_idata_interact,
-</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;educ4&#34;</span>,
-</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dist100&#34;</span>,
-</span></span><span style="display:flex;"><span>    average_by<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dist100&#34;</span>
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>fig<span style="color:#f92672">.</span>set_size_inches(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>)
-</span></span></code></pre></div><p><img loading="lazy" src="2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_49_0.png" alt="png"  />
-</p>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&#34;http://www.stat.columbia.edu/~gelman/arm/examples/arsenic/wells.dat&#34;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&#34; &#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">data</span><span class="p">[</span><span class="s2">&#34;switch&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&#34;switch&#34;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">data</span><span class="p">[</span><span class="s2">&#34;dist100&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&#34;dist&#34;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">100</span>
+</span></span><span class="line"><span class="cl"><span class="n">data</span><span class="p">[</span><span class="s2">&#34;educ4&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&#34;educ&#34;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">4</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span></span></code></pre></div>
+</div>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">well_model_interact</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;switch ~ dist100 + arsenic + educ4 + dist100:educ4 + arsenic:educ4&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">data</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">family</span><span class="o">=</span><span class="s2">&#34;bernoulli&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">well_idata_interact</span> <span class="o">=</span> <span class="n">well_model_interact</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">draws</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">target_accept</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">random_seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">chains</span><span class="o">=</span><span class="mi">4</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span></span></span></code></pre></div>
+</div>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">interpret</span><span class="o">.</span><span class="n">plot_slopes</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_model_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_idata_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">wrt</span><span class="o">=</span><span class="s2">&#34;educ4&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">conditional</span><span class="o">=</span><span class="s2">&#34;dist100&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">average_by</span><span class="o">=</span><span class="s2">&#34;dist100&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span></span></span></code></pre></div>
+</div>
+<p><img src="2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_49_0.png" alt="png"></p>
 <p>As the model was fit with <code>educ4</code> as a categorical data type, Bambi recognized this, and calls <code>comparisons</code> to compute the differences between each level of <code>educ4</code>. As <code>educ4</code> contains many category levels, a covariate must be passed to <code>average_by</code> in order to perform plotting. Below, we can see this plot is equivalent to <code>plot_comparisons</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>plot_comparisons(
-</span></span><span style="display:flex;"><span>    well_model_interact,
-</span></span><span style="display:flex;"><span>    well_idata_interact,
-</span></span><span style="display:flex;"><span>    contrast<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;educ4&#34;</span>,
-</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dist100&#34;</span>,
-</span></span><span style="display:flex;"><span>    average_by<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dist100&#34;</span>
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>fig<span style="color:#f92672">.</span>set_size_inches(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>)
-</span></span></code></pre></div><p><img loading="lazy" src="2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_51_0.png" alt="png"  />
-</p>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">interpret</span><span class="o">.</span><span class="n">plot_comparisons</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_model_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_idata_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">contrast</span><span class="o">=</span><span class="s2">&#34;educ4&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">conditional</span><span class="o">=</span><span class="s2">&#34;dist100&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">average_by</span><span class="o">=</span><span class="s2">&#34;dist100&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span></span></span></code></pre></div>
+</div>
+<p><img src="2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_51_0.png" alt="png"></p>
 <p>However, computing the predictive difference between each <code>educ4</code> level may not be desired. Thus, in <code>plot_slopes</code>, as in <code>plot_comparisons</code>, if <code>wrt</code> is a categorical or string data type, it is possible to specify the <code>wrt</code> values. For example, if we wanted to compute the expected difference in probability of switching wells for when <code>educ4</code> is $4$ versus $1$ conditional on a range of <code>dist100</code> and <code>arsenic</code> values, we would pass the following dictionary in the code block below. Please refer to the <a href="https://bambinos.github.io/bambi/notebooks/plot_comparisons.html">comparisons</a> documentation for more details.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>plot_slopes(
-</span></span><span style="display:flex;"><span>    well_model_interact,
-</span></span><span style="display:flex;"><span>    well_idata_interact,
-</span></span><span style="display:flex;"><span>    wrt<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;educ4&#34;</span>: [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>]},
-</span></span><span style="display:flex;"><span>    conditional<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dist100&#34;</span>,
-</span></span><span style="display:flex;"><span>    average_by<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dist100&#34;</span>
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>fig<span style="color:#f92672">.</span>set_size_inches(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>)
-</span></span></code></pre></div><p><img loading="lazy" src="2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_53_0.png" alt="png"  />
-</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">%</span>load_ext watermark
-</span></span><span style="display:flex;"><span><span style="color:#f92672">%</span>watermark <span style="color:#f92672">-</span>n <span style="color:#f92672">-</span>u <span style="color:#f92672">-</span>v <span style="color:#f92672">-</span>iv <span style="color:#f92672">-</span>w
-</span></span></code></pre></div><pre><code>Last updated: Wed Aug 16 2023
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">interpret</span><span class="o">.</span><span class="n">plot_slopes</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_model_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">well_idata_interact</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">wrt</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;educ4&#34;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">]},</span>
+</span></span><span class="line"><span class="cl">    <span class="n">conditional</span><span class="o">=</span><span class="s2">&#34;dist100&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">average_by</span><span class="o">=</span><span class="s2">&#34;dist100&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span></span></span></code></pre></div>
+</div>
+<p><img src="2023-gsoc-update-slopes_files/2023-gsoc-update-slopes_53_0.png" alt="png"></p>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">%</span><span class="n">load_ext</span> <span class="n">watermark</span>
+</span></span><span class="line"><span class="cl"><span class="o">%</span><span class="n">watermark</span> <span class="o">-</span><span class="n">n</span> <span class="o">-</span><span class="n">u</span> <span class="o">-</span><span class="n">v</span> <span class="o">-</span><span class="n">iv</span> <span class="o">-</span><span class="n">w</span></span></span></code></pre></div>
+</div>
+<pre><code>Last updated: Wed Aug 16 2023
 
 Python implementation: CPython
 Python version       : 3.11.0
@@ -631,132 +2005,49 @@ bambi : 0.10.0.dev0
 Watermark: 2.3.1
 </code></pre>
 
+    </div>
 
-  </div>
-
-  <footer class="post-footer">
-    <ul class="post-tags">
-    </ul>
-  </footer>
-</article>
-    </main>
     
-<footer class="footer">
-        <span>&copy; 2026 <a href="http://localhost:1313/">The Feasible Set</a></span> · 
+    <div class="tag-list">
+      
+      <a class="tag" href="/tags/probabilistic-programming/">probabilistic-programming</a>
+      
+      <a class="tag" href="/tags/gsoc/">gsoc</a>
+      
+    </div>
+    
 
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
+    
+    
+    
+    
+    <nav class="article-pagination">
+      <a class="prev" href="/posts/bambi-comparisons/"><span class="pagination-arrow">&larr;</span><span class="pagination-title">Google Summer of Code - Average Predictive Comparisons</span></a>
+      <a class="next" href="/posts/gsoc-final-report/"><span class="pagination-title">Google Summer of Code - Final Report</span><span class="pagination-arrow">&rarr;</span></a>
+    </nav>
+    
+    
+  </article>
 
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
+    </main>
+  </div>
+  <div id="search-modal" class="search-modal" hidden>
+  <div class="search-backdrop" id="search-backdrop"></div>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="Search">
+    <div class="search-input-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
 
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
+      <input id="search-input" type="text" placeholder="Search posts and projects&hellip;" autocomplete="off"
+        data-index-url="/index.json"
+        data-recent-posts="3"
+        data-recent-projects="3" />
+      <button type="button" id="search-close" aria-label="Close search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+</button>
+    </div>
+    <div id="search-results" class="search-results"></div>
+  </div>
+</div>
 
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-<script>
-    document.querySelectorAll('pre > code').forEach((codeblock) => {
-        const container = codeblock.parentNode.parentNode;
-
-        const copybutton = document.createElement('button');
-        copybutton.classList.add('copy-code');
-        copybutton.innerHTML = 'copy';
-
-        function copyingDone() {
-            copybutton.innerHTML = 'copied!';
-            setTimeout(() => {
-                copybutton.innerHTML = 'copy';
-            }, 2000);
-        }
-
-        copybutton.addEventListener('click', (cb) => {
-            if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(codeblock.textContent);
-                copyingDone();
-                return;
-            }
-
-            const range = document.createRange();
-            range.selectNodeContents(codeblock);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            try {
-                document.execCommand('copy');
-                copyingDone();
-            } catch (e) { };
-            selection.removeRange(range);
-        });
-
-        if (container.classList.contains("highlight")) {
-            container.appendChild(copybutton);
-        } else if (container.parentNode.firstChild == container) {
-            
-        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
-            
-            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
-        } else {
-            
-            codeblock.parentNode.appendChild(copybutton);
-        }
-    });
-</script>
+  <script defer src="/js/main.7fa1375a71832ff60a47c91903a2933f00202e8166b90792375d116e64979d4c.js" integrity="sha256-f6E3WnGDL/YKR8kZA6KTPwAgLoFmuQeSN10RbmSXnUw="></script>
 </body>
-
 </html>

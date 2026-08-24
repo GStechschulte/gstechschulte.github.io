@@ -3,7 +3,7 @@ title: 'Google Summer of Code - Average Predictive Comparisons'
 date: 2023-06-30
 author: 'Gabriel Stechschulte'
 draft: false
-categories: ['probabilistic-programming', 'gsoc']
+tags: ['probabilistic-programming', 'gsoc']
 ---
 
 <!--eofm-->

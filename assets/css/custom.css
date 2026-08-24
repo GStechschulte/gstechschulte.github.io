@@ -1,0 +1,46 @@
+@font-face {
+    font-family: 'Geist';
+    src: url('/fonts/Geist-Variable.woff2') format('woff2-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+    --font-heading: "Geist", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-logo: "Geist", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+code, pre, kbd, samp {
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+.marimo-embed {
+    margin: 1.5rem 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+/* Narrower sidebar, wider article column, narrower ToC. Content width is
+   kept small enough that the inline ToC still fits and stays open at the
+   theme's normal >= 1280px breakpoint (no fallback to the toggle drawer). */
+:root {
+    --sidebar-w: 260px;
+}
+
+@media (min-width: 900px) {
+    .content {
+        max-width: 760px;
+    }
+}
+
+.toc {
+    width: 180px;
+}
+
+.logo-letters:hover span,
+.logo-letters.intro span {
+    animation: none;
+}

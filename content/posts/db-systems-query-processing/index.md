@@ -2,7 +2,7 @@
 title = '[WIP] Database Systems - Query Execution and Processing'
 date = 2025-01-01
 author = 'Gabriel Stechschulte'
-categories = ['database-systems']
+tags = ['database-systems']
 ShowToc = true
 TocOpen = false  # Optional - keeps TOC open by default
 draft = false

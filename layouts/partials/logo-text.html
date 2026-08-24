@@ -1,0 +1,1 @@
+{{- range $i, $c := split site.Title "" -}}<span style="--i:{{ $i }}">{{ if eq $c " " }}&nbsp;{{ else }}{{ $c }}{{ end }}</span>{{- end -}}

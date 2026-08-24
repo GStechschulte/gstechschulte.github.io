@@ -1,248 +1,299 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto">
+<!doctype html>
+<html lang="en-us"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zero Inflated Models in Bambi · Gabes Gulch</title>
+  <meta name="title" content="Zero Inflated Models in Bambi · Gabes Gulch" />
+  <meta name="description" content=" python Copy #| code-fold: true import arviz as az import matplotlib.pyplot as plt from matplotlib.lines import Line2D import numpy as np import pandas as pd import scipy.stats as stats import seaborn as sns import warnings import bambi as bmb warnings.simplefilter(action=&#39;ignore&#39;, category=FutureWarning) WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions. Zero inflated models This blog post is a copy of the zero inflated models documentation I wrote for Bambi. The original post can be found here.
+" />
+  <link rel="canonical" href="http://localhost:1313/posts/bambi-zip-models/" />
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="noindex, nofollow">
-<title>Zero Inflated Models in Bambi | The Feasible Set</title>
-<meta name="keywords" content="">
-<meta name="description" content="#| code-fold: true
-import arviz as az
-import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
-import numpy as np
-import pandas as pd
-import scipy.stats as stats
-import seaborn as sns
-import warnings
+  <meta property="og:site_name" content="Gabes Gulch" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="http://localhost:1313/posts/bambi-zip-models/" />
+  <meta property="og:title" content="Zero Inflated Models in Bambi · Gabes Gulch" />
+  <meta property="og:description" content=" python Copy #| code-fold: true import arviz as az import matplotlib.pyplot as plt from matplotlib.lines import Line2D import numpy as np import pandas as pd import scipy.stats as stats import seaborn as sns import warnings import bambi as bmb warnings.simplefilter(action=&#39;ignore&#39;, category=FutureWarning) WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions. Zero inflated models This blog post is a copy of the zero inflated models documentation I wrote for Bambi. The original post can be found here.
+" />
+  <meta property="og:image" content="http://localhost:1313/favicon/android-chrome-512x512.png" />
+  <meta property="og:image:width" content="512" />
+  <meta property="og:image:height" content="512" />
+  <meta property="article:published_time" content="2023-09-29T00:00:00Z" />
+  <meta property="article:modified_time" content="2023-09-29T00:00:00Z" />
+  <meta property="article:tag" content="probabilistic-programming" />
 
-import bambi as bmb
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Zero Inflated Models in Bambi · Gabes Gulch" />
+  <meta name="twitter:description" content=" python Copy #| code-fold: true import arviz as az import matplotlib.pyplot as plt from matplotlib.lines import Line2D import numpy as np import pandas as pd import scipy.stats as stats import seaborn as sns import warnings import bambi as bmb warnings.simplefilter(action=&#39;ignore&#39;, category=FutureWarning) WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions. Zero inflated models This blog post is a copy of the zero inflated models documentation I wrote for Bambi. The original post can be found here.
+" />
+  <meta name="twitter:image" content="http://localhost:1313/favicon/android-chrome-512x512.png" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "Zero Inflated Models in Bambi",
+      "description": " python Copy #| code-fold: true import arviz as az import matplotlib.pyplot as plt from matplotlib.lines import Line2D import numpy as np import pandas as pd import scipy.stats as stats import seaborn as sns import warnings import bambi as bmb warnings.simplefilter(action=\u0026#39;ignore\u0026#39;, category=FutureWarning) WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions. Zero inflated models This blog post is a copy of the zero inflated models documentation I wrote for Bambi. The original post can be found here.\n",
+      "url": "http:\/\/localhost:1313\/posts\/bambi-zip-models\/",
+      "datePublished": "2023-09-29T00:00:00Z",
+      "dateModified": "2023-09-29T00:00:00Z",
+      "image": "http:\/\/localhost:1313\/favicon\/android-chrome-512x512.png",
+      "mainEntityOfPage": "http:\/\/localhost:1313\/posts\/bambi-zip-models\/",
+      "author": { "@id": "http:\/\/localhost:1313\/#person" },
+      "publisher": { "@id": "http:\/\/localhost:1313\/#person" }
+    }
+  </script>
 
-warnings.simplefilter(action=&#39;ignore&#39;, category=FutureWarning)
-WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions.
-
-Zero inflated models
-This blog post is a copy of the zero inflated models documentation I wrote for Bambi. The original post can be found here.
-In this notebook, we will describe zero inflated outcomes and why the data generating process behind these outcomes requires a special class of generalized linear models: zero-inflated Poisson (ZIP) and hurdle Poisson. Subsequently, we will describe and implement each model using a set of zero-inflated data from ecology. Along the way, we will also use the interpret sub-package to interpret the predictions and parameters of the models.">
-<meta name="author" content="Gabriel Stechschulte">
-<link rel="canonical" href="http://localhost:1313/posts/bambi-zip-models/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/bambi-zip-models/">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --code-block-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript><link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-
-<link
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400&family=Silkscreen:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/main.min.fe107c9226bd748e68be6805ce0dbbd2b20c696caa0811517640ce7d9006c4ed.css" integrity="sha256-/hB8kia9dI5ovmgFzg270rIMaWyqCBFRdkDOfZAGxO0=" />
+  <link rel="stylesheet" href="/css/custom.min.4ee4d2cc5b3538d1cc601cd2c77857aba9b17730f246699404d7e0f8ac583e7f.css" integrity="sha256-TuTSzFs1ONHMYBzSx3hXq6mxdzDyRmmUBNfg&#43;KxYPn8=" />
+  <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
     integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
     crossorigin="anonymous"
-/>
-<script
+  />
+  <script
     defer
     src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"
     integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8"
     crossorigin="anonymous"
-></script>
-<script
+  ></script>
+  <script
     defer
     src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
     integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
     crossorigin="anonymous"
-></script>
-<script>
+  ></script>
+  <script>
     document.addEventListener("DOMContentLoaded", function () {
-        renderMathInElement(document.body, {
-            delimiters: [
-                { left: "$$", right: "$$", display: true },
-                { left: "$", right: "$", display: false },
-                { left: "\\(", right: "\\)", display: false },
-                { left: "\\[", right: "\\]", display: true },
-            ],
-            throwOnError: false,
-        });
+      renderMathInElement(document.body, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$", right: "$", display: false },
+          { left: "\\(", right: "\\)", display: false },
+          { left: "\\[", right: "\\]", display: true },
+        ],
+        throwOnError: false,
+      });
     });
-</script>
+  </script>
+
+  <script>
+    (function () {
+      var stored = null;
+      try { stored = localStorage.getItem("theme"); } catch (e) {}
+      var theme = stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+
 
 
 </head>
 
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
+<body>
+  <div class="shell">
+    <header class="mobile-header">
+  <a class="mobile-header-title logo-letters" href="/"><span style="--i:0">G</span><span style="--i:1">a</span><span style="--i:2">b</span><span style="--i:3">e</span><span style="--i:4">s</span><span style="--i:5">&nbsp;</span><span style="--i:6">G</span><span style="--i:7">u</span><span style="--i:8">l</span><span style="--i:9">c</span><span style="--i:10">h</span></a>
+  <button type="button" id="sidebar-toggle" class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
 
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="The Feasible Set (Alt + H)">The Feasible Set</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu">
-            <li>
-                <a href="http://localhost:1313/archives/" title="archives">
-                    <span>archives</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/categories/" title="categories">
-                    <span>categories</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/search/" title="search (Alt &#43; /)" accesskey=/>
-                    <span>search</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+  </button>
 </header>
-<main class="main">
 
-<article class="post-single">
-  <header class="post-header">
-    
-    <h1 class="post-title entry-hint-parent">
-      Zero Inflated Models in Bambi
-    </h1>
-    <div class="post-meta"><span title='2023-09-29 00:00:00 +0000 UTC'>September 29, 2023</span>&nbsp;·&nbsp;15 min&nbsp;·&nbsp;Gabriel Stechschulte
+<div id="sidebar-backdrop" class="sidebar-backdrop" hidden></div>
 
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-top">
+    <h1 class="site-title"><a href="/" class="logo-letters"><span style="--i:0">G</span><span style="--i:1">a</span><span style="--i:2">b</span><span style="--i:3">e</span><span style="--i:4">s</span><span style="--i:5">&nbsp;</span><span style="--i:6">G</span><span style="--i:7">u</span><span style="--i:8">l</span><span style="--i:9">c</span><span style="--i:10">h</span></a></h1>
+    <p class="bio">My name is Gabriel Stechschulte, a software engineer interested in probabilistic programming and optimization.</p>
+    <div class="sidebar-tools">
+      <button type="button" id="search-open" aria-label="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+
+        <span>Search</span>
+      </button>
+    </div>
+
+    <div class="sidebar-links">
+      <a href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+<span>Home</span></a>
+      <a href="https://github.com/GStechschulte" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+<span>GitHub</span></a>
+      <a href="https://x.com/__gsteck__" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+<span>X</span></a>
+      <a href="https://www.linkedin.com/in/gabrielstechschulte/" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M7 10v7M7 7v.01M12 17v-4a2 2 0 014 0v4M12 10v7"/></svg>
+<span>LinkedIn</span></a>
+      <a href="/index.xml"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg>
+<span>RSS</span></a>
+    </div>
+  </div>
+
+  <div class="sidebar-bottom">
+    <div class="sidebar-links">
+      <a href="/tags/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41L13.42 20.58a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+<span>Tags</span></a>
+      <button type="button" id="theme-toggle" aria-label="Toggle color theme">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+</span>
+        <span class="icon-moon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+</span>
+        <span class="theme-toggle-label">Theme</span>
+      </button>
+    </div>
+    <div class="sidebar-footer">&copy; 2026 Gabes Gulch</div>
+  </div>
+</aside>
+
+    <main class="content">
+      
+  <article class="article">
+    <header class="article-header" id="top">
+      <h1>Zero Inflated Models in Bambi</h1>
+      <div class="article-meta">
+  <time datetime="2023-09-29">29 September 2023</time>
+  
+  <span class="meta-sep">&middot;</span>
+  <span>16 min read</span>
+  
 </div>
-  </header> 
-  <div class="post-content"><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#| code-fold: true</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> arviz <span style="color:#66d9ef">as</span> az
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> matplotlib.lines <span style="color:#f92672">import</span> Line2D
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> scipy.stats <span style="color:#66d9ef">as</span> stats
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> seaborn <span style="color:#66d9ef">as</span> sns
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> warnings
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> bambi <span style="color:#66d9ef">as</span> bmb
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>warnings<span style="color:#f92672">.</span>simplefilter(action<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;ignore&#39;</span>, category<span style="color:#f92672">=</span><span style="color:#a6e22e">FutureWarning</span>)
-</span></span></code></pre></div><pre><code>WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions.
+
+    </header>
+
+    
+    
+<button type="button" id="toc-toggle" class="toc-toggle" aria-label="Table of contents" aria-expanded="false" aria-controls="toc">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+
+</button>
+<nav class="toc" id="toc">
+  
+  <a href="#zero-inflated-outcomes" class="toc-link">Zero inflated outcomes</a>
+  
+  <a href="#zero-inflated-poisson" class="toc-link">Zero inflated poisson</a>
+  
+  <a href="#hurdle-poisson" class="toc-link">Hurdle poisson</a>
+  
+  <a href="#summary" class="toc-link">Summary</a>
+  
+</nav>
+    
+
+    <div class="prose">
+      <!--eofm-->
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1">#| code-fold: true</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">matplotlib.lines</span> <span class="kn">import</span> <span class="n">Line2D</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">stats</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">warnings</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">bambi</span> <span class="k">as</span> <span class="nn">bmb</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span></span></span></code></pre></div>
+</div>
+<pre><code>WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions.
 </code></pre>
-<h1 id="zero-inflated-models">Zero inflated models<a hidden class="anchor" aria-hidden="true" href="#zero-inflated-models">#</a></h1>
+<h1 id="zero-inflated-models">Zero inflated models</h1>
 <p>This blog post is a copy of the zero inflated models documentation I wrote for <a href="https://bambinos.github.io/bambi/">Bambi</a>. The original post can be found <a href="https://bambinos.github.io/bambi/notebooks/">here</a>.</p>
 <p>In this notebook, we will describe zero inflated outcomes and why the data generating process behind these outcomes requires a special class of generalized linear models: zero-inflated Poisson (ZIP) and hurdle Poisson. Subsequently, we will describe and implement each model using a set of zero-inflated data from ecology. Along the way, we will also use the <code>interpret</code> sub-package to interpret the predictions and parameters of the models.</p>
-<h2 id="zero-inflated-outcomes">Zero inflated outcomes<a hidden class="anchor" aria-hidden="true" href="#zero-inflated-outcomes">#</a></h2>
+<h2 id="zero-inflated-outcomes">Zero inflated outcomes</h2>
 <p>Sometimes, an observation is not generated from a single process, but from a <em>mixture</em> of processes. Whenever there is a mixture of processes generating an observation, a mixture model may be more appropriate. A mixture model uses more than one probability distribution to model the data. Count data are more susceptible to needing a mixture model as it is common to have a large number of zeros <strong>and</strong> values greater than zero.  A zero means &ldquo;nothing happened&rdquo;, and this can be either because the rate of events is low, or because the process that generates the events was never &ldquo;triggered&rdquo;. For example, in health service utilization data (the number of times a patient used a service during a given time period), a large number of zeros represents patients with no utilization during the time period. However, some patients do use a service which is a result of some &ldquo;triggered process&rdquo;.</p>
 <p>There are two popular classes of models for modeling zero-inflated data: (1) ZIP, and (2) hurdle Poisson. First, the ZIP model is described and how to implement it in Bambi is outlined. Subsequently, the hurdle Poisson model and how to implement it is outlined thereafter.</p>
-<h2 id="zero-inflated-poisson">Zero inflated poisson<a hidden class="anchor" aria-hidden="true" href="#zero-inflated-poisson">#</a></h2>
+<h2 id="zero-inflated-poisson">Zero inflated poisson</h2>
 <p>To model zero-inflated outcomes, the ZIP model uses a distribution that mixes two data generating processes. The first process generates zeros, and the second process uses a Poisson distribution to generate counts (of which some may be zero). The result of this mixture is a distribution that can be described as</p>
 <p>$$P(Y=0) = (1 - \psi) + \psi e^{-\mu}$$</p>
 <p>$$P(Y=y_i) = \psi \frac{e^{-\mu} \mu_{i}^y}{y_{i}!} \ \text{for} \ y_i = 1, 2, 3,&hellip;,n$$</p>
 <p>where $y_i$ is the outcome, $\mu$ is the mean of the Poisson process where $\mu \ge 0$, and $\psi$ is the probability of the Poisson process where $0 \lt \psi \lt 1$. To understand how these two processes are &ldquo;mixed&rdquo;, let&rsquo;s simulate some data using the two process equations above (taken from the PyMC <a href="https://www.pymc.io/projects/docs/en/latest/api/distributions/generated/pymc.ZeroInflatedPoisson.html">docs</a>).</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>x <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">22</span>)
-</span></span><span style="display:flex;"><span>psis <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0.7</span>, <span style="color:#ae81ff">0.4</span>]
-</span></span><span style="display:flex;"><span>mus <span style="color:#f92672">=</span> [<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">4</span>]
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>))
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> psi, mu <span style="color:#f92672">in</span> zip(psis, mus):
-</span></span><span style="display:flex;"><span>    pmf <span style="color:#f92672">=</span> stats<span style="color:#f92672">.</span>poisson<span style="color:#f92672">.</span>pmf(x, mu)
-</span></span><span style="display:flex;"><span>    pmf[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> psi) <span style="color:#f92672">+</span> pmf[<span style="color:#ae81ff">0</span>] <span style="color:#75715e"># 1.) generate zeros</span>
-</span></span><span style="display:flex;"><span>    pmf[<span style="color:#ae81ff">1</span>:] <span style="color:#f92672">=</span>  psi <span style="color:#f92672">*</span> pmf[<span style="color:#ae81ff">1</span>:] <span style="color:#75715e"># 2.) generate counts</span>
-</span></span><span style="display:flex;"><span>    pmf <span style="color:#f92672">/=</span> pmf<span style="color:#f92672">.</span>sum() <span style="color:#75715e"># normalize to get probabilities</span>
-</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>plot(x, pmf, <span style="color:#e6db74">&#39;-o&#39;</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;$</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">psi$ = </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">, $</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">mu$ = </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>format(psi, mu))
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#34;Zero Inflated Poisson Process&#34;</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;x&#39;</span>, fontsize<span style="color:#f92672">=</span><span style="color:#ae81ff">12</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;f(x)&#39;</span>, fontsize<span style="color:#f92672">=</span><span style="color:#ae81ff">12</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>legend(loc<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()
-</span></span></code></pre></div><p><img loading="lazy" src="2023-09-29-zip-models-bambi_files/2023-09-29-zip-models-bambi_5_0.png" alt="png"  />
-</p>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">22</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">psis</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">mus</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">psi</span><span class="p">,</span> <span class="n">mu</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">psis</span><span class="p">,</span> <span class="n">mus</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pmf</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">poisson</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pmf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">psi</span><span class="p">)</span> <span class="o">+</span> <span class="n">pmf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># 1.) generate zeros</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pmf</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span>  <span class="n">psi</span> <span class="o">*</span> <span class="n">pmf</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="c1"># 2.) generate counts</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pmf</span> <span class="o">/=</span> <span class="n">pmf</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="c1"># normalize to get probabilities</span>
+</span></span><span class="line"><span class="cl">    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pmf</span><span class="p">,</span> <span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">psi$ = </span><span class="si">{}</span><span class="s1">, $</span><span class="se">\\</span><span class="s1">mu$ = </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">psi</span><span class="p">,</span> <span class="n">mu</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&#34;Zero Inflated Poisson Process&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;f(x)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></span></span></code></pre></div>
+</div>
+<p><img src="2023-09-29-zip-models-bambi_files/2023-09-29-zip-models-bambi_5_0.png" alt="png"></p>
 <p>Notice how the blue line, corresponding to a higher $\psi$ and $\mu$, has a higher rate of counts and less zeros. Additionally, the inline comments above describe the first and second process generating the data.</p>
-<h3 id="zip-regression-model">ZIP regression model<a hidden class="anchor" aria-hidden="true" href="#zip-regression-model">#</a></h3>
+<h3 id="zip-regression-model">ZIP regression model</h3>
 <p>The equations above only describe the ZIP distribution. However, predictors can be added to make this a regression model. Suppose we have a response variable $Y$, which represents the number of events that occur during a time period, and $p$ predictors $X_1, X_2, &hellip;, X_p$. We can model the parameters of the ZIP distribution as a linear combination of the predictors.</p>
 <p>$$Y_i \sim \text{ZIPoisson}(\mu_i, \psi_i)$$</p>
 <p>$$g(\mu_i) = \beta_0 + \beta_1 X_{1i}+,&hellip;,+\beta_p X_{pi}$$</p>
 <p>$$h(\psi_i) = \alpha_0 + \alpha_1 X_{1i}+,&hellip;,+\alpha_p X_{pi}$$</p>
 <p>where $g$ and $h$ are the link functions for each parameter. Bambi, by default, uses the log link for $g$ and the logit link for $h$. Notice how there are two linear models and two link functions: one for each parameter in the $\text{ZIPoisson}$. The parameters of the linear model differ, because any predictor such as $X$ may be associated differently with each part of the mixture. Actually, you don&rsquo;t even need to use the same predictors in both linear models—but this beyond the scope of this notebook.</p>
-<h4 id="the-fish-dataset">The fish dataset<a hidden class="anchor" aria-hidden="true" href="#the-fish-dataset">#</a></h4>
+<h4 id="the-fish-dataset">The fish dataset</h4>
 <p>To demonstrate the ZIP regression model, we model and predict how many fish are caught by visitors at a state park using survey <a href="%22https://stats.idre.ucla.edu/stat/data/fish.csv%22">data</a>. Many visitors catch zero fish, either because they did not fish at all, or because they were unlucky. The dataset contains data on 250 groups that went to a state park to fish. Each group was questioned about how many fish they caught (<code>count</code>), how many children were in the group (<code>child</code>), how many people were in the group (<code>persons</code>), if they used a live bait (<code>livebait</code>) and whether or not they brought a camper to the park (<code>camper</code>).</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fish_data <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_stata(<span style="color:#e6db74">&#34;http://www.stata-press.com/data/r11/fish.dta&#34;</span>)
-</span></span><span style="display:flex;"><span>cols <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;count&#34;</span>, <span style="color:#e6db74">&#34;livebait&#34;</span>, <span style="color:#e6db74">&#34;camper&#34;</span>, <span style="color:#e6db74">&#34;persons&#34;</span>, <span style="color:#e6db74">&#34;child&#34;</span>]
-</span></span><span style="display:flex;"><span>fish_data <span style="color:#f92672">=</span> fish_data[cols]
-</span></span><span style="display:flex;"><span>fish_data[<span style="color:#e6db74">&#34;livebait&#34;</span>] <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>Categorical(fish_data[<span style="color:#e6db74">&#34;livebait&#34;</span>])
-</span></span><span style="display:flex;"><span>fish_data[<span style="color:#e6db74">&#34;camper&#34;</span>] <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>Categorical(fish_data[<span style="color:#e6db74">&#34;camper&#34;</span>])
-</span></span><span style="display:flex;"><span>fish_data <span style="color:#f92672">=</span> fish_data[fish_data[<span style="color:#e6db74">&#34;count&#34;</span>] <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">60</span>] <span style="color:#75715e"># remove outliers</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fish_data<span style="color:#f92672">.</span>head()
-</span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">fish_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_stata</span><span class="p">(</span><span class="s2">&#34;http://www.stata-press.com/data/r11/fish.dta&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;count&#34;</span><span class="p">,</span> <span class="s2">&#34;livebait&#34;</span><span class="p">,</span> <span class="s2">&#34;camper&#34;</span><span class="p">,</span> <span class="s2">&#34;persons&#34;</span><span class="p">,</span> <span class="s2">&#34;child&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">fish_data</span> <span class="o">=</span> <span class="n">fish_data</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">fish_data</span><span class="p">[</span><span class="s2">&#34;livebait&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">fish_data</span><span class="p">[</span><span class="s2">&#34;livebait&#34;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">fish_data</span><span class="p">[</span><span class="s2">&#34;camper&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">fish_data</span><span class="p">[</span><span class="s2">&#34;camper&#34;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">fish_data</span> <span class="o">=</span> <span class="n">fish_data</span><span class="p">[</span><span class="n">fish_data</span><span class="p">[</span><span class="s2">&#34;count&#34;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">60</span><span class="p">]</span> <span class="c1"># remove outliers</span></span></span></code></pre></div>
+</div>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">fish_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span></span></span></code></pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 <pre><code>.dataframe tbody tr th {
     vertical-align: top;
 }
@@ -251,40 +302,145 @@ In this notebook, we will describe zero inflated outcomes and why the data gener
     text-align: right;
 }
 </code></pre>
-<p><!-- raw HTML omitted --></p>
-<!-- raw HTML omitted -->
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Excess zeros, and skewed count</span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>))
-</span></span><span style="display:flex;"><span>sns<span style="color:#f92672">.</span>histplot(fish_data[<span style="color:#e6db74">&#34;count&#34;</span>], discrete<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#34;Number of Fish Caught&#34;</span>);
-</span></span></code></pre></div><p><img loading="lazy" src="2023-09-29-zip-models-bambi_files/2023-09-29-zip-models-bambi_11_0.png" alt="png"  />
-</p>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>count</th>
+      <th>livebait</th>
+      <th>camper</th>
+      <th>persons</th>
+      <th>child</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># Excess zeros, and skewed count</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">fish_data</span><span class="p">[</span><span class="s2">&#34;count&#34;</span><span class="p">],</span> <span class="n">discrete</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&#34;Number of Fish Caught&#34;</span><span class="p">);</span></span></span></code></pre></div>
+</div>
+<p><img src="2023-09-29-zip-models-bambi_files/2023-09-29-zip-models-bambi_11_0.png" alt="png"></p>
 <p>To fit a ZIP regression model, we pass <code>family=zero_inflated_poisson</code> to the <code>bmb.Model</code> constructor.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>zip_model <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>Model(
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;count ~ livebait + camper + persons + child&#34;</span>,
-</span></span><span style="display:flex;"><span>    fish_data,
-</span></span><span style="display:flex;"><span>    family<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;zero_inflated_poisson&#39;</span>
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>zip_idata <span style="color:#f92672">=</span> zip_model<span style="color:#f92672">.</span>fit(
-</span></span><span style="display:flex;"><span>    draws<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>,
-</span></span><span style="display:flex;"><span>    target_accept<span style="color:#f92672">=</span><span style="color:#ae81ff">0.95</span>,
-</span></span><span style="display:flex;"><span>    random_seed<span style="color:#f92672">=</span><span style="color:#ae81ff">1234</span>,
-</span></span><span style="display:flex;"><span>    chains<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>
-</span></span><span style="display:flex;"><span>)
-</span></span></code></pre></div><pre><code>Auto-assigning NUTS sampler...
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">zip_model</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;count ~ livebait + camper + persons + child&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fish_data</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">family</span><span class="o">=</span><span class="s1">&#39;zero_inflated_poisson&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">zip_idata</span> <span class="o">=</span> <span class="n">zip_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">draws</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">target_accept</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">random_seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">chains</span><span class="o">=</span><span class="mi">4</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span></span></span></code></pre></div>
+</div>
+<pre><code>Auto-assigning NUTS sampler...
 Initializing NUTS using jitter+adapt_diag...
 Multiprocess sampling (4 chains in 4 jobs)
 NUTS: [count_psi, Intercept, livebait, camper, persons, child]
 </code></pre>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<div>
+  <progress value='8000' class='' max='8000' style='width:300px; height:20px; vertical-align: middle;'></progress>
+  100.00% [8000/8000 00:03&lt;00:00 Sampling 4 chains, 0 divergences]
+</div>
 <pre><code>Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 4 seconds.
 </code></pre>
 <p>Lets take a look at the model components. Why is there only one linear model and link function defined for $\mu$. Where is the linear model and link function for $\psi$? By default, the &ldquo;main&rdquo; (or first) formula is defined for the parent parameter; in this case $\mu$. Since we didn&rsquo;t pass an additional formula for the non-parent parameter $\psi$, $\psi$ was never modeled as a function of the predictors as explained above. If we want to model both $\mu$ and $\psi$ as a function of the predictor, we need to expicitly pass two formulas.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>zip_model
-</span></span></code></pre></div><pre><code>       Formula: count ~ livebait + camper + persons + child
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">zip_model</span></span></span></code></pre></div>
+</div>
+<pre><code>       Formula: count ~ livebait + camper + persons + child
         Family: zero_inflated_poisson
           Link: mu = log
   Observations: 248
@@ -303,35 +459,75 @@ NUTS: [count_psi, Intercept, livebait, camper, persons, child]
 * To see a plot of the priors call the .plot_priors() method.
 * To see a summary or plot of the posterior pass the object returned by .fit() to az.summary() or az.plot_trace()
 </code></pre>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>formula <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>Formula(
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;count ~ livebait + camper + persons + child&#34;</span>, <span style="color:#75715e"># parent parameter mu</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;psi ~ livebait + camper + persons + child&#34;</span>    <span style="color:#75715e"># non-parent parameter psi</span>
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>zip_model <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>Model(
-</span></span><span style="display:flex;"><span>    formula,
-</span></span><span style="display:flex;"><span>    fish_data,
-</span></span><span style="display:flex;"><span>    family<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;zero_inflated_poisson&#39;</span>
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>zip_idata <span style="color:#f92672">=</span> zip_model<span style="color:#f92672">.</span>fit(
-</span></span><span style="display:flex;"><span>    draws<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>,
-</span></span><span style="display:flex;"><span>    target_accept<span style="color:#f92672">=</span><span style="color:#ae81ff">0.95</span>,
-</span></span><span style="display:flex;"><span>    random_seed<span style="color:#f92672">=</span><span style="color:#ae81ff">1234</span>,
-</span></span><span style="display:flex;"><span>    chains<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>
-</span></span><span style="display:flex;"><span>)
-</span></span></code></pre></div><pre><code>Auto-assigning NUTS sampler...
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">formula</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">Formula</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;count ~ livebait + camper + persons + child&#34;</span><span class="p">,</span> <span class="c1"># parent parameter mu</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;psi ~ livebait + camper + persons + child&#34;</span>    <span class="c1"># non-parent parameter psi</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">zip_model</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">formula</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fish_data</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">family</span><span class="o">=</span><span class="s1">&#39;zero_inflated_poisson&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">zip_idata</span> <span class="o">=</span> <span class="n">zip_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">draws</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">target_accept</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">random_seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">chains</span><span class="o">=</span><span class="mi">4</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span></span></span></code></pre></div>
+</div>
+<pre><code>Auto-assigning NUTS sampler...
 Initializing NUTS using jitter+adapt_diag...
 Multiprocess sampling (4 chains in 4 jobs)
 NUTS: [Intercept, livebait, camper, persons, child, psi_Intercept, psi_livebait, psi_camper, psi_persons, psi_child]
 </code></pre>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<div>
+  <progress value='8000' class='' max='8000' style='width:300px; height:20px; vertical-align: middle;'></progress>
+  100.00% [8000/8000 00:05&lt;00:00 Sampling 4 chains, 0 divergences]
+</div>
 <pre><code>Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 6 seconds.
 </code></pre>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>zip_model
-</span></span></code></pre></div><pre><code>       Formula: count ~ livebait + camper + persons + child
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">zip_model</span></span></span></code></pre></div>
+</div>
+<pre><code>       Formula: count ~ livebait + camper + persons + child
                 psi ~ livebait + camper + persons + child
         Family: zero_inflated_poisson
           Link: mu = log
@@ -357,16 +553,43 @@ NUTS: [Intercept, livebait, camper, persons, child, psi_Intercept, psi_livebait,
 * To see a summary or plot of the posterior pass the object returned by .fit() to az.summary() or az.plot_trace()
 </code></pre>
 <p>Now, both $\mu$ and $\psi$ are defined as a function of a linear combination of the predictors. Additionally, we can see that the log and logit link functions are defined for $\mu$ and $\psi$, respectively.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>zip_model<span style="color:#f92672">.</span>graph()
-</span></span></code></pre></div><p><img loading="lazy" src="2023-09-29-zip-models-bambi_files/2023-09-29-zip-models-bambi_19_0.svg" alt="svg"  />
-</p>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">zip_model</span><span class="o">.</span><span class="n">graph</span><span class="p">()</span></span></span></code></pre></div>
+</div>
+<p><img src="2023-09-29-zip-models-bambi_files/2023-09-29-zip-models-bambi_19_0.svg" alt="svg"></p>
 <p>Since each parameter has a different link function, and each parameter has a different meaning, we must be careful on how the coefficients are interpreted. Coefficients without the substring &ldquo;psi&rdquo; correspond to the $\mu$ parameter (the mean of the Poisson process) and are on the log scale. Coefficients with the substring &ldquo;psi&rdquo; correspond to the $\psi$ parameter (this can be thought of as the log-odds of non-zero data) and are on the logit scale. Interpreting these coefficients can be easier with the <code>interpret</code> sub-package. Below, we will show how to use this sub-package to interpret the coefficients conditional on a set of the predictors.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>az<span style="color:#f92672">.</span>summary(
-</span></span><span style="display:flex;"><span>    zip_idata,
-</span></span><span style="display:flex;"><span>    var_names<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;Intercept&#34;</span>, <span style="color:#e6db74">&#34;livebait&#34;</span>, <span style="color:#e6db74">&#34;camper&#34;</span>, <span style="color:#e6db74">&#34;persons&#34;</span>, <span style="color:#e6db74">&#34;child&#34;</span>],
-</span></span><span style="display:flex;"><span>    filter_vars<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;like&#34;</span>
-</span></span><span style="display:flex;"><span>)
-</span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">zip_idata</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;Intercept&#34;</span><span class="p">,</span> <span class="s2">&#34;livebait&#34;</span><span class="p">,</span> <span class="s2">&#34;camper&#34;</span><span class="p">,</span> <span class="s2">&#34;persons&#34;</span><span class="p">,</span> <span class="s2">&#34;child&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="n">filter_vars</span><span class="o">=</span><span class="s2">&#34;like&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span></span></span></code></pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 <pre><code>.dataframe tbody tr th {
     vertical-align: top;
 }
@@ -375,150 +598,373 @@ NUTS: [Intercept, livebait, camper, persons, child, psi_Intercept, psi_livebait,
     text-align: right;
 }
 </code></pre>
-<p><!-- raw HTML omitted --></p>
-<!-- raw HTML omitted -->
-<h4 id="interpret-model-parameters">Interpret model parameters<a hidden class="anchor" aria-hidden="true" href="#interpret-model-parameters">#</a></h4>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mean</th>
+      <th>sd</th>
+      <th>hdi_3%</th>
+      <th>hdi_97%</th>
+      <th>mcse_mean</th>
+      <th>mcse_sd</th>
+      <th>ess_bulk</th>
+      <th>ess_tail</th>
+      <th>r_hat</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Intercept</th>
+      <td>-1.573</td>
+      <td>0.310</td>
+      <td>-2.130</td>
+      <td>-0.956</td>
+      <td>0.005</td>
+      <td>0.004</td>
+      <td>3593.0</td>
+      <td>3173.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>livebait[1.0]</th>
+      <td>1.609</td>
+      <td>0.272</td>
+      <td>1.143</td>
+      <td>2.169</td>
+      <td>0.004</td>
+      <td>0.003</td>
+      <td>4158.0</td>
+      <td>3085.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>camper[1.0]</th>
+      <td>0.262</td>
+      <td>0.095</td>
+      <td>0.085</td>
+      <td>0.440</td>
+      <td>0.001</td>
+      <td>0.001</td>
+      <td>5032.0</td>
+      <td>2816.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>persons</th>
+      <td>0.615</td>
+      <td>0.045</td>
+      <td>0.527</td>
+      <td>0.697</td>
+      <td>0.001</td>
+      <td>0.000</td>
+      <td>4864.0</td>
+      <td>2709.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>child</th>
+      <td>-0.795</td>
+      <td>0.094</td>
+      <td>-0.972</td>
+      <td>-0.625</td>
+      <td>0.002</td>
+      <td>0.001</td>
+      <td>3910.0</td>
+      <td>3232.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>psi_Intercept</th>
+      <td>-1.443</td>
+      <td>0.817</td>
+      <td>-2.941</td>
+      <td>0.124</td>
+      <td>0.013</td>
+      <td>0.009</td>
+      <td>4253.0</td>
+      <td>3018.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>psi_livebait[1.0]</th>
+      <td>-0.188</td>
+      <td>0.677</td>
+      <td>-1.490</td>
+      <td>1.052</td>
+      <td>0.010</td>
+      <td>0.011</td>
+      <td>4470.0</td>
+      <td>2776.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>psi_camper[1.0]</th>
+      <td>0.841</td>
+      <td>0.323</td>
+      <td>0.222</td>
+      <td>1.437</td>
+      <td>0.004</td>
+      <td>0.003</td>
+      <td>6002.0</td>
+      <td>3114.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>psi_persons</th>
+      <td>0.912</td>
+      <td>0.193</td>
+      <td>0.571</td>
+      <td>1.288</td>
+      <td>0.003</td>
+      <td>0.002</td>
+      <td>4145.0</td>
+      <td>3169.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>psi_child</th>
+      <td>-1.890</td>
+      <td>0.305</td>
+      <td>-2.502</td>
+      <td>-1.353</td>
+      <td>0.005</td>
+      <td>0.003</td>
+      <td>4022.0</td>
+      <td>2883.0</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h4 id="interpret-model-parameters">Interpret model parameters</h4>
 <p>Since we have fit a distributional model, we can leverage the <code>plot_predictions()</code> function in the <code>interpret</code> sub-package to visualize how the $\text{ZIPoisson}$ parameters $\mu$ and $\psi$ vary as a covariate changes.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(nrows<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, ncols<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">3</span>))
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>plot_predictions(
-</span></span><span style="display:flex;"><span>    zip_model,
-</span></span><span style="display:flex;"><span>    zip_idata,
-</span></span><span style="display:flex;"><span>    covariates<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;persons&#34;</span>,
-</span></span><span style="display:flex;"><span>    ax<span style="color:#f92672">=</span>ax[<span style="color:#ae81ff">0</span>]
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>set_ylabel(<span style="color:#e6db74">&#34;mu (fish count)&#34;</span>)
-</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">&#34;$</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">mu$ as a function of persons&#34;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>bmb<span style="color:#f92672">.</span>interpret<span style="color:#f92672">.</span>plot_predictions(
-</span></span><span style="display:flex;"><span>    zip_model,
-</span></span><span style="display:flex;"><span>    zip_idata,
-</span></span><span style="display:flex;"><span>    covariates<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;persons&#34;</span>,
-</span></span><span style="display:flex;"><span>    target<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;psi&#34;</span>,
-</span></span><span style="display:flex;"><span>    ax<span style="color:#f92672">=</span>ax[<span style="color:#ae81ff">1</span>]
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>ax[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">&#34;$</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">psi$ as a function of persons&#34;</span>);
-</span></span></code></pre></div><p><img loading="lazy" src="2023-09-29-zip-models-bambi_files/2023-09-29-zip-models-bambi_23_0.png" alt="png"  />
-</p>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">bmb</span><span class="o">.</span><span class="n">interpret</span><span class="o">.</span><span class="n">plot_predictions</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">zip_model</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">zip_idata</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">covariates</span><span class="o">=</span><span class="s2">&#34;persons&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&#34;mu (fish count)&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&#34;$</span><span class="se">\\</span><span class="s2">mu$ as a function of persons&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">bmb</span><span class="o">.</span><span class="n">interpret</span><span class="o">.</span><span class="n">plot_predictions</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">zip_model</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">zip_idata</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">covariates</span><span class="o">=</span><span class="s2">&#34;persons&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">target</span><span class="o">=</span><span class="s2">&#34;psi&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&#34;$</span><span class="se">\\</span><span class="s2">psi$ as a function of persons&#34;</span><span class="p">);</span></span></span></code></pre></div>
+</div>
+<p><img src="2023-09-29-zip-models-bambi_files/2023-09-29-zip-models-bambi_23_0.png" alt="png"></p>
 <p>Interpreting the left plot (the $\mu$ parameter) as the number of people in a group fishing increases, so does the number of fish caught. The right plot (the $\psi$ parameter) shows that as the number of people in a group fishing increases, the probability of the Poisson process increases. One interpretation of this is that as the number of people in a group increases, the probability of catching no fish decreases.</p>
-<h4 id="posterior-predictive-distribution">Posterior predictive distribution<a hidden class="anchor" aria-hidden="true" href="#posterior-predictive-distribution">#</a></h4>
+<h4 id="posterior-predictive-distribution">Posterior predictive distribution</h4>
 <p>Lastly, lets plot the posterior predictive distribution against the observed data to see how well the model fits the data. To plot the samples, a utility function is defined below to assist in the plotting of discrete values.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">adjust_lightness</span>(color, amount<span style="color:#f92672">=</span><span style="color:#ae81ff">0.5</span>):
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">import</span> matplotlib.colors <span style="color:#66d9ef">as</span> mc
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">import</span> colorsys
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
-</span></span><span style="display:flex;"><span>        c <span style="color:#f92672">=</span> mc<span style="color:#f92672">.</span>cnames[color]
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span>:
-</span></span><span style="display:flex;"><span>        c <span style="color:#f92672">=</span> color
-</span></span><span style="display:flex;"><span>    c <span style="color:#f92672">=</span> colorsys<span style="color:#f92672">.</span>rgb_to_hls(<span style="color:#f92672">*</span>mc<span style="color:#f92672">.</span>to_rgb(c))
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> colorsys<span style="color:#f92672">.</span>hls_to_rgb(c[<span style="color:#ae81ff">0</span>], c[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">*</span> amount, c[<span style="color:#ae81ff">2</span>])
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">plot_ppc_discrete</span>(idata, bins, ax):
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add_discrete_bands</span>(x, lower, upper, ax, <span style="color:#f92672">**</span>kwargs):
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> i, (l, u) <span style="color:#f92672">in</span> enumerate(zip(lower, upper)):
-</span></span><span style="display:flex;"><span>            s <span style="color:#f92672">=</span> slice(i, i <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>)
-</span></span><span style="display:flex;"><span>            ax<span style="color:#f92672">.</span>fill_between(x[s], [l, l], [u, u], <span style="color:#f92672">**</span>kwargs)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    var_name <span style="color:#f92672">=</span> list(idata<span style="color:#f92672">.</span>observed_data<span style="color:#f92672">.</span>data_vars)[<span style="color:#ae81ff">0</span>]
-</span></span><span style="display:flex;"><span>    y_obs <span style="color:#f92672">=</span> idata<span style="color:#f92672">.</span>observed_data[var_name]<span style="color:#f92672">.</span>to_numpy()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    counts_list <span style="color:#f92672">=</span> []
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> draw_values <span style="color:#f92672">in</span> az<span style="color:#f92672">.</span>extract(idata, <span style="color:#e6db74">&#34;posterior_predictive&#34;</span>)[var_name]<span style="color:#f92672">.</span>to_numpy()<span style="color:#f92672">.</span>T:
-</span></span><span style="display:flex;"><span>        counts, _ <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>histogram(draw_values, bins<span style="color:#f92672">=</span>bins)
-</span></span><span style="display:flex;"><span>        counts_list<span style="color:#f92672">.</span>append(counts)
-</span></span><span style="display:flex;"><span>    counts_arr <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>stack(counts_list)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    qts_90 <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>quantile(counts_arr, (<span style="color:#ae81ff">0.05</span>, <span style="color:#ae81ff">0.95</span>), axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
-</span></span><span style="display:flex;"><span>    qts_70 <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>quantile(counts_arr, (<span style="color:#ae81ff">0.15</span>, <span style="color:#ae81ff">0.85</span>), axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
-</span></span><span style="display:flex;"><span>    qts_50 <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>quantile(counts_arr, (<span style="color:#ae81ff">0.25</span>, <span style="color:#ae81ff">0.75</span>), axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
-</span></span><span style="display:flex;"><span>    qts_30 <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>quantile(counts_arr, (<span style="color:#ae81ff">0.35</span>, <span style="color:#ae81ff">0.65</span>), axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
-</span></span><span style="display:flex;"><span>    median <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>quantile(counts_arr, <span style="color:#ae81ff">0.5</span>, axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    colors <span style="color:#f92672">=</span> [adjust_lightness(<span style="color:#e6db74">&#34;C0&#34;</span>, x) <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> [<span style="color:#ae81ff">1.8</span>, <span style="color:#ae81ff">1.6</span>, <span style="color:#ae81ff">1.4</span>, <span style="color:#ae81ff">1.2</span>, <span style="color:#ae81ff">0.9</span>]]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    add_discrete_bands(bins, qts_90[<span style="color:#ae81ff">0</span>], qts_90[<span style="color:#ae81ff">1</span>], ax<span style="color:#f92672">=</span>ax, color<span style="color:#f92672">=</span>colors[<span style="color:#ae81ff">0</span>])
-</span></span><span style="display:flex;"><span>    add_discrete_bands(bins, qts_70[<span style="color:#ae81ff">0</span>], qts_70[<span style="color:#ae81ff">1</span>], ax<span style="color:#f92672">=</span>ax, color<span style="color:#f92672">=</span>colors[<span style="color:#ae81ff">1</span>])
-</span></span><span style="display:flex;"><span>    add_discrete_bands(bins, qts_50[<span style="color:#ae81ff">0</span>], qts_50[<span style="color:#ae81ff">1</span>], ax<span style="color:#f92672">=</span>ax, color<span style="color:#f92672">=</span>colors[<span style="color:#ae81ff">2</span>])
-</span></span><span style="display:flex;"><span>    add_discrete_bands(bins, qts_30[<span style="color:#ae81ff">0</span>], qts_30[<span style="color:#ae81ff">1</span>], ax<span style="color:#f92672">=</span>ax, color<span style="color:#f92672">=</span>colors[<span style="color:#ae81ff">3</span>])
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ax<span style="color:#f92672">.</span>step(bins[:<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>], median, color<span style="color:#f92672">=</span>colors[<span style="color:#ae81ff">4</span>], lw<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, where<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span>)
-</span></span><span style="display:flex;"><span>    ax<span style="color:#f92672">.</span>hist(y_obs, bins<span style="color:#f92672">=</span>bins, histtype<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;step&#34;</span>, lw<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;black&#34;</span>, align<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mid&#34;</span>)
-</span></span><span style="display:flex;"><span>    handles <span style="color:#f92672">=</span> [
-</span></span><span style="display:flex;"><span>        Line2D([], [], label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Observed data&#34;</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;black&#34;</span>, lw<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>),
-</span></span><span style="display:flex;"><span>        Line2D([], [], label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Posterior predictive median&#34;</span>, color<span style="color:#f92672">=</span>colors[<span style="color:#ae81ff">4</span>], lw<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>)
-</span></span><span style="display:flex;"><span>    ]
-</span></span><span style="display:flex;"><span>    ax<span style="color:#f92672">.</span>legend(handles<span style="color:#f92672">=</span>handles)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> ax
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>zip_pps <span style="color:#f92672">=</span> zip_model<span style="color:#f92672">.</span>predict(idata<span style="color:#f92672">=</span>zip_idata, kind<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pps&#34;</span>, inplace<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>bins <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">39</span>)
-</span></span><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>))
-</span></span><span style="display:flex;"><span>ax <span style="color:#f92672">=</span> plot_ppc_discrete(zip_pps, bins, ax)
-</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_xlabel(<span style="color:#e6db74">&#34;Number of Fish Caught&#34;</span>)
-</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_ylabel(<span style="color:#e6db74">&#34;Count&#34;</span>)
-</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">&#34;ZIP model - Posterior Predictive Distribution&#34;</span>);
-</span></span></code></pre></div><p><img loading="lazy" src="2023-09-29-zip-models-bambi_files/2023-09-29-zip-models-bambi_27_0.png" alt="png"  />
-</p>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">adjust_lightness</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">amount</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="k">as</span> <span class="nn">mc</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">import</span> <span class="nn">colorsys</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">c</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">cnames</span><span class="p">[</span><span class="n">color</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">except</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">c</span> <span class="o">=</span> <span class="n">color</span>
+</span></span><span class="line"><span class="cl">    <span class="n">c</span> <span class="o">=</span> <span class="n">colorsys</span><span class="o">.</span><span class="n">rgb_to_hls</span><span class="p">(</span><span class="o">*</span><span class="n">mc</span><span class="o">.</span><span class="n">to_rgb</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">colorsys</span><span class="o">.</span><span class="n">hls_to_rgb</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">amount</span><span class="p">,</span> <span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">plot_ppc_discrete</span><span class="p">(</span><span class="n">idata</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">add_discrete_bands</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">s</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">s</span><span class="p">],</span> <span class="p">[</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">],</span> <span class="p">[</span><span class="n">u</span><span class="p">,</span> <span class="n">u</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">var_name</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">idata</span><span class="o">.</span><span class="n">observed_data</span><span class="o">.</span><span class="n">data_vars</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">y_obs</span> <span class="o">=</span> <span class="n">idata</span><span class="o">.</span><span class="n">observed_data</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">counts_list</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">draw_values</span> <span class="ow">in</span> <span class="n">az</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">idata</span><span class="p">,</span> <span class="s2">&#34;posterior_predictive&#34;</span><span class="p">)[</span><span class="n">var_name</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">counts</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">draw_values</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">counts_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">counts_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">counts_list</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">qts_90</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">counts_arr</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">qts_70</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">counts_arr</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">qts_50</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">counts_arr</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">qts_30</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">counts_arr</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.65</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">median</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">counts_arr</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">adjust_lightness</span><span class="p">(</span><span class="s2">&#34;C0&#34;</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">1.8</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">]]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">add_discrete_bands</span><span class="p">(</span><span class="n">bins</span><span class="p">,</span> <span class="n">qts_90</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">qts_90</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="n">add_discrete_bands</span><span class="p">(</span><span class="n">bins</span><span class="p">,</span> <span class="n">qts_70</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">qts_70</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="n">add_discrete_bands</span><span class="p">(</span><span class="n">bins</span><span class="p">,</span> <span class="n">qts_50</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">qts_50</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="n">add_discrete_bands</span><span class="p">(</span><span class="n">bins</span><span class="p">,</span> <span class="n">qts_30</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">qts_30</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">ax</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">bins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">median</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="s2">&#34;post&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s2">&#34;step&#34;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&#34;black&#34;</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">&#34;mid&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">handles</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Line2D</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&#34;Observed data&#34;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&#34;black&#34;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Line2D</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&#34;Posterior predictive median&#34;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">handles</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">ax</span></span></span></code></pre></div>
+</div>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">zip_pps</span> <span class="o">=</span> <span class="n">zip_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">idata</span><span class="o">=</span><span class="n">zip_idata</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&#34;pps&#34;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">39</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">ax</span> <span class="o">=</span> <span class="n">plot_ppc_discrete</span><span class="p">(</span><span class="n">zip_pps</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&#34;Number of Fish Caught&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&#34;Count&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&#34;ZIP model - Posterior Predictive Distribution&#34;</span><span class="p">);</span></span></span></code></pre></div>
+</div>
+<p><img src="2023-09-29-zip-models-bambi_files/2023-09-29-zip-models-bambi_27_0.png" alt="png"></p>
 <p>The model captures the number of zeros accurately. However, the model seems to slightly underestimate the counts 1 and 2. Nonetheless, the plot shows that the model captures the overall distribution of counts reasonably well.</p>
-<h2 id="hurdle-poisson">Hurdle poisson<a hidden class="anchor" aria-hidden="true" href="#hurdle-poisson">#</a></h2>
+<h2 id="hurdle-poisson">Hurdle poisson</h2>
 <p>Both ZIP and hurdle models both use two processes to generate data. The two models differ in their conceptualization of how the zeros are generated. In $\text{ZIPoisson}$, the zeroes can come from any of the processes, while in the hurdle Poisson they come only from one of the processes. Thus, a hurdle model assumes zero and positive values are generated from two independent processes. In the hurdle model, there are two components: (1) a &ldquo;structural&rdquo; process such as a binary model for modeling whether the response variable is zero or not, and (2) a process using a truncated model such as a truncated Poisson for modeling the counts. The result of these two components is a distribution that can be described as</p>
 <p>$$P(Y=0) = 1 - \psi$$</p>
 <p>$$P(Y=y_i) = \psi \frac{e^{-\mu_i}\mu_{i}^{y_i} / y_i!}{1 - e^{-\mu_i}} \ \text{for} \ y_i = 1, 2, 3,&hellip;,n$$</p>
 <p>where $y_i$ is the outcome, $\mu$ is the mean of the Poisson process where $\mu \ge 0$, and $\psi$ is the probability of the Poisson process where $0 \lt \psi \lt 1$. The numerator of the second equation is the Poisson probability mass function, and the denominator is one minus the Poisson cumulative distribution function. This is a lot to digest. Again, let&rsquo;s simulate some data to understand how data is generated from this process.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>x <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">22</span>)
-</span></span><span style="display:flex;"><span>psis <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0.7</span>, <span style="color:#ae81ff">0.4</span>]
-</span></span><span style="display:flex;"><span>mus <span style="color:#f92672">=</span> [<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">4</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>))
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> psi, mu <span style="color:#f92672">in</span> zip(psis, mus):
-</span></span><span style="display:flex;"><span>    pmf <span style="color:#f92672">=</span> stats<span style="color:#f92672">.</span>poisson<span style="color:#f92672">.</span>pmf(x, mu) <span style="color:#75715e"># pmf evaluated at x given mu</span>
-</span></span><span style="display:flex;"><span>    cdf <span style="color:#f92672">=</span> stats<span style="color:#f92672">.</span>poisson<span style="color:#f92672">.</span>cdf(<span style="color:#ae81ff">0</span>, mu) <span style="color:#75715e"># cdf evaluated at 0 given mu</span>
-</span></span><span style="display:flex;"><span>    pmf[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> psi <span style="color:#75715e"># 1.) generate zeros</span>
-</span></span><span style="display:flex;"><span>    pmf[<span style="color:#ae81ff">1</span>:] <span style="color:#f92672">=</span>  (psi <span style="color:#f92672">*</span> pmf[<span style="color:#ae81ff">1</span>:]) <span style="color:#f92672">/</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> cdf) <span style="color:#75715e"># 2.) generate counts</span>
-</span></span><span style="display:flex;"><span>    pmf <span style="color:#f92672">/=</span> pmf<span style="color:#f92672">.</span>sum() <span style="color:#75715e"># normalize to get probabilities</span>
-</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>plot(x, pmf, <span style="color:#e6db74">&#39;-o&#39;</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;$</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">psi$ = </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">, $</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">mu$ = </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>format(psi, mu))
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#34;Hurdle Poisson Process&#34;</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;x&#39;</span>, fontsize<span style="color:#f92672">=</span><span style="color:#ae81ff">12</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;f(x)&#39;</span>, fontsize<span style="color:#f92672">=</span><span style="color:#ae81ff">12</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>legend(loc<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()
-</span></span></code></pre></div><p><img loading="lazy" src="2023-09-29-zip-models-bambi_files/2023-09-29-zip-models-bambi_30_0.png" alt="png"  />
-</p>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">22</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">psis</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">mus</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">psi</span><span class="p">,</span> <span class="n">mu</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">psis</span><span class="p">,</span> <span class="n">mus</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pmf</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">poisson</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">)</span> <span class="c1"># pmf evaluated at x given mu</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cdf</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">poisson</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">mu</span><span class="p">)</span> <span class="c1"># cdf evaluated at 0 given mu</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pmf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">psi</span> <span class="c1"># 1.) generate zeros</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pmf</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span>  <span class="p">(</span><span class="n">psi</span> <span class="o">*</span> <span class="n">pmf</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">cdf</span><span class="p">)</span> <span class="c1"># 2.) generate counts</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pmf</span> <span class="o">/=</span> <span class="n">pmf</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="c1"># normalize to get probabilities</span>
+</span></span><span class="line"><span class="cl">    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pmf</span><span class="p">,</span> <span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">psi$ = </span><span class="si">{}</span><span class="s1">, $</span><span class="se">\\</span><span class="s1">mu$ = </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">psi</span><span class="p">,</span> <span class="n">mu</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&#34;Hurdle Poisson Process&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;f(x)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></span></span></code></pre></div>
+</div>
+<p><img src="2023-09-29-zip-models-bambi_files/2023-09-29-zip-models-bambi_30_0.png" alt="png"></p>
 <p>The differences between the ZIP and hurdle models are subtle. Notice how in the code for the hurdle Poisson process, the zero counts are generate by <code>(1 - psi)</code> versus <code>(1 - psi) + pmf[0]</code> for the ZIP process. Additionally, the positive observations are generated by the process <code>(psi * pmf[1:]) / (1 - cdf)</code> where the numerator is a vector of probabilities for positive counts scaled by $\psi$ and the denominator uses the Poisson cumulative distribution function to evaluate the probability a count is greater than 0.</p>
-<h3 id="hurdle-regression-model">Hurdle regression model<a hidden class="anchor" aria-hidden="true" href="#hurdle-regression-model">#</a></h3>
+<h3 id="hurdle-regression-model">Hurdle regression model</h3>
 <p>To add predictors in the hurdle model, we follow the same specification as in the <em>ZIP regression model</em> section since both models have the same structure. The only difference is that the hurdle model uses a truncated Poisson distribution instead of a ZIP distribution. Right away, we will model both the parent and non-parent parameter as a function of the predictors.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>hurdle_formula <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>Formula(
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;count ~ livebait + camper + persons + child&#34;</span>, <span style="color:#75715e"># parent parameter mu</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;psi ~ livebait + camper + persons + child&#34;</span>    <span style="color:#75715e"># non-parent parameter psi</span>
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>hurdle_model <span style="color:#f92672">=</span> bmb<span style="color:#f92672">.</span>Model(
-</span></span><span style="display:flex;"><span>    hurdle_formula,
-</span></span><span style="display:flex;"><span>    fish_data,
-</span></span><span style="display:flex;"><span>    family<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;hurdle_poisson&#39;</span>
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>hurdle_idata <span style="color:#f92672">=</span> hurdle_model<span style="color:#f92672">.</span>fit(
-</span></span><span style="display:flex;"><span>    draws<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>,
-</span></span><span style="display:flex;"><span>    target_accept<span style="color:#f92672">=</span><span style="color:#ae81ff">0.95</span>,
-</span></span><span style="display:flex;"><span>    random_seed<span style="color:#f92672">=</span><span style="color:#ae81ff">1234</span>,
-</span></span><span style="display:flex;"><span>    chains<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>
-</span></span><span style="display:flex;"><span>)
-</span></span></code></pre></div><pre><code>Auto-assigning NUTS sampler...
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">hurdle_formula</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">Formula</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;count ~ livebait + camper + persons + child&#34;</span><span class="p">,</span> <span class="c1"># parent parameter mu</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;psi ~ livebait + camper + persons + child&#34;</span>    <span class="c1"># non-parent parameter psi</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">hurdle_model</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">hurdle_formula</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fish_data</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">family</span><span class="o">=</span><span class="s1">&#39;hurdle_poisson&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">hurdle_idata</span> <span class="o">=</span> <span class="n">hurdle_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">draws</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">target_accept</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">random_seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">chains</span><span class="o">=</span><span class="mi">4</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span></span></span></code></pre></div>
+</div>
+<pre><code>Auto-assigning NUTS sampler...
 Initializing NUTS using jitter+adapt_diag...
 Multiprocess sampling (4 chains in 4 jobs)
 NUTS: [Intercept, livebait, camper, persons, child, psi_Intercept, psi_livebait, psi_camper, psi_persons, psi_child]
 </code></pre>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+<div>
+  <progress value='8000' class='' max='8000' style='width:300px; height:20px; vertical-align: middle;'></progress>
+  100.00% [8000/8000 00:06&lt;00:00 Sampling 4 chains, 0 divergences]
+</div>
 <pre><code>Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 6 seconds.
 </code></pre>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>hurdle_model
-</span></span></code></pre></div><pre><code>       Formula: count ~ livebait + camper + persons + child
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">hurdle_model</span></span></span></code></pre></div>
+</div>
+<pre><code>       Formula: count ~ livebait + camper + persons + child
                 psi ~ livebait + camper + persons + child
         Family: hurdle_poisson
           Link: mu = log
@@ -543,16 +989,43 @@ NUTS: [Intercept, livebait, camper, persons, child, psi_Intercept, psi_livebait,
 * To see a plot of the priors call the .plot_priors() method.
 * To see a summary or plot of the posterior pass the object returned by .fit() to az.summary() or az.plot_trace()
 </code></pre>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>hurdle_model<span style="color:#f92672">.</span>graph()
-</span></span></code></pre></div><p><img loading="lazy" src="2023-09-29-zip-models-bambi_files/2023-09-29-zip-models-bambi_35_0.svg" alt="svg"  />
-</p>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">hurdle_model</span><span class="o">.</span><span class="n">graph</span><span class="p">()</span></span></span></code></pre></div>
+</div>
+<p><img src="2023-09-29-zip-models-bambi_files/2023-09-29-zip-models-bambi_35_0.svg" alt="svg"></p>
 <p>As the same link functions are used for ZIP and Hurdle model, the coefficients can be interpreted in a similar manner.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>az<span style="color:#f92672">.</span>summary(
-</span></span><span style="display:flex;"><span>    hurdle_idata,
-</span></span><span style="display:flex;"><span>    var_names<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;Intercept&#34;</span>, <span style="color:#e6db74">&#34;livebait&#34;</span>, <span style="color:#e6db74">&#34;camper&#34;</span>, <span style="color:#e6db74">&#34;persons&#34;</span>, <span style="color:#e6db74">&#34;child&#34;</span>],
-</span></span><span style="display:flex;"><span>    filter_vars<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;like&#34;</span>
-</span></span><span style="display:flex;"><span>)
-</span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">hurdle_idata</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;Intercept&#34;</span><span class="p">,</span> <span class="s2">&#34;livebait&#34;</span><span class="p">,</span> <span class="s2">&#34;camper&#34;</span><span class="p">,</span> <span class="s2">&#34;persons&#34;</span><span class="p">,</span> <span class="s2">&#34;child&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="n">filter_vars</span><span class="o">=</span><span class="s2">&#34;like&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span></span></span></code></pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 <pre><code>.dataframe tbody tr th {
     vertical-align: top;
 }
@@ -561,27 +1034,188 @@ NUTS: [Intercept, livebait, camper, persons, child, psi_Intercept, psi_livebait,
     text-align: right;
 }
 </code></pre>
-<p><!-- raw HTML omitted --></p>
-<!-- raw HTML omitted -->
-<h4 id="posterior-predictive-samples">Posterior predictive samples<a hidden class="anchor" aria-hidden="true" href="#posterior-predictive-samples">#</a></h4>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mean</th>
+      <th>sd</th>
+      <th>hdi_3%</th>
+      <th>hdi_97%</th>
+      <th>mcse_mean</th>
+      <th>mcse_sd</th>
+      <th>ess_bulk</th>
+      <th>ess_tail</th>
+      <th>r_hat</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Intercept</th>
+      <td>-1.615</td>
+      <td>0.363</td>
+      <td>-2.278</td>
+      <td>-0.915</td>
+      <td>0.006</td>
+      <td>0.005</td>
+      <td>3832.0</td>
+      <td>2121.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>livebait[1.0]</th>
+      <td>1.661</td>
+      <td>0.329</td>
+      <td>1.031</td>
+      <td>2.273</td>
+      <td>0.005</td>
+      <td>0.004</td>
+      <td>4149.0</td>
+      <td>1871.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>camper[1.0]</th>
+      <td>0.271</td>
+      <td>0.100</td>
+      <td>0.073</td>
+      <td>0.449</td>
+      <td>0.001</td>
+      <td>0.001</td>
+      <td>6843.0</td>
+      <td>2934.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>persons</th>
+      <td>0.610</td>
+      <td>0.045</td>
+      <td>0.533</td>
+      <td>0.700</td>
+      <td>0.001</td>
+      <td>0.000</td>
+      <td>4848.0</td>
+      <td>3196.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>child</th>
+      <td>-0.791</td>
+      <td>0.094</td>
+      <td>-0.970</td>
+      <td>-0.618</td>
+      <td>0.001</td>
+      <td>0.001</td>
+      <td>4371.0</td>
+      <td>3006.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>psi_Intercept</th>
+      <td>-2.780</td>
+      <td>0.583</td>
+      <td>-3.906</td>
+      <td>-1.715</td>
+      <td>0.008</td>
+      <td>0.006</td>
+      <td>4929.0</td>
+      <td>3258.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>psi_livebait[1.0]</th>
+      <td>0.764</td>
+      <td>0.427</td>
+      <td>-0.067</td>
+      <td>1.557</td>
+      <td>0.006</td>
+      <td>0.005</td>
+      <td>5721.0</td>
+      <td>2779.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>psi_camper[1.0]</th>
+      <td>0.849</td>
+      <td>0.298</td>
+      <td>0.283</td>
+      <td>1.378</td>
+      <td>0.004</td>
+      <td>0.003</td>
+      <td>5523.0</td>
+      <td>2855.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>psi_persons</th>
+      <td>1.040</td>
+      <td>0.183</td>
+      <td>0.719</td>
+      <td>1.396</td>
+      <td>0.003</td>
+      <td>0.002</td>
+      <td>3852.0</td>
+      <td>3007.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>psi_child</th>
+      <td>-2.003</td>
+      <td>0.282</td>
+      <td>-2.555</td>
+      <td>-1.517</td>
+      <td>0.004</td>
+      <td>0.003</td>
+      <td>4021.0</td>
+      <td>3183.0</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h4 id="posterior-predictive-samples">Posterior predictive samples</h4>
 <p>As with the ZIP model above, we plot the posterior predictive distribution against the observed data to see how well the model fits the data.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>hurdle_pps <span style="color:#f92672">=</span> hurdle_model<span style="color:#f92672">.</span>predict(idata<span style="color:#f92672">=</span>hurdle_idata, kind<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pps&#34;</span>, inplace<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>bins <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">39</span>)
-</span></span><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>))
-</span></span><span style="display:flex;"><span>ax <span style="color:#f92672">=</span> plot_ppc_discrete(hurdle_pps, bins, ax)
-</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_xlabel(<span style="color:#e6db74">&#34;Number of Fish Caught&#34;</span>)
-</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_ylabel(<span style="color:#e6db74">&#34;Count&#34;</span>)
-</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">&#34;Hurdle Model - Posterior Predictive Distribution&#34;</span>);
-</span></span></code></pre></div><p><img loading="lazy" src="2023-09-29-zip-models-bambi_files/2023-09-29-zip-models-bambi_39_0.png" alt="png"  />
-</p>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">hurdle_pps</span> <span class="o">=</span> <span class="n">hurdle_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">idata</span><span class="o">=</span><span class="n">hurdle_idata</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&#34;pps&#34;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">39</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">ax</span> <span class="o">=</span> <span class="n">plot_ppc_discrete</span><span class="p">(</span><span class="n">hurdle_pps</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&#34;Number of Fish Caught&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&#34;Count&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&#34;Hurdle Model - Posterior Predictive Distribution&#34;</span><span class="p">);</span></span></span></code></pre></div>
+</div>
+<p><img src="2023-09-29-zip-models-bambi_files/2023-09-29-zip-models-bambi_39_0.png" alt="png"></p>
 <p>The plot looks similar to the ZIP model above. Nonetheless, the plot shows that the model captures the overall distribution of counts reasonably well.</p>
-<h2 id="summary">Summary<a hidden class="anchor" aria-hidden="true" href="#summary">#</a></h2>
+<h2 id="summary">Summary</h2>
 <p>In this notebook, two classes of models (ZIP and hurdle Poisson) for modeling zero-inflated data were presented and implemented in Bambi. The difference of the data generating process between the two models differ in how zeros are generated. The ZIP model uses a distribution that mixes two data generating processes. The first process generates zeros, and the second process uses a Poisson distribution to generate counts (of which some may be zero). The hurdle Poisson also uses two data generating processes, but doesn&rsquo;t &ldquo;mix&rdquo; them. A process is used for generating zeros such as a binary model for modeling whether the response variable is zero or not, and a second process for modeling the counts. These two proceses are independent of each other.</p>
 <p>The dataset used to demonstrate the two models had a large number of zeros. These zeros appeared because the group doesn&rsquo;t fish, or because they fished, but caught zero fish. Because zeros could be generated due to two different reasons, the ZIP model, which allows zeros to be generated from a mixture of processes, seems to be more appropriate for this datset.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">%</span>load_ext watermark
-</span></span><span style="display:flex;"><span><span style="color:#f92672">%</span>watermark <span style="color:#f92672">-</span>n <span style="color:#f92672">-</span>u <span style="color:#f92672">-</span>v <span style="color:#f92672">-</span>iv <span style="color:#f92672">-</span>w
-</span></span></code></pre></div><pre><code>Last updated: Mon Sep 25 2023
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-lang">python</span>
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+</span>
+      <span class="code-copy-icon code-copy-icon-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</span>
+      <span class="code-copy-label">Copy</span>
+    </button>
+  </div>
+  <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">%</span><span class="n">load_ext</span> <span class="n">watermark</span>
+</span></span><span class="line"><span class="cl"><span class="o">%</span><span class="n">watermark</span> <span class="o">-</span><span class="n">n</span> <span class="o">-</span><span class="n">u</span> <span class="o">-</span><span class="n">v</span> <span class="o">-</span><span class="n">iv</span> <span class="o">-</span><span class="n">w</span></span></span></code></pre></div>
+</div>
+<pre><code>Last updated: Mon Sep 25 2023
 
 Python implementation: CPython
 Python version       : 3.11.0
@@ -598,132 +1232,47 @@ pandas    : 2.1.0
 Watermark: 2.3.1
 </code></pre>
 
+    </div>
 
-  </div>
-
-  <footer class="post-footer">
-    <ul class="post-tags">
-    </ul>
-  </footer>
-</article>
-    </main>
     
-<footer class="footer">
-        <span>&copy; 2026 <a href="http://localhost:1313/">The Feasible Set</a></span> · 
+    <div class="tag-list">
+      
+      <a class="tag" href="/tags/probabilistic-programming/">probabilistic-programming</a>
+      
+    </div>
+    
 
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
+    
+    
+    
+    
+    <nav class="article-pagination">
+      <a class="prev" href="/posts/gsoc-final-report/"><span class="pagination-arrow">&larr;</span><span class="pagination-title">Google Summer of Code - Final Report</span></a>
+      <a class="next" href="/posts/bambi-ordinal-models/"><span class="pagination-title">Ordinal Models in Bambi</span><span class="pagination-arrow">&rarr;</span></a>
+    </nav>
+    
+    
+  </article>
 
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
+    </main>
+  </div>
+  <div id="search-modal" class="search-modal" hidden>
+  <div class="search-backdrop" id="search-backdrop"></div>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="Search">
+    <div class="search-input-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
 
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
+      <input id="search-input" type="text" placeholder="Search posts and projects&hellip;" autocomplete="off"
+        data-index-url="/index.json"
+        data-recent-posts="3"
+        data-recent-projects="3" />
+      <button type="button" id="search-close" aria-label="Close search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+</button>
+    </div>
+    <div id="search-results" class="search-results"></div>
+  </div>
+</div>
 
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-<script>
-    document.querySelectorAll('pre > code').forEach((codeblock) => {
-        const container = codeblock.parentNode.parentNode;
-
-        const copybutton = document.createElement('button');
-        copybutton.classList.add('copy-code');
-        copybutton.innerHTML = 'copy';
-
-        function copyingDone() {
-            copybutton.innerHTML = 'copied!';
-            setTimeout(() => {
-                copybutton.innerHTML = 'copy';
-            }, 2000);
-        }
-
-        copybutton.addEventListener('click', (cb) => {
-            if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(codeblock.textContent);
-                copyingDone();
-                return;
-            }
-
-            const range = document.createRange();
-            range.selectNodeContents(codeblock);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            try {
-                document.execCommand('copy');
-                copyingDone();
-            } catch (e) { };
-            selection.removeRange(range);
-        });
-
-        if (container.classList.contains("highlight")) {
-            container.appendChild(copybutton);
-        } else if (container.parentNode.firstChild == container) {
-            
-        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
-            
-            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
-        } else {
-            
-            codeblock.parentNode.appendChild(copybutton);
-        }
-    });
-</script>
+  <script defer src="/js/main.7fa1375a71832ff60a47c91903a2933f00202e8166b90792375d116e64979d4c.js" integrity="sha256-f6E3WnGDL/YKR8kZA6KTPwAgLoFmuQeSN10RbmSXnUw="></script>
 </body>
-
 </html>

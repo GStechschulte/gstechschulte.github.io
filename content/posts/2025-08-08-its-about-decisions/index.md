@@ -2,7 +2,7 @@
 title = "[WIP] It's About Making Decisions"
 date = 2025-08-08
 author = "Gabriel Stechschulte"
-categories = ["optimization", "probabilistic-programming", "jax"]
+tags = ["optimization", "probabilistic-programming", "jax"]
 ShowToc = true
 TocOpen = false  # Optional - keeps TOC open by default
 draft = true

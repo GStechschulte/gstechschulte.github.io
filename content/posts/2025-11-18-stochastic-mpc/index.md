@@ -2,7 +2,7 @@
 title = "Stochastic Model Predictive Control"
 date = 2025-11-18
 author = "Gabriel Stechschulte"
-categories = ["optimization", "jax", "probabilistic-programming"]
+tags = ["optimization", "jax", "probabilistic-programming"]
 ShowToc = true
 TocOpen = false
 draft = false

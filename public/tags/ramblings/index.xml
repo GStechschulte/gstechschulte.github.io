@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Ramblings on Gabes Gulch</title>
+		<link>http://localhost:1313/tags/ramblings/</link>
+		<description>Recent content in Ramblings on Gabes Gulch</description>
+		<generator>Hugo</generator>
+		<language>en-us</language>
+		
+		
+		
+		
+			<lastBuildDate>Tue, 02 Sep 2025 00:00:00 +0000</lastBuildDate>
+		
+			<atom:link href="http://localhost:1313/tags/ramblings/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Alternative View of AI</title>
+				<link>http://localhost:1313/posts/2025-09-02-future-of-ai/</link>
+				<pubDate>Tue, 02 Sep 2025 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/posts/2025-09-02-future-of-ai/</guid>
+				<description>&lt;p&gt;Nowadays, AI is primarily associated with LLMs, where the goal is to develop autonomous agents with human-level intelligence (whatever that means). I have always found the goal of creating something with &amp;ldquo;intelligence&amp;rdquo; boring for some reason. Maybe it is because the objective is too diffuse—create something at least as smart as humans and hope it figures out &lt;code&gt;&amp;lt;insert your problem here&amp;gt;&lt;/code&gt;. Regardless, these LLM-based agents are useful tools and should be used, but these systems are a narrow view of intelligence.&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

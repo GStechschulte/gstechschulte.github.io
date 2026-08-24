@@ -3,7 +3,7 @@ title: 'Ordinal Models in Bambi'
 date: 2023-09-29
 author: 'Gabriel Stechschulte'
 draft: false
-categories: ['probabilistic-programming']
+tags: ['probabilistic-programming']
 ---
 
 <!--eofm-->

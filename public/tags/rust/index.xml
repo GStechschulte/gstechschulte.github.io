@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Rust on Gabes Gulch</title>
+		<link>http://localhost:1313/tags/rust/</link>
+		<description>Recent content in Rust on Gabes Gulch</description>
+		<generator>Hugo</generator>
+		<language>en-us</language>
+		
+		
+		
+		
+			<lastBuildDate>Wed, 11 Jun 2025 00:00:00 +0000</lastBuildDate>
+		
+			<atom:link href="http://localhost:1313/tags/rust/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>[WIP] Fast Sequential Monte Carlo Sampler in Rust</title>
+				<link>http://localhost:1313/posts/2025-07-21-smc-rs/</link>
+				<pubDate>Wed, 11 Jun 2025 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/posts/2025-07-21-smc-rs/</guid>
+				<description>&lt;p&gt;In this post, it is discussed how one can use Rust&amp;rsquo;s type system to implement a highly-performant Sequential Monte Carlo (SMC) algorithm. First, an overview of the SMC algorithm is given. Given this overview, I then discuss the &amp;ldquo;hot parts&amp;rdquo; of the algorithm, i.e., steps in the algorithm that hinder performance, followed by how one can use Rust&amp;rsquo;s type system to circumevent these bottlenecks.&lt;/p&gt;&#xA;&lt;h2 id=&#34;sequential-monte-carlo&#34;&gt;Sequential Monte Carlo&lt;/h2&gt;&#xA;&lt;p&gt;The core algrithm of SMC is simple:&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Data Oriented Deisgn - Columnar Data Structures</title>
+				<link>http://localhost:1313/posts/2024-12-10-dod-columnar-storage/</link>
+				<pubDate>Tue, 10 Dec 2024 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/posts/2024-12-10-dod-columnar-storage/</guid>
+				<description>&lt;p&gt;Test. Test.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Creating C Callbacks with Numba and Calling Them From Rust</title>
+				<link>http://localhost:1313/posts/2024-11-30-c-callbacks/</link>
+				<pubDate>Sat, 30 Nov 2024 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/posts/2024-11-30-c-callbacks/</guid>
+				<description>&lt;p&gt;When interfacing with libraries written in C/C++ from Rust, it may require writing native callbacks to provide functionality or logic to the library. A C Callback is a function pointer that is passed as an argument to another function, allowing that function to &amp;ldquo;call back&amp;rdquo; and execute the passed function at runtime.&lt;/p&gt;&#xA;&lt;p&gt;When interfacing with Python from Rust, there may be scenarios where the Rust code also needs to be able to call a Python function. Rust&amp;rsquo;s foreign function interface (FFI) and &lt;code&gt;pyo3&lt;/code&gt; crate in fact lets you do this. However, calling Python from Rust involves invoking the Python interpreter, which can reduce performance. If one of the goals for using Rust is to improve the performance of your application or library, this overhead might be undesirable. To avoid invoking the Python interpreter, you can use Numba. Numba allows you to create a C callback, pass this function pointer to Rust, and perform the callback without incurring the overhead associated with Python.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Daily Rust - Memory Layout of Different Types</title>
+				<link>http://localhost:1313/posts/2024-11-28-daily-rust-types/</link>
+				<pubDate>Thu, 28 Nov 2024 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/posts/2024-11-28-daily-rust-types/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Daily Rust - Using Trait Objects That Allow for Different Types</title>
+				<link>http://localhost:1313/posts/2024-11-01-daily-rust-trait-objects/</link>
+				<pubDate>Fri, 01 Nov 2024 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/posts/2024-11-01-daily-rust-trait-objects/</guid>
+				<description>&lt;p&gt;Trait objects&amp;hellip;&lt;/p&gt;&#xA;&lt;p&gt;Associated types..&lt;/p&gt;&#xA;&lt;p&gt;You cannot use associated types with trait objects &lt;code&gt;dyn Trait&lt;/code&gt; because:&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;The compiler needs to know the exact signatures of methods at compile time to create the &lt;code&gt;vtable&lt;/code&gt; for dynamic dispatch.&#xA;Different implementations may have different function signatures involving the associated types.&lt;/li&gt;&#xA;&lt;li&gt;When using &lt;code&gt;dyn Trait&lt;/code&gt;, you must specify the associated types because the vtables for different associated type implementations&#xA;are not compatible. For example, &lt;code&gt;dyn Y&amp;lt;Y1 = String&amp;gt;&lt;/code&gt; and &lt;code&gt;dyn Y&amp;lt;Y1 = u32&amp;gt;&lt;/code&gt; have different vtables and cannot be used interchangeably.&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;div class=&#34;code-block&#34;&gt;&#xA;  &lt;div class=&#34;code-block-header&#34;&gt;&#xA;    &lt;span class=&#34;code-block-lang&#34;&gt;Rust&lt;/span&gt;&#xA;    &lt;button type=&#34;button&#34; class=&#34;code-copy&#34; aria-label=&#34;Copy code&#34;&gt;&#xA;      &lt;span class=&#34;code-copy-icon&#34;&gt;&lt;svg viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;1.5&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&lt;rect x=&#34;9&#34; y=&#34;9&#34; width=&#34;13&#34; height=&#34;13&#34; rx=&#34;2&#34; ry=&#34;2&#34;/&gt;&lt;path d=&#34;M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1&#34;/&gt;&lt;/svg&gt;&#xA;&lt;/span&gt;&#xA;      &lt;span class=&#34;code-copy-icon code-copy-icon-check&#34;&gt;&lt;svg viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;1.5&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&lt;polyline points=&#34;20 6 9 17 4 12&#34;/&gt;&lt;/svg&gt;&#xA;&lt;/span&gt;&#xA;      &lt;span class=&#34;code-copy-label&#34;&gt;Copy&lt;/span&gt;&#xA;    &lt;/button&gt;&#xA;  &lt;/div&gt;&#xA;  &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Rust&#34; data-lang=&#34;Rust&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;pub&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;trait&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;Iterator&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;Item&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;fn&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;next&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;mut&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;-&amp;gt; &lt;span class=&#34;nb&#34;&gt;Option&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;Self&lt;/span&gt;::&lt;span class=&#34;n&#34;&gt;Item&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;..&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&#xA;&lt;/div&gt;&#xA;&lt;p&gt;&lt;code&gt;type Item;&lt;/code&gt; is an &lt;em&gt;associated type&lt;/em&gt;. Each type that implements &lt;code&gt;Iterator&lt;/code&gt; must specify what type of item it produces. Here&amp;rsquo;s what it looks like to implement &lt;code&gt;Iterator&lt;/code&gt; for a type&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

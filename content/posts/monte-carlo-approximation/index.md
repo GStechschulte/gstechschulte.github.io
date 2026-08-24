@@ -4,7 +4,7 @@ date: 2022-10-07
 author: 'Gabriel Stechschulte'
 draft: false
 math: true
-categories: ['probabilistic-programming']
+tags: ['probabilistic-programming']
 ---
 
 <!--eofm-->

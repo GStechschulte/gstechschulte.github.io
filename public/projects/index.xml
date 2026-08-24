@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Work on Gabes Gulch</title>
+		<link>http://localhost:1313/projects/</link>
+		<description>Recent content in Work on Gabes Gulch</description>
+		<generator>Hugo</generator>
+		<language>en-us</language>
+		
+		
+		
+		
+			<lastBuildDate>Sat, 01 Jan 2022 00:00:00 +0000</lastBuildDate>
+		
+			<atom:link href="http://localhost:1313/projects/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>PyMC BART</title>
+				<link>http://localhost:1313/projects/pymc-bart/</link>
+				<pubDate>Sat, 01 Jan 2022 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/projects/pymc-bart/</guid>
+				<description>Bayesian Additive Regression Trees for PyMC.</description>
+			</item>
+			<item>
+				<title>Bambi</title>
+				<link>http://localhost:1313/projects/bambi/</link>
+				<pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/projects/bambi/</guid>
+				<description>A high-level Bayesian model-building interface written in Python, built on top of PyMC.</description>
+			</item>
+	</channel>
+</rss>

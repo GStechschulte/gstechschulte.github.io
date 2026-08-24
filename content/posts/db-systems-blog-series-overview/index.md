@@ -2,7 +2,7 @@
 title = 'Database Systems - Series Overview'
 date = 2024-10-22
 author = 'Gabriel Stechschulte'
-categories = ['database-systems']
+tags = ['database-systems']
 ShowToc = true
 TocOpen = false  # Optional - keeps TOC open by default
 draft = false

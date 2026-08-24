@@ -2,7 +2,7 @@
 title = "Coordinating Agents With Mechanism Design"
 date = 2026-07-31
 author = "Gabriel Stechschulte"
-categories = ["economics", "game-theory"]
+tags = ["economics", "game-theory"]
 ShowToc = true
 TocOpen = false
 draft = false

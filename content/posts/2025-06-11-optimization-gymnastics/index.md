@@ -2,7 +2,7 @@
 title = '[WIP] Gymnastics in Constrained Optimization'
 date = 2025-06-11
 author = 'Gabriel Stechschulte'
-categories = ['optimization']
+tags = ['optimization']
 ShowToc = true
 TocOpen = false  # Optional - keeps TOC open by default
 draft = true
