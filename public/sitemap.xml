@@ -2,22 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://localhost:1313/tags/economics/</loc>
+    <lastmod>2026-08-31T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/</loc>
+    <lastmod>2026-08-31T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/2026-08-31-marginalism-is-all-you-need/</loc>
+    <lastmod>2026-08-31T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/</loc>
+    <lastmod>2026-08-31T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/ramblings/</loc>
+    <lastmod>2026-08-31T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/2026-08-31-switzerland-reflection/</loc>
+    <lastmod>2026-08-31T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2026-08-31T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/posts/2026-07-31-why-mechanism-design/</loc>
     <lastmod>2026-07-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/economics/</loc>
-    <lastmod>2026-07-31T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/</loc>
-    <lastmod>2026-07-31T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/tags/game-theory/</loc>
-    <lastmod>2026-07-31T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/posts/</loc>
-    <lastmod>2026-07-31T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/</loc>
     <lastmod>2026-07-31T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/posts/2026-05-08-thinking-about-mechanism-design/</loc>
@@ -48,9 +57,6 @@
     <lastmod>2025-09-15T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/posts/2025-09-02-future-of-ai/</loc>
-    <lastmod>2025-09-02T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/ramblings/</loc>
     <lastmod>2025-09-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/posts/2025-08-08-its-about-decisions/</loc>

@@ -10,9 +10,16 @@
 		
 		
 		
-			<lastBuildDate>Tue, 02 Sep 2025 00:00:00 +0000</lastBuildDate>
+			<lastBuildDate>Mon, 31 Aug 2026 00:00:00 +0000</lastBuildDate>
 		
 			<atom:link href="http://localhost:1313/tags/ramblings/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Reflecting on Six Years in Switzerland</title>
+				<link>http://localhost:1313/posts/2026-08-31-switzerland-reflection/</link>
+				<pubDate>Mon, 31 Aug 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/posts/2026-08-31-switzerland-reflection/</guid>
+				<description></description>
+			</item>
 			<item>
 				<title>Alternative View of AI</title>
 				<link>http://localhost:1313/posts/2025-09-02-future-of-ai/</link>
