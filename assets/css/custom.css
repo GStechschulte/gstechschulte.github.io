@@ -1,21 +1,267 @@
-@font-face {
-    font-family: 'Geist';
-    src: url('/fonts/Geist-Variable.woff2') format('woff2-variations');
-    font-weight: 100 900;
-    font-style: normal;
-    font-display: swap;
-}
+/* =========================================================================
+   Vintage early-modern treatment (adapted from the vintage-latex templates:
+   01-early-modern-page.tex, 15-fiziko-inclined-plane.tex).
 
+   A set of SEPARABLE controls, layered on top of hugo-omegion. This file
+   loads last, so it wins the cascade: it retints the design tokens, swaps
+   the type to EB Garamond with old-style figures, and adds a drop cap,
+   spaced small-caps headings, a printer's rule, and a sepia code palette.
+   ========================================================================= */
+
+/* -- Fonts ------------------------------------------------------------- */
+/* EB Garamond (loaded from Google Fonts in head.html). Body and headings
+   share it, echoing the single-face pages of the templates. Code keeps a
+   monospace so listings stay legible. */
 :root {
-    --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
-    --font-heading: "Geist", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    --font-logo: "Geist", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-body: "EB Garamond", ui-serif, Georgia, "Times New Roman", serif;
+    --font-heading: "EB Garamond", ui-serif, Georgia, "Times New Roman", serif;
+    --font-logo: "EB Garamond", ui-serif, Georgia, serif;
 }
 
 code, pre, kbd, samp {
     font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 }
 
+/* -- Palette: light (rag paper + printer ink) -------------------------- */
+/* ragpaper #F4EBDD / printerink #231F1A, from the templates. */
+:root {
+    --bg: #f4ebdd;
+    --text: #231f1a;
+    --body-text: #2e2820;
+    --bio-text: #3a3228;
+    --muted: #857a66;
+    --border: #d9ccb8;
+    --hover-bg: #ece0cb;
+    --hover-bg-2: #e5d7bf;
+    --footer-text: #b3a58c;
+    --tag-bg: #ece0cb;
+    --badge-text: #9c4f28;
+}
+
+/* -- Palette: dark (warm ink) ----------------------------------------- */
+/* Both the explicit toggle and the OS-preference mirror, so the theme
+   button in assets/js/theme.js keeps working in both directions. */
+:root[data-theme="dark"] {
+    --bg: #1c1712;
+    --text: #ece1cf;
+    --body-text: #ddd0ba;
+    --bio-text: #cabfa8;
+    --muted: #9a8c74;
+    --border: #33291f;
+    --hover-bg: #2a2118;
+    --hover-bg-2: #342a1e;
+    --footer-text: #4a3f30;
+    --tag-bg: #241d15;
+    --badge-text: #d98a5c;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --bg: #1c1712;
+        --text: #ece1cf;
+        --body-text: #ddd0ba;
+        --bio-text: #cabfa8;
+        --muted: #9a8c74;
+        --border: #33291f;
+        --hover-bg: #2a2118;
+        --hover-bg-2: #342a1e;
+        --footer-text: #4a3f30;
+        --tag-bg: #241d15;
+        --badge-text: #d98a5c;
+    }
+}
+
+/* -- Base typography --------------------------------------------------- */
+/* EB Garamond runs small, so the body is sized up. Old-style proportional
+   figures site-wide (the templates' Numbers={OldStyle,Proportional}). */
+body {
+    font-size: 17px;
+    line-height: 1.7;
+    font-feature-settings: "onum" 1, "pnum" 1, "kern" 1;
+}
+
+/* Prose additionally turns on common + discretionary ligatures
+   (Ligatures={Common,Historic,Rare} in template 01). */
+.prose {
+    font-size: 1.02rem;
+    line-height: 1.8;
+    font-feature-settings: "onum" 1, "pnum" 1, "kern" 1, "liga" 1, "dlig" 1;
+}
+
+/* -- Headings: spaced small capitals ----------------------------------- */
+.prose h2,
+.prose h3,
+.prose h4 {
+    font-variant: small-caps;
+    font-feature-settings: "smcp" 1, "onum" 1, "kern" 1;
+    letter-spacing: 0.06em;
+    font-weight: 500;
+}
+
+.article-header h1 {
+    letter-spacing: 0.01em;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+/* Meta line (date + reading time) in spaced small caps with lining
+   figures, like a running head. */
+.article-meta {
+    font-variant: small-caps;
+    letter-spacing: 0.07em;
+    font-feature-settings: "smcp" 1, "lnum" 1;
+}
+
+/* -- Drop capital (first paragraph of a post only) --------------------- */
+/* Guarded to a <p> that is the first child of .prose, so posts opening
+   with a heading, list, or image are left untouched. */
+.article .prose > p:first-child::first-letter {
+    float: left;
+    font-family: var(--font-heading);
+    font-size: 3.4em;
+    line-height: 0.78;
+    font-weight: 500;
+    color: var(--text);
+    padding: 0.02em 0.09em 0 0;
+    margin-top: 0.02em;
+}
+
+/* -- Printer's rule ---------------------------------------------------- */
+/* Replaces the plain <hr> with a centered thin–thick–thin rule, echoing
+   \printerrule in template 01. */
+.prose hr {
+    border: 0;
+    height: 0;
+    margin: 2.75em 0;
+    position: relative;
+    overflow: visible;
+}
+
+.prose hr::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    width: 46%;
+    height: 3px;
+    background:
+        linear-gradient(var(--border), var(--border)) left center / 37% 1px no-repeat,
+        linear-gradient(var(--text), var(--text)) center center / 16% 3px no-repeat,
+        linear-gradient(var(--border), var(--border)) right center / 37% 1px no-repeat;
+}
+
+/* -- Figures ----------------------------------------------------------- */
+/* Plot images sit in a warm frame rather than a rounded modern card. */
+.prose img {
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    background: #fff;
+    padding: 0.35rem;
+}
+
+.prose blockquote {
+    font-family: var(--font-body);
+}
+
+/* -- Math: render in ink, keep KaTeX's own serif math faces ------------ */
+.katex {
+    color: var(--text);
+}
+
+/* -- Code blocks: warm panel, sepia syntax ----------------------------- */
+.code-block {
+    border-radius: 3px;
+}
+
+.code-block-header {
+    background: var(--hover-bg-2);
+}
+
+.prose pre {
+    font-feature-settings: normal;
+}
+
+/* Chroma token overrides (light). These win over the theme's GitHub map
+   by load order; only the common Python/Rust tokens are retinted. */
+.chroma { background-color: var(--tag-bg); }
+.chroma .n  { color: #2e2820; }                              /* names        */
+.chroma .k, .chroma .kd, .chroma .kn, .chroma .kc,
+.chroma .kr, .chroma .kt, .chroma .kp { color: #9c3f1f; }    /* keywords     */
+.chroma .nb { color: #35566b; }                              /* builtins     */
+.chroma .nf, .chroma .fm { color: #7a5230; }                 /* functions    */
+.chroma .nc, .chroma .nn, .chroma .nd { color: #7a5230; }    /* class/deco   */
+.chroma .s, .chroma .s1, .chroma .s2, .chroma .sb,
+.chroma .sd, .chroma .sc, .chroma .se, .chroma .sh { color: #4f6b3a; } /* strings */
+.chroma .c, .chroma .c1, .chroma .cm, .chroma .cs,
+.chroma .ch { color: #9a8c74; font-style: italic; }          /* comments     */
+.chroma .mi, .chroma .mf, .chroma .mh, .chroma .mo,
+.chroma .il { color: #8a5a2b; }                              /* numbers      */
+.chroma .o, .chroma .ow { color: #6b5d4a; }                  /* operators    */
+.chroma .p  { color: #5a5040; }                              /* punctuation  */
+
+/* Chroma token overrides (dark) — both the toggle and OS preference. */
+:root[data-theme="dark"] .chroma .n  { color: #ddd0ba; }
+:root[data-theme="dark"] .chroma .k, :root[data-theme="dark"] .chroma .kd,
+:root[data-theme="dark"] .chroma .kn, :root[data-theme="dark"] .chroma .kc,
+:root[data-theme="dark"] .chroma .kr, :root[data-theme="dark"] .chroma .kt,
+:root[data-theme="dark"] .chroma .kp { color: #e08a5c; }
+:root[data-theme="dark"] .chroma .nb { color: #7fb0c4; }
+:root[data-theme="dark"] .chroma .nf, :root[data-theme="dark"] .chroma .fm,
+:root[data-theme="dark"] .chroma .nc, :root[data-theme="dark"] .chroma .nn,
+:root[data-theme="dark"] .chroma .nd { color: #cbb488; }
+:root[data-theme="dark"] .chroma .s, :root[data-theme="dark"] .chroma .s1,
+:root[data-theme="dark"] .chroma .s2, :root[data-theme="dark"] .chroma .sb,
+:root[data-theme="dark"] .chroma .sd, :root[data-theme="dark"] .chroma .sc,
+:root[data-theme="dark"] .chroma .se, :root[data-theme="dark"] .chroma .sh { color: #a9b87a; }
+:root[data-theme="dark"] .chroma .c, :root[data-theme="dark"] .chroma .c1,
+:root[data-theme="dark"] .chroma .cm, :root[data-theme="dark"] .chroma .cs,
+:root[data-theme="dark"] .chroma .ch { color: #8a7d64; font-style: italic; }
+:root[data-theme="dark"] .chroma .mi, :root[data-theme="dark"] .chroma .mf,
+:root[data-theme="dark"] .chroma .mh, :root[data-theme="dark"] .chroma .mo,
+:root[data-theme="dark"] .chroma .il { color: #d0a06a; }
+:root[data-theme="dark"] .chroma .o, :root[data-theme="dark"] .chroma .ow { color: #b0a389; }
+:root[data-theme="dark"] .chroma .p  { color: #a89b83; }
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .chroma .n  { color: #ddd0ba; }
+    :root:not([data-theme="light"]) .chroma .k,
+    :root:not([data-theme="light"]) .chroma .kd,
+    :root:not([data-theme="light"]) .chroma .kn,
+    :root:not([data-theme="light"]) .chroma .kc,
+    :root:not([data-theme="light"]) .chroma .kr,
+    :root:not([data-theme="light"]) .chroma .kt,
+    :root:not([data-theme="light"]) .chroma .kp { color: #e08a5c; }
+    :root:not([data-theme="light"]) .chroma .nb { color: #7fb0c4; }
+    :root:not([data-theme="light"]) .chroma .nf,
+    :root:not([data-theme="light"]) .chroma .fm,
+    :root:not([data-theme="light"]) .chroma .nc,
+    :root:not([data-theme="light"]) .chroma .nn,
+    :root:not([data-theme="light"]) .chroma .nd { color: #cbb488; }
+    :root:not([data-theme="light"]) .chroma .s,
+    :root:not([data-theme="light"]) .chroma .s1,
+    :root:not([data-theme="light"]) .chroma .s2,
+    :root:not([data-theme="light"]) .chroma .sb,
+    :root:not([data-theme="light"]) .chroma .sd,
+    :root:not([data-theme="light"]) .chroma .sc,
+    :root:not([data-theme="light"]) .chroma .se,
+    :root:not([data-theme="light"]) .chroma .sh { color: #a9b87a; }
+    :root:not([data-theme="light"]) .chroma .c,
+    :root:not([data-theme="light"]) .chroma .c1,
+    :root:not([data-theme="light"]) .chroma .cm,
+    :root:not([data-theme="light"]) .chroma .cs,
+    :root:not([data-theme="light"]) .chroma .ch { color: #8a7d64; font-style: italic; }
+    :root:not([data-theme="light"]) .chroma .mi,
+    :root:not([data-theme="light"]) .chroma .mf,
+    :root:not([data-theme="light"]) .chroma .mh,
+    :root:not([data-theme="light"]) .chroma .mo,
+    :root:not([data-theme="light"]) .chroma .il { color: #d0a06a; }
+    :root:not([data-theme="light"]) .chroma .o,
+    :root:not([data-theme="light"]) .chroma .ow { color: #b0a389; }
+    :root:not([data-theme="light"]) .chroma .p  { color: #a89b83; }
+}
+
+/* -- Layout (carried over from the previous custom.css) ---------------- */
 .marimo-embed {
     margin: 1.5rem 0;
     border: 1px solid var(--border);
@@ -23,16 +269,15 @@ code, pre, kbd, samp {
     overflow: hidden;
 }
 
-/* Narrower sidebar, wider article column, narrower ToC. Content width is
-   kept small enough that the inline ToC still fits and stays open at the
-   theme's normal >= 1280px breakpoint (no fallback to the toggle drawer). */
+/* Narrower sidebar; a measured article column (a serif at 17px wants a
+   tighter measure than the sans did); narrower ToC. */
 :root {
     --sidebar-w: 260px;
 }
 
 @media (min-width: 900px) {
     .content {
-        max-width: 760px;
+        max-width: 720px;
     }
 }
 
