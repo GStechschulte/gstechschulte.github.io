@@ -1,0 +1,40 @@
+{{/*
+  Inlines a premetadated (Typst) SVG so it follows the site's theme toggle.
+
+  Prepare the SVG with scripts/theme_svg.py first: it adds a scoped <style>
+  mapping the plot's ink/paper to the theme's --text / --muted / --bg. Inlining
+  (rather than <img>) is what lets those variables, and so the toggle, reach it.
+
+  Usage (page-bundle resource next to this post's index.md):
+    {{< engraved-svg src="line-plot.svg" alt="Decay of oscillations" caption="..." >}}
+
+  Params:
+    src      (required) SVG in the page bundle
+    alt      (required) accessible label
+    caption  (optional) figure caption
+*/}}
+{{ $src := .Get "src" }}
+{{ $alt := .Get "alt" }}
+{{ $caption := .Get "caption" }}
+{{ with .Page.Resources.Get $src }}
+<figure class="engraved-svg" role="img" aria-label="{{ $alt }}">
+  {{ .Content | safeHTML }}
+  {{ with $caption }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+</figure>
+{{ else }}
+{{ errorf "engraved-svg: %q not found in page bundle %s" $src .Page.File.Path }}
+{{ end }}
+{{ if not (.Page.Scratch.Get "engraved-svg-style") }}
+{{ .Page.Scratch.Set "engraved-svg-style" true }}
+<style>
+  .engraved-svg { margin: 2rem auto; max-width: 760px; background: none; }
+  .engraved-svg svg { display: block; width: 100%; height: auto; }
+  .engraved-svg figcaption {
+    margin-top: 0.5rem;
+    text-align: center;
+    font-style: italic;
+    font-size: 0.9em;
+    color: var(--muted);
+  }
+</style>
+{{ end }}
