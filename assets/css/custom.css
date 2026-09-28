@@ -269,23 +269,206 @@ body {
     overflow: hidden;
 }
 
-/* Narrower sidebar; a measured article column (a serif at 17px wants a
-   tighter measure than the sans did); narrower ToC. */
-:root {
-    --sidebar-w: 260px;
-}
-
-@media (min-width: 900px) {
-    .content {
-        max-width: 720px;
-    }
-}
-
+/* ToC: larger type than the theme's 0.75rem, slightly wider to fit it. */
 .toc {
-    width: 180px;
+    width: var(--toc-w);
+}
+
+.toc-link {
+    font-size: 0.85rem;
 }
 
 .logo-letters:hover span,
 .logo-letters.intro span {
     animation: none;
+}
+
+/* ==========================================================================
+   Top navigation bar (replaces the theme's sidebar; see layouts/_default/baseof.html)
+   ========================================================================== */
+
+:root {
+    --topnav-h: 3.5rem;
+    --column-w: 720px;
+    --toc-w: 200px;
+}
+
+/* Centred reading column; the ToC hangs just right of the column
+   instead of hugging the window edge. */
+.content {
+    max-width: var(--column-w);
+    margin: 0 auto;
+}
+
+.home-intro {
+    margin-bottom: 3rem;
+}
+
+@media (min-width: 1280px) {
+    .toc {
+        right: max(2rem, calc((100vw - var(--column-w)) / 2 - var(--toc-w) - 2.5rem));
+    }
+}
+
+/* -- Bar -- */
+
+.topnav {
+    position: sticky;
+    top: 0;
+    z-index: 45;
+    height: var(--topnav-h);
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    transition: transform 0.2s ease, background 0.15s ease;
+}
+
+.topnav.topnav-hidden {
+    transform: translateY(-100%);
+}
+
+.topnav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+}
+
+.topnav-title {
+    font-family: var(--font-logo);
+    font-size: 1.1rem;
+    color: var(--text);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+
+.topnav-actions,
+.topnav-social {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+}
+
+.topnav .topnav-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    height: 32px;
+    min-width: 32px;
+    justify-content: center;
+    margin: 0;
+    padding: 0 0.5rem;
+    border-radius: 4px;
+    color: var(--bio-text);
+    font-size: 0.82rem;
+    transition: background 0.1s ease;
+}
+
+.topnav .topnav-btn:hover {
+    background: var(--hover-bg-2);
+}
+
+.topnav .topnav-btn svg {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+}
+
+.topnav kbd {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    line-height: 1;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0.15rem 0.35rem;
+}
+
+.topnav-sep {
+    width: 1px;
+    height: 18px;
+    background: var(--border);
+    margin: 0 0.4rem;
+}
+
+.topnav-menu {
+    position: absolute;
+    top: calc(var(--topnav-h) + 0.25rem);
+    right: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 180px;
+    padding: 0.5rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 10px 34px rgba(0, 0, 0, 0.18);
+    z-index: 50;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+}
+
+.topnav-menu.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.topnav-menu a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.5rem;
+    border-radius: 4px;
+    color: var(--bio-text);
+    font-size: 0.85rem;
+}
+
+.topnav-menu a:hover {
+    background: var(--hover-bg-2);
+}
+
+.topnav-menu svg {
+    width: 15px;
+    height: 15px;
+}
+
+.topnav-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 49;
+}
+
+.content {
+    padding: 2.5rem 1.5rem 5rem;
+}
+
+@media (max-width: 899px) {
+    .topnav-text span,
+    .topnav kbd,
+    .topnav-social,
+    .topnav-sep {
+        display: none;
+    }
+}
+
+@media (min-width: 900px) {
+    .topnav-more,
+    .topnav-menu,
+    .topnav-backdrop {
+        display: none !important;
+    }
+
+    .content {
+        padding: 3.5rem 3.5rem 6rem;
+    }
+
+    .toc.toc-pinned {
+        top: calc(var(--topnav-h) + 1.5rem);
+    }
 }

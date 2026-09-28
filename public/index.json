@@ -1,17 +1,10 @@
 [{
     "title": "Technology Shifts the Bottleneck",
-    "url": "/posts/2026-09-02-the-show-goes-on/",
+    "url": "/posts/2026-09-25-technology-shifts-the-bottleneck/",
     "date": "Sep 2026",
     "summary": "",
     "section": "posts",
     "tags": ["economics"]
-  },{
-    "title": "Reflecting on Six Years in Switzerland",
-    "url": "/posts/2026-08-31-switzerland-reflection/",
-    "date": "Aug 2026",
-    "summary": "",
-    "section": "posts",
-    "tags": ["ramblings"]
   },{
     "title": "Coordinating Agents With Mechanism Design",
     "url": "/posts/2026-07-31-why-mechanism-design/",
@@ -62,54 +55,12 @@
     "section": "posts",
     "tags": ["ramblings"]
   },{
-    "title": "[WIP] It's About Making Decisions",
-    "url": "/posts/2025-08-08-its-about-decisions/",
-    "date": "Aug 2025",
-    "summary": "",
-    "section": "posts",
-    "tags": ["optimization","probabilistic-programming","jax"]
-  },{
-    "title": "[WIP] Gymnastics in Constrained Optimization",
-    "url": "/posts/2025-06-11-optimization-gymnastics/",
-    "date": "Jun 2025",
-    "summary": "",
-    "section": "posts",
-    "tags": ["optimization"]
-  },{
-    "title": "[WIP] Fast Sequential Monte Carlo Sampler in Rust",
-    "url": "/posts/2025-07-21-smc-rs/",
-    "date": "Jun 2025",
-    "summary": "",
-    "section": "posts",
-    "tags": ["probabilistic-programming","rust"]
-  },{
-    "title": "Reflection - Atlas Shrugged",
-    "url": "/posts/2025-03-01-reflect-atlas-shrugged/",
-    "date": "Mar 2025",
-    "summary": "",
-    "section": "posts",
-    "tags": ["reflection"]
-  },{
-    "title": "[WIP] South America",
-    "url": "/posts/2025-06-07-south-america/",
-    "date": "Jan 2025",
-    "summary": "",
-    "section": "posts",
-    "tags": ["misc"]
-  },{
     "title": "[WIP] Database Systems - Query Execution and Processing",
     "url": "/posts/db-systems-query-processing/",
     "date": "Jan 2025",
     "summary": "",
     "section": "posts",
     "tags": ["database-systems"]
-  },{
-    "title": "Data Oriented Deisgn - Columnar Data Structures",
-    "url": "/posts/2024-12-10-dod-columnar-storage/",
-    "date": "Dec 2024",
-    "summary": "",
-    "section": "posts",
-    "tags": ["rust","database-systems"]
   },{
     "title": "[WIP] Database Systems - Storage",
     "url": "/posts/db-systems-file-formats/",
@@ -120,20 +71,6 @@
   },{
     "title": "Creating C Callbacks with Numba and Calling Them From Rust",
     "url": "/posts/2024-11-30-c-callbacks/",
-    "date": "Nov 2024",
-    "summary": "",
-    "section": "posts",
-    "tags": ["rust"]
-  },{
-    "title": "Daily Rust - Memory Layout of Different Types",
-    "url": "/posts/2024-11-28-daily-rust-types/",
-    "date": "Nov 2024",
-    "summary": "",
-    "section": "posts",
-    "tags": ["rust"]
-  },{
-    "title": "Daily Rust - Using Trait Objects That Allow for Different Types",
-    "url": "/posts/2024-11-01-daily-rust-trait-objects/",
     "date": "Nov 2024",
     "summary": "",
     "section": "posts",

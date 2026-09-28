@@ -1,0 +1,1 @@
+(()=>{function o(){document.querySelectorAll(".rail [data-proxy]").forEach(t=>{t.addEventListener("click",n=>{n.stopPropagation(),document.getElementById(t.dataset.proxy)?.click()})})}function i(){document.getElementById("topnav")}function e(){o(),i()}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e();})();

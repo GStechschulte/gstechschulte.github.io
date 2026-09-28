@@ -1,0 +1,44 @@
+{{- /* Horizontal top bar. Reuses the theme's element IDs (search-open, theme-toggle,
+       sidebar/sidebar-toggle/sidebar-backdrop) so the existing JS wires everything up. */ -}}
+<header class="topnav" id="topnav">
+  <div class="topnav-inner">
+    <a class="topnav-title logo-letters" href="{{ "/" | relLangURL }}">{{ partial "logo-text.html" . }}</a>
+
+    <nav class="topnav-actions" aria-label="Site">
+      <a class="topnav-btn topnav-text" href="{{ "/tags/" | relLangURL }}">{{ partial "icon.html" "tag" }}<span>Tags</span></a>
+      {{- if site.Params.enableSearch }}
+      <button type="button" id="search-open" class="topnav-btn topnav-text" aria-label="Search">
+        {{ partial "icon.html" "search" }}<span>Search</span><kbd>/</kbd>
+      </button>
+      {{- end }}
+
+      <span class="topnav-sep" aria-hidden="true"></span>
+
+      <div class="topnav-social">
+        {{- range site.Params.author.links }}
+        <a class="topnav-btn" href="{{ .url }}" target="_blank" rel="me noopener" aria-label="{{ .name }}" title="{{ .name }}">{{ partial "icon.html" .icon }}</a>
+        {{- end }}
+        <a class="topnav-btn" href="{{ "/index.xml" | relLangURL }}" aria-label="RSS" title="RSS">{{ partial "icon.html" "rss" }}</a>
+      </div>
+
+      <button type="button" id="theme-toggle" class="topnav-btn" aria-label="Toggle color theme" title="Toggle theme">
+        <span class="icon-sun">{{ partial "icon.html" "sun" }}</span>
+        <span class="icon-moon">{{ partial "icon.html" "moon" }}</span>
+      </button>
+
+      <button type="button" id="sidebar-toggle" class="topnav-btn topnav-more" aria-label="More links" aria-expanded="false" aria-controls="sidebar">
+        {{ partial "icon.html" "list" }}
+      </button>
+    </nav>
+  </div>
+
+  {{- /* Small-screen overflow menu for social links. */}}
+  <div id="sidebar-backdrop" class="topnav-backdrop" hidden></div>
+  <div id="sidebar" class="topnav-menu">
+    <a href="{{ "/tags/" | relLangURL }}">{{ partial "icon.html" "tag" }}<span>Tags</span></a>
+    {{- range site.Params.author.links }}
+    <a href="{{ .url }}" target="_blank" rel="me noopener">{{ partial "icon.html" .icon }}<span>{{ .name }}</span></a>
+    {{- end }}
+    <a href="{{ "/index.xml" | relLangURL }}">{{ partial "icon.html" "rss" }}<span>RSS</span></a>
+  </div>
+</header>

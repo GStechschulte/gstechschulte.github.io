@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="{{ site.Language.Locale }}">
+{{- partial "head.html" . }}
+<body>
+  {{ partial "topnav.html" . }}
+  <div class="shell">
+    <main class="content">
+      {{- if .IsHome }}
+      <section class="home-intro">
+        {{- range site.Params.author.bio }}
+        <p class="bio">{{ . | emojify }}</p>
+        {{- end }}
+      </section>
+      {{- end }}
+      {{ block "main" . }}{{ end }}
+    </main>
+  </div>
+
+  {{- if site.Params.enableSearch }}
+  {{ partial "search.html" . }}
+  {{- end }}
+
+  {{- $js := resources.Get "js/main.js" | js.Build (dict "targetPath" "js/main.js" "minify" (not hugo.IsDevelopment)) | resources.Fingerprint "sha256" }}
+  <script defer src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}"></script>
+
+  {{- $nav_js := resources.Get "js/topnav.js" | js.Build (dict "targetPath" "js/topnav.js" "minify" (not hugo.IsDevelopment)) | resources.Fingerprint "sha256" }}
+  <script defer src="{{ $nav_js.RelPermalink }}" integrity="{{ $nav_js.Data.Integrity }}"></script>
+
+  {{- if .Store.Get "hasMermaid" }}
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs";
+
+    function currentTheme() {
+      const explicit = document.documentElement.getAttribute("data-theme");
+      if (explicit) return explicit;
+      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+
+    function renderDiagrams() {
+      mermaid.initialize({ startOnLoad: false, theme: currentTheme() === "dark" ? "dark" : "default" });
+      const sources = window.__mermaidSources || {};
+      Object.keys(sources).forEach((id) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.removeAttribute("data-processed");
+        el.textContent = sources[id];
+      });
+      mermaid.run({ querySelector: "pre.mermaid" });
+    }
+
+    renderDiagrams();
+    document.getElementById("theme-toggle")?.addEventListener("click", () => setTimeout(renderDiagrams, 0));
+  </script>
+  {{- end }}
+</body>
+</html>
