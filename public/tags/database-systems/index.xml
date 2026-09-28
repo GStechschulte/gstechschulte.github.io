@@ -21,13 +21,6 @@
 				<description>&lt;h2 id=&#34;operator-execution&#34;&gt;Operator execution&lt;/h2&gt;&#xA;&lt;p&gt;In OLAP systems, sequential scans are the primary method for query execution. The goal is two-fold: (1) minimize the amount of data fetched from the disk or a remote object store, and (2) maximize the use of hardware resources for efficient query execution.&lt;/p&gt;&#xA;&lt;p&gt;Andy’s (unscientific) top three execution optimization techniques:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;Data parallelization (vectorization)&lt;/strong&gt;. Breaking down a query into smaller tasks and running them in parallel on different cores, threads, or nodes.&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Task parallelization (multi-threading)&lt;/strong&gt;. Breaking down a query into smaller independent tasks and executing them concurrently. This allows the DBMS to take full advantage of hardware capabilities and or multiple machines to improve query execution time.&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Code specialization (pre-compiled / JIT)&lt;/strong&gt;. Code generation for specific queries, e.g. JIT or pre-compiled parameters.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;which fall into three primary ways for speeding up queries:&lt;/p&gt;</description>
 			</item>
 			<item>
-				<title>Data Oriented Deisgn - Columnar Data Structures</title>
-				<link>http://localhost:1313/posts/2024-12-10-dod-columnar-storage/</link>
-				<pubDate>Tue, 10 Dec 2024 00:00:00 +0000</pubDate>
-				<guid>http://localhost:1313/posts/2024-12-10-dod-columnar-storage/</guid>
-				<description>&lt;p&gt;Test. Test.&lt;/p&gt;</description>
-			</item>
-			<item>
 				<title>[WIP] Database Systems - Storage</title>
 				<link>http://localhost:1313/posts/db-systems-file-formats/</link>
 				<pubDate>Sun, 01 Dec 2024 00:00:00 +0000</pubDate>
