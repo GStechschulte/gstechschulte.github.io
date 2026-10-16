@@ -37,11 +37,11 @@ params:
   enableEmoji: true
   enableSearch: true
   enableTableOfContents: true
-  description: Hey, I am Gabe. Herein, you will find adventures at the intersection of math, computer science, and economics.
+  description: Hey, I am Gabe and this is my blog.
   author:
     name: Gabe Stechschulte
     bio:
-      - Hey, I am Gabe. My interests and work includes probabilistic programming and optimization.
+      - Hey, I am Gabe. Herein, you will find adventures at the intersection of math, computer science, and economics.
     links:
       - name: GitHub
         url: https://github.com/GStechschulte
