@@ -10,9 +10,16 @@
 		
 		
 		
-			<lastBuildDate>Fri, 25 Sep 2026 00:00:00 +0000</lastBuildDate>
+			<lastBuildDate>Fri, 16 Oct 2026 00:00:00 +0000</lastBuildDate>
 		
 			<atom:link href="http://localhost:1313/tags/economics/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Provably Correct Auctions in Rust with Verus</title>
+				<link>http://localhost:1313/posts/2026-10-16-provably-correct-auctions/</link>
+				<pubDate>Fri, 16 Oct 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/posts/2026-10-16-provably-correct-auctions/</guid>
+				<description>&lt;p&gt;Are your agents involved in transactions? Are you tired of inefficient outcomes? Then, &lt;code&gt;non-zero&lt;/code&gt; is for you. Provably correct auctions in Rust with Verus.&lt;/p&gt;</description>
+			</item>
 			<item>
 				<title>Technology Shifts the Bottleneck</title>
 				<link>http://localhost:1313/posts/2026-09-25-technology-shifts-the-bottleneck/</link>

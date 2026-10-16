@@ -37,7 +37,7 @@ params:
   enableEmoji: true
   enableSearch: true
   enableTableOfContents: true
-  description: Hey, I am Gabe. My interests and work includes probabilistic programming and optimization.
+  description: Hey, I am Gabe. Herein, you will find adventures at the intersection of math, computer science, and economics.
   author:
     name: Gabe Stechschulte
     bio:
